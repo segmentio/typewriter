@@ -1,0 +1,258 @@
+{
+  "events": [
+    {
+      "name": "42_--terrible==event++name~!3",
+      "rules": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "context": {
+            "id": "/properties/context"
+          },
+          "traits": {
+            "id": "/properties/traits"
+          },
+          "properties": {
+            "type": "object",
+            "properties": {
+              "0000---terrible-property-name~!3": {
+                "description": "Really, don't do this.",
+                "id": "/properties/properties/properties/0000---terrible-property-name~!3"
+              }
+            },
+            "id": "/properties/properties"
+          }
+        },
+        "required": ["properties"]
+      }
+    },
+    {
+      "name": "Empty Event",
+      "rules": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "context": {
+            "id": "/properties/context"
+          },
+          "traits": {
+            "id": "/properties/traits"
+          },
+          "properties": {
+            "type": "object",
+            "id": "/properties/properties"
+          }
+        },
+        "required": ["properties"]
+      }
+    },
+    {
+      "name": "Example Event",
+      "rules": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "context": {
+            "id": "/properties/context"
+          },
+          "traits": {
+            "id": "/properties/traits"
+          },
+          "properties": {
+            "type": "object",
+            "properties": {
+              "optional any": {
+                "description": "Optional any property",
+                "id": "/properties/properties/properties/optional any"
+              },
+              "optional array": {
+                "description": "Optional array property",
+                "id": "/properties/properties/properties/optional array",
+                "items": {
+                  "description": "",
+                  "id": "/properties/properties/properties/optional array/items",
+                  "properties": {
+                    "optional sub-property": {
+                      "description": "Optional sub-property",
+                      "id": "/properties/properties/properties/optional array/items/properties/optional sub-property",
+                      "type": "string"
+                    },
+                    "required sub-property": {
+                      "description": "Required sub-property",
+                      "id": "/properties/properties/properties/optional array/items/properties/required sub-property",
+                      "type": "string"
+                    }
+                  },
+                  "required": ["required sub-property"],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "optional array (empty)": {
+                "description": "Optional array (empty) property",
+                "id": "/properties/properties/properties/optional array (empty)",
+                "type": "array"
+              },
+              "optional boolean": {
+                "description": "Optional boolean property",
+                "id": "/properties/properties/properties/optional boolean",
+                "type": "boolean"
+              },
+              "optional int": {
+                "description": "Optional integer property",
+                "id": "/properties/properties/properties/optional int",
+                "type": "integer"
+              },
+              "optional number": {
+                "description": "Optional number property",
+                "id": "/properties/properties/properties/optional number",
+                "type": "number"
+              },
+              "optional object": {
+                "description": "Optional object property",
+                "id": "/properties/properties/properties/optional object",
+                "key": "optional object",
+                "properties": {
+                  "optional sub-property": {
+                    "description": "Optional sub-property",
+                    "id": "/properties/properties/properties/optional object/properties/optional sub-property",
+                    "key": "optional sub-property",
+                    "type": "string"
+                  },
+                  "required sub-property": {
+                    "description": "Required sub-property",
+                    "id": "/properties/properties/properties/optional object/properties/required sub-property",
+                    "key": "required sub-property",
+                    "type": "string"
+                  }
+                },
+                "required": ["required sub-property"],
+                "type": "object"
+              },
+              "optional object (empty)": {
+                "description": "Optional object (empty) property",
+                "id": "/properties/properties/properties/optional object (empty)",
+                "key": "optional object (empty)",
+                "type": "object"
+              },
+              "optional string": {
+                "description": "Optional string property",
+                "id": "/properties/properties/properties/optional string",
+                "type": "string"
+              },
+              "optional string regex": {
+                "description": "Optional string regex property",
+                "id": "/properties/properties/properties/optional string regex",
+                "pattern": "FOO|BAR",
+                "type": "string"
+              },
+              "required any": {
+                "description": "Required any property",
+                "id": "/properties/properties/properties/required any",
+                "key": "required any"
+              },
+              "required array": {
+                "description": "Required array property",
+                "id": "/properties/properties/properties/required array",
+                "items": {
+                  "description": "",
+                  "id": "/properties/properties/properties/required array/items",
+                  "properties": {
+                    "optional sub-property": {
+                      "description": "Optional sub-property",
+                      "id": "/properties/properties/properties/required array/items/properties/optional sub-property",
+                      "type": "string"
+                    },
+                    "required sub-property": {
+                      "description": "Required sub-property",
+                      "id": "/properties/properties/properties/required array/items/properties/required sub-property",
+                      "type": "string"
+                    }
+                  },
+                  "required": ["required sub-property"],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "required array (empty)": {
+                "description": "Required array (empty) property",
+                "id": "/properties/properties/properties/required array (empty)",
+                "key": "required array (empty)",
+                "type": "array"
+              },
+              "required boolean": {
+                "description": "Required boolean property",
+                "id": "/properties/properties/properties/required boolean",
+                "key": "required boolean",
+                "type": "boolean"
+              },
+              "required int": {
+                "description": "Required integer property",
+                "id": "/properties/properties/properties/required int",
+                "type": "integer"
+              },
+              "required number": {
+                "description": "Required number property",
+                "id": "/properties/properties/properties/required number",
+                "key": "required number",
+                "type": "number"
+              },
+              "required object": {
+                "description": "Required object property",
+                "id": "/properties/properties/properties/required object",
+                "key": "required object",
+                "properties": {
+                  "optional sub-property": {
+                    "description": "Optional sub-property",
+                    "id": "/properties/properties/properties/required object/properties/optional sub-property",
+                    "type": "string"
+                  },
+                  "required sub-property": {
+                    "description": "Required sub-property",
+                    "id": "/properties/properties/properties/required object/properties/required sub-property",
+                    "type": "string"
+                  }
+                },
+                "required": ["required sub-property"],
+                "type": "object"
+              },
+              "required object (empty)": {
+                "description": "Required object (empty) property",
+                "id": "/properties/properties/properties/required object (empty)",
+                "key": "required object (empty)",
+                "type": "object"
+              },
+              "required string": {
+                "description": "Required string property",
+                "id": "/properties/properties/properties/required string",
+                "type": "string"
+              },
+              "required string regex": {
+                "description": "Required string regex property",
+                "id": "/properties/properties/properties/required string regex",
+                "pattern": "FOO|BAR",
+                "type": "string"
+              }
+            },
+            "required": [
+              "required int",
+              "required string",
+              "required any",
+              "required string regex",
+              "required boolean",
+              "required number",
+              "required array (empty)",
+              "required array",
+              "required object (empty)",
+              "required object"
+            ],
+            "id": "/properties/properties"
+          }
+        },
+        "required": ["properties"]
+      }
+    }
+  ],
+  "group_traits": null,
+  "identify_traits": []
+}

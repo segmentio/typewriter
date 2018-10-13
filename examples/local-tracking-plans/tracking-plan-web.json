@@ -1,0 +1,75 @@
+{
+  "events": [
+    {
+      "name": "Feed Viewed",
+      "rules": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "Feed Viewed",
+        "description": "Fire this event whenever a checkout step is completed",
+        "type": "object",
+        "properties": {
+          "properties":{
+            "type": "object",
+            "properties": {
+              "profile_id": {
+                "description": "The id of the user this feed belongs to",
+                "type": "string"
+              }
+            },
+            "required": [
+              "profile_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "Photo Viewed",      
+      "rules": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "Photo Viewed",
+        "description": "This event is fired when a photo has been viewed",
+        "type": "object",
+        "properties": {
+          "properties":{
+            "type": "object",
+            "properties": {
+              "photo_id": {
+                "description": "The id of the viewed photo",
+                "type": "string"
+              }
+            },
+            "required": [
+              "photo_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "Profile Viewed",
+      "rules": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "Profile Viewed",      
+        "description": "A user profile has been viewed",
+        "type": "object",
+        "properties": {
+          "properties":{
+            "type": "object",
+            "properties": {
+              "profile_id": {
+                "description": "The id of the user the profile belongs to",
+                "type": "string"
+              }
+            },
+            "required": [
+              "profile_id"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "group_traits": null,
+  "identify_traits": []
+}

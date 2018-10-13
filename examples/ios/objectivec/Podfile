@@ -1,0 +1,7 @@
+use_frameworks!
+
+target 'TypewriterExample' do
+  pod "Analytics", "3.6.9"
+end
+
+

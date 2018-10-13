@@ -1,0 +1,25 @@
+{
+  "name": "typewriter-javascript",
+  "version": "1.0.0",
+  "description": "Example app showcasing Typewriter in Javascript",
+  "scripts": {
+    "build": "npm run typewriter-local && next build",
+    "dev": "npm run typewriter-local && next",
+    "typewriter-remote": "typewriter gen-js --id {YOUR_TRACKING_PLAN_ID} --token {YOUR_API_TOKEN} --outputPath ./pages/generated",
+    "typewriter-local": "typewriter gen-js --inputPath ../local-tracking-plans/tracking-plan-web.json --outputPath ./pages/generated",
+    "generate": "typewriter-local"
+  },
+  "keywords": [],
+  "author": "Gurdas Nijor <gurdas@segment.com>",
+  "license": "MIT",
+  "dependencies": {
+    "next": "^4.2.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  },
+  "devDependencies": {
+    "typewriter": "1.0.0"
+  },
+  "main": "index.js",
+  "private": false
+}

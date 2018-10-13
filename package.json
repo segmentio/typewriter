@@ -1,0 +1,134 @@
+{
+  "name": "typewriter",
+  "version": "2.0.0",
+  "description": "A compiler for generating strongly typed analytics clients from JSON Schema",
+  "keywords": [
+    "analytics",
+    "json",
+    "json schema",
+    "segment",
+    "typescript",
+    "mobile",
+    "android",
+    "java",
+    "ios",
+    "objectivec",
+    "quicktype"
+  ],
+  "homepage": "https://github.com/segmentio/typewriter",
+  "bugs": "https://github.com/segmentio/typewriter/issues",
+  "license": "MIT",
+  "author": "segment",
+  "contributors": [
+    "Gurdas Nijor <gurdas@segment.com>",
+    "Colin King <colin.king@segment.com> (https://colinking.co)"
+  ],
+  "files": [
+    "dist",
+    "src"
+  ],
+  "main": "dist/index.js",
+  "browser": "dist/index.js",
+  "bin": "dist/index.js",
+  "directories": {
+    "lib": "src",
+    "test": "tests"
+  },
+  "repository": "github:segmentio/typewriter",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "test": "jest",
+    "update-snapshots": "jest -u",
+    "watch": "tsc -w",
+    "build": "tsc",
+    "lint": "tslint src/**/*.ts",
+    "precommit": "lint-staged",
+    "release": "release-it",
+    "generate-examples:android": "cd examples/android/java && make typewriter-local",
+    "generate-examples:ios": "cd examples/ios/objectivec && make typewriter-local",
+    "generate-examples:js": "cd examples/js && yarn run typewriter-local",
+    "generate-examples:ts": "cd examples/ts && yarn run typewriter-local",
+    "generate-examples": "run-p generate-examples:*"
+  },
+  "dependencies": {
+    "@types/handlebars": "^4.0.38",
+    "ajv": "^6.5.4",
+    "chalk": "^2.0.1",
+    "handlebars": "^4.0.11",
+    "husky": "^0.14.3",
+    "json-schema": "^0.2.3",
+    "json-schema-to-typescript": "^5.5.0",
+    "lodash": "^4.17.10",
+    "npm-run-all": "^4.1.3",
+    "omit-deep-lodash": "^1.1.2",
+    "quicktype": "^15.0.130",
+    "quicktype-core": "^5.0.48",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5",
+    "ts-node": "^6.1.0",
+    "yargs": "^12.0.2"
+  },
+  "devDependencies": {
+    "@types/chalk": "^0.4.31",
+    "@types/jest": "^20.0.8",
+    "@types/node": "^8.0.14",
+    "@types/node-emoji": "^1.4.0",
+    "@types/request-promise-native": "^1.0.15",
+    "@types/yargs": "^8.0.1",
+    "bdd-stdin": "^0.2.0",
+    "jest": "^23.6",
+    "jest-file-snapshot": "^0.0.2",
+    "lint-staged": "^4.3.0",
+    "prettier": "^1.5.3",
+    "release-it": "^7.5.0",
+    "test": "^0.6.0",
+    "ts-jest": "^22.4.2",
+    "tslint": "^5.10.0",
+    "tslint-config-prettier": "^1.13.0",
+    "tslint-config-standard": "^7.0.0",
+    "tslint-plugin-prettier": "^2.0.0",
+    "typescript": "^3.1.1",
+    "yarn-run-all": "^3.1.1"
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "printWidth": 100
+  },
+  "lint-staged": {
+    "*.ts": [
+      "yarn lint",
+      "prettier --write",
+      "git add"
+    ],
+    "*.json": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "tsconfig.json"
+      }
+    },
+    "testMatch": [
+      "**/?(*.)+(spec|test).+(ts|js)?(x)"
+    ]
+  }
+}
