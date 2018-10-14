@@ -1,6 +1,6 @@
-export default class Analytics {
-  constructor(analytics) {
-    this.analytics = analytics;
+export default class AJSWrapper {
+  constructor(ajs) {
+    this.analytics = ajs;
   }
   terribleEventName3(props, context) {
     if (process.env.NODE_ENV !== "production") {
