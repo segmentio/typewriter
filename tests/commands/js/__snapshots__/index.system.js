@@ -11,7 +11,13 @@ System.register([], function(exports_1, context_1) {
          * @param {Analytics} analytics - The ajs or analytics-node library to wrap
          * @param {Object} config - A configuration object to customize runtime behavior
          */
-        constructor(analytics, { isDev } = { isDev: true }) {
+        constructor(analytics, options = {}) {
+          const { isDev = true } = options;
+          if (!analytics) {
+            throw new Error(
+              "An instance of analytics.js or analytics-node must be provided"
+            );
+          }
           this.analytics = analytics;
           this.isDev = isDev;
         }
