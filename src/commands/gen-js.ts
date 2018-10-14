@@ -52,28 +52,26 @@ export async function genJS(
 
   const classHeader = `
     export default class Analytics {
-      constructor(analytics) {
+      /**
+       * Instantiate a wrapper around an analytics library instance
+       * @param {Analytics} analytics - The ajs or analytics-node library to wrap
+       * @param {Object} config - A configuration object to customize runtime behavior
+       */
+      constructor(analytics, { isDev } = { isDev: true }) {
         this.analytics = analytics
+        this.isDev = isDev
       }
   `
-
   const trackCalls =
     events.reduce((code, { name, rules }) => {
-      const schema = omitDeep(
-        {
-          $schema: 'http://json-schema.org/draft-04/schema#',
-          title: rules.title,
-          description: rules.description,
-          ...rules.properties.properties
-        },
-        'id'
-      )
+      const sanitizedFnName = getFnName(name)
+      const compiledValidationFn = ajv.compile(omitDeep(rules, 'id'))
 
       return `
       ${code}
-      ${getFnName(name)}(props, context) {
-        if (process.env.NODE_ENV !== 'production') {
-          const validate = ${ajv.compile(schema)}
+      ${sanitizedFnName}(props, context) {
+        if (this.isDev) {
+          const validate = ${compiledValidationFn}
           var valid = validate(props);
           if (!valid) {
             throw new Error(JSON.stringify(validate.errors, null, 2));

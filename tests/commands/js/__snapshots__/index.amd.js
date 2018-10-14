@@ -2,11 +2,17 @@ define(["require", "exports"], function(require, exports) {
   "use strict";
   Object.defineProperty(exports, "__esModule", { value: true });
   class Analytics {
-    constructor(analytics) {
+    /**
+     * Instantiate a wrapper around an analytics library instance
+     * @param {Analytics} analytics - The ajs or analytics-node library to wrap
+     * @param {Object} config - A configuration object to customize runtime behavior
+     */
+    constructor(analytics, { isDev } = { isDev: true }) {
       this.analytics = analytics;
+      this.isDev = isDev;
     }
     terribleEventName3(props, context) {
-      if (process.env.NODE_ENV !== "production") {
+      if (this.isDev) {
         const validate = function(
           data,
           dataPath,
@@ -20,6 +26,38 @@ define(["require", "exports"], function(require, exports) {
           if (data && typeof data === "object" && !Array.isArray(data)) {
             var errs__0 = errors;
             var valid1 = true;
+            var data1 = data.properties;
+            if (data1 === undefined) {
+              valid1 = false;
+              var err = {
+                keyword: "required",
+                dataPath: (dataPath || "") + "",
+                schemaPath: "#/required",
+                params: { missingProperty: "properties" },
+                message: "should have required property 'properties'"
+              };
+              if (vErrors === null) vErrors = [err];
+              else vErrors.push(err);
+              errors++;
+            } else {
+              var errs_1 = errors;
+              if (data1 && typeof data1 === "object" && !Array.isArray(data1)) {
+                var errs__1 = errors;
+                var valid2 = true;
+              } else {
+                var err = {
+                  keyword: "type",
+                  dataPath: (dataPath || "") + ".properties",
+                  schemaPath: "#/properties/properties/type",
+                  params: { type: "object" },
+                  message: "should be object"
+                };
+                if (vErrors === null) vErrors = [err];
+                else vErrors.push(err);
+                errors++;
+              }
+              var valid1 = errors === errs_1;
+            }
           } else {
             var err = {
               keyword: "type",
@@ -49,7 +87,7 @@ define(["require", "exports"], function(require, exports) {
       }
     }
     emptyEvent(props, context) {
-      if (process.env.NODE_ENV !== "production") {
+      if (this.isDev) {
         const validate = function(
           data,
           dataPath,
@@ -60,7 +98,39 @@ define(["require", "exports"], function(require, exports) {
           "use strict";
           var vErrors = null;
           var errors = 0;
-          if (!data || typeof data !== "object" || Array.isArray(data)) {
+          if (data && typeof data === "object" && !Array.isArray(data)) {
+            var errs__0 = errors;
+            var valid1 = true;
+            var data1 = data.properties;
+            if (data1 === undefined) {
+              valid1 = false;
+              var err = {
+                keyword: "required",
+                dataPath: (dataPath || "") + "",
+                schemaPath: "#/required",
+                params: { missingProperty: "properties" },
+                message: "should have required property 'properties'"
+              };
+              if (vErrors === null) vErrors = [err];
+              else vErrors.push(err);
+              errors++;
+            } else {
+              var errs_1 = errors;
+              if (!data1 || typeof data1 !== "object" || Array.isArray(data1)) {
+                var err = {
+                  keyword: "type",
+                  dataPath: (dataPath || "") + ".properties",
+                  schemaPath: "#/properties/properties/type",
+                  params: { type: "object" },
+                  message: "should be object"
+                };
+                if (vErrors === null) vErrors = [err];
+                else vErrors.push(err);
+                errors++;
+              }
+              var valid1 = errors === errs_1;
+            }
+          } else {
             var err = {
               keyword: "type",
               dataPath: (dataPath || "") + "",
@@ -87,7 +157,7 @@ define(["require", "exports"], function(require, exports) {
       }
     }
     exampleEvent(props, context) {
-      if (process.env.NODE_ENV !== "production") {
+      if (this.isDev) {
         const validate = function(
           data,
           dataPath,
@@ -99,28 +169,235 @@ define(["require", "exports"], function(require, exports) {
           var vErrors = null;
           var errors = 0;
           if (data && typeof data === "object" && !Array.isArray(data)) {
-            if (data["required any"] === undefined) {
-              var err = {
-                keyword: "required",
-                dataPath: (dataPath || "") + "",
-                schemaPath: "#/required",
-                params: { missingProperty: "required any" },
-                message: "should have required property 'required any'"
-              };
-              if (vErrors === null) vErrors = [err];
-              else vErrors.push(err);
-              errors++;
-            }
             var errs__0 = errors;
             var valid1 = true;
-            var data1 = data["optional array"];
-            if (data1 !== undefined) {
+            var data1 = data.properties;
+            if (data1 === undefined) {
+              valid1 = false;
+              var err = {
+                keyword: "required",
+                dataPath: (dataPath || "") + "",
+                schemaPath: "#/required",
+                params: { missingProperty: "properties" },
+                message: "should have required property 'properties'"
+              };
+              if (vErrors === null) vErrors = [err];
+              else vErrors.push(err);
+              errors++;
+            } else {
               var errs_1 = errors;
-              if (Array.isArray(data1)) {
+              if (data1 && typeof data1 === "object" && !Array.isArray(data1)) {
+                if (data1["required any"] === undefined) {
+                  var err = {
+                    keyword: "required",
+                    dataPath: (dataPath || "") + ".properties",
+                    schemaPath: "#/properties/properties/required",
+                    params: { missingProperty: "required any" },
+                    message: "should have required property 'required any'"
+                  };
+                  if (vErrors === null) vErrors = [err];
+                  else vErrors.push(err);
+                  errors++;
+                }
                 var errs__1 = errors;
-                var valid1;
-                for (var i1 = 0; i1 < data1.length; i1++) {
-                  var data2 = data1[i1];
+                var valid2 = true;
+                var data2 = data1["optional array"];
+                if (data2 !== undefined) {
+                  var errs_2 = errors;
+                  if (Array.isArray(data2)) {
+                    var errs__2 = errors;
+                    var valid2;
+                    for (var i2 = 0; i2 < data2.length; i2++) {
+                      var data3 = data2[i2];
+                      var errs_3 = errors;
+                      if (
+                        data3 &&
+                        typeof data3 === "object" &&
+                        !Array.isArray(data3)
+                      ) {
+                        var errs__3 = errors;
+                        var valid4 = true;
+                        if (data3["optional sub-property"] !== undefined) {
+                          var errs_4 = errors;
+                          if (
+                            typeof data3["optional sub-property"] !== "string"
+                          ) {
+                            var err = {
+                              keyword: "type",
+                              dataPath:
+                                (dataPath || "") +
+                                ".properties['optional array'][" +
+                                i2 +
+                                "]['optional sub-property']",
+                              schemaPath:
+                                "#/properties/properties/properties/optional%20array/items/properties/optional%20sub-property/type",
+                              params: { type: "string" },
+                              message: "should be string"
+                            };
+                            if (vErrors === null) vErrors = [err];
+                            else vErrors.push(err);
+                            errors++;
+                          }
+                          var valid4 = errors === errs_4;
+                        }
+                        if (data3["required sub-property"] === undefined) {
+                          valid4 = false;
+                          var err = {
+                            keyword: "required",
+                            dataPath:
+                              (dataPath || "") +
+                              ".properties['optional array'][" +
+                              i2 +
+                              "]",
+                            schemaPath:
+                              "#/properties/properties/properties/optional%20array/items/required",
+                            params: {
+                              missingProperty: "required sub-property"
+                            },
+                            message:
+                              "should have required property 'required sub-property'"
+                          };
+                          if (vErrors === null) vErrors = [err];
+                          else vErrors.push(err);
+                          errors++;
+                        } else {
+                          var errs_4 = errors;
+                          if (
+                            typeof data3["required sub-property"] !== "string"
+                          ) {
+                            var err = {
+                              keyword: "type",
+                              dataPath:
+                                (dataPath || "") +
+                                ".properties['optional array'][" +
+                                i2 +
+                                "]['required sub-property']",
+                              schemaPath:
+                                "#/properties/properties/properties/optional%20array/items/properties/required%20sub-property/type",
+                              params: { type: "string" },
+                              message: "should be string"
+                            };
+                            if (vErrors === null) vErrors = [err];
+                            else vErrors.push(err);
+                            errors++;
+                          }
+                          var valid4 = errors === errs_4;
+                        }
+                      } else {
+                        var err = {
+                          keyword: "type",
+                          dataPath:
+                            (dataPath || "") +
+                            ".properties['optional array'][" +
+                            i2 +
+                            "]",
+                          schemaPath:
+                            "#/properties/properties/properties/optional%20array/items/type",
+                          params: { type: "object" },
+                          message: "should be object"
+                        };
+                        if (vErrors === null) vErrors = [err];
+                        else vErrors.push(err);
+                        errors++;
+                      }
+                      var valid3 = errors === errs_3;
+                    }
+                  } else {
+                    var err = {
+                      keyword: "type",
+                      dataPath:
+                        (dataPath || "") + ".properties['optional array']",
+                      schemaPath:
+                        "#/properties/properties/properties/optional%20array/type",
+                      params: { type: "array" },
+                      message: "should be array"
+                    };
+                    if (vErrors === null) vErrors = [err];
+                    else vErrors.push(err);
+                    errors++;
+                  }
+                  var valid2 = errors === errs_2;
+                }
+                if (data1["optional array (empty)"] !== undefined) {
+                  var errs_2 = errors;
+                  if (!Array.isArray(data1["optional array (empty)"])) {
+                    var err = {
+                      keyword: "type",
+                      dataPath:
+                        (dataPath || "") +
+                        ".properties['optional array (empty)']",
+                      schemaPath:
+                        "#/properties/properties/properties/optional%20array%20(empty)/type",
+                      params: { type: "array" },
+                      message: "should be array"
+                    };
+                    if (vErrors === null) vErrors = [err];
+                    else vErrors.push(err);
+                    errors++;
+                  }
+                  var valid2 = errors === errs_2;
+                }
+                if (data1["optional boolean"] !== undefined) {
+                  var errs_2 = errors;
+                  if (typeof data1["optional boolean"] !== "boolean") {
+                    var err = {
+                      keyword: "type",
+                      dataPath:
+                        (dataPath || "") + ".properties['optional boolean']",
+                      schemaPath:
+                        "#/properties/properties/properties/optional%20boolean/type",
+                      params: { type: "boolean" },
+                      message: "should be boolean"
+                    };
+                    if (vErrors === null) vErrors = [err];
+                    else vErrors.push(err);
+                    errors++;
+                  }
+                  var valid2 = errors === errs_2;
+                }
+                var data2 = data1["optional int"];
+                if (data2 !== undefined) {
+                  var errs_2 = errors;
+                  if (
+                    typeof data2 !== "number" ||
+                    data2 % 1 ||
+                    data2 !== data2
+                  ) {
+                    var err = {
+                      keyword: "type",
+                      dataPath:
+                        (dataPath || "") + ".properties['optional int']",
+                      schemaPath:
+                        "#/properties/properties/properties/optional%20int/type",
+                      params: { type: "integer" },
+                      message: "should be integer"
+                    };
+                    if (vErrors === null) vErrors = [err];
+                    else vErrors.push(err);
+                    errors++;
+                  }
+                  var valid2 = errors === errs_2;
+                }
+                if (data1["optional number"] !== undefined) {
+                  var errs_2 = errors;
+                  if (typeof data1["optional number"] !== "number") {
+                    var err = {
+                      keyword: "type",
+                      dataPath:
+                        (dataPath || "") + ".properties['optional number']",
+                      schemaPath:
+                        "#/properties/properties/properties/optional%20number/type",
+                      params: { type: "number" },
+                      message: "should be number"
+                    };
+                    if (vErrors === null) vErrors = [err];
+                    else vErrors.push(err);
+                    errors++;
+                  }
+                  var valid2 = errors === errs_2;
+                }
+                var data2 = data1["optional object"];
+                if (data2 !== undefined) {
                   var errs_2 = errors;
                   if (
                     data2 &&
@@ -136,11 +413,9 @@ define(["require", "exports"], function(require, exports) {
                           keyword: "type",
                           dataPath:
                             (dataPath || "") +
-                            "['optional array'][" +
-                            i1 +
-                            "]['optional sub-property']",
+                            ".properties['optional object']['optional sub-property']",
                           schemaPath:
-                            "#/properties/optional%20array/items/properties/optional%20sub-property/type",
+                            "#/properties/properties/properties/optional%20object/properties/optional%20sub-property/type",
                           params: { type: "string" },
                           message: "should be string"
                         };
@@ -155,9 +430,9 @@ define(["require", "exports"], function(require, exports) {
                       var err = {
                         keyword: "required",
                         dataPath:
-                          (dataPath || "") + "['optional array'][" + i1 + "]",
+                          (dataPath || "") + ".properties['optional object']",
                         schemaPath:
-                          "#/properties/optional%20array/items/required",
+                          "#/properties/properties/properties/optional%20object/required",
                         params: { missingProperty: "required sub-property" },
                         message:
                           "should have required property 'required sub-property'"
@@ -172,11 +447,9 @@ define(["require", "exports"], function(require, exports) {
                           keyword: "type",
                           dataPath:
                             (dataPath || "") +
-                            "['optional array'][" +
-                            i1 +
-                            "]['required sub-property']",
+                            ".properties['optional object']['required sub-property']",
                           schemaPath:
-                            "#/properties/optional%20array/items/properties/required%20sub-property/type",
+                            "#/properties/properties/properties/optional%20object/properties/required%20sub-property/type",
                           params: { type: "string" },
                           message: "should be string"
                         };
@@ -190,8 +463,9 @@ define(["require", "exports"], function(require, exports) {
                     var err = {
                       keyword: "type",
                       dataPath:
-                        (dataPath || "") + "['optional array'][" + i1 + "]",
-                      schemaPath: "#/properties/optional%20array/items/type",
+                        (dataPath || "") + ".properties['optional object']",
+                      schemaPath:
+                        "#/properties/properties/properties/optional%20object/type",
                       params: { type: "object" },
                       message: "should be object"
                     };
@@ -201,101 +475,39 @@ define(["require", "exports"], function(require, exports) {
                   }
                   var valid2 = errors === errs_2;
                 }
-              } else {
-                var err = {
-                  keyword: "type",
-                  dataPath: (dataPath || "") + "['optional array']",
-                  schemaPath: "#/properties/optional%20array/type",
-                  params: { type: "array" },
-                  message: "should be array"
-                };
-                if (vErrors === null) vErrors = [err];
-                else vErrors.push(err);
-                errors++;
-              }
-              var valid1 = errors === errs_1;
-            }
-            if (data["optional array (empty)"] !== undefined) {
-              var errs_1 = errors;
-              if (!Array.isArray(data["optional array (empty)"])) {
-                var err = {
-                  keyword: "type",
-                  dataPath: (dataPath || "") + "['optional array (empty)']",
-                  schemaPath: "#/properties/optional%20array%20(empty)/type",
-                  params: { type: "array" },
-                  message: "should be array"
-                };
-                if (vErrors === null) vErrors = [err];
-                else vErrors.push(err);
-                errors++;
-              }
-              var valid1 = errors === errs_1;
-            }
-            if (data["optional boolean"] !== undefined) {
-              var errs_1 = errors;
-              if (typeof data["optional boolean"] !== "boolean") {
-                var err = {
-                  keyword: "type",
-                  dataPath: (dataPath || "") + "['optional boolean']",
-                  schemaPath: "#/properties/optional%20boolean/type",
-                  params: { type: "boolean" },
-                  message: "should be boolean"
-                };
-                if (vErrors === null) vErrors = [err];
-                else vErrors.push(err);
-                errors++;
-              }
-              var valid1 = errors === errs_1;
-            }
-            var data1 = data["optional int"];
-            if (data1 !== undefined) {
-              var errs_1 = errors;
-              if (typeof data1 !== "number" || data1 % 1 || data1 !== data1) {
-                var err = {
-                  keyword: "type",
-                  dataPath: (dataPath || "") + "['optional int']",
-                  schemaPath: "#/properties/optional%20int/type",
-                  params: { type: "integer" },
-                  message: "should be integer"
-                };
-                if (vErrors === null) vErrors = [err];
-                else vErrors.push(err);
-                errors++;
-              }
-              var valid1 = errors === errs_1;
-            }
-            if (data["optional number"] !== undefined) {
-              var errs_1 = errors;
-              if (typeof data["optional number"] !== "number") {
-                var err = {
-                  keyword: "type",
-                  dataPath: (dataPath || "") + "['optional number']",
-                  schemaPath: "#/properties/optional%20number/type",
-                  params: { type: "number" },
-                  message: "should be number"
-                };
-                if (vErrors === null) vErrors = [err];
-                else vErrors.push(err);
-                errors++;
-              }
-              var valid1 = errors === errs_1;
-            }
-            var data1 = data["optional object"];
-            if (data1 !== undefined) {
-              var errs_1 = errors;
-              if (data1 && typeof data1 === "object" && !Array.isArray(data1)) {
-                var errs__1 = errors;
-                var valid2 = true;
-                if (data1["optional sub-property"] !== undefined) {
+                var data2 = data1["optional object (empty)"];
+                if (data2 !== undefined) {
                   var errs_2 = errors;
-                  if (typeof data1["optional sub-property"] !== "string") {
+                  if (
+                    !data2 ||
+                    typeof data2 !== "object" ||
+                    Array.isArray(data2)
+                  ) {
                     var err = {
                       keyword: "type",
                       dataPath:
                         (dataPath || "") +
-                        "['optional object']['optional sub-property']",
+                        ".properties['optional object (empty)']",
                       schemaPath:
-                        "#/properties/optional%20object/properties/optional%20sub-property/type",
+                        "#/properties/properties/properties/optional%20object%20(empty)/type",
+                      params: { type: "object" },
+                      message: "should be object"
+                    };
+                    if (vErrors === null) vErrors = [err];
+                    else vErrors.push(err);
+                    errors++;
+                  }
+                  var valid2 = errors === errs_2;
+                }
+                if (data1["optional string"] !== undefined) {
+                  var errs_2 = errors;
+                  if (typeof data1["optional string"] !== "string") {
+                    var err = {
+                      keyword: "type",
+                      dataPath:
+                        (dataPath || "") + ".properties['optional string']",
+                      schemaPath:
+                        "#/properties/properties/properties/optional%20string/type",
                       params: { type: "string" },
                       message: "should be string"
                     };
@@ -305,31 +517,164 @@ define(["require", "exports"], function(require, exports) {
                   }
                   var valid2 = errors === errs_2;
                 }
-                if (data1["required sub-property"] === undefined) {
+                var data2 = data1["optional string regex"];
+                if (data2 !== undefined) {
+                  var errs_2 = errors;
+                  if (typeof data2 === "string") {
+                    if (!pattern0.test(data2)) {
+                      var err = {
+                        keyword: "pattern",
+                        dataPath:
+                          (dataPath || "") +
+                          ".properties['optional string regex']",
+                        schemaPath:
+                          "#/properties/properties/properties/optional%20string%20regex/pattern",
+                        params: { pattern: "FOO|BAR" },
+                        message: 'should match pattern "FOO|BAR"'
+                      };
+                      if (vErrors === null) vErrors = [err];
+                      else vErrors.push(err);
+                      errors++;
+                    }
+                  } else {
+                    var err = {
+                      keyword: "type",
+                      dataPath:
+                        (dataPath || "") +
+                        ".properties['optional string regex']",
+                      schemaPath:
+                        "#/properties/properties/properties/optional%20string%20regex/type",
+                      params: { type: "string" },
+                      message: "should be string"
+                    };
+                    if (vErrors === null) vErrors = [err];
+                    else vErrors.push(err);
+                    errors++;
+                  }
+                  var valid2 = errors === errs_2;
+                }
+                var data2 = data1["required array"];
+                if (data2 === undefined) {
                   valid2 = false;
                   var err = {
                     keyword: "required",
-                    dataPath: (dataPath || "") + "['optional object']",
-                    schemaPath: "#/properties/optional%20object/required",
-                    params: { missingProperty: "required sub-property" },
-                    message:
-                      "should have required property 'required sub-property'"
+                    dataPath: (dataPath || "") + ".properties",
+                    schemaPath: "#/properties/properties/required",
+                    params: { missingProperty: "required array" },
+                    message: "should have required property 'required array'"
                   };
                   if (vErrors === null) vErrors = [err];
                   else vErrors.push(err);
                   errors++;
                 } else {
                   var errs_2 = errors;
-                  if (typeof data1["required sub-property"] !== "string") {
+                  if (Array.isArray(data2)) {
+                    var errs__2 = errors;
+                    var valid2;
+                    for (var i2 = 0; i2 < data2.length; i2++) {
+                      var data3 = data2[i2];
+                      var errs_3 = errors;
+                      if (
+                        data3 &&
+                        typeof data3 === "object" &&
+                        !Array.isArray(data3)
+                      ) {
+                        var errs__3 = errors;
+                        var valid4 = true;
+                        if (data3["optional sub-property"] !== undefined) {
+                          var errs_4 = errors;
+                          if (
+                            typeof data3["optional sub-property"] !== "string"
+                          ) {
+                            var err = {
+                              keyword: "type",
+                              dataPath:
+                                (dataPath || "") +
+                                ".properties['required array'][" +
+                                i2 +
+                                "]['optional sub-property']",
+                              schemaPath:
+                                "#/properties/properties/properties/required%20array/items/properties/optional%20sub-property/type",
+                              params: { type: "string" },
+                              message: "should be string"
+                            };
+                            if (vErrors === null) vErrors = [err];
+                            else vErrors.push(err);
+                            errors++;
+                          }
+                          var valid4 = errors === errs_4;
+                        }
+                        if (data3["required sub-property"] === undefined) {
+                          valid4 = false;
+                          var err = {
+                            keyword: "required",
+                            dataPath:
+                              (dataPath || "") +
+                              ".properties['required array'][" +
+                              i2 +
+                              "]",
+                            schemaPath:
+                              "#/properties/properties/properties/required%20array/items/required",
+                            params: {
+                              missingProperty: "required sub-property"
+                            },
+                            message:
+                              "should have required property 'required sub-property'"
+                          };
+                          if (vErrors === null) vErrors = [err];
+                          else vErrors.push(err);
+                          errors++;
+                        } else {
+                          var errs_4 = errors;
+                          if (
+                            typeof data3["required sub-property"] !== "string"
+                          ) {
+                            var err = {
+                              keyword: "type",
+                              dataPath:
+                                (dataPath || "") +
+                                ".properties['required array'][" +
+                                i2 +
+                                "]['required sub-property']",
+                              schemaPath:
+                                "#/properties/properties/properties/required%20array/items/properties/required%20sub-property/type",
+                              params: { type: "string" },
+                              message: "should be string"
+                            };
+                            if (vErrors === null) vErrors = [err];
+                            else vErrors.push(err);
+                            errors++;
+                          }
+                          var valid4 = errors === errs_4;
+                        }
+                      } else {
+                        var err = {
+                          keyword: "type",
+                          dataPath:
+                            (dataPath || "") +
+                            ".properties['required array'][" +
+                            i2 +
+                            "]",
+                          schemaPath:
+                            "#/properties/properties/properties/required%20array/items/type",
+                          params: { type: "object" },
+                          message: "should be object"
+                        };
+                        if (vErrors === null) vErrors = [err];
+                        else vErrors.push(err);
+                        errors++;
+                      }
+                      var valid3 = errors === errs_3;
+                    }
+                  } else {
                     var err = {
                       keyword: "type",
                       dataPath:
-                        (dataPath || "") +
-                        "['optional object']['required sub-property']",
+                        (dataPath || "") + ".properties['required array']",
                       schemaPath:
-                        "#/properties/optional%20object/properties/required%20sub-property/type",
-                      params: { type: "string" },
-                      message: "should be string"
+                        "#/properties/properties/properties/required%20array/type",
+                      params: { type: "array" },
+                      message: "should be array"
                     };
                     if (vErrors === null) vErrors = [err];
                     else vErrors.push(err);
@@ -337,104 +682,147 @@ define(["require", "exports"], function(require, exports) {
                   }
                   var valid2 = errors === errs_2;
                 }
-              } else {
-                var err = {
-                  keyword: "type",
-                  dataPath: (dataPath || "") + "['optional object']",
-                  schemaPath: "#/properties/optional%20object/type",
-                  params: { type: "object" },
-                  message: "should be object"
-                };
-                if (vErrors === null) vErrors = [err];
-                else vErrors.push(err);
-                errors++;
-              }
-              var valid1 = errors === errs_1;
-            }
-            var data1 = data["optional object (empty)"];
-            if (data1 !== undefined) {
-              var errs_1 = errors;
-              if (!data1 || typeof data1 !== "object" || Array.isArray(data1)) {
-                var err = {
-                  keyword: "type",
-                  dataPath: (dataPath || "") + "['optional object (empty)']",
-                  schemaPath: "#/properties/optional%20object%20(empty)/type",
-                  params: { type: "object" },
-                  message: "should be object"
-                };
-                if (vErrors === null) vErrors = [err];
-                else vErrors.push(err);
-                errors++;
-              }
-              var valid1 = errors === errs_1;
-            }
-            if (data["optional string"] !== undefined) {
-              var errs_1 = errors;
-              if (typeof data["optional string"] !== "string") {
-                var err = {
-                  keyword: "type",
-                  dataPath: (dataPath || "") + "['optional string']",
-                  schemaPath: "#/properties/optional%20string/type",
-                  params: { type: "string" },
-                  message: "should be string"
-                };
-                if (vErrors === null) vErrors = [err];
-                else vErrors.push(err);
-                errors++;
-              }
-              var valid1 = errors === errs_1;
-            }
-            var data1 = data["optional string regex"];
-            if (data1 !== undefined) {
-              var errs_1 = errors;
-              if (typeof data1 === "string") {
-                if (!pattern0.test(data1)) {
+                if (data1["required array (empty)"] === undefined) {
+                  valid2 = false;
                   var err = {
-                    keyword: "pattern",
-                    dataPath: (dataPath || "") + "['optional string regex']",
-                    schemaPath:
-                      "#/properties/optional%20string%20regex/pattern",
-                    params: { pattern: "FOO|BAR" },
-                    message: 'should match pattern "FOO|BAR"'
+                    keyword: "required",
+                    dataPath: (dataPath || "") + ".properties",
+                    schemaPath: "#/properties/properties/required",
+                    params: { missingProperty: "required array (empty)" },
+                    message:
+                      "should have required property 'required array (empty)'"
                   };
                   if (vErrors === null) vErrors = [err];
                   else vErrors.push(err);
                   errors++;
+                } else {
+                  var errs_2 = errors;
+                  if (!Array.isArray(data1["required array (empty)"])) {
+                    var err = {
+                      keyword: "type",
+                      dataPath:
+                        (dataPath || "") +
+                        ".properties['required array (empty)']",
+                      schemaPath:
+                        "#/properties/properties/properties/required%20array%20(empty)/type",
+                      params: { type: "array" },
+                      message: "should be array"
+                    };
+                    if (vErrors === null) vErrors = [err];
+                    else vErrors.push(err);
+                    errors++;
+                  }
+                  var valid2 = errors === errs_2;
                 }
-              } else {
-                var err = {
-                  keyword: "type",
-                  dataPath: (dataPath || "") + "['optional string regex']",
-                  schemaPath: "#/properties/optional%20string%20regex/type",
-                  params: { type: "string" },
-                  message: "should be string"
-                };
-                if (vErrors === null) vErrors = [err];
-                else vErrors.push(err);
-                errors++;
-              }
-              var valid1 = errors === errs_1;
-            }
-            var data1 = data["required array"];
-            if (data1 === undefined) {
-              valid1 = false;
-              var err = {
-                keyword: "required",
-                dataPath: (dataPath || "") + "",
-                schemaPath: "#/required",
-                params: { missingProperty: "required array" },
-                message: "should have required property 'required array'"
-              };
-              if (vErrors === null) vErrors = [err];
-              else vErrors.push(err);
-              errors++;
-            } else {
-              var errs_1 = errors;
-              if (Array.isArray(data1)) {
-                var errs__1 = errors;
-                var valid1;
-                for (var i1 = 0; i1 < data1.length; i1++) {
-                  var data2 = data1[i1];
+                if (data1["required boolean"] === undefined) {
+                  valid2 = false;
+                  var err = {
+                    keyword: "required",
+                    dataPath: (dataPath || "") + ".properties",
+                    schemaPath: "#/properties/properties/required",
+                    params: { missingProperty: "required boolean" },
+                    message: "should have required property 'required boolean'"
+                  };
+                  if (vErrors === null) vErrors = [err];
+                  else vErrors.push(err);
+                  errors++;
+                } else {
+                  var errs_2 = errors;
+                  if (typeof data1["required boolean"] !== "boolean") {
+                    var err = {
+                      keyword: "type",
+                      dataPath:
+                        (dataPath || "") + ".properties['required boolean']",
+                      schemaPath:
+                        "#/properties/properties/properties/required%20boolean/type",
+                      params: { type: "boolean" },
+                      message: "should be boolean"
+                    };
+                    if (vErrors === null) vErrors = [err];
+                    else vErrors.push(err);
+                    errors++;
+                  }
+                  var valid2 = errors === errs_2;
+                }
+                var data2 = data1["required int"];
+                if (data2 === undefined) {
+                  valid2 = false;
+                  var err = {
+                    keyword: "required",
+                    dataPath: (dataPath || "") + ".properties",
+                    schemaPath: "#/properties/properties/required",
+                    params: { missingProperty: "required int" },
+                    message: "should have required property 'required int'"
+                  };
+                  if (vErrors === null) vErrors = [err];
+                  else vErrors.push(err);
+                  errors++;
+                } else {
+                  var errs_2 = errors;
+                  if (
+                    typeof data2 !== "number" ||
+                    data2 % 1 ||
+                    data2 !== data2
+                  ) {
+                    var err = {
+                      keyword: "type",
+                      dataPath:
+                        (dataPath || "") + ".properties['required int']",
+                      schemaPath:
+                        "#/properties/properties/properties/required%20int/type",
+                      params: { type: "integer" },
+                      message: "should be integer"
+                    };
+                    if (vErrors === null) vErrors = [err];
+                    else vErrors.push(err);
+                    errors++;
+                  }
+                  var valid2 = errors === errs_2;
+                }
+                if (data1["required number"] === undefined) {
+                  valid2 = false;
+                  var err = {
+                    keyword: "required",
+                    dataPath: (dataPath || "") + ".properties",
+                    schemaPath: "#/properties/properties/required",
+                    params: { missingProperty: "required number" },
+                    message: "should have required property 'required number'"
+                  };
+                  if (vErrors === null) vErrors = [err];
+                  else vErrors.push(err);
+                  errors++;
+                } else {
+                  var errs_2 = errors;
+                  if (typeof data1["required number"] !== "number") {
+                    var err = {
+                      keyword: "type",
+                      dataPath:
+                        (dataPath || "") + ".properties['required number']",
+                      schemaPath:
+                        "#/properties/properties/properties/required%20number/type",
+                      params: { type: "number" },
+                      message: "should be number"
+                    };
+                    if (vErrors === null) vErrors = [err];
+                    else vErrors.push(err);
+                    errors++;
+                  }
+                  var valid2 = errors === errs_2;
+                }
+                var data2 = data1["required object"];
+                if (data2 === undefined) {
+                  valid2 = false;
+                  var err = {
+                    keyword: "required",
+                    dataPath: (dataPath || "") + ".properties",
+                    schemaPath: "#/properties/properties/required",
+                    params: { missingProperty: "required object" },
+                    message: "should have required property 'required object'"
+                  };
+                  if (vErrors === null) vErrors = [err];
+                  else vErrors.push(err);
+                  errors++;
+                } else {
                   var errs_2 = errors;
                   if (
                     data2 &&
@@ -450,11 +838,9 @@ define(["require", "exports"], function(require, exports) {
                           keyword: "type",
                           dataPath:
                             (dataPath || "") +
-                            "['required array'][" +
-                            i1 +
-                            "]['optional sub-property']",
+                            ".properties['required object']['optional sub-property']",
                           schemaPath:
-                            "#/properties/required%20array/items/properties/optional%20sub-property/type",
+                            "#/properties/properties/properties/required%20object/properties/optional%20sub-property/type",
                           params: { type: "string" },
                           message: "should be string"
                         };
@@ -469,9 +855,9 @@ define(["require", "exports"], function(require, exports) {
                       var err = {
                         keyword: "required",
                         dataPath:
-                          (dataPath || "") + "['required array'][" + i1 + "]",
+                          (dataPath || "") + ".properties['required object']",
                         schemaPath:
-                          "#/properties/required%20array/items/required",
+                          "#/properties/properties/properties/required%20object/required",
                         params: { missingProperty: "required sub-property" },
                         message:
                           "should have required property 'required sub-property'"
@@ -486,11 +872,9 @@ define(["require", "exports"], function(require, exports) {
                           keyword: "type",
                           dataPath:
                             (dataPath || "") +
-                            "['required array'][" +
-                            i1 +
-                            "]['required sub-property']",
+                            ".properties['required object']['required sub-property']",
                           schemaPath:
-                            "#/properties/required%20array/items/properties/required%20sub-property/type",
+                            "#/properties/properties/properties/required%20object/properties/required%20sub-property/type",
                           params: { type: "string" },
                           message: "should be string"
                         };
@@ -504,8 +888,9 @@ define(["require", "exports"], function(require, exports) {
                     var err = {
                       keyword: "type",
                       dataPath:
-                        (dataPath || "") + "['required array'][" + i1 + "]",
-                      schemaPath: "#/properties/required%20array/items/type",
+                        (dataPath || "") + ".properties['required object']",
+                      schemaPath:
+                        "#/properties/properties/properties/required%20object/type",
                       params: { type: "object" },
                       message: "should be object"
                     };
@@ -515,194 +900,113 @@ define(["require", "exports"], function(require, exports) {
                   }
                   var valid2 = errors === errs_2;
                 }
-              } else {
-                var err = {
-                  keyword: "type",
-                  dataPath: (dataPath || "") + "['required array']",
-                  schemaPath: "#/properties/required%20array/type",
-                  params: { type: "array" },
-                  message: "should be array"
-                };
-                if (vErrors === null) vErrors = [err];
-                else vErrors.push(err);
-                errors++;
-              }
-              var valid1 = errors === errs_1;
-            }
-            if (data["required array (empty)"] === undefined) {
-              valid1 = false;
-              var err = {
-                keyword: "required",
-                dataPath: (dataPath || "") + "",
-                schemaPath: "#/required",
-                params: { missingProperty: "required array (empty)" },
-                message:
-                  "should have required property 'required array (empty)'"
-              };
-              if (vErrors === null) vErrors = [err];
-              else vErrors.push(err);
-              errors++;
-            } else {
-              var errs_1 = errors;
-              if (!Array.isArray(data["required array (empty)"])) {
-                var err = {
-                  keyword: "type",
-                  dataPath: (dataPath || "") + "['required array (empty)']",
-                  schemaPath: "#/properties/required%20array%20(empty)/type",
-                  params: { type: "array" },
-                  message: "should be array"
-                };
-                if (vErrors === null) vErrors = [err];
-                else vErrors.push(err);
-                errors++;
-              }
-              var valid1 = errors === errs_1;
-            }
-            if (data["required boolean"] === undefined) {
-              valid1 = false;
-              var err = {
-                keyword: "required",
-                dataPath: (dataPath || "") + "",
-                schemaPath: "#/required",
-                params: { missingProperty: "required boolean" },
-                message: "should have required property 'required boolean'"
-              };
-              if (vErrors === null) vErrors = [err];
-              else vErrors.push(err);
-              errors++;
-            } else {
-              var errs_1 = errors;
-              if (typeof data["required boolean"] !== "boolean") {
-                var err = {
-                  keyword: "type",
-                  dataPath: (dataPath || "") + "['required boolean']",
-                  schemaPath: "#/properties/required%20boolean/type",
-                  params: { type: "boolean" },
-                  message: "should be boolean"
-                };
-                if (vErrors === null) vErrors = [err];
-                else vErrors.push(err);
-                errors++;
-              }
-              var valid1 = errors === errs_1;
-            }
-            var data1 = data["required int"];
-            if (data1 === undefined) {
-              valid1 = false;
-              var err = {
-                keyword: "required",
-                dataPath: (dataPath || "") + "",
-                schemaPath: "#/required",
-                params: { missingProperty: "required int" },
-                message: "should have required property 'required int'"
-              };
-              if (vErrors === null) vErrors = [err];
-              else vErrors.push(err);
-              errors++;
-            } else {
-              var errs_1 = errors;
-              if (typeof data1 !== "number" || data1 % 1 || data1 !== data1) {
-                var err = {
-                  keyword: "type",
-                  dataPath: (dataPath || "") + "['required int']",
-                  schemaPath: "#/properties/required%20int/type",
-                  params: { type: "integer" },
-                  message: "should be integer"
-                };
-                if (vErrors === null) vErrors = [err];
-                else vErrors.push(err);
-                errors++;
-              }
-              var valid1 = errors === errs_1;
-            }
-            if (data["required number"] === undefined) {
-              valid1 = false;
-              var err = {
-                keyword: "required",
-                dataPath: (dataPath || "") + "",
-                schemaPath: "#/required",
-                params: { missingProperty: "required number" },
-                message: "should have required property 'required number'"
-              };
-              if (vErrors === null) vErrors = [err];
-              else vErrors.push(err);
-              errors++;
-            } else {
-              var errs_1 = errors;
-              if (typeof data["required number"] !== "number") {
-                var err = {
-                  keyword: "type",
-                  dataPath: (dataPath || "") + "['required number']",
-                  schemaPath: "#/properties/required%20number/type",
-                  params: { type: "number" },
-                  message: "should be number"
-                };
-                if (vErrors === null) vErrors = [err];
-                else vErrors.push(err);
-                errors++;
-              }
-              var valid1 = errors === errs_1;
-            }
-            var data1 = data["required object"];
-            if (data1 === undefined) {
-              valid1 = false;
-              var err = {
-                keyword: "required",
-                dataPath: (dataPath || "") + "",
-                schemaPath: "#/required",
-                params: { missingProperty: "required object" },
-                message: "should have required property 'required object'"
-              };
-              if (vErrors === null) vErrors = [err];
-              else vErrors.push(err);
-              errors++;
-            } else {
-              var errs_1 = errors;
-              if (data1 && typeof data1 === "object" && !Array.isArray(data1)) {
-                var errs__1 = errors;
-                var valid2 = true;
-                if (data1["optional sub-property"] !== undefined) {
-                  var errs_2 = errors;
-                  if (typeof data1["optional sub-property"] !== "string") {
-                    var err = {
-                      keyword: "type",
-                      dataPath:
-                        (dataPath || "") +
-                        "['required object']['optional sub-property']",
-                      schemaPath:
-                        "#/properties/required%20object/properties/optional%20sub-property/type",
-                      params: { type: "string" },
-                      message: "should be string"
-                    };
-                    if (vErrors === null) vErrors = [err];
-                    else vErrors.push(err);
-                    errors++;
-                  }
-                  var valid2 = errors === errs_2;
-                }
-                if (data1["required sub-property"] === undefined) {
+                var data2 = data1["required object (empty)"];
+                if (data2 === undefined) {
                   valid2 = false;
                   var err = {
                     keyword: "required",
-                    dataPath: (dataPath || "") + "['required object']",
-                    schemaPath: "#/properties/required%20object/required",
-                    params: { missingProperty: "required sub-property" },
+                    dataPath: (dataPath || "") + ".properties",
+                    schemaPath: "#/properties/properties/required",
+                    params: { missingProperty: "required object (empty)" },
                     message:
-                      "should have required property 'required sub-property'"
+                      "should have required property 'required object (empty)'"
                   };
                   if (vErrors === null) vErrors = [err];
                   else vErrors.push(err);
                   errors++;
                 } else {
                   var errs_2 = errors;
-                  if (typeof data1["required sub-property"] !== "string") {
+                  if (
+                    !data2 ||
+                    typeof data2 !== "object" ||
+                    Array.isArray(data2)
+                  ) {
                     var err = {
                       keyword: "type",
                       dataPath:
                         (dataPath || "") +
-                        "['required object']['required sub-property']",
+                        ".properties['required object (empty)']",
                       schemaPath:
-                        "#/properties/required%20object/properties/required%20sub-property/type",
+                        "#/properties/properties/properties/required%20object%20(empty)/type",
+                      params: { type: "object" },
+                      message: "should be object"
+                    };
+                    if (vErrors === null) vErrors = [err];
+                    else vErrors.push(err);
+                    errors++;
+                  }
+                  var valid2 = errors === errs_2;
+                }
+                if (data1["required string"] === undefined) {
+                  valid2 = false;
+                  var err = {
+                    keyword: "required",
+                    dataPath: (dataPath || "") + ".properties",
+                    schemaPath: "#/properties/properties/required",
+                    params: { missingProperty: "required string" },
+                    message: "should have required property 'required string'"
+                  };
+                  if (vErrors === null) vErrors = [err];
+                  else vErrors.push(err);
+                  errors++;
+                } else {
+                  var errs_2 = errors;
+                  if (typeof data1["required string"] !== "string") {
+                    var err = {
+                      keyword: "type",
+                      dataPath:
+                        (dataPath || "") + ".properties['required string']",
+                      schemaPath:
+                        "#/properties/properties/properties/required%20string/type",
+                      params: { type: "string" },
+                      message: "should be string"
+                    };
+                    if (vErrors === null) vErrors = [err];
+                    else vErrors.push(err);
+                    errors++;
+                  }
+                  var valid2 = errors === errs_2;
+                }
+                var data2 = data1["required string regex"];
+                if (data2 === undefined) {
+                  valid2 = false;
+                  var err = {
+                    keyword: "required",
+                    dataPath: (dataPath || "") + ".properties",
+                    schemaPath: "#/properties/properties/required",
+                    params: { missingProperty: "required string regex" },
+                    message:
+                      "should have required property 'required string regex'"
+                  };
+                  if (vErrors === null) vErrors = [err];
+                  else vErrors.push(err);
+                  errors++;
+                } else {
+                  var errs_2 = errors;
+                  if (typeof data2 === "string") {
+                    if (!pattern0.test(data2)) {
+                      var err = {
+                        keyword: "pattern",
+                        dataPath:
+                          (dataPath || "") +
+                          ".properties['required string regex']",
+                        schemaPath:
+                          "#/properties/properties/properties/required%20string%20regex/pattern",
+                        params: { pattern: "FOO|BAR" },
+                        message: 'should match pattern "FOO|BAR"'
+                      };
+                      if (vErrors === null) vErrors = [err];
+                      else vErrors.push(err);
+                      errors++;
+                    }
+                  } else {
+                    var err = {
+                      keyword: "type",
+                      dataPath:
+                        (dataPath || "") +
+                        ".properties['required string regex']",
+                      schemaPath:
+                        "#/properties/properties/properties/required%20string%20regex/type",
                       params: { type: "string" },
                       message: "should be string"
                     };
@@ -715,111 +1019,10 @@ define(["require", "exports"], function(require, exports) {
               } else {
                 var err = {
                   keyword: "type",
-                  dataPath: (dataPath || "") + "['required object']",
-                  schemaPath: "#/properties/required%20object/type",
+                  dataPath: (dataPath || "") + ".properties",
+                  schemaPath: "#/properties/properties/type",
                   params: { type: "object" },
                   message: "should be object"
-                };
-                if (vErrors === null) vErrors = [err];
-                else vErrors.push(err);
-                errors++;
-              }
-              var valid1 = errors === errs_1;
-            }
-            var data1 = data["required object (empty)"];
-            if (data1 === undefined) {
-              valid1 = false;
-              var err = {
-                keyword: "required",
-                dataPath: (dataPath || "") + "",
-                schemaPath: "#/required",
-                params: { missingProperty: "required object (empty)" },
-                message:
-                  "should have required property 'required object (empty)'"
-              };
-              if (vErrors === null) vErrors = [err];
-              else vErrors.push(err);
-              errors++;
-            } else {
-              var errs_1 = errors;
-              if (!data1 || typeof data1 !== "object" || Array.isArray(data1)) {
-                var err = {
-                  keyword: "type",
-                  dataPath: (dataPath || "") + "['required object (empty)']",
-                  schemaPath: "#/properties/required%20object%20(empty)/type",
-                  params: { type: "object" },
-                  message: "should be object"
-                };
-                if (vErrors === null) vErrors = [err];
-                else vErrors.push(err);
-                errors++;
-              }
-              var valid1 = errors === errs_1;
-            }
-            if (data["required string"] === undefined) {
-              valid1 = false;
-              var err = {
-                keyword: "required",
-                dataPath: (dataPath || "") + "",
-                schemaPath: "#/required",
-                params: { missingProperty: "required string" },
-                message: "should have required property 'required string'"
-              };
-              if (vErrors === null) vErrors = [err];
-              else vErrors.push(err);
-              errors++;
-            } else {
-              var errs_1 = errors;
-              if (typeof data["required string"] !== "string") {
-                var err = {
-                  keyword: "type",
-                  dataPath: (dataPath || "") + "['required string']",
-                  schemaPath: "#/properties/required%20string/type",
-                  params: { type: "string" },
-                  message: "should be string"
-                };
-                if (vErrors === null) vErrors = [err];
-                else vErrors.push(err);
-                errors++;
-              }
-              var valid1 = errors === errs_1;
-            }
-            var data1 = data["required string regex"];
-            if (data1 === undefined) {
-              valid1 = false;
-              var err = {
-                keyword: "required",
-                dataPath: (dataPath || "") + "",
-                schemaPath: "#/required",
-                params: { missingProperty: "required string regex" },
-                message: "should have required property 'required string regex'"
-              };
-              if (vErrors === null) vErrors = [err];
-              else vErrors.push(err);
-              errors++;
-            } else {
-              var errs_1 = errors;
-              if (typeof data1 === "string") {
-                if (!pattern0.test(data1)) {
-                  var err = {
-                    keyword: "pattern",
-                    dataPath: (dataPath || "") + "['required string regex']",
-                    schemaPath:
-                      "#/properties/required%20string%20regex/pattern",
-                    params: { pattern: "FOO|BAR" },
-                    message: 'should match pattern "FOO|BAR"'
-                  };
-                  if (vErrors === null) vErrors = [err];
-                  else vErrors.push(err);
-                  errors++;
-                }
-              } else {
-                var err = {
-                  keyword: "type",
-                  dataPath: (dataPath || "") + "['required string regex']",
-                  schemaPath: "#/properties/required%20string%20regex/type",
-                  params: { type: "string" },
-                  message: "should be string"
                 };
                 if (vErrors === null) vErrors = [err];
                 else vErrors.push(err);
