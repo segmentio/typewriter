@@ -6,7 +6,7 @@ import * as prettier from 'prettier'
 import * as util from 'util'
 import * as fs from 'fs'
 import * as Ajv from 'ajv'
-const omitDeep = require('omit-deep-lodash')
+import * as omitDeep from 'omit-deep-lodash'
 const writeFile = util.promisify(fs.writeFile)
 
 export const command = 'gen-js'
@@ -58,12 +58,12 @@ export async function genJS(
        * @param {Object} config - A configuration object to customize runtime behavior
        */
       constructor(analytics, options = {}) {
-        const { isDev = true } = options
+        const { propertyValidation = true } = options
         if (!analytics) {
           throw new Error('An instance of analytics.js or analytics-node must be provided')
         }
         this.analytics = analytics
-        this.isDev = isDev
+        this.propertyValidation = propertyValidation
       }
   `
   const trackCalls =
@@ -74,7 +74,7 @@ export async function genJS(
       return `
       ${code}
       ${sanitizedFnName}(props, context) {
-        if (this.isDev) {
+        if (this.propertyValidation) {
           const validate = ${compiledValidationFn}
           var valid = validate(props);
           if (!valid) {

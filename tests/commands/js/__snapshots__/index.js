@@ -5,17 +5,17 @@ export default class Analytics {
    * @param {Object} config - A configuration object to customize runtime behavior
    */
   constructor(analytics, options = {}) {
-    const { isDev = true } = options;
+    const { propertyValidation = true } = options;
     if (!analytics) {
       throw new Error(
         "An instance of analytics.js or analytics-node must be provided"
       );
     }
     this.analytics = analytics;
-    this.isDev = isDev;
+    this.propertyValidation = propertyValidation;
   }
   terribleEventName3(props, context) {
-    if (this.isDev) {
+    if (this.propertyValidation) {
       const validate = function(
         data,
         dataPath,
@@ -88,7 +88,7 @@ export default class Analytics {
     }
   }
   emptyEvent(props, context) {
-    if (this.isDev) {
+    if (this.propertyValidation) {
       const validate = function(
         data,
         dataPath,
@@ -158,7 +158,7 @@ export default class Analytics {
     }
   }
   exampleEvent(props, context) {
-    if (this.isDev) {
+    if (this.propertyValidation) {
       const validate = function(
         data,
         dataPath,
