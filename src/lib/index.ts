@@ -8,22 +8,26 @@ export { TrackedEvent } from './fetchPlan'
 
 export type HandlerFn = (params: Params, events: TrackingPlanResponse) => Promise<any>
 export interface Params {
-  id?: string
-  token?: string
+  trackingPlanId?: string
+  workspaceSlug?: string
   outputPath?: string
   inputPath?: string
+  clientID?: string
+  clientSecret?: string
 }
 
 export const builder: { [key: string]: Options } = {
-  id: {
+  trackingPlanId: {
     type: 'string',
     required: false,
-    description: 'The resource id for a Tracking Plan'
+    description: 'The resource id for a Tracking Plan',
+    implies: ['workspaceSlug']
   },
-  token: {
+  workspaceSlug: {
     type: 'string',
     required: false,
-    description: 'The auth token for a user'
+    description: 'A slug that corresponds to the workspace that contains the Tracking Plan',
+    implies: ['trackingPlanId']
   },
   outputPath: {
     type: 'string',
@@ -34,15 +38,27 @@ export const builder: { [key: string]: Options } = {
     type: 'string',
     required: false,
     description: 'The path to a local tracking plan file'
+  },
+  clientID: {
+    type: 'string',
+    required: false,
+    description: 'The Segment Platform API App client id',
+    conflicts: ['inputPath']
+  },
+  clientSecret: {
+    type: 'string',
+    required: false,
+    description: 'The Segment Platform API App client secret',
+    conflicts: ['inputPath']
   }
 }
 
 export function getTypedTrackHandler(fn: HandlerFn) {
   return async (params: Params) => {
-    const { id, token, outputPath, inputPath } = params
+    const { workspaceSlug, trackingPlanId, outputPath, inputPath, clientID, clientSecret } = params
     const fetchPlan = inputPath
       ? getTrackingPlanFromFile(inputPath)
-      : getTrackingPlanFromNetwork(id, token)
+      : getTrackingPlanFromNetwork(workspaceSlug, trackingPlanId, clientID, clientSecret)
 
     const events = await fetchPlan
 
