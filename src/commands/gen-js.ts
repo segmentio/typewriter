@@ -12,6 +12,11 @@ const writeFile = util.promisify(fs.writeFile)
 export const command = 'gen-js'
 export const desc = `Generate an analytics.js wrapper from a Tracking Plan`
 
+interface CompilerParams {
+  target?: ScriptTarget
+  module?: ModuleKind
+}
+
 export const builder = {
   ...defaultBuilder,
   target: {
@@ -29,13 +34,6 @@ export const builder = {
     description: 'Module format'
   }
 }
-
-interface CompilerOptions {
-  target?: ScriptTarget
-  module?: ModuleKind
-}
-
-type Params = DefaultParams & CompilerOptions
 
 function getFnName(eventName: string) {
   return camelCase(eventName.replace(/^\d+/, ''))
@@ -100,7 +98,9 @@ export async function genJS(
   return Promise.resolve(prettier.format(outputText, { parser: 'babylon' }))
 }
 
-export const handler = getTypedTrackHandler(async (params: Params, { events }) => {
-  const codeContent = await genJS(events, params.target, params.module)
-  return writeFile(`${params.outputPath}/index.js`, codeContent)
-})
+export const handler = getTypedTrackHandler(
+  async (params: DefaultParams & CompilerParams, { events }) => {
+    const codeContent = await genJS(events, params.target, params.module)
+    return writeFile(`${params.outputPath}/index.js`, codeContent)
+  }
+)
