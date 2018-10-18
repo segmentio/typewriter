@@ -53,8 +53,9 @@ If you use [Segment Protocols](https://segment.com/product/protocols), you can a
 
 ```sh
 $ typewriter gen-js \
-  --clientId [your_id] \
-  --clientSecret [your_secret] \
+  --trackingPlanId [your_tracking_plan_id]
+  --workspaceSlug [your_workspace_slug] \
+  --token [your_token] \
   --outputPath ./generated
 ```
 
