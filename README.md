@@ -31,7 +31,10 @@ $ typewriter gen-js \
   --outputPath ./generated
 ```
 
-Or, if you use [Segment Protocols](https://segment.com/product/protocols), you can automatically generate clients from your Tracking Plan:
+By default, the output client is generated as ES6.  To customize the language target (and module format), use the `--target` and `--module` flags
+(run `typewriter gen-js --help` to see all available module formats and target syntaxes)
+
+If you use [Segment Protocols](https://segment.com/product/protocols), you can automatically generate clients from your Tracking Plan:
 
 ```sh
 $ typewriter gen-js \
