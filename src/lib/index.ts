@@ -26,19 +26,22 @@ export const builder: { [key: string]: Options } = {
     type: 'string',
     required: false,
     description: 'The resource id for a Tracking Plan',
-    conflicts: ['inputPath']
+    conflicts: ['inputPath'],
+    implies: ['workspaceSlug', 'token']
   },
   workspaceSlug: {
     type: 'string',
     required: false,
     description: 'A slug that corresponds to the workspace that contains the Tracking Plan',
-    conflicts: ['inputPath']
+    conflicts: ['inputPath'],
+    implies: ['trackingPlanId', 'token']
   },
   token: {
     type: 'string',
     required: false,
     description: 'The Segment Platform API Personal App Token',
-    conflicts: ['inputPath']
+    conflicts: ['inputPath'],
+    implies: ['trackingPlanId', 'workspaceSlug']
   },
   outputPath: {
     type: 'string',
