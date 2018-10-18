@@ -36,36 +36,11 @@ export const getTrackingPlanFromFile = async (path: string) => {
   return transformTrackingPlanResponse(JSON.parse(file))
 }
 
-const btoa = (content: string) => Buffer.from(content).toString('base64')
-
-async function getToken(clientId: string, clientSecret: string) {
-  const options = {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Authorization: `Basic ${btoa(`${clientId}:${clientSecret}`)}`
-    },
-    body: 'grant_type=client_credentials'
-  }
-
-  try {
-    const { access_token } = await fetch('https://id.segmentapis.com/oauth2/token', options).then(
-      res => res.json()
-    )
-    return access_token
-  } catch (ex) {
-    console.error('Error fetching Tracking Plan.', ex)
-  }
-}
-
 export const getTrackingPlanFromNetwork = async (
   workspaceSlug: string,
   trackingPlanId: string,
-  clientId: string,
-  clientSecret: string
+  token: string
 ) => {
-  const token = await getToken(clientId, clientSecret)
-
   const options = {
     method: 'get',
     headers: {

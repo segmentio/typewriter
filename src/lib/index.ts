@@ -12,53 +12,47 @@ export interface Params {
   workspaceSlug?: string
   outputPath?: string
   inputPath?: string
-  clientID?: string
-  clientSecret?: string
+  token?: string
 }
 
 export const builder: { [key: string]: Options } = {
+  inputPath: {
+    type: 'string',
+    required: false,
+    description: 'The path to a local tracking plan file',
+    conflicts: ['trackingPlanId', 'workspaceSlug', 'token']
+  },
   trackingPlanId: {
     type: 'string',
     required: false,
     description: 'The resource id for a Tracking Plan',
-    implies: ['workspaceSlug']
+    conflicts: ['inputPath']
   },
   workspaceSlug: {
     type: 'string',
     required: false,
     description: 'A slug that corresponds to the workspace that contains the Tracking Plan',
-    implies: ['trackingPlanId']
+    conflicts: ['inputPath']
+  },
+  token: {
+    type: 'string',
+    required: false,
+    description: 'The Segment Platform API Personal App Token',
+    conflicts: ['inputPath']
   },
   outputPath: {
     type: 'string',
     required: false,
     description: 'The output path for the files'
-  },
-  inputPath: {
-    type: 'string',
-    required: false,
-    description: 'The path to a local tracking plan file'
-  },
-  clientID: {
-    type: 'string',
-    required: false,
-    description: 'The Segment Platform API App client id',
-    conflicts: ['inputPath']
-  },
-  clientSecret: {
-    type: 'string',
-    required: false,
-    description: 'The Segment Platform API App client secret',
-    conflicts: ['inputPath']
   }
 }
 
 export function getTypedTrackHandler(fn: HandlerFn) {
   return async (params: Params) => {
-    const { workspaceSlug, trackingPlanId, outputPath, inputPath, clientID, clientSecret } = params
+    const { workspaceSlug, trackingPlanId, outputPath, inputPath, token } = params
     const fetchPlan = inputPath
       ? getTrackingPlanFromFile(inputPath)
-      : getTrackingPlanFromNetwork(workspaceSlug, trackingPlanId, clientID, clientSecret)
+      : getTrackingPlanFromNetwork(workspaceSlug, trackingPlanId, token)
 
     const events = await fetchPlan
 

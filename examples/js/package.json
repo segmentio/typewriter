@@ -5,9 +5,9 @@
   "scripts": {
     "build": "npm run typewriter-local && next build",
     "dev": "npm run typewriter-local && next",
-    "typewriter-remote": "typewriter gen-js --id {YOUR_TRACKING_PLAN_ID} --token {YOUR_API_TOKEN} --outputPath ./pages/generated",
+    "typewriter-remote": "typewriter gen-js --trackingPlanId {YOUR_TRACKING_PLAN_ID} --workspaceSlug {YOUR_WORKSPACE_SLUG} --token {YOUR_API_TOKEN} --outputPath ./pages/generated",
     "typewriter-local": "typewriter gen-js --inputPath ../local-tracking-plans/tracking-plan-web.json --outputPath ./pages/generated",
-    "generate": "typewriter-local"
+    "generate": "yarn run typewriter-local"
   },
   "keywords": [],
   "author": "Gurdas Nijor <gurdas@segment.com>",

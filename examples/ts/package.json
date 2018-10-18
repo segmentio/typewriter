@@ -5,8 +5,9 @@
     "dev": "npm run typewriter-local && next",
     "build": "npm run typewriter-local && next build",
     "start": "next start",
-    "typewriter-remote": "typewriter gen-ts --id {YOUR_TRACKING_PLAN_ID} --token {YOUR_API_TOKEN} --outputPath ./pages/generated",
-    "typewriter-local": "typewriter gen-ts --inputPath ../local-tracking-plans/tracking-plan-web.json --outputPath ./pages/generated"
+    "typewriter-remote": "typewriter gen-ts --trackingPlanId {YOUR_TRACKING_PLAN_ID} --workspaceSlug {YOUR_WORKSPACE_SLUG} --token {YOUR_API_TOKEN} --outputPath ./pages/generated",
+    "typewriter-local": "typewriter gen-ts --inputPath ../local-tracking-plans/tracking-plan-web.json --outputPath ./pages/generated",
+    "generate": "yarn run typewriter-local"
   },
   "dependencies": {
     "@zeit/next-typescript": "1.1.0",
