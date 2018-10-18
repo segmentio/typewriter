@@ -1,7 +1,7 @@
 import { JSONSchema } from 'json-schema-to-typescript'
-import * as request from 'request-promise-native'
 import * as util from 'util'
 import * as fs from 'fs'
+import fetch from 'node-fetch'
 const readFile = util.promisify(fs.readFile)
 
 export interface TrackingPlanResponse {
@@ -36,15 +36,30 @@ export const getTrackingPlanFromFile = async (path: string) => {
   return transformTrackingPlanResponse(JSON.parse(file))
 }
 
-export const getTrackingPlanFromNetwork = async (id: string, token: string) => {
-  const data: any = await request({
-    uri: `https://beta.segment.com/dq/v1/tracking_plans/${id}`,
-    auth: {
-      user: token,
-      pass: '',
-      sendImmediately: true
+export const getTrackingPlanFromNetwork = async (
+  workspaceSlug: string,
+  trackingPlanId: string,
+  token: string
+) => {
+  const options = {
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
     }
-  })
+  }
 
-  return transformTrackingPlanResponse(JSON.parse(data))
+  const {
+    display_name,
+    rules: { events }
+  } = await fetch(
+    `https://platform.segmentapis.com/v1beta/workspaces/${workspaceSlug}/tracking-plans/${trackingPlanId}`,
+    options
+  ).then(res => res.json())
+
+  return transformTrackingPlanResponse({
+    events,
+    resourceId: trackingPlanId,
+    trackingPlanName: display_name
+  })
 }

@@ -3,7 +3,6 @@
 ROOT_PATH := ../../..
 LOCAL_INPUT_PATH := ${ROOT_PATH}/examples/local-tracking-plans/tracking-plan-mobile.json
 OUTPUT_PATH := TypewriterExample/Analytics
-TRACKING_PLAN_ID := rs_1AnzsusuSkTIlWw7Pq7MCcmVeo2
 
 .PHONY: build
 build:
@@ -16,8 +15,9 @@ typewriter-remote: build
 	@rm -rf ${OUTPUT_PATH}
 	@mkdir -p ${OUTPUT_PATH}
 	@node ${ROOT_PATH}/dist/index.js gen-ios \
-		--id "${TRACKING_PLAN_ID}" \
-		--token "${SEGMENT_SCHEMA_TEST_READ_ONLY_API_KEY}" \
+		--trackingPlanId "rs_1AnzsusuSkTIlWw7Pq7MCcmVeo2" \
+    --workspaceSlug "schema-test" \
+		--token "${SEGMENT_SCHEMA_TEST_READ_ONLY_API_TOKEN}" \
 		--outputPath ${OUTPUT_PATH} \
 		--language 'objectivec' \
 		--trackingPlan 'Kicks App'

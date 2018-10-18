@@ -1,5 +1,5 @@
 # typewriter
-A compiler for generating strongly typed analytics clients from JSON Schema
+A compiler for generating strongly-typed analytics clients from JSON Schema
 
 [![CircleCI](https://circleci.com/gh/segmentio/typewriter.svg?style=svg&circle-token=8c1e734c99bdc08170e12d85af7a371900e33e96)](https://circleci.com/gh/segmentio/typewriter)
 
@@ -31,17 +31,7 @@ $ typewriter gen-js \
   --outputPath ./generated
 ```
 
-By default, the output client is generated as ES6.  To customize the language target (and module format), use the `--target` and `--module` flags
-(run `typewriter gen-js --help` to see all available module formats and target syntaxes)
-
-If you use [Segment Protocols](https://segment.com/product/protocols), you can automatically generate clients from your Tracking Plan:
-
-```sh
-$ typewriter gen-js \
-  --clientId [your_id] \
-  --clientSecret [your_secret] \
-  --outputPath ./generated
-```
+> By default, the output client is generated as ES6.  To customize the language target (and module format), use the `--target` and `--module` flags (run `typewriter gen-js --help` to see all available module formats and target syntaxes)
 
 Then, import [`analytics.js`](https://segment.com/docs/sources/website/analytics.js/quickstart/) and the generated Typewriter client and start making type-secure calls!
 
@@ -56,6 +46,18 @@ analytics.feedViewed({
 ```
 
 To see full working examples, including other languages such as [Typescript](./examples/ts), [Android](./examples/android/java), [iOS](./examples/ios/objectivec), see the [examples directory](./examples).
+
+### Protocols Usage
+
+If you use [Segment Protocols](https://segment.com/product/protocols), you can automatically generate clients from your Tracking Plan:
+
+```sh
+$ typewriter gen-js \
+  --trackingPlanId [your_tracking_plan_id]
+  --workspaceSlug [your_workspace_slug] \
+  --token [your_token] \
+  --outputPath ./generated
+```
 
 ## Contributing
 
