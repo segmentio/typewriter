@@ -15,7 +15,7 @@ const writeFile = util.promisify(fs.writeFile)
 
 import { modifySource } from 'quicktype-core/dist/Source'
 export const command = 'gen-ts'
-export const desc = `Generate a typescript type definitions from a Tracking Plan`
+export const desc = 'Generate a strongly typed TypeScript analytics.js client'
 export { builder } from '../lib'
 
 class AJSTargetLanguage extends TypeScriptTargetLanguage {

@@ -29,7 +29,7 @@ import { map, camelCase, upperFirst } from 'lodash'
 const writeFile = util.promisify(fs.writeFile)
 
 export const command = 'gen-ios'
-export const desc = `Generate a strongly typed iOS client from a Tracking Plan`
+export const desc = 'Generate a strongly typed analytics-ios client'
 export const builder = {
   ...defaultBuilder,
   trackingPlan: {
