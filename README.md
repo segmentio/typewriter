@@ -1,4 +1,4 @@
-# typewriter [![CircleCI][circle-badge]][circle-link] [![npm-version][npm-badge]][npm-link] [![license][license-badge]][license-link]
+# Typewriter [![CircleCI][circle-badge]][circle-link] [![npm-version][npm-badge]][npm-link] [![license][license-badge]][license-link]
 
 <!-- Placeholder for design-team assets -->
 <p align="center">
