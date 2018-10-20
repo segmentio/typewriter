@@ -1,52 +1,49 @@
 # typewriter [![CircleCI][circle-badge]][circle-link] [![npm-version][npm-badge]][npm-link] [![license][license-badge]][license-link]
 
-A compiler for generating strongly-typed analytics clients from JSON Schema
-
-Supported Languages:
-
-- [JavaScript](./examples/js)
-- [TypeScript](./examples/ts)
-- [Android](./examples/android/java)
-- [iOS](./examples/ios/objectivec)
-
+<!-- Placeholder for design-team assets -->
 <p align="center">
-  <img src=".github/assets/readme-example.gif" alt="Typewriter GIF Example" width="90%"/>
+  <img src=".github/assets/readme-example.gif" alt="Typewriter GIF Example" width="70%"/>
 </p>
+
+- **Strongly Typed Analytics**: Generates strongly-typed [Segment](http://segment.com) analytics clients from arbitrary [JSON Schema](http://json-schema.org).
+
+- **Cross-Language Support**: Supports native clients in [JavaScript](./examples/js), [TypeScript](./examples/ts), [Android](./examples/android/java) and [iOS](./examples/ios/objectivec).
+
+- **Segment Protocols**: Built-in support to sync your clients with your centralized Tracking Plans.
 
 ## Install
 
-- Yarn: `yarn add -D typewriter`
-
-## Usage
-
 ```sh
-$ typewriter --help
-typewriter <command>
-
-Commands:
-  typewriter gen-android  Generate a strongly typed analytics-android client
-  typewriter gen-ios      Generate a strongly typed analytics-ios client
-  typewriter gen-js       Generate a strongly typed JavaScript analytics.js client
-  typewriter gen-ts       Generate a strongly typed TypeScript analytics.js client
-
-Options:
-  --help     Show help                                                 [boolean]
-  --version  Show version number                                       [boolean]
+$ yarn add -D typewriter
 ```
 
-### Javascript Example
+### Validation Warnings
+
+| Language          | Run-Time | Build-Time                     |
+|-------------------|----------|--------------------------------|
+| JavaScript        | ✅ Types<br>✅ Naming<br>✅ Missing Properties | ❌ Types<br>❌ Naming<br>❌ Missing Properties |
+| TypeScript        | ✅ Types<br>✅ Naming<br>✅ Missing Properties | ✅ Types<br>✅ Naming<br>✅ Missing Properties |
+| Android (Java)    | ✅ Types<br>✅ Naming<br>✅ Missing Properties | ✅ Types<br>✅ Naming<br>❌ Missing Properties |
+| iOS (Objective C) | ✅ Types<br>✅ Naming<br>✅ Missing Properties | ✅ Types<br>✅ Naming<br>❌ Missing Properties |
+
+### Quickstarts
+
+For an example JSON Schema, see
+
+#### JavaScript / TypeScript
 
 First, generate a Typewriter client from a local JSON schema:
 
 ```sh
+# For TypeScript, use gen-ts
 $ typewriter gen-js \
   --inputPath ./schema.json \
   --outputPath ./generated
 ```
 
-> By default, the output client is generated as ES6.  To customize the language target (and module format), use the `--target` and `--module` flags (run `typewriter gen-js --help` to see all available module formats and target syntaxes)
+> By default, the JavaScript client is generated as ES6.  To customize the language target (and module format), use the `--target` and `--module` flags (run `typewriter gen-js --help` to see all available module formats and target syntaxes)
 
-Then, import [`analytics.js`](https://segment.com/docs/sources/website/analytics.js/quickstart/) and the generated Typewriter client and start making type-secure calls!
+Then, import [`analytics.js`](https://segment.com/docs/sources/website/analytics.js/quickstart/) and the generated Typewriter client to start making type-safe calls!
 
 ```javascript
 import * as analytics from './generated'
@@ -54,15 +51,40 @@ import * as analytics from './generated'
 // ...
 
 analytics.feedViewed({
-  profileId: '3'
+  profileId: '42'
 })
 ```
 
-To see full working examples, including other languages such as [Typescript](./examples/ts), [Android](./examples/android/java), [iOS](./examples/ios/objectivec), see the [examples directory](./examples).
+To see a full working example, see the [JavaScript example here](./examples/js) or the [TypeScript example here](./examples/ts).
+
+#### Android
+
+First, generate a Typewriter client from a local JSON schema:
+
+```sh
+$ typewriter gen-android \
+  --inputPath ./schema.json \
+  --outputPath ./generated
+```
+
+Then, import [`analytics-android`](https://segment.com/docs/sources/mobile/android/quickstart/) and the generated Typewriter client to start making type-secure calls!
+
+<!-- TODO -->
+```java
+import * as analytics from './generated'
+
+// ...
+
+analytics.feedViewed({
+  profileId: '42'
+})
+```
+
+To see a full working example, see the [Android Java example here](./examples/android/java).
 
 ### Protocols Usage
 
-If you use [Segment Protocols](https://segment.com/product/protocols), you can automatically generate clients from your Tracking Plan:
+If you use [Segment Protocols](https://segment.com/product/protocols), you can automatically generate clients from your Tracking Plan for any language:
 
 ```sh
 $ typewriter gen-js \
