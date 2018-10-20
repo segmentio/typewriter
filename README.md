@@ -7,7 +7,7 @@
 
 - **Strongly Typed Analytics**: Generates strongly-typed [Segment](http://segment.com) analytics clients from arbitrary [JSON Schema](http://json-schema.org).
 
-- **Cross-Language Support**: Supports native clients in [JavaScript](#javascript--typescript--node.js-quickstart), [TypeScript](#javascript--typescript--node.js-quickstart), [Node.js](#javascript--typescript--node.js-quickstart), [Android](#android-quickstart) and [iOS](#ios-quickstart).
+- **Cross-Language Support**: Supports native clients in [JavaScript](#javascript--typescript--nodejs-quickstart), [TypeScript](#javascript--typescript--nodejs-quickstart), [Node.js](#javascript--typescript--nodejs-quickstart), [Android](#android-quickstart) and [iOS](#ios-quickstart).
 
 - **Segment Protocols**: Built-in support to sync your clients with your centralized Tracking Plans.
 
@@ -21,8 +21,8 @@ $ yarn add -D typewriter
 
 | Language          | Run-Time | Build-Time                     |
 |-------------------|----------|--------------------------------|
-| [JavaScript](#javascript--typescript--node.js-quickstart)        | ✅ Types<br>✅ Naming<br>✅ Missing Properties | ❌ Types<br>❌ Naming<br>❌ Missing Properties |
-| [TypeScript](#javascript--typescript--node.js-quickstart)        | ✅ Types<br>✅ Naming<br>✅ Missing Properties | ✅ Types<br>✅ Naming<br>✅ Missing Properties |
+| [JavaScript](#javascript--typescript--nodejs-quickstart)        | ✅ Types<br>✅ Naming<br>✅ Missing Properties | ❌ Types<br>❌ Naming<br>❌ Missing Properties |
+| [TypeScript](#javascript--typescript--nodejs-quickstart)        | ✅ Types<br>✅ Naming<br>✅ Missing Properties | ✅ Types<br>✅ Naming<br>✅ Missing Properties |
 | [Android (Java)](#android-quickstart)    | ✅ Types<br>✅ Naming<br>✅ Missing Properties | ✅ Types<br>✅ Naming<br>❌ Missing Properties |
 | [iOS (Objective C)](#ios-quickstart) | ✅ Types<br>✅ Naming<br>✅ Missing Properties | ✅ Types<br>✅ Naming<br>❌ Missing Properties |
 
@@ -69,7 +69,7 @@ Typewriter currently uses JSON Schema [`draft-04`](https://github.com/json-schem
 
 ## Quickstarts
 
-- [JavaScript / TypeScript / Node.js](#javascript--typescript--node.js-quickstart)
+- [JavaScript / TypeScript / Node.js](#javascript--typescript--nodejs-quickstart)
 - [Android](#android-quickstart)
 - [iOS](#ios-quickstart)
 
