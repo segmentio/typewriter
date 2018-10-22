@@ -3848,10 +3848,10 @@ jest-environment-node@^23.4.0:
     jest-mock "^23.2.0"
     jest-util "^23.4.0"
 
-jest-file-snapshot@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/jest-file-snapshot/-/jest-file-snapshot-0.0.2.tgz#1ac43b7d2c0c8e7ed9b2921f9f2fb48135da19b5"
-  integrity sha512-22Ae4g3wY9RLjAzzOek0RuqX0CCk6hcHA/IdzC5nuFB385IFJMUP9xr5w5dklIQ7NR9sY6ThlWQsD5Zv4mAAsQ==
+jest-file-snapshot@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/jest-file-snapshot/-/jest-file-snapshot-0.2.0.tgz#172990c752e6cf72bc3df6263ea5714abedcd81e"
+  integrity sha512-467WIj+OlUo9gPsX7lvhmqX2Fv1fMbTFCxNZS9S1Zfxuq4ra/EBhRDnMVYc2DUPiDooPjxbHUuRz9mHdeQIKSQ==
   dependencies:
     chalk "^2.4.1"
     jest-diff "^23.6.0"
