@@ -85,7 +85,7 @@
     "@types/yargs": "^12.0.1",
     "bdd-stdin": "^0.2.0",
     "jest": "^23.6",
-    "jest-file-snapshot": "^0.0.2",
+    "jest-file-snapshot": "^0.2.0",
     "lint-staged": "^4.3.0",
     "prettier": "^1.5.3",
     "release-it": "^7.5.0",
