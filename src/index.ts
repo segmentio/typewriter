@@ -5,6 +5,7 @@ import { Params } from './lib';
 
 // tslint:disable-next-line:no-unused-expression
 yargs
+  .scriptName('typewriter')
   .commandDir('commands')
   .demandCommand(1)
   .help()

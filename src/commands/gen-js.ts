@@ -10,7 +10,7 @@ import * as omitDeep from 'omit-deep-lodash'
 const writeFile = util.promisify(fs.writeFile)
 
 export const command = 'gen-js'
-export const desc = `Generate an analytics.js wrapper from a Tracking Plan`
+export const desc = 'Generate a strongly typed JavaScript analytics.js client'
 
 interface CompilerParams {
   target?: ScriptTarget

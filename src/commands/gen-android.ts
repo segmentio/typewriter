@@ -29,7 +29,7 @@ import { map, camelCase, upperFirst } from 'lodash'
 const writeFile = util.promisify(fs.writeFile)
 
 export const command = 'gen-android'
-export const desc = `Generate a strongly typed Android client from a Tracking Plan`
+export const desc = 'Generate a strongly typed analytics-android client'
 export const builder = {
   ...defaultBuilder,
   package: {
