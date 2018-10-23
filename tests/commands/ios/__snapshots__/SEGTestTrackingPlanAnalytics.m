@@ -457,7 +457,7 @@ static id map(id collection, id (^f)(id value)) {
 {
     [self.analytics track:@"42_--terrible==event++name~!3" properties:[props JSONDictionary]];
 }
-- (void)the42TerribleEventName3:(SEGThe42_TerribleEventName3 *)props withOptions:options
+- (void)the42TerribleEventName3:(SEGThe42_TerribleEventName3 *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options
 {
     [self.analytics track:@"42_--terrible==event++name~!3" properties:[props JSONDictionary] options:options];
 }
@@ -466,7 +466,7 @@ static id map(id collection, id (^f)(id value)) {
 {
     [self.analytics track:@"Empty Event" properties:[props JSONDictionary]];
 }
-- (void)emptyEvent:(SEGEmptyEvent *)props withOptions:options
+- (void)emptyEvent:(SEGEmptyEvent *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options
 {
     [self.analytics track:@"Empty Event" properties:[props JSONDictionary] options:options];
 }
@@ -475,7 +475,7 @@ static id map(id collection, id (^f)(id value)) {
 {
     [self.analytics track:@"Example Event" properties:[props JSONDictionary]];
 }
-- (void)exampleEvent:(SEGExampleEvent *)props withOptions:options
+- (void)exampleEvent:(SEGExampleEvent *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options
 {
     [self.analytics track:@"Example Event" properties:[props JSONDictionary] options:options];
 }
