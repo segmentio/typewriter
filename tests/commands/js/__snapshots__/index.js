@@ -1,3 +1,15 @@
+const genOptions = (context = { library: {} }) => ({
+  context: {
+    ...context,
+    library: {
+      ...context.library,
+      typewriter: {
+        name: "gen-js",
+        version: "3.1.0"
+      }
+    }
+  }
+});
 export default class Analytics {
   /**
    * Instantiate a wrapper around an analytics library instance
@@ -81,11 +93,11 @@ export default class Analytics {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
     }
-    if (context) {
-      this.analytics.track("42_--terrible==event++name~!3", props, { context });
-    } else {
-      this.analytics.track("42_--terrible==event++name~!3", props);
-    }
+    this.analytics.track(
+      "42_--terrible==event++name~!3",
+      props,
+      genOptions(ctx)
+    );
   }
   emptyEvent(props, context) {
     if (this.propertyValidation) {
@@ -151,11 +163,7 @@ export default class Analytics {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
     }
-    if (context) {
-      this.analytics.track("Empty Event", props, { context });
-    } else {
-      this.analytics.track("Empty Event", props);
-    }
+    this.analytics.track("Empty Event", props, genOptions(ctx));
   }
   exampleEvent(props, context) {
     if (this.propertyValidation) {
@@ -1035,10 +1043,6 @@ export default class Analytics {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
     }
-    if (context) {
-      this.analytics.track("Example Event", props, { context });
-    } else {
-      this.analytics.track("Example Event", props);
-    }
+    this.analytics.track("Example Event", props, genOptions(ctx));
   }
 }
