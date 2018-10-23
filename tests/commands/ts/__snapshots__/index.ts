@@ -290,15 +290,15 @@ export interface RequiredObject {
 
 export function the42TerribleEventName3(props: The42_TerribleEventName3, context?: any): void{
   const payload = transform(props, r("The42_TerribleEventName3"), jsToJSONProps, typeMap);
-  if (context) { window.analytics.track('The42_TerribleEventName3', payload, { context }) } else { window.analytics.track('The42_TerribleEventName3', payload) }
+  if (context) { window.analytics.track('42_--terrible==event++name~!3', payload, { context }) } else { window.analytics.track('42_--terrible==event++name~!3', payload) }
 }
 
 export function emptyEvent(props: { [key: string]: any }, context?: any): void{
   const payload = transform(props, m("any"), jsToJSONProps, typeMap);
-  if (context) { window.analytics.track('EmptyEvent', payload, { context }) } else { window.analytics.track('EmptyEvent', payload) }
+  if (context) { window.analytics.track('Empty Event', payload, { context }) } else { window.analytics.track('Empty Event', payload) }
 }
 
 export function exampleEvent(props: ExampleEvent, context?: any): void{
   const payload = transform(props, r("ExampleEvent"), jsToJSONProps, typeMap);
-  if (context) { window.analytics.track('ExampleEvent', payload, { context }) } else { window.analytics.track('ExampleEvent', payload) }
+  if (context) { window.analytics.track('Example Event', payload, { context }) } else { window.analytics.track('Example Event', payload) }
 }
