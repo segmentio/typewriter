@@ -1,3 +1,15 @@
+const genOptions = (context = { library: {} }) => ({
+  context: {
+    ...context,
+    library: {
+      ...context.library,
+      typewriter: {
+        name: "gen-js",
+        version: "3.1.0"
+      }
+    }
+  }
+});
 export default class Analytics {
   /**
    * Instantiate a wrapper around an analytics library instance
@@ -98,11 +110,7 @@ export default class Analytics {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
     }
-    if (context) {
-      this.analytics.track("Feed Viewed", props, { context });
-    } else {
-      this.analytics.track("Feed Viewed", props);
-    }
+    this.analytics.track("Feed Viewed", props, genOptions(ctx));
   }
   photoViewed(props, context) {
     if (this.propertyValidation) {
@@ -188,11 +196,7 @@ export default class Analytics {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
     }
-    if (context) {
-      this.analytics.track("Photo Viewed", props, { context });
-    } else {
-      this.analytics.track("Photo Viewed", props);
-    }
+    this.analytics.track("Photo Viewed", props, genOptions(ctx));
   }
   profileViewed(props, context) {
     if (this.propertyValidation) {
@@ -278,10 +282,6 @@ export default class Analytics {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
     }
-    if (context) {
-      this.analytics.track("Profile Viewed", props, { context });
-    } else {
-      this.analytics.track("Profile Viewed", props);
-    }
+    this.analytics.track("Profile Viewed", props, genOptions(ctx));
   }
 }
