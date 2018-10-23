@@ -163,7 +163,7 @@ class AnalyticsObjectiveCWrapperRenderer extends ObjectiveCRenderer {
           this.variableNameForTopLevel(name),
           ':(',
           name,
-          ' *)props withOptions:options;'
+          ' *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options;'
         ])
       })
     })
@@ -349,7 +349,7 @@ class AnalyticsObjectiveCWrapperRenderer extends ObjectiveCRenderer {
         ':(',
         name,
         ' *)props',
-        options.withOptions ? ' withOptions:options' : ''
+        options.withOptions ? ' withOptions:(NSDictionary<NSString *, id> *_Nullable)options' : ''
       ],
       () => {
         this.emitLine([
