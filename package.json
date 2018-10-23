@@ -119,7 +119,8 @@
       ]
     },
     "ignore": [
-      "examples/**/generated/**"
+      "examples/**/generated/**",
+      "**/__snapshots__/**"
     ]
   },
   "husky": {

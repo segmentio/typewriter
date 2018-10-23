@@ -66,11 +66,15 @@ class AJSWrapperRenderer extends TypeScriptRenderer {
         () => {
           this.emitLine('const payload = transform(props, ', typeMap, ', jsToJSONProps, typeMap);')
 
+          const rawEventName = name
+            .proposeUnstyledNames(null)
+            .values()
+            .next().value
           this.emitLine(
             "if (context) { window.analytics.track('",
-            name,
+            rawEventName,
             "', payload, { context }) } else { window.analytics.track('",
-            name,
+            rawEventName,
             "', payload) }"
           )
         }
