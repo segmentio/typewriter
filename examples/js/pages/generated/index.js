@@ -1,180 +1,287 @@
-/**
- *  This client was generated from a Tracking Plan schema; ** Do Not Edit **
- *
- *  Tracking Plan: 
- */
-
-function getType(val) {
-  return Object.prototype.toString.call(val).slice(8, -1);
-};
-
-function isArray(val) {
-  return getType(val) === 'Array'
-}
-
-function isNumber(val) {
-  return getType(val) === 'Number'
-}
-
-function isString(val) {
-  return getType(val) === 'String'
-}
-
-function isObject(val) {
-  return getType(val) === 'Object'
-}
-
-function isBoolean(val) {
-  return getType(val) === 'Boolean'
-}
-
-function isUndefined(val) {
-  return getType(val) === 'Undefined'
-}
-
-function validateObj(obj, propDescriptors) {
-  if (!isObject(obj)) {
-    throw new TypeError(`Properties must be provided as an object`)
+const genOptions = (context = { library: {} }) => ({
+  context: {
+    ...context,
+    library: {
+      ...context.library,
+      typewriter: {
+        name: "gen-js",
+        version: "3.1.0"
+      }
+    }
   }
-  // Check for unplanned properties
-  Object.keys(obj).forEach(k => {
-    if (!propDescriptors[k]) {
+});
+export default class Analytics {
+  /**
+   * Instantiate a wrapper around an analytics library instance
+   * @param {Analytics} analytics - The ajs or analytics-node library to wrap
+   * @param {Object} config - A configuration object to customize runtime behavior
+   */
+  constructor(analytics, options = {}) {
+    const { propertyValidation = true } = options;
+    if (!analytics) {
       throw new Error(
-        `Unplanned property ${k} is not in the Tracking Plan,
-        visit https://app.segment.com//tracking-plans/ to add it `
-      )
+        "An instance of analytics.js or analytics-node must be provided"
+      );
     }
-  })
-
-  // Check that all planned properties meet the provided constraints
-  Object.keys(propDescriptors).forEach(k => {
-    const { type, pattern, isRequired } = propDescriptors[k]
-
-    if (isRequired && isUndefined(obj[k])) {
-      throw new Error(`${k} field is required`)
+    this.analytics = analytics;
+    this.propertyValidation = propertyValidation;
+  }
+  feedViewed(props, context) {
+    if (this.propertyValidation) {
+      const validate = function(
+        data,
+        dataPath,
+        parentData,
+        parentDataProperty,
+        rootData
+      ) {
+        "use strict";
+        var vErrors = null;
+        var errors = 0;
+        if (data && typeof data === "object" && !Array.isArray(data)) {
+          var errs__0 = errors;
+          var valid1 = true;
+          var data1 = data.properties;
+          if (data1 !== undefined) {
+            var errs_1 = errors;
+            if (data1 && typeof data1 === "object" && !Array.isArray(data1)) {
+              var errs__1 = errors;
+              var valid2 = true;
+              if (data1.profile_id === undefined) {
+                valid2 = false;
+                var err = {
+                  keyword: "required",
+                  dataPath: (dataPath || "") + ".properties",
+                  schemaPath: "#/properties/properties/required",
+                  params: { missingProperty: "profile_id" },
+                  message: "should have required property 'profile_id'"
+                };
+                if (vErrors === null) vErrors = [err];
+                else vErrors.push(err);
+                errors++;
+              } else {
+                var errs_2 = errors;
+                if (typeof data1.profile_id !== "string") {
+                  var err = {
+                    keyword: "type",
+                    dataPath: (dataPath || "") + ".properties.profile_id",
+                    schemaPath:
+                      "#/properties/properties/properties/profile_id/type",
+                    params: { type: "string" },
+                    message: "should be string"
+                  };
+                  if (vErrors === null) vErrors = [err];
+                  else vErrors.push(err);
+                  errors++;
+                }
+                var valid2 = errors === errs_2;
+              }
+            } else {
+              var err = {
+                keyword: "type",
+                dataPath: (dataPath || "") + ".properties",
+                schemaPath: "#/properties/properties/type",
+                params: { type: "object" },
+                message: "should be object"
+              };
+              if (vErrors === null) vErrors = [err];
+              else vErrors.push(err);
+              errors++;
+            }
+            var valid1 = errors === errs_1;
+          }
+        } else {
+          var err = {
+            keyword: "type",
+            dataPath: (dataPath || "") + "",
+            schemaPath: "#/type",
+            params: { type: "object" },
+            message: "should be object"
+          };
+          if (vErrors === null) vErrors = [err];
+          else vErrors.push(err);
+          errors++;
+        }
+        validate.errors = vErrors;
+        return errors === 0;
+      };
+      var valid = validate(props);
+      if (!valid) {
+        throw new Error(JSON.stringify(validate.errors, null, 2));
+      }
     }
-
-    if (
-      type === 'string' &&
-      !isUndefined(obj[k]) &&
-      !isString(obj[k])
-    ) {
-      throw new Error(`${k} should be a string, got ${getType(obj[k])} instead`)
+    this.analytics.track("Feed Viewed", props, genOptions(ctx));
+  }
+  photoViewed(props, context) {
+    if (this.propertyValidation) {
+      const validate = function(
+        data,
+        dataPath,
+        parentData,
+        parentDataProperty,
+        rootData
+      ) {
+        "use strict";
+        var vErrors = null;
+        var errors = 0;
+        if (data && typeof data === "object" && !Array.isArray(data)) {
+          var errs__0 = errors;
+          var valid1 = true;
+          var data1 = data.properties;
+          if (data1 !== undefined) {
+            var errs_1 = errors;
+            if (data1 && typeof data1 === "object" && !Array.isArray(data1)) {
+              var errs__1 = errors;
+              var valid2 = true;
+              if (data1.photo_id === undefined) {
+                valid2 = false;
+                var err = {
+                  keyword: "required",
+                  dataPath: (dataPath || "") + ".properties",
+                  schemaPath: "#/properties/properties/required",
+                  params: { missingProperty: "photo_id" },
+                  message: "should have required property 'photo_id'"
+                };
+                if (vErrors === null) vErrors = [err];
+                else vErrors.push(err);
+                errors++;
+              } else {
+                var errs_2 = errors;
+                if (typeof data1.photo_id !== "string") {
+                  var err = {
+                    keyword: "type",
+                    dataPath: (dataPath || "") + ".properties.photo_id",
+                    schemaPath:
+                      "#/properties/properties/properties/photo_id/type",
+                    params: { type: "string" },
+                    message: "should be string"
+                  };
+                  if (vErrors === null) vErrors = [err];
+                  else vErrors.push(err);
+                  errors++;
+                }
+                var valid2 = errors === errs_2;
+              }
+            } else {
+              var err = {
+                keyword: "type",
+                dataPath: (dataPath || "") + ".properties",
+                schemaPath: "#/properties/properties/type",
+                params: { type: "object" },
+                message: "should be object"
+              };
+              if (vErrors === null) vErrors = [err];
+              else vErrors.push(err);
+              errors++;
+            }
+            var valid1 = errors === errs_1;
+          }
+        } else {
+          var err = {
+            keyword: "type",
+            dataPath: (dataPath || "") + "",
+            schemaPath: "#/type",
+            params: { type: "object" },
+            message: "should be object"
+          };
+          if (vErrors === null) vErrors = [err];
+          else vErrors.push(err);
+          errors++;
+        }
+        validate.errors = vErrors;
+        return errors === 0;
+      };
+      var valid = validate(props);
+      if (!valid) {
+        throw new Error(JSON.stringify(validate.errors, null, 2));
+      }
     }
-
-    if (
-      type === 'string' &&
-      pattern &&
-      !isUndefined(obj[k]) &&
-      !new RegExp(pattern).test(obj[k])
-    ) {
-      throw new Error(`${k}'s value of ${obj[k]} doesnt match the regular expression: ${pattern}`)
+    this.analytics.track("Photo Viewed", props, genOptions(ctx));
+  }
+  profileViewed(props, context) {
+    if (this.propertyValidation) {
+      const validate = function(
+        data,
+        dataPath,
+        parentData,
+        parentDataProperty,
+        rootData
+      ) {
+        "use strict";
+        var vErrors = null;
+        var errors = 0;
+        if (data && typeof data === "object" && !Array.isArray(data)) {
+          var errs__0 = errors;
+          var valid1 = true;
+          var data1 = data.properties;
+          if (data1 !== undefined) {
+            var errs_1 = errors;
+            if (data1 && typeof data1 === "object" && !Array.isArray(data1)) {
+              var errs__1 = errors;
+              var valid2 = true;
+              if (data1.profile_id === undefined) {
+                valid2 = false;
+                var err = {
+                  keyword: "required",
+                  dataPath: (dataPath || "") + ".properties",
+                  schemaPath: "#/properties/properties/required",
+                  params: { missingProperty: "profile_id" },
+                  message: "should have required property 'profile_id'"
+                };
+                if (vErrors === null) vErrors = [err];
+                else vErrors.push(err);
+                errors++;
+              } else {
+                var errs_2 = errors;
+                if (typeof data1.profile_id !== "string") {
+                  var err = {
+                    keyword: "type",
+                    dataPath: (dataPath || "") + ".properties.profile_id",
+                    schemaPath:
+                      "#/properties/properties/properties/profile_id/type",
+                    params: { type: "string" },
+                    message: "should be string"
+                  };
+                  if (vErrors === null) vErrors = [err];
+                  else vErrors.push(err);
+                  errors++;
+                }
+                var valid2 = errors === errs_2;
+              }
+            } else {
+              var err = {
+                keyword: "type",
+                dataPath: (dataPath || "") + ".properties",
+                schemaPath: "#/properties/properties/type",
+                params: { type: "object" },
+                message: "should be object"
+              };
+              if (vErrors === null) vErrors = [err];
+              else vErrors.push(err);
+              errors++;
+            }
+            var valid1 = errors === errs_1;
+          }
+        } else {
+          var err = {
+            keyword: "type",
+            dataPath: (dataPath || "") + "",
+            schemaPath: "#/type",
+            params: { type: "object" },
+            message: "should be object"
+          };
+          if (vErrors === null) vErrors = [err];
+          else vErrors.push(err);
+          errors++;
+        }
+        validate.errors = vErrors;
+        return errors === 0;
+      };
+      var valid = validate(props);
+      if (!valid) {
+        throw new Error(JSON.stringify(validate.errors, null, 2));
+      }
     }
-
-    if (
-      type === 'number' &&
-      !isUndefined(obj[k]) &&
-      !isNumber(obj[k])
-    ) {
-      throw new Error(`${k} should be a number, got ${getType(obj[k])} instead`)
-    }
-
-    if (
-      type === 'boolean' &&
-      !isUndefined(obj[k]) &&
-      !isBoolean(obj[k])
-    ) {
-      throw new Error(`${k} should be a boolean, got ${getType(obj[k])} instead`)
-    }
-
-    if (
-      type === 'array' &&
-      !isUndefined(obj[k]) &&
-      !isArray(obj[k])
-    ) {
-      throw new Error(`${k} should be an array, got ${getType(obj[k])} instead`)
-    }
-  })
+    this.analytics.track("Profile Viewed", props, genOptions(ctx));
+  }
 }
-
-function getAjsPayload(props, propDescriptors) {
-  const payload = {}
-
-  Object.keys(props).forEach(key => {
-    payload[propDescriptors[key].field] = props[key]
-  })
-  return payload
-}
-
-/**
-* @typedef {Object} FeedViewedProperty - param object
-* @property { string } profileId - The id of the user this feed belongs to
-*/
-
-/**
-* 
-* @param  { FeedViewedProperty } props
-* @param {Object=} context - An optional object containing context properties https://segment.com/docs/spec/common/#context
-*/
-export function feedViewed(props, context) {
-  const propDescriptors = { profileId: { field: 'profile_id', type: 'string', pattern: undefined, isRequired: true } }
-  if (process.env.NODE_ENV !== 'production') {
-    validateObj(props, propDescriptors)
-  }
-  const payload = getAjsPayload(props, propDescriptors)
-
-  if (context) {
-    window.analytics.track('Feed Viewed', payload, { context })
-  } else {
-    window.analytics.track('Feed Viewed', payload)
-  }
-}
-
-/**
-* @typedef {Object} PhotoViewedProperty - param object
-* @property { string } photoId - The id of the viewed photo
-*/
-
-/**
-* 
-* @param  { PhotoViewedProperty } props
-* @param {Object=} context - An optional object containing context properties https://segment.com/docs/spec/common/#context
-*/
-export function photoViewed(props, context) {
-  const propDescriptors = { photoId: { field: 'photo_id', type: 'string', pattern: undefined, isRequired: true } }
-  if (process.env.NODE_ENV !== 'production') {
-    validateObj(props, propDescriptors)
-  }
-  const payload = getAjsPayload(props, propDescriptors)
-
-  if (context) {
-    window.analytics.track('Photo Viewed', payload, { context })
-  } else {
-    window.analytics.track('Photo Viewed', payload)
-  }
-}
-
-/**
-* @typedef {Object} ProfileViewedProperty - param object
-* @property { string } profileId - The id of the user the profile belongs to
-*/
-
-/**
-* 
-* @param  { ProfileViewedProperty } props
-* @param {Object=} context - An optional object containing context properties https://segment.com/docs/spec/common/#context
-*/
-export function profileViewed(props, context) {
-  const propDescriptors = { profileId: { field: 'profile_id', type: 'string', pattern: undefined, isRequired: true } }
-  if (process.env.NODE_ENV !== 'production') {
-    validateObj(props, propDescriptors)
-  }
-  const payload = getAjsPayload(props, propDescriptors)
-
-  if (context) {
-    window.analytics.track('Profile Viewed', payload, { context })
-  } else {
-    window.analytics.track('Profile Viewed', payload)
-  }
-}
-
