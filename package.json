@@ -46,10 +46,9 @@
     "release": "release-it",
     "generate-examples:android": "cd examples/android/java && make typewriter-local",
     "generate-examples:ios": "cd examples/ios/objectivec && make typewriter-local",
-    "generate-examples:js": "cd examples/js && yarn run typewriter-local",
-    "generate-examples:ts": "cd examples/ts && yarn run typewriter-local",
-    "generate-examples": "run-p generate-examples:*",
-    "docs": "md-magic --path '**/*.md' --ignore 'node_modules'"
+    "generate-examples:js": "node ./dist/index.js gen-js --inputPath ./examples/local-tracking-plans/tracking-plan-web.json --outputPath ./examples/js/pages/generated",
+    "generate-examples:ts": "node ./dist/index.js gen-ts --inputPath ./examples/local-tracking-plans/tracking-plan-web.json --outputPath ./examples/ts/pages/generated",
+    "generate-examples": "run-p generate-examples:*"
   },
   "dependencies": {
     "@types/handlebars": "^4.0.39",
@@ -88,7 +87,7 @@
     "bdd-stdin": "^0.2.0",
     "jest": "^23.6",
     "jest-file-snapshot": "^0.2.0",
-    "lint-staged": "^4.3.0",
+    "lint-staged": "^7.3.0",
     "prettier": "^1.5.3",
     "release-it": "^7.5.0",
     "test": "^0.6.0",
@@ -109,14 +108,19 @@
     "printWidth": 100
   },
   "lint-staged": {
-    "*.ts": [
-      "yarn lint",
-      "prettier --write",
-      "git add"
-    ],
-    "*.json": [
-      "prettier --write",
-      "git add"
+    "linters": {
+      "*.ts": [
+        "yarn lint",
+        "prettier --write",
+        "git add"
+      ],
+      "*.json": [
+        "prettier --write",
+        "git add"
+      ]
+    },
+    "ignore": [
+      "examples/**/generated/**"
     ]
   },
   "husky": {
