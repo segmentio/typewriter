@@ -25,22 +25,22 @@ public final class ExampleEvent extends PropertiesSerializable {
     public static class Builder {
         private static String OPTIONAL_ANY_KEY = "optional any";
         private static String OPTIONAL_ARRAY_KEY = "optional array";
-        private static String OPTIONAL_ARRAY_(EMPTY)_KEY = "optional array (empty)";
+        private static String OPTIONAL_ARRAY_EMPTY_KEY = "optional array (empty)";
         private static String OPTIONAL_BOOLEAN_KEY = "optional boolean";
         private static String OPTIONAL_INT_KEY = "optional int";
         private static String OPTIONAL_NUMBER_KEY = "optional number";
         private static String OPTIONAL_OBJECT_KEY = "optional object";
-        private static String OPTIONAL_OBJECT_(EMPTY)_KEY = "optional object (empty)";
+        private static String OPTIONAL_OBJECT_EMPTY_KEY = "optional object (empty)";
         private static String OPTIONAL_STRING_KEY = "optional string";
         private static String OPTIONAL_STRING_REGEX_KEY = "optional string regex";
         private static String REQUIRED_ANY_KEY = "required any";
         private static String REQUIRED_ARRAY_KEY = "required array";
-        private static String REQUIRED_ARRAY_(EMPTY)_KEY = "required array (empty)";
+        private static String REQUIRED_ARRAY_EMPTY_KEY = "required array (empty)";
         private static String REQUIRED_BOOLEAN_KEY = "required boolean";
         private static String REQUIRED_INT_KEY = "required int";
         private static String REQUIRED_NUMBER_KEY = "required number";
         private static String REQUIRED_OBJECT_KEY = "required object";
-        private static String REQUIRED_OBJECT_(EMPTY)_KEY = "required object (empty)";
+        private static String REQUIRED_OBJECT_EMPTY_KEY = "required object (empty)";
         private static String REQUIRED_STRING_KEY = "required string";
         private static String REQUIRED_STRING_REGEX_KEY = "required string regex";
 
@@ -76,7 +76,7 @@ public final class ExampleEvent extends PropertiesSerializable {
          * This property is optional and not required to generate a valid ExampleEvent object
          */
         public Builder optionalArrayEmpty(final @NonNull List<Object> optionalArrayEmpty) {
-            properties.putValue(OPTIONAL_ARRAY_(EMPTY)_KEY, PropertiesSerializable.toPropertyList(optionalArrayEmpty));
+            properties.putValue(OPTIONAL_ARRAY_EMPTY_KEY, PropertiesSerializable.toPropertyList(optionalArrayEmpty));
             return this;
         }
 
@@ -121,7 +121,7 @@ public final class ExampleEvent extends PropertiesSerializable {
          * This property is optional and not required to generate a valid ExampleEvent object
          */
         public Builder optionalObjectEmpty(final @NonNull Map<String, Object> optionalObjectEmpty) {
-            properties.putValue(OPTIONAL_OBJECT_(EMPTY)_KEY, optionalObjectEmpty);
+            properties.putValue(OPTIONAL_OBJECT_EMPTY_KEY, optionalObjectEmpty);
             return this;
         }
 
@@ -166,7 +166,7 @@ public final class ExampleEvent extends PropertiesSerializable {
          * This property is required to generate a valid ExampleEvent object
          */
         public Builder requiredArrayEmpty(final @NonNull List<Object> requiredArrayEmpty) {
-            properties.putValue(REQUIRED_ARRAY_(EMPTY)_KEY, PropertiesSerializable.toPropertyList(requiredArrayEmpty));
+            properties.putValue(REQUIRED_ARRAY_EMPTY_KEY, PropertiesSerializable.toPropertyList(requiredArrayEmpty));
             return this;
         }
 
@@ -211,7 +211,7 @@ public final class ExampleEvent extends PropertiesSerializable {
          * This property is required to generate a valid ExampleEvent object
          */
         public Builder requiredObjectEmpty(final @NonNull Map<String, Object> requiredObjectEmpty) {
-            properties.putValue(REQUIRED_OBJECT_(EMPTY)_KEY, requiredObjectEmpty);
+            properties.putValue(REQUIRED_OBJECT_EMPTY_KEY, requiredObjectEmpty);
             return this;
         }
 
@@ -256,7 +256,7 @@ public final class ExampleEvent extends PropertiesSerializable {
                 throw new IllegalArgumentException("ExampleEvent missing required property: requiredArray");
             }
 
-            if (properties.get(REQUIRED_ARRAY_(EMPTY)_KEY) == null) {
+            if (properties.get(REQUIRED_ARRAY_EMPTY_KEY) == null) {
                 throw new IllegalArgumentException("ExampleEvent missing required property: requiredArrayEmpty");
             }
 
@@ -276,7 +276,7 @@ public final class ExampleEvent extends PropertiesSerializable {
                 throw new IllegalArgumentException("ExampleEvent missing required property: requiredObject");
             }
 
-            if (properties.get(REQUIRED_OBJECT_(EMPTY)_KEY) == null) {
+            if (properties.get(REQUIRED_OBJECT_EMPTY_KEY) == null) {
                 throw new IllegalArgumentException("ExampleEvent missing required property: requiredObjectEmpty");
             }
 
