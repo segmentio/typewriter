@@ -21,10 +21,10 @@ $ yarn add -D typewriter
 
 | Language          | Run-Time | Build-Time                     |
 |-------------------|----------|--------------------------------|
-| [JavaScript](#javascript--typescript--nodejs-quickstart)        | ✅ Types<br>✅ Naming<br>✅ Missing Properties | ❌ Types<br>❌ Naming<br>❌ Missing Properties |
-| [TypeScript](#javascript--typescript--nodejs-quickstart)        | ✅ Types<br>✅ Naming<br>✅ Missing Properties | ✅ Types<br>✅ Naming<br>✅ Missing Properties |
-| [Android (Java)](#android-quickstart)    | ✅ Types<br>✅ Naming<br>✅ Missing Properties | ✅ Types<br>✅ Naming<br>❌ Missing Properties |
-| [iOS (Objective C)](#ios-quickstart) | ✅ Types<br>✅ Naming<br>✅ Missing Properties | ✅ Types<br>✅ Naming<br>❌ Missing Properties |
+| [JavaScript](#javascript--typescript--nodejs-quickstart)        | ✅ Types<br>✅ Naming<br>✅ Required Properties | ❌ Types<br>❌ Naming<br>❌ Required Properties |
+| [TypeScript](#javascript--typescript--nodejs-quickstart)        | ✅ Types<br>✅ Naming<br>✅ Required Properties | ✅ Types<br>✅ Naming<br>✅ Required Properties |
+| [Android (Java)](#android-quickstart)    | ✅ Types<br>✅ Naming<br>✅ Required Properties | ✅ Types<br>✅ Naming<br>❌ Required Properties |
+| [iOS (Objective C)](#ios-quickstart) | ✅ Types<br>✅ Naming<br>✅ Required Properties | ✅ Types<br>✅ Naming<br>❌ Required Properties |
 
 ## JSON Schema Setup
 
