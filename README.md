@@ -74,7 +74,7 @@ Typewriter currently uses JSON Schema [`draft-04`](https://github.com/json-schem
 - [Android](#android-quickstart)
 - [iOS](#ios-quickstart)
 
-### JavaScript / TypeScript
+### JavaScript / TypeScript Quickstart
 
 First, generate a Typewriter client from [your schema](#json-schema-setup):
 
