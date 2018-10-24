@@ -140,7 +140,7 @@ analytics.feedViewed({
 })
 ```
 
-To see a full working example, see the [JavaScript example here](./examples/js).
+To see a full working example, see the [Node.js example here](./examples/node).
 
 We recommend that you add client generation as [a `package.json` command](#javascript--typescript-quickstart).
 
