@@ -8,20 +8,21 @@ import * as util from 'util'
 import * as fs from 'fs'
 import * as Ajv from 'ajv'
 import * as omitDeep from 'omit-deep-lodash'
+import recursiveOmitBy from 'recursive-omit-by'
 const writeFile = util.promisify(fs.writeFile)
 
 export const command = 'gen-js'
 export const desc = 'Generate a strongly typed JavaScript analytics.js client'
 
 export enum Client {
-  analyticsjs = 0,
-  analyticsnode = 1
+  js = 0,
+  node = 1
 }
 
 interface CompilerParams {
   target?: ScriptTarget
   module?: ModuleKind
-  client?: Client
+  client?: string
 }
 
 export const builder = {
@@ -43,8 +44,8 @@ export const builder = {
   client: {
     type: 'string',
     required: false,
-    default: Client.analyticsjs,
-    choices: Client,
+    default: 'js',
+    choices: Object.keys(Client).filter(k => typeof Client[k as any] === 'number'),
     description: 'Segment analytics library to generate for'
   }
 }
@@ -57,7 +58,7 @@ export async function genJS(
   events: TrackedEvent[],
   scriptTarget = ScriptTarget.ESNext,
   moduleKind = ModuleKind.ESNext,
-  client = Client.analyticsjs
+  client = Client.js
 ) {
   // Force draft-04 compatibility mode for Ajv (defaults to 06)
   const ajv = new Ajv({ schemaId: 'id', allErrors: true })
@@ -95,17 +96,20 @@ export async function genJS(
   const trackCalls =
     events.reduce((code, { name, rules }) => {
       const sanitizedFnName = getFnName(name)
+      // In JSON Schema Draft-04, required must have at least one element.
+      // Therefore, we strip `required: []` from your rules so this error isn't surfaced.
+      rules = recursiveOmitBy(rules, ({ node, key }) => key === 'required' && node instanceof Array && node.length === 0)
       const compiledValidationFn = ajv.compile(omitDeep(rules, 'id'))
 
       let parameters: string
       let trackCall: string
       let validateCall: string
-      if (client === Client.analyticsjs) {
-        parameters = `props, context`
+      if (client === Client.js) {
+        parameters = 'props, context'
         trackCall = `this.analytics.track('${name}', props, genOptions(ctx))`
         validateCall = 'validate(props)'
-      } else if (client === Client.analyticsnode) {
-        parameters = `message, callback`
+      } else if (client === Client.node) {
+        parameters = 'message, callback'
         trackCall = `
         message = {
           ...message,
@@ -113,7 +117,7 @@ export async function genJS(
           event: '${name}'
         }
         this.analytics.track(message, callback)`
-        validateCall = 'validate(message.properties)'
+        validateCall = 'validate(message)'
       }
 
       return `
@@ -143,7 +147,7 @@ export async function genJS(
 
 export const handler = getTypedTrackHandler(
   async (params: DefaultParams & CompilerParams, { events }) => {
-    const codeContent = await genJS(events, params.target, params.module)
+    const codeContent = await genJS(events, params.target, params.module, Client[params.client])
     return writeFile(`${params.outputPath}/index.js`, codeContent)
   }
 )

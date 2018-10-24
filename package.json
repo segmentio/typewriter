@@ -48,6 +48,7 @@
     "generate-examples:ios": "cd examples/ios/objectivec && make typewriter-local",
     "generate-examples:js": "node ./dist/src/index.js gen-js --inputPath ./examples/local-tracking-plans/tracking-plan-web.json --outputPath ./examples/js/pages/generated",
     "generate-examples:ts": "node ./dist/src/index.js gen-ts --inputPath ./examples/local-tracking-plans/tracking-plan-web.json --outputPath ./examples/ts/pages/generated",
+    "generate-examples:node": "node ./dist/src/index.js gen-js --inputPath ./examples/local-tracking-plans/tracking-plan-mobile.json --outputPath ./examples/node/generated --module CommonJS --target ES2017 --client node",
     "generate-examples": "run-p generate-examples:*"
   },
   "dependencies": {
@@ -64,6 +65,7 @@
     "omit-deep-lodash": "^1.1.2",
     "quicktype": "^15.0.130",
     "quicktype-core": "^5.0.48",
+    "recursive-omit-by": "^1.1.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
     "ts-node": "^6.1.0",
