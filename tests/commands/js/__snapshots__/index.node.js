@@ -1,16 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const genOptions = (context = { library: {} }) => ({
-  context: {
-    ...context,
-    library: {
-      ...context.library,
+  context: Object.assign({}, context, {
+    library: Object.assign({}, context.library, {
       typewriter: {
         name: "gen-js",
         version: "3.1.3"
       }
-    }
-  }
+    })
+  })
 });
-export default class Analytics {
+class Analytics {
   /**
    * Instantiate a wrapper around an analytics library instance
    * @param {Analytics} analytics - The ajs or analytics-node library to wrap
@@ -26,7 +26,7 @@ export default class Analytics {
     this.analytics = analytics;
     this.propertyValidation = propertyValidation;
   }
-  terribleEventName3(props, context) {
+  terribleEventName3(message, callback) {
     if (this.propertyValidation) {
       const validate = function(
         data,
@@ -93,13 +93,12 @@ export default class Analytics {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
     }
-    this.analytics.track(
-      "42_--terrible==event++name~!3",
-      props,
-      genOptions(ctx)
-    );
+    message = Object.assign({}, message, genOptions(message.context), {
+      event: "42_--terrible==event++name~!3"
+    });
+    this.analytics.track(message, callback);
   }
-  emptyEvent(props, context) {
+  emptyEvent(message, callback) {
     if (this.propertyValidation) {
       const validate = function(
         data,
@@ -163,9 +162,12 @@ export default class Analytics {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
     }
-    this.analytics.track("Empty Event", props, genOptions(ctx));
+    message = Object.assign({}, message, genOptions(message.context), {
+      event: "Empty Event"
+    });
+    this.analytics.track(message, callback);
   }
-  exampleEvent(props, context) {
+  exampleEvent(message, callback) {
     if (this.propertyValidation) {
       const validate = function(
         data,
@@ -1043,6 +1045,10 @@ export default class Analytics {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
     }
-    this.analytics.track("Example Event", props, genOptions(ctx));
+    message = Object.assign({}, message, genOptions(message.context), {
+      event: "Example Event"
+    });
+    this.analytics.track(message, callback);
   }
 }
+exports.default = Analytics;

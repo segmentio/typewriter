@@ -13,9 +13,15 @@ const writeFile = util.promisify(fs.writeFile)
 export const command = 'gen-js'
 export const desc = 'Generate a strongly typed JavaScript analytics.js client'
 
+export enum Client {
+  analyticsjs = 0,
+  analyticsnode = 1
+}
+
 interface CompilerParams {
   target?: ScriptTarget
   module?: ModuleKind
+  client?: Client
 }
 
 export const builder = {
@@ -33,6 +39,13 @@ export const builder = {
     default: 'ESNext',
     choices: Object.keys(ModuleKind).filter(k => typeof ModuleKind[k as any] === 'number'),
     description: 'Module format'
+  },
+  client: {
+    type: 'string',
+    required: false,
+    default: Client.analyticsjs,
+    choices: Client,
+    description: 'Segment analytics library to generate for'
   }
 }
 
@@ -43,7 +56,8 @@ function getFnName(eventName: string) {
 export async function genJS(
   events: TrackedEvent[],
   scriptTarget = ScriptTarget.ESNext,
-  moduleKind = ModuleKind.ESNext
+  moduleKind = ModuleKind.ESNext,
+  client = Client.analyticsjs
 ) {
   // Force draft-04 compatibility mode for Ajv (defaults to 06)
   const ajv = new Ajv({ schemaId: 'id', allErrors: true })
@@ -83,9 +97,25 @@ export async function genJS(
       const sanitizedFnName = getFnName(name)
       const compiledValidationFn = ajv.compile(omitDeep(rules, 'id'))
 
+      let parameters: string
+      let trackCall: string
+      if (client === Client.analyticsjs) {
+        parameters = `props, context`
+        trackCall = `this.analytics.track('${name}', props, genOptions(ctx))`
+      } else if (client === Client.analyticsnode) {
+        parameters = `message, callback`
+        trackCall = `
+        message = {
+          ...message,
+          ...genOptions(message.context),
+          event: '${name}'
+        }
+        this.analytics.track(message, callback)`
+      }
+
       return `
       ${code}
-      ${sanitizedFnName}(props, context) {
+      ${sanitizedFnName}(${parameters}) {
         if (this.propertyValidation) {
           const validate = ${compiledValidationFn}
           var valid = validate(props);
@@ -93,7 +123,7 @@ export async function genJS(
             throw new Error(JSON.stringify(validate.errors, null, 2));
           }
         }
-        this.analytics.track('${name}', props, genOptions(ctx))
+        ${trackCall}
       }
     `
     }, fileHeader) + '} '

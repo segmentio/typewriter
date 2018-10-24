@@ -1,4 +1,4 @@
-import { genJS } from '../../../src/commands/gen-js'
+import { genJS, Client } from '../../../src/commands/gen-js'
 import { testSnapshotSingleFile } from '../snapshots'
 import { ScriptTarget, ModuleKind } from 'typescript'
 
@@ -24,5 +24,12 @@ test('genJS - compiled output matches snapshot (System Modules)', async () => {
   await testSnapshotSingleFile(
     events => genJS(events, ScriptTarget.ESNext, ModuleKind.System),
     'index.system.js'
+  )
+})
+
+test('genJS - compiled output matches snapshot (analytics-node)', async () => {
+  await testSnapshotSingleFile(
+    events => genJS(events, ScriptTarget.ES2017, ModuleKind.CommonJS, Client.analyticsnode),
+    'index.node.js'
   )
 })

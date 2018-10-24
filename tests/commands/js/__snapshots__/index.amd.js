@@ -8,7 +8,7 @@ define(["require", "exports"], function(require, exports) {
         ...context.library,
         typewriter: {
           name: "gen-js",
-          version: "3.1.0"
+          version: "3.1.3"
         }
       }
     }
