@@ -99,9 +99,11 @@ export async function genJS(
 
       let parameters: string
       let trackCall: string
+      let validateCall: string
       if (client === Client.analyticsjs) {
         parameters = `props, context`
         trackCall = `this.analytics.track('${name}', props, genOptions(ctx))`
+        validateCall = 'validate(props)'
       } else if (client === Client.analyticsnode) {
         parameters = `message, callback`
         trackCall = `
@@ -111,6 +113,7 @@ export async function genJS(
           event: '${name}'
         }
         this.analytics.track(message, callback)`
+        validateCall = 'validate(message.properties)'
       }
 
       return `
@@ -118,7 +121,7 @@ export async function genJS(
       ${sanitizedFnName}(${parameters}) {
         if (this.propertyValidation) {
           const validate = ${compiledValidationFn}
-          var valid = validate(props);
+          var valid = ${validateCall};
           if (!valid) {
             throw new Error(JSON.stringify(validate.errors, null, 2));
           }

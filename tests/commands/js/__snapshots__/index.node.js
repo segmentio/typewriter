@@ -88,7 +88,7 @@ class Analytics {
         validate.errors = vErrors;
         return errors === 0;
       };
-      var valid = validate(props);
+      var valid = validate(message.properties);
       if (!valid) {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
@@ -157,7 +157,7 @@ class Analytics {
         validate.errors = vErrors;
         return errors === 0;
       };
-      var valid = validate(props);
+      var valid = validate(message.properties);
       if (!valid) {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
@@ -1040,7 +1040,7 @@ class Analytics {
         validate.errors = vErrors;
         return errors === 0;
       };
-      var valid = validate(props);
+      var valid = validate(message.properties);
       if (!valid) {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
