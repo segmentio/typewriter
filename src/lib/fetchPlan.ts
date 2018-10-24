@@ -55,7 +55,13 @@ export const getTrackingPlanFromNetwork = async (
   } = await fetch(
     `https://platform.segmentapis.com/v1beta/workspaces/${workspaceSlug}/tracking-plans/${trackingPlanId}`,
     options
-  ).then(res => res.json())
+  ).then(res => {
+    if (res.ok) {
+      return res.json()
+    } else {
+      throw new Error(`Error fetching Tracking Plan: ${res.status} ${res.statusText}`)
+    }
+  })
 
   return transformTrackingPlanResponse({
     events,

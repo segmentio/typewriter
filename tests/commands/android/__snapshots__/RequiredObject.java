@@ -23,8 +23,8 @@ public final class RequiredObject extends PropertiesSerializable {
      * Builder for {@link RequiredObject}
      */
     public static class Builder {
-        private static String OPTIONAL_SUB-PROPERTY_KEY = "optional sub-property";
-        private static String REQUIRED_SUB-PROPERTY_KEY = "required sub-property";
+        private static String OPTIONAL_SUB_PROPERTY_KEY = "optional sub-property";
+        private static String REQUIRED_SUB_PROPERTY_KEY = "required sub-property";
 
         private Properties properties;
 
@@ -40,7 +40,7 @@ public final class RequiredObject extends PropertiesSerializable {
          * This property is optional and not required to generate a valid RequiredObject object
          */
         public Builder optionalSubProperty(final @NonNull String optionalSubProperty) {
-            properties.putValue(OPTIONAL_SUB-PROPERTY_KEY, optionalSubProperty);
+            properties.putValue(OPTIONAL_SUB_PROPERTY_KEY, optionalSubProperty);
             return this;
         }
 
@@ -49,7 +49,7 @@ public final class RequiredObject extends PropertiesSerializable {
          * This property is required to generate a valid RequiredObject object
          */
         public Builder requiredSubProperty(final @NonNull String requiredSubProperty) {
-            properties.putValue(REQUIRED_SUB-PROPERTY_KEY, requiredSubProperty);
+            properties.putValue(REQUIRED_SUB_PROPERTY_KEY, requiredSubProperty);
             return this;
         }
 
@@ -59,7 +59,7 @@ public final class RequiredObject extends PropertiesSerializable {
          *  - requiredSubProperty
          */
         public RequiredObject build() {
-            if (properties.get(REQUIRED_SUB-PROPERTY_KEY) == null) {
+            if (properties.get(REQUIRED_SUB_PROPERTY_KEY) == null) {
                 throw new IllegalArgumentException("RequiredObject missing required property: requiredSubProperty");
             }
 

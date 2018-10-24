@@ -23,7 +23,7 @@ public final class The42_TerribleEventName3 extends PropertiesSerializable {
      * Builder for {@link The42_TerribleEventName3}
      */
     public static class Builder {
-        private static String 0000---TERRIBLE-PROPERTY-NAME~!3_KEY = "0000---terrible-property-name~!3";
+        private static String THE_0000_TERRIBLE_PROPERTY_NAME_3__KEY = "0000---terrible-property-name~!3";
 
         private Properties properties;
 
@@ -39,7 +39,7 @@ public final class The42_TerribleEventName3 extends PropertiesSerializable {
          * This property is optional and not required to generate a valid The42_TerribleEventName3 object
          */
         public Builder the0000TerriblePropertyName3(final @NonNull Object the0000TerriblePropertyName3) {
-            properties.putValue(0000---TERRIBLE-PROPERTY-NAME~!3_KEY, the0000TerriblePropertyName3);
+            properties.putValue(THE_0000_TERRIBLE_PROPERTY_NAME_3__KEY, the0000TerriblePropertyName3);
             return this;
         }
 
