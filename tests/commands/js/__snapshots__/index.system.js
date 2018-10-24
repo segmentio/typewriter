@@ -12,7 +12,7 @@ System.register([], function(exports_1, context_1) {
             ...context.library,
             typewriter: {
               name: "gen-js",
-              version: "3.1.0"
+              version: "3.1.3"
             }
           }
         }
