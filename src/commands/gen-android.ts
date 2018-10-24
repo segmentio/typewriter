@@ -15,6 +15,7 @@ import {
 
 import { modifySource, SerializedRenderResult } from 'quicktype-core/dist/Source'
 import { OptionValues, BooleanOption, StringOption } from 'quicktype-core/dist/RendererOptions'
+import { javaNameStyle } from 'quicktype-core/dist/language/Java'
 
 import {
   getTypedTrackHandler,
@@ -63,9 +64,8 @@ declare const analyticsJavaOptions: {
 }
 
 function toKeyName(name: string) {
-  return `${name.toUpperCase().replace(/ /g, '_')}_KEY`
+  return javaNameStyle(true, true, `${name}_KEY`)
 }
-
 class AnalyticsJavaTargetLanguage extends JavaTargetLanguage {
   public packageName: string
   public trackingPlan: string
