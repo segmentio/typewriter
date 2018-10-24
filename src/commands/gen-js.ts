@@ -1,6 +1,7 @@
 import { getTypedTrackHandler, TrackedEvent } from '../lib'
 import { transpileModule, ModuleKind, ScriptTarget } from 'typescript'
 import { builder as defaultBuilder, Params as DefaultParams } from '../lib'
+import { version } from '../../package.json'
 import { camelCase } from 'lodash'
 import * as prettier from 'prettier'
 import * as util from 'util'
@@ -48,7 +49,20 @@ export async function genJS(
   const ajv = new Ajv({ schemaId: 'id', allErrors: true })
   ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
 
-  const classHeader = `
+  const fileHeader = `
+    const genOptions = (context = { library: {} }) => ({
+      context: {
+        ...context,
+        library: {
+          ...context.library,
+          typewriter: {
+            name: "${command}",
+            version: "${version}"
+          }
+        }
+      }
+    })
+
     export default class Analytics {
       /**
        * Instantiate a wrapper around an analytics library instance
@@ -79,14 +93,10 @@ export async function genJS(
             throw new Error(JSON.stringify(validate.errors, null, 2));
           }
         }
-        if (context) {
-          this.analytics.track('${name}', props, { context })
-        } else {
-          this.analytics.track('${name}', props)
-        }
+        this.analytics.track('${name}', props, genOptions(ctx))
       }
     `
-    }, classHeader) + '} '
+    }, fileHeader) + '} '
 
   const { outputText } = transpileModule(trackCalls, {
     compilerOptions: {

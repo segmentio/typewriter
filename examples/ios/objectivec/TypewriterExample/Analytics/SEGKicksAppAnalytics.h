@@ -133,7 +133,7 @@ typedef void (^ SEGProductBuilderBlock)(SEGProductBuilder *);
 - (instancetype)initWithAnalytics:(SEGAnalytics *)analytics;
 
 - (void)orderCompleted:(SEGOrderCompleted *)props;
-- (void)orderCompleted:(SEGOrderCompleted *)props withOptions:options;
+- (void)orderCompleted:(SEGOrderCompleted *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options;
 @end
 
 NS_ASSUME_NONNULL_END

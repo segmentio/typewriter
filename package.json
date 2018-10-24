@@ -1,6 +1,6 @@
 {
   "name": "typewriter",
-  "version": "3.1.2",
+  "version": "3.1.3",
   "description": "A compiler for generating strongly typed analytics clients from JSON Schema",
   "keywords": [
     "analytics",
@@ -27,9 +27,9 @@
     "dist",
     "src"
   ],
-  "main": "dist/index.js",
-  "browser": "dist/index.js",
-  "bin": "dist/index.js",
+  "main": "dist/src/index.js",
+  "browser": "dist/src/index.js",
+  "bin": "dist/src/index.js",
   "directories": {
     "lib": "src",
     "test": "tests"
@@ -46,8 +46,8 @@
     "release": "yarn build && release-it",
     "generate-examples:android": "cd examples/android/java && make typewriter-local",
     "generate-examples:ios": "cd examples/ios/objectivec && make typewriter-local",
-    "generate-examples:js": "node ./dist/index.js gen-js --inputPath ./examples/local-tracking-plans/tracking-plan-web.json --outputPath ./examples/js/pages/generated",
-    "generate-examples:ts": "node ./dist/index.js gen-ts --inputPath ./examples/local-tracking-plans/tracking-plan-web.json --outputPath ./examples/ts/pages/generated",
+    "generate-examples:js": "node ./dist/src/index.js gen-js --inputPath ./examples/local-tracking-plans/tracking-plan-web.json --outputPath ./examples/js/pages/generated",
+    "generate-examples:ts": "node ./dist/src/index.js gen-ts --inputPath ./examples/local-tracking-plans/tracking-plan-web.json --outputPath ./examples/ts/pages/generated",
     "generate-examples": "run-p generate-examples:*"
   },
   "dependencies": {

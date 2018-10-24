@@ -200,7 +200,7 @@ static id map(id collection, id (^f)(id value)) {
 {
     [self.analytics track:@"Order Completed" properties:[props JSONDictionary]];
 }
-- (void)orderCompleted:(SEGOrderCompleted *)props withOptions:options
+- (void)orderCompleted:(SEGOrderCompleted *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options
 {
     [self.analytics track:@"Order Completed" properties:[props JSONDictionary] options:options];
 }

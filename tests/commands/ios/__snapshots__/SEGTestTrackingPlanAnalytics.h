@@ -191,16 +191,16 @@ typedef void (^ SEGRequiredObjectBuilderBlock)(SEGRequiredObjectBuilder *);
 - (instancetype)initWithAnalytics:(SEGAnalytics *)analytics;
 
 - (void)the42TerribleEventName3:(SEGThe42_TerribleEventName3 *)props;
-- (void)the42TerribleEventName3:(SEGThe42_TerribleEventName3 *)props withOptions:options;
+- (void)the42TerribleEventName3:(SEGThe42_TerribleEventName3 *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options;
 
 /// Optional object (empty) property
 ///
 /// Required object (empty) property
 - (void)emptyEvent:(SEGEmptyEvent *)props;
-- (void)emptyEvent:(SEGEmptyEvent *)props withOptions:options;
+- (void)emptyEvent:(SEGEmptyEvent *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options;
 
 - (void)exampleEvent:(SEGExampleEvent *)props;
-- (void)exampleEvent:(SEGExampleEvent *)props withOptions:options;
+- (void)exampleEvent:(SEGExampleEvent *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options;
 @end
 
 NS_ASSUME_NONNULL_END
