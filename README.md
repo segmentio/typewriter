@@ -1,4 +1,15 @@
-# Typewriter [![CircleCI][circle-badge]][circle-link] [![npm-version][npm-badge]][npm-link] [![license][license-badge]][license-link]
+<div align="center">
+  <a href="https://evergreen.segment.com/">
+    <img src=".github/assets/typewriter-logo.svg" alt="Typewriter logo">
+	<br>
+
+[![CircleCI][circle-badge]][circle-link] [![npm-version][npm-badge]][npm-link] [![license][license-badge]][license-link]
+  </a>
+	<br>
+  <br>
+</div>
+
+
 
 <!-- Placeholder for design-team assets -->
 <p align="center">
