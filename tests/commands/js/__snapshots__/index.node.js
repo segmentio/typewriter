@@ -26,7 +26,7 @@ class Analytics {
     this.analytics = analytics;
     this.propertyValidation = propertyValidation;
   }
-  terribleEventName3(props, context) {
+  terribleEventName3(message, callback) {
     if (this.propertyValidation) {
       const validate = function(
         data,
@@ -88,18 +88,17 @@ class Analytics {
         validate.errors = vErrors;
         return errors === 0;
       };
-      var valid = validate(props);
+      var valid = validate(message);
       if (!valid) {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
     }
-    this.analytics.track(
-      "42_--terrible==event++name~!3",
-      props,
-      genOptions(ctx)
-    );
+    message = Object.assign({}, message, genOptions(message.context), {
+      event: "42_--terrible==event++name~!3"
+    });
+    this.analytics.track(message, callback);
   }
-  emptyEvent(props, context) {
+  emptyEvent(message, callback) {
     if (this.propertyValidation) {
       const validate = function(
         data,
@@ -158,14 +157,17 @@ class Analytics {
         validate.errors = vErrors;
         return errors === 0;
       };
-      var valid = validate(props);
+      var valid = validate(message);
       if (!valid) {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
     }
-    this.analytics.track("Empty Event", props, genOptions(ctx));
+    message = Object.assign({}, message, genOptions(message.context), {
+      event: "Empty Event"
+    });
+    this.analytics.track(message, callback);
   }
-  exampleEvent(props, context) {
+  exampleEvent(message, callback) {
     if (this.propertyValidation) {
       const validate = function(
         data,
@@ -1038,12 +1040,15 @@ class Analytics {
         validate.errors = vErrors;
         return errors === 0;
       };
-      var valid = validate(props);
+      var valid = validate(message);
       if (!valid) {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
     }
-    this.analytics.track("Example Event", props, genOptions(ctx));
+    message = Object.assign({}, message, genOptions(message.context), {
+      event: "Example Event"
+    });
+    this.analytics.track(message, callback);
   }
 }
 exports.default = Analytics;

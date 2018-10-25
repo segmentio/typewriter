@@ -29,7 +29,7 @@ test('genJS - compiled output matches snapshot (System Modules)', async () => {
 
 test('genJS - compiled output matches snapshot (analytics-node)', async () => {
   await testSnapshotSingleFile(
-    events => genJS(events, ScriptTarget.ES2017, ModuleKind.CommonJS, Client.analyticsnode),
+    events => genJS(events, ScriptTarget.ES2017, ModuleKind.CommonJS, Client.node),
     'index.node.js'
   )
 })
