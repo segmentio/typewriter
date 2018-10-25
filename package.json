@@ -41,6 +41,7 @@
     "update-snapshots": "jest -u",
     "watch": "tsc -w",
     "build": "rm -rf dist && tsc",
+    "prepare": "yarn run build",
     "lint": "tslint src/**/*.ts",
     "precommit": "lint-staged",
     "release": "yarn build && release-it",
