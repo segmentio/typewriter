@@ -148,15 +148,15 @@ export interface ProfileViewed {
 
 export function feedViewed(props: FeedViewed, context?: any): void{
   const payload = transform(props, r("FeedViewed"), jsToJSONProps, typeMap);
-  if (context) { window.analytics.track('FeedViewed', payload, { context }) } else { window.analytics.track('FeedViewed', payload) }
+  if (context) { window.analytics.track('Feed Viewed', payload, { context }) } else { window.analytics.track('Feed Viewed', payload) }
 }
 
 export function photoViewed(props: PhotoViewed, context?: any): void{
   const payload = transform(props, r("PhotoViewed"), jsToJSONProps, typeMap);
-  if (context) { window.analytics.track('PhotoViewed', payload, { context }) } else { window.analytics.track('PhotoViewed', payload) }
+  if (context) { window.analytics.track('Photo Viewed', payload, { context }) } else { window.analytics.track('Photo Viewed', payload) }
 }
 
 export function profileViewed(props: ProfileViewed, context?: any): void{
   const payload = transform(props, r("ProfileViewed"), jsToJSONProps, typeMap);
-  if (context) { window.analytics.track('ProfileViewed', payload, { context }) } else { window.analytics.track('ProfileViewed', payload) }
+  if (context) { window.analytics.track('Profile Viewed', payload, { context }) } else { window.analytics.track('Profile Viewed', payload) }
 }
