@@ -8,7 +8,7 @@ import * as util from 'util'
 import * as fs from 'fs'
 import * as Ajv from 'ajv'
 import * as omitDeep from 'omit-deep-lodash'
-import recursiveOmitBy from 'recursive-omit-by'
+import { removeEmptyRequireds } from '../lib/utils'
 const writeFile = util.promisify(fs.writeFile)
 
 export const command = 'gen-js'
@@ -98,7 +98,7 @@ export async function genJS(
       const sanitizedFnName = getFnName(name)
       // In JSON Schema Draft-04, required must have at least one element.
       // Therefore, we strip `required: []` from your rules so this error isn't surfaced.
-      rules = recursiveOmitBy(rules, ({ node, key }) => key === 'required' && node instanceof Array && node.length === 0)
+      removeEmptyRequireds(rules)
       const compiledValidationFn = ajv.compile(omitDeep(rules, 'id'))
 
       let parameters: string
