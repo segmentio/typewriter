@@ -121,7 +121,7 @@ First, generate a Typewriter client from [your schema](#json-schema-setup):
 $ typewriter gen-js \
   --inputPath ./schema.json \
   --outputPath ./generated \
-  --client analyticsnode \
+  --client node \
   --target "ES2017" \
   --module "CommonJS"
 ```
