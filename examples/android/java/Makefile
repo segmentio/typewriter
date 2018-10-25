@@ -10,7 +10,7 @@ build:
 	@cd ${ROOT_PATH} && yarn build
 
 .PHONY: typewriter-remote
-typewriter-remote: build
+typewriter-remote:
 	@echo "Generating Typewriter Android Java client..."
 	@rm -rf ${OUTPUT_PATH}
 	@mkdir -p ${OUTPUT_PATH}
@@ -25,7 +25,7 @@ typewriter-remote: build
 	@echo "Done."
 
 .PHONY: typewriter-local
-typewriter-local: build
+typewriter-local:
 	@echo "Generating Typewriter Android Java client..."
 	@rm -rf ${OUTPUT_PATH}
 	@mkdir -p ${OUTPUT_PATH}
