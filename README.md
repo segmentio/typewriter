@@ -1,13 +1,13 @@
-<div align="center">
-  <a href="https://evergreen.segment.com/">
-    <img src=".github/assets/typewriter-logo.svg" alt="Typewriter logo">
+<div align="center" style="margin-bottom: 1px solid #ccc;" >
 	<br>
-  </a>
 	<br>
+  <img src=".github/assets/typewriter-logo.svg" alt="Typewriter logo" />
+  <br>
+  <br>
   <br>
 </div>
 
----
+
 
 <div align="center" margin-top="10px">
 
