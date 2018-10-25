@@ -7,7 +7,7 @@
 
 - **Strongly Typed Analytics**: Generates strongly-typed [Segment](http://segment.com) analytics clients from arbitrary [JSON Schema](http://json-schema.org).
 
-- **Cross-Language Support**: Supports native clients in [JavaScript](#javascript--typescript--nodejs-quickstart), [TypeScript](#javascript--typescript--nodejs-quickstart), [Node.js](#javascript--typescript--nodejs-quickstart), [Android](#android-quickstart) and [iOS](#ios-quickstart).
+- **Cross-Language Support**: Supports native clients in [JavaScript](#javascript--typescript-quickstart), [TypeScript](#javascript--typescript-quickstart), [Node.js](#nodejs-quickstart), [Android](#android-quickstart) and [iOS](#ios-quickstart).
 
 - **Segment Protocols**: Built-in support to sync your clients with your centralized Tracking Plans.
 
@@ -21,8 +21,8 @@ $ yarn add -D typewriter
 
 | Language          | Run-Time | Build-Time                     |
 |-------------------|----------|--------------------------------|
-| [JavaScript](#javascript--typescript--nodejs-quickstart)        | ✅ Types<br>✅ Naming<br>✅ Required Properties | ❌ Types<br>❌ Naming<br>❌ Required Properties |
-| [TypeScript](#javascript--typescript--nodejs-quickstart)        | ✅ Types<br>✅ Naming<br>✅ Required Properties | ✅ Types<br>✅ Naming<br>✅ Required Properties |
+| [JavaScript](#javascript--typescript-quickstart)        | ✅ Types<br>✅ Naming<br>✅ Required Properties | ❌ Types<br>❌ Naming<br>❌ Required Properties |
+| [TypeScript](#javascript--typescript-quickstart)        | ✅ Types<br>✅ Naming<br>✅ Required Properties | ✅ Types<br>✅ Naming<br>✅ Required Properties |
 | [Android (Java)](#android-quickstart)    | ✅ Types<br>✅ Naming<br>✅ Required Properties | ✅ Types<br>✅ Naming<br>❌ Required Properties |
 | [iOS (Objective C)](#ios-quickstart) | ✅ Types<br>✅ Naming<br>✅ Required Properties | ✅ Types<br>✅ Naming<br>❌ Required Properties |
 
@@ -69,11 +69,12 @@ Typewriter currently uses JSON Schema [`draft-04`](https://github.com/json-schem
 
 ## Quickstarts
 
-- [JavaScript / TypeScript / Node.js](#javascript--typescript--nodejs-quickstart)
+- [JavaScript / TypeScript](#javascript--typescript-quickstart)
+- [Node.js](#nodejs-quickstart)
 - [Android](#android-quickstart)
 - [iOS](#ios-quickstart)
 
-### JavaScript / TypeScript / Node.js Quickstart
+### JavaScript / TypeScript Quickstart
 
 First, generate a Typewriter client from [your schema](#json-schema-setup):
 
@@ -112,7 +113,36 @@ We recommend that you add client generation as a `package.json` command:
 }
 ```
 
-<!-- TODO: Add IDE recommendations on how to make full use of TypeScript declarations. -->
+### Node.js Quickstart
+
+First, generate a Typewriter client from [your schema](#json-schema-setup):
+
+```sh
+$ typewriter gen-js \
+  --inputPath ./schema.json \
+  --outputPath ./generated \
+  --client analyticsnode \
+  --target "ES2017" \
+  --module "CommonJS"
+```
+
+Then, import [`analytics-node`](https://segment.com/docs/sources/server/node/quickstart/) and the generated Typewriter client to start making type-safe calls!
+
+```javascript
+const analytics = require('./generated')
+
+// ...
+
+analytics.feedViewed({
+  properties: {
+    profileId: '42'
+  }
+})
+```
+
+To see a full working example, see the [Node.js example here](./examples/node).
+
+We recommend that you add client generation as [a `package.json` command](#javascript--typescript-quickstart).
 
 ### Android Quickstart
 

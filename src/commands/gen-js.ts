@@ -8,14 +8,21 @@ import * as util from 'util'
 import * as fs from 'fs'
 import * as Ajv from 'ajv'
 import * as omitDeep from 'omit-deep-lodash'
+import { removeEmptyRequireds } from '../lib/utils'
 const writeFile = util.promisify(fs.writeFile)
 
 export const command = 'gen-js'
 export const desc = 'Generate a strongly typed JavaScript analytics.js client'
 
+export enum Client {
+  js = 0,
+  node = 1
+}
+
 interface CompilerParams {
   target?: ScriptTarget
   module?: ModuleKind
+  client?: string
 }
 
 export const builder = {
@@ -33,6 +40,13 @@ export const builder = {
     default: 'ESNext',
     choices: Object.keys(ModuleKind).filter(k => typeof ModuleKind[k as any] === 'number'),
     description: 'Module format'
+  },
+  client: {
+    type: 'string',
+    required: false,
+    default: 'js',
+    choices: Object.keys(Client).filter(k => typeof Client[k as any] === 'number'),
+    description: 'Segment analytics library to generate for'
   }
 }
 
@@ -43,7 +57,8 @@ function getFnName(eventName: string) {
 export async function genJS(
   events: TrackedEvent[],
   scriptTarget = ScriptTarget.ESNext,
-  moduleKind = ModuleKind.ESNext
+  moduleKind = ModuleKind.ESNext,
+  client = Client.js
 ) {
   // Force draft-04 compatibility mode for Ajv (defaults to 06)
   const ajv = new Ajv({ schemaId: 'id', allErrors: true })
@@ -81,19 +96,41 @@ export async function genJS(
   const trackCalls =
     events.reduce((code, { name, rules }) => {
       const sanitizedFnName = getFnName(name)
+      // In JSON Schema Draft-04, required must have at least one element.
+      // Therefore, we strip `required: []` from your rules so this error isn't surfaced.
+      removeEmptyRequireds(rules)
       const compiledValidationFn = ajv.compile(omitDeep(rules, 'id'))
+
+      let parameters: string
+      let trackCall: string
+      let validateCall: string
+      if (client === Client.js) {
+        parameters = 'props, context'
+        trackCall = `this.analytics.track('${name}', props, genOptions(ctx))`
+        validateCall = 'validate(props)'
+      } else if (client === Client.node) {
+        parameters = 'message, callback'
+        trackCall = `
+        message = {
+          ...message,
+          ...genOptions(message.context),
+          event: '${name}'
+        }
+        this.analytics.track(message, callback)`
+        validateCall = 'validate(message)'
+      }
 
       return `
       ${code}
-      ${sanitizedFnName}(props, context) {
+      ${sanitizedFnName}(${parameters}) {
         if (this.propertyValidation) {
           const validate = ${compiledValidationFn}
-          var valid = validate(props);
+          var valid = ${validateCall};
           if (!valid) {
             throw new Error(JSON.stringify(validate.errors, null, 2));
           }
         }
-        this.analytics.track('${name}', props, genOptions(ctx))
+        ${trackCall}
       }
     `
     }, fileHeader) + '} '
@@ -110,7 +147,7 @@ export async function genJS(
 
 export const handler = getTypedTrackHandler(
   async (params: DefaultParams & CompilerParams, { events }) => {
-    const codeContent = await genJS(events, params.target, params.module)
+    const codeContent = await genJS(events, params.target, params.module, Client[params.client])
     return writeFile(`${params.outputPath}/index.js`, codeContent)
   }
 )
