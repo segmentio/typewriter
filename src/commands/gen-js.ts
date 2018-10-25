@@ -1,7 +1,6 @@
 import { getTypedTrackHandler, TrackedEvent } from '../lib'
 import { transpileModule, ModuleKind, ScriptTarget } from 'typescript'
 import { builder as defaultBuilder, Params as DefaultParams } from '../lib'
-import { version } from '../../package.json'
 import { camelCase } from 'lodash'
 import * as prettier from 'prettier'
 import * as util from 'util'
@@ -72,7 +71,7 @@ export async function genJS(
           ...context.library,
           typewriter: {
             name: "${command}",
-            version: "${version}"
+            version: "${process.env.npm_package_version}"
           }
         }
       }
