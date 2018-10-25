@@ -1,4 +1,4 @@
-<div align="center" style="margin-bottom: 1px solid #ccc;" >
+<div align="center">
 	<br>
 	<br>
   <img src=".github/assets/typewriter-logo.svg" alt="Typewriter logo" />
