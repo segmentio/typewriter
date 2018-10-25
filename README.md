@@ -3,11 +3,14 @@
     <img src=".github/assets/typewriter-logo.svg" alt="Typewriter logo">
 	<br>
 
+
 [![CircleCI][circle-badge]][circle-link] [![npm-version][npm-badge]][npm-link] [![license][license-badge]][license-link]
   </a>
 	<br>
   <br>
 </div>
+
+---
 
 
 
