@@ -2,9 +2,6 @@
   <a href="https://evergreen.segment.com/">
     <img src=".github/assets/typewriter-logo.svg" alt="Typewriter logo">
 	<br>
-
-
-[![CircleCI][circle-badge]][circle-link] [![npm-version][npm-badge]][npm-link] [![license][license-badge]][license-link]
   </a>
 	<br>
   <br>
@@ -12,9 +9,12 @@
 
 ---
 
+<div align="center" margin-top="10px">
+
+[![CircleCI][circle-badge]][circle-link] [![npm-version][npm-badge]][npm-link] [![license][license-badge]][license-link]
+</div>
 
 
-<!-- Placeholder for design-team assets -->
 <p align="center">
   <img src=".github/assets/readme-example.gif" alt="Typewriter GIF Example" width="70%"/>
 </p>
