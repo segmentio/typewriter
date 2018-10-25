@@ -14,7 +14,7 @@ typewriter-remote:
 	@echo "Generating Typewriter iOS Objective-C client..."
 	@rm -rf ${OUTPUT_PATH}
 	@mkdir -p ${OUTPUT_PATH}
-	@node ${ROOT_PATH}/dist/src/index.js gen-ios \
+	@node ${ROOT_PATH}/dist/index.js gen-ios \
 		--trackingPlanId "rs_1AnzsusuSkTIlWw7Pq7MCcmVeo2" \
     --workspaceSlug "schema-test" \
 		--token "${SEGMENT_SCHEMA_TEST_READ_ONLY_API_TOKEN}" \
@@ -28,7 +28,7 @@ typewriter-local:
 	@echo "Generating Typewriter iOS Objective-C client..."
 	@rm -rf ${OUTPUT_PATH}
 	@mkdir -p ${OUTPUT_PATH}
-	@node ${ROOT_PATH}/dist/src/index.js gen-ios \
+	@node ${ROOT_PATH}/dist/index.js gen-ios \
 		--inputPath ${LOCAL_INPUT_PATH} \
 		--outputPath ${OUTPUT_PATH} \
 		--language 'objectivec' \

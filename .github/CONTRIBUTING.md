@@ -20,7 +20,7 @@ $ yarn build
 # The build library is now available in ./dist
 
 # Regenerate the JS example to verify Typewriter is installed correctly
-$ node ./dist/src/index.js gen-js \
+$ node ./dist/index.js gen-js \
   --inputPath ./examples/local-tracking-plans/tracking-plan-web.json \
   --outputPath ./examples/js/pages/generated
 ```
