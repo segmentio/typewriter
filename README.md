@@ -283,7 +283,7 @@ Great! You're now setup to follow any of the [quickstarts above](#quickstarts)!
 
 [circle-badge]: https://circleci.com/gh/segmentio/typewriter.svg?style=svg&circle-token=8c1e734c99bdc08170e12d85af7a371900e33e96
 [circle-link]: https://circleci.com/gh/segmentio/typewriter
-[npm-badge]: https://img.shields.io/npm/v/typewriter.svg?style=flat-square
+[npm-badge]: https://img.shields.io/npm/v/typewriter.svg
 [npm-link]: http://www.npmjs.com/package/typewriter
 [license-badge]: https://img.shields.io/npm/l/typewriter.svg
 [license-link]: ./.github/LICENSE.md
