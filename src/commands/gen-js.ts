@@ -1,6 +1,7 @@
 import { getTypedTrackHandler, TrackedEvent } from '../lib'
 import { transpileModule, ModuleKind, ScriptTarget } from 'typescript'
 import { builder as defaultBuilder, Params as DefaultParams } from '../lib'
+import { version } from '../../package.json'
 import { camelCase } from 'lodash'
 import * as prettier from 'prettier'
 import * as util from 'util'
@@ -9,7 +10,6 @@ import * as Ajv from 'ajv'
 import * as omitDeep from 'omit-deep-lodash'
 import { removeEmptyRequireds } from '../lib/utils'
 const writeFile = util.promisify(fs.writeFile)
-import { version } from '../../package.json'
 
 export const command = 'gen-js'
 export const desc = 'Generate a strongly typed JavaScript analytics.js client'
