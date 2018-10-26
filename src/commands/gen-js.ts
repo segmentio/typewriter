@@ -9,6 +9,7 @@ import * as Ajv from 'ajv'
 import * as omitDeep from 'omit-deep-lodash'
 import { removeEmptyRequireds } from '../lib/utils'
 const writeFile = util.promisify(fs.writeFile)
+import { version } from '../../package.json'
 
 export const command = 'gen-js'
 export const desc = 'Generate a strongly typed JavaScript analytics.js client'
@@ -71,7 +72,7 @@ export async function genJS(
           ...context.library,
           typewriter: {
             name: "${command}",
-            version: "${process.env.npm_package_version}"
+            version: "${version}"
           }
         }
       }

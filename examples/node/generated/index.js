@@ -5,7 +5,7 @@ const genOptions = (context = { library: {} }) => ({
     library: Object.assign({}, context.library, {
       typewriter: {
         name: "gen-js",
-        version: "3.1.3"
+        version: "3.2.0"
       }
     })
   })
