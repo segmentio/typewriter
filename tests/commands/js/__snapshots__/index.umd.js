@@ -15,7 +15,7 @@
         ...context.library,
         typewriter: {
           name: "gen-js",
-          version: "3.1.3"
+          version: "3.2.0"
         }
       }
     }
@@ -38,7 +38,7 @@
     }
     terribleEventName3(props, context) {
       if (this.propertyValidation) {
-        const validate = function(
+        var validate = function(
           data,
           dataPath,
           parentData,
@@ -111,7 +111,7 @@
     }
     emptyEvent(props, context) {
       if (this.propertyValidation) {
-        const validate = function(
+        var validate = function(
           data,
           dataPath,
           parentData,
@@ -177,7 +177,8 @@
     }
     exampleEvent(props, context) {
       if (this.propertyValidation) {
-        const validate = function(
+        var pattern0 = new RegExp("FOO|BAR");
+        var validate = function(
           data,
           dataPath,
           parentData,
