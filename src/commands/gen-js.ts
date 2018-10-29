@@ -108,7 +108,7 @@ export async function genJS(
       let validateCall: string
       if (client === Client.js) {
         parameters = 'props, context'
-        trackCall = `this.analytics.track('${name}', props, genOptions(ctx))`
+        trackCall = `this.analytics.track('${name}', props, genOptions(context))`
         validateCall = 'validate(props)'
       } else if (client === Client.node) {
         parameters = 'message, callback'
