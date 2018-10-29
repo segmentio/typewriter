@@ -45,7 +45,7 @@
     "prepare": "yarn run build",
     "lint": "tslint src/**/*.ts",
     "precommit": "lint-staged",
-    "release": "release-it",
+    "release": "yarn test && release-it",
     "generate-examples:android": "cd examples/android/java && make typewriter-local",
     "generate-examples:ios": "cd examples/ios/objectivec && make typewriter-local",
     "generate-examples:js": "node ./dist/src/index.js gen-js --inputPath ./examples/local-tracking-plans/tracking-plan-web.json --outputPath ./examples/js/pages/generated",

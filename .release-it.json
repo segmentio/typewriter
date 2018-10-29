@@ -1,4 +1,3 @@
 {
-  "src.beforeStartCommand": "yarn test",
   "buildCommand": "yarn build && yarn generate-examples && yarn test -u"
 }
