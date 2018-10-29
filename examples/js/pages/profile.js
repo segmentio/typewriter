@@ -1,10 +1,11 @@
 import React from 'react'
 import Layout from '../components/Layout'
-import * as analytics from './generated'
+import Analytics from './generated'
 
 export default class Profile extends React.Component {
   componentDidMount() {
-    analytics.profileViewed({ profileId: '3' })
+    const appAnalytics = new Analytics(window.analytics)
+    appAnalytics.profileViewed({ profileId: '3' })
   }
   render() {
     return (

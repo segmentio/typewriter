@@ -96,7 +96,7 @@ export default class Analytics {
     this.analytics.track(
       "42_--terrible==event++name~!3",
       props,
-      genOptions(ctx)
+      genOptions(context)
     );
   }
   emptyEvent(props, context) {
@@ -163,7 +163,7 @@ export default class Analytics {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
     }
-    this.analytics.track("Empty Event", props, genOptions(ctx));
+    this.analytics.track("Empty Event", props, genOptions(context));
   }
   exampleEvent(props, context) {
     if (this.propertyValidation) {
@@ -1044,6 +1044,6 @@ export default class Analytics {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
     }
-    this.analytics.track("Example Event", props, genOptions(ctx));
+    this.analytics.track("Example Event", props, genOptions(context));
   }
 }

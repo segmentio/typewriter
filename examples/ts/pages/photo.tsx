@@ -4,10 +4,11 @@ import Layout from '../components/Layout'
 import * as analytics from './generated'
 
 export default class Photo extends React.Component<any> {
-  componentDidMount() {
+  public componentDidMount() {
     analytics.photoViewed({ photoId: '3' })
   }
-  render() {
+
+  public render() {
     return (
       <Layout>
       <div className='permalink'>
