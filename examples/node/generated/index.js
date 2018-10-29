@@ -28,7 +28,7 @@ class Analytics {
   }
   orderCompleted(message, callback) {
     if (this.propertyValidation) {
-      const validate = function(
+      var validate = function(
         data,
         dataPath,
         parentData,

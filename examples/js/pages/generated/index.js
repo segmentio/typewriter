@@ -28,7 +28,7 @@ export default class Analytics {
   }
   feedViewed(props, context) {
     if (this.propertyValidation) {
-      const validate = function(
+      var validate = function(
         data,
         dataPath,
         parentData,
@@ -114,7 +114,7 @@ export default class Analytics {
   }
   photoViewed(props, context) {
     if (this.propertyValidation) {
-      const validate = function(
+      var validate = function(
         data,
         dataPath,
         parentData,
@@ -200,7 +200,7 @@ export default class Analytics {
   }
   profileViewed(props, context) {
     if (this.propertyValidation) {
-      const validate = function(
+      var validate = function(
         data,
         dataPath,
         parentData,
