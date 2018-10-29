@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "Example app showcasing Typewriter in Javascript",
   "scripts": {
-    "build": "npm run typewriter-local && next build",
-    "dev": "npm run typewriter-local && next",
+    "build": "yarn run typewriter-local && next build",
+    "preinstall": "cd ../.. && yarn link",
+    "dev": "yarn run typewriter-local && next",
     "typewriter-remote": "typewriter gen-js --trackingPlanId {YOUR_TRACKING_PLAN_ID} --workspaceSlug {YOUR_WORKSPACE_SLUG} --token {YOUR_API_TOKEN} --outputPath ./pages/generated",
     "typewriter-local": "typewriter gen-js --inputPath ../local-tracking-plans/tracking-plan-web.json --outputPath ./pages/generated",
     "generate": "yarn run typewriter-local"
@@ -16,9 +17,6 @@
     "next": "^4.2.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
-  },
-  "devDependencies": {
-    "typewriter": "1.0.0"
   },
   "main": "index.js",
   "private": false

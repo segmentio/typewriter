@@ -3,10 +3,11 @@ import Layout from '../components/Layout'
 import * as analytics from './generated'
 
 export default class Profile extends React.Component<any> {
-  componentDidMount() {
+  public componentDidMount() {
     analytics.profileViewed({ profileId: '3' })
   }
-  render() {
+
+  public render() {
     return (
       <Layout>
         <div className='main'>

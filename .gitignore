@@ -70,3 +70,6 @@ dist
 .rpt2_cache
 
 .DS_Store
+
+# We use yarn.lock
+package-lock.json
