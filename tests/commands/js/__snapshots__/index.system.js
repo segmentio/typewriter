@@ -107,7 +107,7 @@ System.register([], function(exports_1, context_1) {
           this.analytics.track(
             "42_--terrible==event++name~!3",
             props,
-            genOptions(ctx)
+            genOptions(context)
           );
         }
         emptyEvent(props, context) {
@@ -178,7 +178,7 @@ System.register([], function(exports_1, context_1) {
               throw new Error(JSON.stringify(validate.errors, null, 2));
             }
           }
-          this.analytics.track("Empty Event", props, genOptions(ctx));
+          this.analytics.track("Empty Event", props, genOptions(context));
         }
         exampleEvent(props, context) {
           if (this.propertyValidation) {
@@ -1104,7 +1104,7 @@ System.register([], function(exports_1, context_1) {
               throw new Error(JSON.stringify(validate.errors, null, 2));
             }
           }
-          this.analytics.track("Example Event", props, genOptions(ctx));
+          this.analytics.track("Example Event", props, genOptions(context));
         }
       };
       exports_1("default", Analytics);

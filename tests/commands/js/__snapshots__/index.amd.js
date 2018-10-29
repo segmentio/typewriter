@@ -99,7 +99,7 @@ define(["require", "exports"], function(require, exports) {
       this.analytics.track(
         "42_--terrible==event++name~!3",
         props,
-        genOptions(ctx)
+        genOptions(context)
       );
     }
     emptyEvent(props, context) {
@@ -166,7 +166,7 @@ define(["require", "exports"], function(require, exports) {
           throw new Error(JSON.stringify(validate.errors, null, 2));
         }
       }
-      this.analytics.track("Empty Event", props, genOptions(ctx));
+      this.analytics.track("Empty Event", props, genOptions(context));
     }
     exampleEvent(props, context) {
       if (this.propertyValidation) {
@@ -1063,7 +1063,7 @@ define(["require", "exports"], function(require, exports) {
           throw new Error(JSON.stringify(validate.errors, null, 2));
         }
       }
-      this.analytics.track("Example Event", props, genOptions(ctx));
+      this.analytics.track("Example Event", props, genOptions(context));
     }
   }
   exports.default = Analytics;
