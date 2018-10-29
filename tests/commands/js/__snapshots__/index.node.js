@@ -28,7 +28,7 @@ class Analytics {
   }
   terribleEventName3(message, callback) {
     if (this.propertyValidation) {
-      const validate = function(
+      var validate = function(
         data,
         dataPath,
         parentData,
@@ -100,7 +100,7 @@ class Analytics {
   }
   emptyEvent(message, callback) {
     if (this.propertyValidation) {
-      const validate = function(
+      var validate = function(
         data,
         dataPath,
         parentData,
@@ -169,7 +169,8 @@ class Analytics {
   }
   exampleEvent(message, callback) {
     if (this.propertyValidation) {
-      const validate = function(
+      var pattern0 = new RegExp("FOO|BAR");
+      var validate = function(
         data,
         dataPath,
         parentData,

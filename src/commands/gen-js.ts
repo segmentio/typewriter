@@ -61,7 +61,7 @@ export async function genJS(
   client = Client.js
 ) {
   // Force draft-04 compatibility mode for Ajv (defaults to 06)
-  const ajv = new Ajv({ schemaId: 'id', allErrors: true })
+  const ajv = new Ajv({ schemaId: 'id', allErrors: true, sourceCode: true })
   ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
 
   const fileHeader = `
@@ -99,7 +99,9 @@ export async function genJS(
       // In JSON Schema Draft-04, required must have at least one element.
       // Therefore, we strip `required: []` from your rules so this error isn't surfaced.
       removeEmptyRequireds(rules)
-      const compiledValidationFn = ajv.compile(omitDeep(rules, 'id'))
+      // source is just an object; TODO: an upstream PR to specify the type of `source`
+      const compiledValidationSource: any = ajv.compile(omitDeep(rules, 'id')).source
+      const compiledValidationFn = compiledValidationSource.code.replace(/return validate;/, '')
 
       let parameters: string
       let trackCall: string
@@ -124,7 +126,7 @@ export async function genJS(
       ${code}
       ${sanitizedFnName}(${parameters}) {
         if (this.propertyValidation) {
-          const validate = ${compiledValidationFn}
+          ${compiledValidationFn}
           var valid = ${validateCall};
           if (!valid) {
             throw new Error(JSON.stringify(validate.errors, null, 2));

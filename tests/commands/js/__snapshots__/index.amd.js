@@ -31,7 +31,7 @@ define(["require", "exports"], function(require, exports) {
     }
     terribleEventName3(props, context) {
       if (this.propertyValidation) {
-        const validate = function(
+        var validate = function(
           data,
           dataPath,
           parentData,
@@ -104,7 +104,7 @@ define(["require", "exports"], function(require, exports) {
     }
     emptyEvent(props, context) {
       if (this.propertyValidation) {
-        const validate = function(
+        var validate = function(
           data,
           dataPath,
           parentData,
@@ -170,7 +170,8 @@ define(["require", "exports"], function(require, exports) {
     }
     exampleEvent(props, context) {
       if (this.propertyValidation) {
-        const validate = function(
+        var pattern0 = new RegExp("FOO|BAR");
+        var validate = function(
           data,
           dataPath,
           parentData,

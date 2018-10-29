@@ -35,7 +35,7 @@ System.register([], function(exports_1, context_1) {
         }
         terribleEventName3(props, context) {
           if (this.propertyValidation) {
-            const validate = function(
+            var validate = function(
               data,
               dataPath,
               parentData,
@@ -112,7 +112,7 @@ System.register([], function(exports_1, context_1) {
         }
         emptyEvent(props, context) {
           if (this.propertyValidation) {
-            const validate = function(
+            var validate = function(
               data,
               dataPath,
               parentData,
@@ -182,7 +182,8 @@ System.register([], function(exports_1, context_1) {
         }
         exampleEvent(props, context) {
           if (this.propertyValidation) {
-            const validate = function(
+            var pattern0 = new RegExp("FOO|BAR");
+            var validate = function(
               data,
               dataPath,
               parentData,

@@ -28,7 +28,7 @@ export default class Analytics {
   }
   terribleEventName3(props, context) {
     if (this.propertyValidation) {
-      const validate = function(
+      var validate = function(
         data,
         dataPath,
         parentData,
@@ -101,7 +101,7 @@ export default class Analytics {
   }
   emptyEvent(props, context) {
     if (this.propertyValidation) {
-      const validate = function(
+      var validate = function(
         data,
         dataPath,
         parentData,
@@ -167,7 +167,8 @@ export default class Analytics {
   }
   exampleEvent(props, context) {
     if (this.propertyValidation) {
-      const validate = function(
+      var pattern0 = new RegExp("FOO|BAR");
+      var validate = function(
         data,
         dataPath,
         parentData,
