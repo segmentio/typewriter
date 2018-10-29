@@ -45,7 +45,7 @@
     "prepare": "yarn run build",
     "lint": "tslint src/**/*.ts",
     "precommit": "lint-staged",
-    "release": "yarn build && release-it",
+    "release": "yarn test && release-it",
     "generate-examples:android": "cd examples/android/java && make typewriter-local",
     "generate-examples:ios": "cd examples/ios/objectivec && make typewriter-local",
     "generate-examples:js": "cd ./examples/js && yarn && yarn run typewriter-local",

@@ -1,0 +1,3 @@
+{
+  "buildCommand": "yarn build && yarn generate-examples && yarn test -u"
+}
