@@ -5,7 +5,7 @@ const genOptions = (context = { library: {} }) => ({
       ...context.library,
       typewriter: {
         name: "gen-js",
-        version: "3.2.0"
+        version: "3.2.1"
       }
     }
   }
@@ -110,7 +110,7 @@ export default class Analytics {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
     }
-    this.analytics.track("Feed Viewed", props, genOptions(ctx));
+    this.analytics.track("Feed Viewed", props, genOptions(context));
   }
   photoViewed(props, context) {
     if (this.propertyValidation) {
@@ -196,7 +196,7 @@ export default class Analytics {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
     }
-    this.analytics.track("Photo Viewed", props, genOptions(ctx));
+    this.analytics.track("Photo Viewed", props, genOptions(context));
   }
   profileViewed(props, context) {
     if (this.propertyValidation) {
@@ -282,6 +282,6 @@ export default class Analytics {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
     }
-    this.analytics.track("Profile Viewed", props, genOptions(ctx));
+    this.analytics.track("Profile Viewed", props, genOptions(context));
   }
 }

@@ -1,11 +1,12 @@
 import React from 'react'
 import Frame from '../components/Frame'
 import Layout from '../components/Layout'
-import * as analytics from './generated'
+import Analytics from './generated'
 
 export default class Photo extends React.Component {
   componentDidMount() {
-    analytics.photoViewed({ photoID: '3' })
+    const appAnalytics = new Analytics(window.analytics)
+    appAnalytics.photoViewed({ photoID: '3' })
   }
   render() {
     return (

@@ -48,9 +48,9 @@
     "release": "yarn test && release-it",
     "generate-examples:android": "cd examples/android/java && make typewriter-local",
     "generate-examples:ios": "cd examples/ios/objectivec && make typewriter-local",
-    "generate-examples:js": "node ./dist/src/index.js gen-js --inputPath ./examples/local-tracking-plans/tracking-plan-web.json --outputPath ./examples/js/pages/generated",
-    "generate-examples:ts": "node ./dist/src/index.js gen-ts --inputPath ./examples/local-tracking-plans/tracking-plan-web.json --outputPath ./examples/ts/pages/generated",
-    "generate-examples:node": "node ./dist/src/index.js gen-js --inputPath ./examples/local-tracking-plans/tracking-plan-mobile.json --outputPath ./examples/node/generated --module CommonJS --target ES2017 --client node",
+    "generate-examples:js": "cd ./examples/js && yarn && yarn run typewriter-local",
+    "generate-examples:ts": "cd ./examples/ts && yarn && yarn run typewriter-local",
+    "generate-examples:node": "cd ./examples/node && yarn && yarn run typewriter-local",
     "generate-examples": "run-p generate-examples:*"
   },
   "dependencies": {

@@ -5,6 +5,7 @@
     "dev": "npm run typewriter-local && next",
     "build": "npm run typewriter-local && next build",
     "start": "next start",
+    "preinstall": "cd ../.. && yarn link",
     "typewriter-remote": "typewriter gen-ts --trackingPlanId {YOUR_TRACKING_PLAN_ID} --workspaceSlug {YOUR_WORKSPACE_SLUG} --token {YOUR_API_TOKEN} --outputPath ./pages/generated",
     "typewriter-local": "typewriter gen-ts --inputPath ../local-tracking-plans/tracking-plan-web.json --outputPath ./pages/generated",
     "generate": "yarn run typewriter-local"
@@ -21,8 +22,7 @@
     "@types/next": "^7.0.1",
     "@types/react": "^16.0.36",
     "@types/styled-jsx": "^2.2.3",
-    "fork-ts-checker-webpack-plugin": "^0.4.3",
-    "typewriter": "1.0.0"
+    "fork-ts-checker-webpack-plugin": "^0.4.3"
   },
   "license": "MIT",
   "babel": {

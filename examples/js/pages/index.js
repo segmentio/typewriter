@@ -3,7 +3,7 @@ import Router from 'next/router'
 import Modal from '../components/Modal'
 import Layout from '../components/Layout'
 
-import * as analytics from './generated'
+import Analytics from './generated'
 
 export default class extends React.Component {
   static getInitialProps () {
@@ -13,7 +13,8 @@ export default class extends React.Component {
   }
 
   componentDidMount () {
-    analytics.feedViewed({ profileId: '3' })
+    const appAnalytics = new Analytics(window.analytics)
+    appAnalytics.feedViewed({ profileId: '3' })
   }
 
   dismissModal () {
