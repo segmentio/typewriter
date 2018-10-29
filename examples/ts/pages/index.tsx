@@ -5,26 +5,26 @@ import Layout from '../components/Layout'
 import * as analytics from './generated'
 
 export default class extends React.Component<any> {
-  static getInitialProps () {
+  public static getInitialProps () {
     return {
       photos: new Array(15).fill(0).map((_, k) => k + 1)
     }
   }
 
-  componentDidMount () {
+  public componentDidMount () {
     analytics.feedViewed({ profileId: '3' })
   }
 
-  dismissModal () {
+  public dismissModal () {
     Router.push('/')
   }
 
-  showPhoto (e, id) {
+  public showPhoto (e, id) {
     e.preventDefault()
     Router.push(`/?photoId=${id}`, `/photo?id=${id}`)
   }
 
-  render () {
+  public render () {
     const { url, photos } = this.props
 
     return (
