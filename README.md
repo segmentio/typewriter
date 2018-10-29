@@ -1,6 +1,21 @@
-# Typewriter [![CircleCI][circle-badge]][circle-link] [![npm-version][npm-badge]][npm-link] [![license][license-badge]][license-link]
+<div align="center">
+	<br>
+	<br>
+  <img src=".github/assets/typewriter-logo.svg" alt="Typewriter logo" />
+  <br>
+  <br>
+  <br>
+  <br>
+</div>
 
-<!-- Placeholder for design-team assets -->
+
+
+<div align="center">
+
+[![CircleCI][circle-badge]][circle-link] [![npm-version][npm-badge]][npm-link] [![license][license-badge]][license-link]
+</div>
+
+
 <p align="center">
   <img src=".github/assets/readme-example.gif" alt="Typewriter GIF Example" width="70%"/>
 </p>
@@ -268,7 +283,7 @@ Great! You're now setup to follow any of the [quickstarts above](#quickstarts)!
 
 [circle-badge]: https://circleci.com/gh/segmentio/typewriter.svg?style=svg&circle-token=8c1e734c99bdc08170e12d85af7a371900e33e96
 [circle-link]: https://circleci.com/gh/segmentio/typewriter
-[npm-badge]: https://img.shields.io/npm/v/typewriter.svg?style=flat-square
+[npm-badge]: https://img.shields.io/npm/v/typewriter.svg
 [npm-link]: http://www.npmjs.com/package/typewriter
 [license-badge]: https://img.shields.io/npm/l/typewriter.svg
 [license-link]: ./.github/LICENSE.md
