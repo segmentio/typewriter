@@ -4,7 +4,7 @@
   "description": "Example app showcasing Typewriter in Javascript",
   "scripts": {
     "build": "yarn run typewriter-local && next build",
-    "preinstall": "cd ../.. && yarn link",
+    "preinstall": "cd ../.. && npm link",
     "dev": "yarn run typewriter-local && next",
     "typewriter-remote": "typewriter gen-js --trackingPlanId {YOUR_TRACKING_PLAN_ID} --workspaceSlug {YOUR_WORKSPACE_SLUG} --token {YOUR_API_TOKEN} --outputPath ./pages/generated",
     "typewriter-local": "typewriter gen-js --inputPath ../local-tracking-plans/tracking-plan-web.json --outputPath ./pages/generated",
