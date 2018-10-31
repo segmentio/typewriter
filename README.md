@@ -10,9 +10,11 @@
 
 
 
-<p align="center">
+<div align="center">
+  <p align="center">
 
-[![CircleCI][circle-badge]][circle-link] [![npm-version][npm-badge]][npm-link] [![license][license-badge]][license-link]
+  [![CircleCI][circle-badge]][circle-link] [![npm-version][npm-badge]][npm-link] [![license][license-badge]][license-link]
+  </p>
 </p>
 
 
