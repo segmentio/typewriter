@@ -15,7 +15,7 @@
 
   [![CircleCI][circle-badge]][circle-link] [![npm-version][npm-badge]][npm-link] [![license][license-badge]][license-link]
   </p>
-</p>
+</div>
 
 
 <p align="center">
