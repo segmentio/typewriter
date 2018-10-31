@@ -5,8 +5,9 @@ Thank you for working with Segment and contributing to its projects. To contribu
 By contributing to a Segment project, You agree to these terms for all of your Contributions to Segment.
 
 1. Definitions.
+  <br/><br/>
   “You” (or “Your”) is the owner of copyright, or an entity or person the copyright owner authorizes, making a to Contribution this project and contracting with Segment.
-  
+  <br/><br/>
   “Contribution” is any original work of authorship or invention, including any modifications or additions to an existing work, that You submit to Segment to include in, or documentation of, the products owned or managed by Segment (the “Work”).  A contribution includes any communication to Segment about or related to a Segment project using any form of electronic, verbal, or written communication, but excluding a communication conspicuously marked or otherwise designated in writing by You as “Not a Contribution.”
 
 2. Grant of Copyright License. You grant to Segment and to recipients of software Segment distributes a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable copyright license to reproduce, prepare derivative works of, publicly display, publicly perform, and distribute Your Contributions and such derivative works, and the right to sublicense and have sublicensed the foregoing rights, through multiple tiers of sublicensees.
