@@ -1,7 +1,7 @@
 <div align="center">
 	<br>
 	<br>
-  <img src=".github/assets/typewriter-logo.svg" alt="Typewriter logo" />
+  <img src=".github/assets/typewriter-logo.svg?sanitize=true" alt="Typewriter logo" />
   <br>
   <br>
   <br>
