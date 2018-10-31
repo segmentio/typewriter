@@ -1,4 +1,4 @@
-<div align="center">
+<p align="center">
 	<br>
 	<br>
   <img src=".github/assets/typewriter-logo.svg?sanitize=true" alt="Typewriter logo" />
@@ -6,14 +6,14 @@
   <br>
   <br>
   <br>
-</div>
+</p>
 
 
 
-<div align="center">
+<p align="center">
 
 [![CircleCI][circle-badge]][circle-link] [![npm-version][npm-badge]][npm-link] [![license][license-badge]][license-link]
-</div>
+</p>
 
 
 <p align="center">
