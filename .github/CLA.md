@@ -6,7 +6,7 @@ By contributing to a Segment project, You agree to these terms for all of your C
 
 1. Definitions.
   <br/><br/>
-  “You” (or “Your”) is the owner of copyright, or an entity or person the copyright owner authorizes, making a to Contribution this project and contracting with Segment.
+  “You” (or “Your”) is the owner of copyright, or an entity or person the copyright owner authorizes, making a Contribution to this project and contracting with Segment.
   <br/><br/>
   “Contribution” is any original work of authorship or invention, including any modifications or additions to an existing work, that You submit to Segment to include in, or documentation of, the products owned or managed by Segment (the “Work”).  A contribution includes any communication to Segment about or related to a Segment project using any form of electronic, verbal, or written communication, but excluding a communication conspicuously marked or otherwise designated in writing by You as “Not a Contribution.”
 
@@ -22,7 +22,7 @@ By contributing to a Segment project, You agree to these terms for all of your C
 
 7. You are not expected to provide support for Your Submission, unless You choose to.  Unless required by law or agreed to in writing, You provide Your Contributions on an “AS IS” BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied, including, without limitation, any warranties or conditions of title, non-infringement, merchantability, or fitness for a particular purpose.
 
-8. Should You wish to submit work that is not Your original creation, You may submit it to Segment separately from any Contribution, identifying the complete details of its source and of any license or other restriction (including, but not limited to, related patents, trademarks, and license agreements) and conspicuously marking the work as “Not a Contribution. Third-party materials licensed pursuant to: [license name(s) here]”.
+8. Should You wish to submit work that is not Your original creation, You may submit it to Segment separately from any Contribution, identifying the complete details of its source and of any license or other restriction (including, but not limited to, related patents, trademarks, and license agreements) and conspicuously marking the work as “Not a Contribution. Third-party materials licensed pursuant to: MIT”.
 
 9. You agree to notify Segment of any facts or circumstances of which you learn would make these representations inaccurate.
 
