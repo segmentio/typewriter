@@ -1,13 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const genOptions = (context = { library: {} }) => ({
+const genOptions = (context = {}) => ({
   context: Object.assign({}, context, {
-    library: Object.assign({}, context.library, {
-      typewriter: {
-        name: "gen-js",
-        version: "3.2.5"
-      }
-    })
+    typewriter: {
+      name: "gen-js",
+      version: "3.2.5"
+    }
   })
 });
 class Analytics {

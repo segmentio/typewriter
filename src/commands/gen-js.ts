@@ -65,15 +65,12 @@ export async function genJS(
   ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
 
   const fileHeader = `
-    const genOptions = (context = { library: {} }) => ({
+    const genOptions = (context = {}) => ({
       context: {
         ...context,
-        library: {
-          ...context.library,
-          typewriter: {
-            name: "${command}",
-            version: "${version}"
-          }
+        typewriter: {
+          name: "${command}",
+          version: "${version}"
         }
       }
     })

@@ -22,6 +22,7 @@ import {
   builder as defaultBuilder,
   Params as DefaultParams
 } from '../lib'
+import { version } from '../../package.json'
 import * as fs from 'fs'
 import * as util from 'util'
 import { map, camelCase, upperFirst } from 'lodash'
@@ -222,12 +223,52 @@ class AnalyticsObjectiveCWrapperRenderer extends ObjectiveCRenderer {
     this.finishFile()
   }
 
+  protected emitTypewriterContextFields() {
+    this.emitBlock(
+      'static NSDictionary<NSString *, id> *_Nullable addTypewriterContextFields(NSDictionary<NSString *, id> *_Nullable options)',
+      () => {
+        this.emitLine('options = options ?: @{};')
+        this.emitLine('NSDictionary<NSString *, id> *customContext = options[@"context"] ?: @{};')
+        this.emitLine('NSDictionary<NSString *, id> *typewriterContext = @{')
+        this.emitLine('                                                    @"typewriter": @{')
+        this.emitLine(
+          '                                                            @"name": @"',
+          command,
+          '",'
+        )
+        this.emitLine(
+          '                                                            @"version": @"',
+          version,
+          '"'
+        )
+        this.emitLine('                                                            }')
+        this.emitLine('                                                    };')
+        this.emitLine(
+          'NSMutableDictionary *context = [NSMutableDictionary dictionaryWithCapacity:customContext.count + typewriterContext.count];'
+        )
+        this.emitLine('[context addEntriesFromDictionary:customContext];')
+        this.emitLine('[context addEntriesFromDictionary:typewriterContext];')
+        this.emitLine('')
+        this.emitLine(
+          'NSMutableDictionary *newOptions = [NSMutableDictionary dictionaryWithCapacity:options.count + 1];'
+        )
+        this.emitLine('[newOptions addEntriesFromDictionary:options];')
+        this.emitLine('[newOptions addEntriesFromDictionary:@{')
+        this.emitLine('                                       @"context": context')
+        this.emitLine('                                       }];')
+        this.emitLine('return newOptions;')
+      }
+    )
+  }
+
   protected emitImplementationHelpers() {
     this.emitLine(`#define λ(decl, expr) (^(decl) { return (expr); })`)
     this.ensureBlankLine()
     this.emitBlock('static id NSNullify(id _Nullable x)', () =>
       this.emitLine('return (x == nil || x == NSNull.null) ? NSNull.null : x;')
     )
+    this.ensureBlankLine()
+    this.emitTypewriterContextFields()
   }
 
   protected emitDictionaryPruner() {
@@ -352,13 +393,17 @@ class AnalyticsObjectiveCWrapperRenderer extends ObjectiveCRenderer {
         options.withOptions ? ' withOptions:(NSDictionary<NSString *, id> *_Nullable)options' : ''
       ],
       () => {
-        this.emitLine([
-          '[self.analytics track:@"',
-          this.rawName(name),
-          '" properties:[props JSONDictionary]',
-          options.withOptions ? ' options:options' : '',
-          '];'
-        ])
+        if (options.withOptions) {
+          this.emitLine([
+            '[self.analytics track:@"',
+            this.rawName(name),
+            '" properties:[props JSONDictionary]',
+            options.withOptions ? ' options:addTypewriterContextFields(options)' : '',
+            '];'
+          ])
+        } else {
+          this.emitLine(['[self ', camelCaseName, ':props withOptions:@{}];'])
+        }
       }
     )
   }

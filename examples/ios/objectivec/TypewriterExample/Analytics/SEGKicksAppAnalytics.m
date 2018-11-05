@@ -9,6 +9,27 @@ static id NSNullify(id _Nullable x) {
     return (x == nil || x == NSNull.null) ? NSNull.null : x;
 }
 
+static NSDictionary<NSString *, id> *_Nullable addTypewriterContextFields(NSDictionary<NSString *, id> *_Nullable options) {
+    options = options ?: @{};
+    NSDictionary<NSString *, id> *customContext = options[@"context"] ?: @{};
+    NSDictionary<NSString *, id> *typewriterContext = @{
+                                                        @"typewriter": @{
+                                                                @"name": @"gen-ios",
+                                                                @"version": @"3.2.5"
+                                                                }
+                                                        };
+    NSMutableDictionary *context = [NSMutableDictionary dictionaryWithCapacity:customContext.count + typewriterContext.count];
+    [context addEntriesFromDictionary:customContext];
+    [context addEntriesFromDictionary:typewriterContext];
+    
+    NSMutableDictionary *newOptions = [NSMutableDictionary dictionaryWithCapacity:options.count + 1];
+    [newOptions addEntriesFromDictionary:options];
+    [newOptions addEntriesFromDictionary:@{
+                                           @"context": context
+                                           }];
+    return newOptions;
+}
+
 NS_ASSUME_NONNULL_BEGIN
 
 static id prune(NSDictionary *dict) {
@@ -198,11 +219,11 @@ static id map(id collection, id (^f)(id value)) {
 
 - (void)orderCompleted:(SEGOrderCompleted *)props
 {
-    [self.analytics track:@"Order Completed" properties:[props JSONDictionary]];
+    [self orderCompleted:props withOptions:@{}];
 }
 - (void)orderCompleted:(SEGOrderCompleted *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options
 {
-    [self.analytics track:@"Order Completed" properties:[props JSONDictionary] options:options];
+    [self.analytics track:@"Order Completed" properties:[props JSONDictionary] options:addTypewriterContextFields(options)];
 }
 @end
 
