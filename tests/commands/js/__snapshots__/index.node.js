@@ -13,15 +13,13 @@ const genOptions = (context = { library: {} }) => ({
 class Analytics {
   /**
    * Instantiate a wrapper around an analytics library instance
-   * @param {Analytics} analytics - The ajs or analytics-node library to wrap
+   * @param {Analytics} analytics - The analytics-node library to wrap
    * @param {Object} config - A configuration object to customize runtime behavior
    */
   constructor(analytics, options = {}) {
     const { propertyValidation = true } = options;
     if (!analytics) {
-      throw new Error(
-        "An instance of analytics.js or analytics-node must be provided"
-      );
+      throw new Error("An instance of analytics-node must be provided");
     }
     this.analytics = analytics;
     this.propertyValidation = propertyValidation;

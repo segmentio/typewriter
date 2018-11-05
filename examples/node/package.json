@@ -7,7 +7,7 @@
     "start": "node ./bin/www",
     "dev": "DEBUG=node:* yarn start",
     "typewriter-remote": "node ../../dist/src/index.js gen-js --trackingPlanId {YOUR_TRACKING_PLAN_ID} --workspaceSlug {YOUR_WORKSPACE_SLUG} --token {YOUR_API_TOKEN} --outputPath ./generated --module CommonJS --target ES2017 --client node",
-    "typewriter-local": "node ../../dist/src/index.js gen-js --inputPath ../local-tracking-plans/tracking-plan-mobile.json --outputPath ./generated --module CommonJS --target ES2017 --client node",
+    "typewriter-local": "node ../../dist/src/index.js gen-js --inputPath ../local-tracking-plans/tracking-plan-mobile.json --outputPath ./analytics/generated --module CommonJS --target ES2017 --client node --declarations ts",
     "generate": "yarn run typewriter-local"
   },
   "dependencies": {

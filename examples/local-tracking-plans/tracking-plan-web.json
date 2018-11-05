@@ -5,10 +5,10 @@
       "rules": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "title": "Feed Viewed",
-        "description": "Fire this event whenever a checkout step is completed",
+        "description": "This event is fired when a feed has been viewed",
         "type": "object",
         "properties": {
-          "properties":{
+          "properties": {
             "type": "object",
             "properties": {
               "profile_id": {
@@ -16,22 +16,20 @@
                 "type": "string"
               }
             },
-            "required": [
-              "profile_id"
-            ]
+            "required": ["profile_id"]
           }
         }
       }
     },
     {
-      "name": "Photo Viewed",      
+      "name": "Photo Viewed",
       "rules": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "title": "Photo Viewed",
         "description": "This event is fired when a photo has been viewed",
         "type": "object",
         "properties": {
-          "properties":{
+          "properties": {
             "type": "object",
             "properties": {
               "photo_id": {
@@ -39,9 +37,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "photo_id"
-            ]
+            "required": ["photo_id"]
           }
         }
       }
@@ -50,11 +46,11 @@
       "name": "Profile Viewed",
       "rules": {
         "$schema": "http://json-schema.org/draft-04/schema#",
-        "title": "Profile Viewed",      
+        "title": "Profile Viewed",
         "description": "A user profile has been viewed",
         "type": "object",
         "properties": {
-          "properties":{
+          "properties": {
             "type": "object",
             "properties": {
               "profile_id": {
@@ -62,9 +58,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "profile_id"
-            ]
+            "required": ["profile_id"]
           }
         }
       }
