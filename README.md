@@ -27,7 +27,7 @@
 
 - **Cross-Language Support**: Supports native clients in [JavaScript](#javascript--typescript-quickstart), [TypeScript](#javascript--typescript-quickstart), [Node.js](#nodejs-quickstart), [Android](#android-quickstart) and [iOS](#ios-quickstart).
 
-- **Segment Protocols**: Built-in support to sync your clients with your centralized Tracking Plans.
+- **Segment Protocols**: Built-in support to sync your Typewriter clients with your [centralized Tracking Plans](https://segment.com/product/protocols/).
 
 ## Install
 
