@@ -6,19 +6,17 @@
   <br>
   <br>
   <br>
-</p>
 
+  <a href="https://circleci.com/gh/segmentio/typewriter">
+    <img src="https://circleci.com/gh/segmentio/typewriter.svg?style=svg&circle-token=8c1e734c99bdc08170e12d85af7a371900e33e96" alt="CircleCI Status">
+  </a>
+  <a href="http://www.npmjs.com/package/typewriter">
+    <img src="https://img.shields.io/npm/v/typewriter.svg" alt="NPM Version">
+  </a>
+  <a href="./.github/LICENSE.md">
+    <img src="https://img.shields.io/npm/l/typewriter.svg" alt="License">
+  </a>
 
-
-<div align="center">
-  <p align="center">
-
-  [![CircleCI][circle-badge]][circle-link] [![npm-version][npm-badge]][npm-link] [![license][license-badge]][license-link]
-  </p>
-</div>
-
-
-<p align="center">
   <img src=".github/assets/readme-example.gif" alt="Typewriter GIF Example" width="70%"/>
 </p>
 
@@ -278,10 +276,3 @@ Great! You're now setup to follow any of the [quickstarts above](#quickstarts)!
 
 - To submit an issue, bug report, or feature request, [file an issue here](issues).
 - To develop on Typewriter, see [CONTRIBUTING.md](./.github/CONTRIBUTING.md).
-
-[circle-badge]: https://circleci.com/gh/segmentio/typewriter.svg?style=svg&circle-token=8c1e734c99bdc08170e12d85af7a371900e33e96
-[circle-link]: https://circleci.com/gh/segmentio/typewriter
-[npm-badge]: https://img.shields.io/npm/v/typewriter.svg
-[npm-link]: http://www.npmjs.com/package/typewriter
-[license-badge]: https://img.shields.io/npm/l/typewriter.svg
-[license-link]: ./.github/LICENSE.md
