@@ -1,0 +1,151 @@
+{
+  "events": [
+    {
+      "name": "Order Completed",
+      "rules": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "context": {
+            "id": "/properties/context"
+          },
+          "traits": {
+            "id": "/properties/traits"
+          },
+          "properties": {
+            "type": "object",
+            "properties": {
+              "affiliation": {
+                "description": "Store or affiliation from which this transaction occurred (e.g. Google Store)",
+                "id": "/properties/properties/properties/affiliation",
+                "type": ["string"]
+              },
+              "checkout_id": {
+                "description": "Checkout ID",
+                "id": "/properties/properties/properties/checkout_id",
+                "type": ["string"]
+              },
+              "coupon": {
+                "description": "Transaction coupon redeemed with the transaction",
+                "id": "/properties/properties/properties/coupon",
+                "type": "string"
+              },
+              "currency": {
+                "description": "Currency code associated with the transaction",
+                "id": "/properties/properties/properties/currency",
+                "type": "string"
+              },
+              "discount": {
+                "description": "Total discount associated with the transaction",
+                "id": "/properties/properties/properties/discount",
+                "type": "number"
+              },
+              "order_id": {
+                "description": "Order/transaction ID",
+                "id": "/properties/properties/properties/order_id",
+                "type": ["string"]
+              },
+              "products": {
+                "description": "Products in the order",
+                "id": "/properties/properties/properties/products",
+                "items": {
+                  "id": "/properties/properties/properties/products/items",
+                  "properties": {
+                    "brand": {
+                      "description": "Brand associated with the product",
+                      "id": "/properties/properties/properties/products/items/properties/brand",
+                      "type": ["string"]
+                    },
+                    "category": {
+                      "description": "Product category being viewed",
+                      "id": "/properties/properties/properties/products/items/properties/category",
+                      "type": "string"
+                    },
+                    "coupon": {
+                      "description": "Coupon code associated with a product (e.g MAY_DEALS_3)",
+                      "id": "/properties/properties/properties/products/items/properties/coupon",
+                      "type": ["string"]
+                    },
+                    "image_url": {
+                      "description": "Image url of the product",
+                      "id": "/properties/properties/properties/products/items/properties/image_url",
+                      "type": ["string"]
+                    },
+                    "name": {
+                      "description": "Name of the product being viewed",
+                      "id": "/properties/properties/properties/products/items/properties/name",
+                      "type": ["string"]
+                    },
+                    "position": {
+                      "description": "Position in the product list (ex. 3)",
+                      "id": "/properties/properties/properties/products/items/properties/position",
+                      "type": ["integer"]
+                    },
+                    "price": {
+                      "description": "Price of the product being viewed",
+                      "id": "/properties/properties/properties/products/items/properties/price",
+                      "type": ["number"]
+                    },
+                    "product_id": {
+                      "description": "Database id of the product being viewed",
+                      "id": "/properties/properties/properties/products/items/properties/product_id",
+                      "type": ["string"]
+                    },
+                    "quantity": {
+                      "description": "Quantity of a product",
+                      "id": "/properties/properties/properties/products/items/properties/quantity",
+                      "type": ["number"]
+                    },
+                    "sku": {
+                      "description": "Sku of the product being viewed",
+                      "id": "/properties/properties/properties/products/items/properties/sku",
+                      "type": ["string"]
+                    },
+                    "url": {
+                      "description": "URL of the product page",
+                      "id": "/properties/properties/properties/products/items/properties/url",
+                      "type": ["string"]
+                    },
+                    "variant": {
+                      "description": "Variant of the product (e.g. Black)",
+                      "id": "/properties/properties/properties/products/items/properties/variant",
+                      "type": ["string"]
+                    }
+                  },
+                  "required": [],
+                  "type": "object"
+                },
+                "type": ["array"]
+              },
+              "revenue": {
+                "description": "Revenue associated with the transaction (excluding shipping and tax)",
+                "id": "/properties/properties/properties/revenue",
+                "type": "number"
+              },
+              "shipping": {
+                "description": "Shipping cost associated with the transaction",
+                "id": "/properties/properties/properties/shipping",
+                "type": "number"
+              },
+              "tax": {
+                "description": "Total tax associated with the transaction",
+                "id": "/properties/properties/properties/tax",
+                "type": ["number"]
+              },
+              "total": {
+                "description": "Revenue with discounts and coupons added in. Note that our Google Analytics Ecommerce destination accepts total or revenue, but not both. For better flexibility and total control over tracking, we let you decide how to calculate how coupons and discounts are applied",
+                "id": "/properties/properties/properties/total",
+                "type": ["number"]
+              }
+            },
+            "required": ["order_id"],
+            "id": "/properties/properties"
+          }
+        },
+        "required": ["properties"]
+      }
+    }
+  ],
+  "group_traits": null,
+  "identify_traits": []
+}
