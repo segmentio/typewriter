@@ -54,30 +54,24 @@ Typewriter supports generating clients from multiple events without collisions, 
   "events": [
     {
       "name": "Viewed Typewriter",
+      "description": "Fired when a user views the Typewriter landing page",
       "rules": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
-          "context": {
-            "id": "/properties/context"
-          },
-          "traits": {
-            "id": "/properties/traits"
-          },
           "properties": {
             "type": "object",
             "properties": {
               "user_id": {
-                "description": "The user viewing Typewriter",
-                "id": "/properties/properties/properties/user_id"
+                "type": "string",
+                "description": "The user viewing Typewriter"
               }
-            },
-            "id": "/properties/properties"
+            }
           }
         },
         "required": ["properties"]
       }
-    },
+    }
   ]
 }
 ```
@@ -96,13 +90,14 @@ Typewriter currently uses JSON Schema [`draft-04`](https://github.com/json-schem
 First, generate a Typewriter client from [your schema](#json-schema-setup):
 
 ```sh
-# For TypeScript, use gen-ts
 $ typewriter gen-js \
   --inputPath ./schema.json \
-  --outputPath ./generated
+  --outputPath ./generated \
+  --declarations ts
 ```
 
 > By default, the JavaScript client is generated as ES6.  To customize the language target (and module format), use the `--target` and `--module` flags (run `typewriter gen-js --help` to see all available module formats and target syntaxes)
+
 <!-- TODO: Add table walking through the target/module flags. -->
 
 Then, import [`analytics.js`](https://segment.com/docs/sources/website/analytics.js/quickstart/) and the generated Typewriter client to start making type-safe calls!
@@ -112,12 +107,12 @@ import * as analytics from './generated'
 
 // ...
 
-analytics.feedViewed({
-  profileId: '42'
+analytics.viewedTypewriter({
+  profile_id: '1234'
 })
 ```
 
-To see a full working example, see the [JavaScript example here](./examples/js) or the [TypeScript example here](./examples/ts).
+To see a full working example, see the [JavaScript example here](./examples/gen-js/js) or the [TypeScript example here](./examples/gen-js/ts).
 
 We recommend that you add client generation as a `package.json` command:
 
@@ -140,7 +135,8 @@ $ typewriter gen-js \
   --outputPath ./generated \
   --client node \
   --target "ES2017" \
-  --module "CommonJS"
+  --module "CommonJS" \
+  --declarations ts
 ```
 
 Then, import [`analytics-node`](https://segment.com/docs/sources/server/node/quickstart/) and the generated Typewriter client to start making type-safe calls!
@@ -150,16 +146,16 @@ const analytics = require('./generated')
 
 // ...
 
-analytics.feedViewed({
+analytics.viewedTypewriter({
   properties: {
-    profileId: '42'
+    user_id: '1234'
   }
 })
 ```
 
-To see a full working example, see the [Node.js example here](./examples/node).
+To see a full working example, see the [Node.js example here](./examples/gen-js/node).
 
-We recommend that you add client generation as [a `package.json` command](#javascript--typescript-quickstart).
+We recommend that you add client generation as a [`package.json` command](#javascript--typescript-quickstart).
 
 ### Android Quickstart
 
@@ -200,7 +196,7 @@ OrderCompleted order = new OrderCompleted.Builder()
 this.kicksAppAnalytics.orderCompleted(order);
 ```
 
-To see a full working example, see the [Android Java example here](./examples/android/java).
+To see a full working example, see the [Android Java example here](./examples/gen-android/java).
 
 <!-- TODO: Add a recommendation on how to run Typewriter in an Android build environment. -->
 <!-- TODO: Add a recommendation on how to run Typewriter in a Kotlin environment. -->
@@ -239,7 +235,7 @@ SEGOrderCompleted *order = [SEGOrderCompletedBuilder initWithBlock:^(SEGOrderCom
 [self.kicksAppAnalytics orderCompleted:order];
 ```
 
-To see a full working example, see the [iOS Objective C example here](./examples/ios/objectivec).
+To see a full working example, see the [iOS Objective C example here](./examples/gen-ios/objectivec).
 
 <!-- TODO: Add a recommendation on how to run Typewriter in an iOS build environment. -->
 <!-- TODO: Add a recommendation on how to run Typewriter in a Swift environment. -->
@@ -251,7 +247,7 @@ If you use [Segment Protocols](https://segment.com/product/protocols), you can a
 You'll need to first generate an API token:
 ```sh
 $ USER=me@example.com
-$ PASS=<redacted>
+$ PASS=foobar
 
 $ curl \
   -d '{"access_token": {"description": "Typewriter Personal Access Token", "scopes": "workspace:read"}}' \
@@ -266,7 +262,7 @@ $ curl \
 }
 ```
 
-Then, instead of passing an `inputPath`, pass your `trackingPlanId`, `workspaceSlug` and `token`. You find the first two in the URL when viewing your Tracking Plan: `https://app.segment.com/<WORKSPACE_SLUG>/protocols/tracking-plans/<TRACKING_PLAN_ID>`
+Then, instead of passing an `inputPath`, pass your `trackingPlanId`, `workspaceSlug` and `token`. You'll find the first two in the URL when viewing your Tracking Plan: `https://app.segment.com/<WORKSPACE_SLUG>/protocols/tracking-plans/<TRACKING_PLAN_ID>`
 
 ```sh
 $ typewriter gen-js \
