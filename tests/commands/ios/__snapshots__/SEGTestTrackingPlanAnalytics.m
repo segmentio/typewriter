@@ -9,6 +9,27 @@ static id NSNullify(id _Nullable x) {
     return (x == nil || x == NSNull.null) ? NSNull.null : x;
 }
 
+static NSDictionary<NSString *, id> *_Nullable addTypewriterContextFields(NSDictionary<NSString *, id> *_Nullable options) {
+    options = options ?: @{};
+    NSDictionary<NSString *, id> *customContext = options[@"context"] ?: @{};
+    NSDictionary<NSString *, id> *typewriterContext = @{
+                                                        @"typewriter": @{
+                                                                @"name": @"gen-ios",
+                                                                @"version": @"3.2.5"
+                                                                }
+                                                        };
+    NSMutableDictionary *context = [NSMutableDictionary dictionaryWithCapacity:customContext.count + typewriterContext.count];
+    [context addEntriesFromDictionary:customContext];
+    [context addEntriesFromDictionary:typewriterContext];
+    
+    NSMutableDictionary *newOptions = [NSMutableDictionary dictionaryWithCapacity:options.count + 1];
+    [newOptions addEntriesFromDictionary:options];
+    [newOptions addEntriesFromDictionary:@{
+                                           @"context": context
+                                           }];
+    return newOptions;
+}
+
 NS_ASSUME_NONNULL_BEGIN
 
 static id prune(NSDictionary *dict) {
@@ -455,29 +476,29 @@ static id map(id collection, id (^f)(id value)) {
 
 - (void)the42TerribleEventName3:(SEGThe42_TerribleEventName3 *)props
 {
-    [self.analytics track:@"42_--terrible==event++name~!3" properties:[props JSONDictionary]];
+    [self the42TerribleEventName3:props withOptions:@{}];
 }
 - (void)the42TerribleEventName3:(SEGThe42_TerribleEventName3 *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options
 {
-    [self.analytics track:@"42_--terrible==event++name~!3" properties:[props JSONDictionary] options:options];
+    [self.analytics track:@"42_--terrible==event++name~!3" properties:[props JSONDictionary] options:addTypewriterContextFields(options)];
 }
 
 - (void)emptyEvent:(SEGEmptyEvent *)props
 {
-    [self.analytics track:@"Empty Event" properties:[props JSONDictionary]];
+    [self emptyEvent:props withOptions:@{}];
 }
 - (void)emptyEvent:(SEGEmptyEvent *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options
 {
-    [self.analytics track:@"Empty Event" properties:[props JSONDictionary] options:options];
+    [self.analytics track:@"Empty Event" properties:[props JSONDictionary] options:addTypewriterContextFields(options)];
 }
 
 - (void)exampleEvent:(SEGExampleEvent *)props
 {
-    [self.analytics track:@"Example Event" properties:[props JSONDictionary]];
+    [self exampleEvent:props withOptions:@{}];
 }
 - (void)exampleEvent:(SEGExampleEvent *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options
 {
-    [self.analytics track:@"Example Event" properties:[props JSONDictionary] options:options];
+    [self.analytics track:@"Example Event" properties:[props JSONDictionary] options:addTypewriterContextFields(options)];
 }
 @end
 
