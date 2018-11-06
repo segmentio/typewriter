@@ -67,7 +67,6 @@
     "omit-deep-lodash": "^1.1.2",
     "quicktype": "^15.0.144",
     "quicktype-core": "^6.0.2",
-    "reasonably-typed": "^0.13",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
     "ts-node": "^6.1.0",

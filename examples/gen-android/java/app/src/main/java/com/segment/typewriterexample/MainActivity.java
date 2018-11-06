@@ -45,22 +45,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onOrderCompleted(String productName) {
-//        Double productCost = 9.99;
-//        Product product = new Product.Builder()
-//                .brand("Kicks App")
-//                .name(productName)
-//                .price(productCost)
-//                .build();
-//        List<Product> products = new ArrayList<>();
-//        products.add(product);
-//
-//        OrderCompleted order = new OrderCompleted.Builder()
-//                .currency("USD")
-//                .orderID(UUID.randomUUID().toString())
-//                .total(productCost)
-//                .products(products)
-//                .build();
-//
-//        this.kicksAppAnalytics.orderCompleted(order);
+       Double productCost = 9.99;
+       Product product = new Product.Builder()
+               .brand("Kicks App")
+               .name(productName)
+               .price(productCost)
+               .build();
+       List<Product> products = new ArrayList<>();
+       products.add(product);
+
+       OrderCompleted order = new OrderCompleted.Builder()
+               .currency("USD")
+               .orderID(UUID.randomUUID().toString())
+               .total(productCost)
+               .products(products)
+               .build();
+
+       this.kicksAppAnalytics.orderCompleted(order);
     }
 }
