@@ -16,6 +16,9 @@
   <a href="./.github/LICENSE.md">
     <img src="https://img.shields.io/npm/l/typewriter.svg" alt="License">
   </a>
+  <br>
+  <br>
+  <br>
 
   <img src=".github/assets/readme-example.gif" alt="Typewriter GIF Example" width="70%"/>
 </p>
