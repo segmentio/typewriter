@@ -1,12 +1,9 @@
-const genOptions = (context = { library: {} }) => ({
+const genOptions = (context = {}) => ({
   context: {
     ...context,
-    library: {
-      ...context.library,
-      typewriter: {
-        name: "gen-js",
-        version: "3.2.5"
-      }
+    typewriter: {
+      name: "gen-js",
+      version: "3.2.5"
     }
   }
 });

@@ -24,9 +24,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.sentTextView.alpha = 0;
-    
+
     self.kicksAppAnalytics = [[SEGKicksAppAnalytics alloc] initWithAnalytics:[SEGAnalytics sharedAnalytics]];
 }
 
@@ -46,7 +46,7 @@
         builder.products = products;
     }];
     [self.kicksAppAnalytics orderCompleted:order];
-    
+
     self.sentTextView.alpha = 1;
     [UIView animateWithDuration:0.5 delay:1 options:UIViewAnimationOptionCurveEaseIn animations:^{ self.sentTextView.alpha = 0;} completion:nil];
 }
