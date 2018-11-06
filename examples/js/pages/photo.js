@@ -6,7 +6,7 @@ import Analytics from './generated'
 export default class Photo extends React.Component {
   componentDidMount() {
     const appAnalytics = new Analytics(window.analytics)
-    appAnalytics.photoViewed({ photoID: '3' })
+    appAnalytics.photoViewed({ photo_id: '3' })
   }
   render() {
     return (

@@ -5,7 +5,7 @@ import Analytics from './generated'
 export default class Profile extends React.Component {
   componentDidMount() {
     const appAnalytics = new Analytics(window.analytics)
-    appAnalytics.profileViewed({ profileId: '3' })
+    appAnalytics.profileViewed({ profile_id: '3' })
   }
   render() {
     return (

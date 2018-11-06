@@ -99,7 +99,7 @@ System.register([], function(exports_1, context_1) {
               validate.errors = vErrors;
               return errors === 0;
             };
-            var valid = validate(props);
+            var valid = validate({ properties: props });
             if (!valid) {
               throw new Error(JSON.stringify(validate.errors, null, 2));
             }
@@ -173,7 +173,7 @@ System.register([], function(exports_1, context_1) {
               validate.errors = vErrors;
               return errors === 0;
             };
-            var valid = validate(props);
+            var valid = validate({ properties: props });
             if (!valid) {
               throw new Error(JSON.stringify(validate.errors, null, 2));
             }
@@ -1099,7 +1099,7 @@ System.register([], function(exports_1, context_1) {
               validate.errors = vErrors;
               return errors === 0;
             };
-            var valid = validate(props);
+            var valid = validate({ properties: props });
             if (!valid) {
               throw new Error(JSON.stringify(validate.errors, null, 2));
             }
