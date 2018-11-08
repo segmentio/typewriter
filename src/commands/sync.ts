@@ -60,11 +60,13 @@ async function validateParams(params: Params): Promise<Params> {
   await stat(dirname(outputPath)).catch(_ => {
     throw new Error(`Invalid --outputPath: file directory doesn't exist ('${outputPath}')`)
   })
-  await stat(outputPath).then(stats => {
-    if (stats.isDirectory()) {
-      throw new Error(`Invalid --outputPath: outputPath can't be a directory ('${outputPath}')`)
-    }
-  })
+  await stat(outputPath)
+    .then(stats => {
+      if (stats.isDirectory()) {
+        throw new Error(`Invalid --outputPath: outputPath can't be a directory ('${outputPath}')`)
+      }
+    })
+    .catch(_ => null)
 
   return params
 }
