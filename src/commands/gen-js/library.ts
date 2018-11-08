@@ -19,7 +19,7 @@ export function genJS(
   client = Client.js
 ) {
   // Force draft-04 compatibility mode for Ajv (defaults to 06)
-  const ajv = new Ajv({ schemaId: 'id', allErrors: true, sourceCode: true })
+  const ajv = new Ajv({ schemaId: 'auto', allErrors: true, sourceCode: true })
   ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
 
   const clientName = client === Client.js ? 'analytics.js' : 'analytics-node'
