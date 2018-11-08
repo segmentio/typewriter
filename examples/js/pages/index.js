@@ -14,7 +14,7 @@ export default class extends React.Component {
 
   componentDidMount () {
     const appAnalytics = new Analytics(window.analytics)
-    appAnalytics.feedViewed({ profileId: '3' })
+    appAnalytics.feedViewed({ profile_id: '3' })
   }
 
   dismissModal () {

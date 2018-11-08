@@ -102,7 +102,7 @@ export default class Analytics {
         validate.errors = vErrors;
         return errors === 0;
       };
-      var valid = validate(props);
+      var valid = validate({ properties: props });
       if (!valid) {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
@@ -188,7 +188,7 @@ export default class Analytics {
         validate.errors = vErrors;
         return errors === 0;
       };
-      var valid = validate(props);
+      var valid = validate({ properties: props });
       if (!valid) {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
@@ -274,7 +274,7 @@ export default class Analytics {
         validate.errors = vErrors;
         return errors === 0;
       };
-      var valid = validate(props);
+      var valid = validate({ properties: props });
       if (!valid) {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
