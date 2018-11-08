@@ -11,6 +11,10 @@ you scope it out and make sure it is a good fit for Typewriter.
 
 ## Developing on Typewriter
 
+### Conventions
+
+We follow the [Angular commit guidelines](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines).
+
 ### Build and run locally
 
 ```sh
@@ -85,3 +89,11 @@ export const handler = getTypedTrackHandler(async (params: Params, { events }) =
 ```
 
 4) Make sure to include an example application in the [`examples/`](../examples) directory that shows how to use your client library.
+
+### Deploying
+
+You can deploy a new version to `npm` by running:
+
+```
+$ yarn release
+```
