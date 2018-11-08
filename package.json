@@ -37,7 +37,7 @@
   },
   "repository": "github:segmentio/typewriter",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "node ./dist/src/index.js",
     "test": "jest",
     "update-snapshots": "jest -u",
     "watch": "tsc -w",
@@ -46,6 +46,10 @@
     "lint": "tslint src/**/*.ts",
     "precommit": "lint-staged",
     "release": "yarn test && release-it",
+    "sync-fixtures:examples-standard": "yarn start sync --trackingPlanId \"rs_1AnzsusuSkTIlWw7Pq7MCcmVeo2\" --workspaceSlug \"schema-test\" --token \"${SEGMENT_SCHEMA_TEST_READ_ONLY_API_TOKEN}\" --outputPath ./examples/local-tracking-plans/tracking-plan-mobile.json",
+    "sync-fixtures:examples-slothgram": "yarn start sync --trackingPlanId \"rs_1CawusBJdQmYmspt8rWXtdb7COT\" --workspaceSlug \"schema-test\" --token \"${SEGMENT_SCHEMA_TEST_READ_ONLY_API_TOKEN}\" --outputPath ./examples/local-tracking-plans/tracking-plan-web.json",
+    "sync-fixtures:test": "yarn start sync --trackingPlanId \"rs_1BRLuNotOa7lgAVEib6r12Vp9lv\" --workspaceSlug \"schema-test\" --token \"${SEGMENT_SCHEMA_TEST_READ_ONLY_API_TOKEN}\" --outputPath ./tests/__fixtures__/tracking-plan-fixture.json",
+    "sync-fixtures": "run-p sync-fixtures:*",
     "generate-examples:android": "cd examples/android/java && make typewriter-local",
     "generate-examples:ios": "cd examples/ios/objectivec && make typewriter-local",
     "generate-examples:js": "cd ./examples/js && yarn run typewriter-local",
@@ -54,6 +58,7 @@
     "generate-examples": "run-p generate-examples:*"
   },
   "dependencies": {
+    "@nucleartide/dx": "^1.0.0",
     "@types/handlebars": "^4.0.39",
     "ajv": "^6.5.4",
     "chalk": "^2.0.1",
@@ -63,12 +68,12 @@
     "json-schema-to-typescript": "^5.5.0",
     "lodash": "^4.17.10",
     "node-fetch": "^2.2.0",
-    "npm-run-all": "^4.1.3",
     "omit-deep-lodash": "^1.1.2",
     "quicktype": "^15.0.144",
     "quicktype-core": "^6.0.2",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
+    "sort-keys": "^2.0.0",
     "ts-node": "^6.1.0",
     "yargs": "^12.0.2"
   },
