@@ -275,10 +275,12 @@ $ curl \
 ```sh
 $ TRACKING_PLAN_ID=rs_foobar
 $ PERSONAL_ACCESS_TOKEN=1234.4321
+$ WORKSPACE_SLUG=foobar
 
 $ typewriter sync \
   --trackingPlanId ${TRACKING_PLAN_ID} \
   --token ${PERSONAL_ACCESS_TOKEN} \
+  --workspaceSlug ${WORKSPACE_SLUG} \
   --outputPath ./generated/tracking-plan.json
 ```
 
