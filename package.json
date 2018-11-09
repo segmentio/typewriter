@@ -50,11 +50,11 @@
     "sync-fixtures:examples-slothgram": "yarn start sync --trackingPlanId \"rs_1CawusBJdQmYmspt8rWXtdb7COT\" --workspaceSlug \"schema-test\" --token \"${SEGMENT_SCHEMA_TEST_READ_ONLY_API_TOKEN}\" --outputPath ./examples/local-tracking-plans/tracking-plan-web.json",
     "sync-fixtures:test": "yarn start sync --trackingPlanId \"rs_1BRLuNotOa7lgAVEib6r12Vp9lv\" --workspaceSlug \"schema-test\" --token \"${SEGMENT_SCHEMA_TEST_READ_ONLY_API_TOKEN}\" --outputPath ./tests/__fixtures__/tracking-plan-fixture.json",
     "sync-fixtures": "run-p sync-fixtures:*",
-    "generate-examples:android": "cd examples/android/java && make typewriter-local",
-    "generate-examples:ios": "cd examples/ios/objectivec && make typewriter-local",
-    "generate-examples:js": "cd ./examples/js && yarn run typewriter-local",
-    "generate-examples:ts": "cd ./examples/ts && yarn run typewriter-local",
-    "generate-examples:node": "cd ./examples/node && yarn run typewriter-local",
+    "generate-examples:android": "cd examples/android/java && make typewriter",
+    "generate-examples:ios": "cd examples/ios/objectivec && make typewriter",
+    "generate-examples:js": "cd ./examples/js && yarn run typewriter",
+    "generate-examples:ts": "cd ./examples/ts && yarn run typewriter",
+    "generate-examples:node": "cd ./examples/node && yarn run typewriter",
     "generate-examples": "run-p generate-examples:*"
   },
   "dependencies": {

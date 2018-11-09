@@ -2,12 +2,10 @@
   "name": "with-typescript",
   "version": "1.0.0",
   "scripts": {
-    "dev": "npm run typewriter-local && next",
-    "build": "npm run typewriter-local && next build",
+    "dev": "npm run typewriter && next",
+    "build": "npm run typewriter && next build",
     "start": "next start",
-    "typewriter-remote": "node ../../dist/src/index.js gen-ts --trackingPlanId {YOUR_TRACKING_PLAN_ID} --workspaceSlug {YOUR_WORKSPACE_SLUG} --token {YOUR_API_TOKEN} --outputPath ./pages/generated",
-    "typewriter-local": "node ../../dist/src/index.js gen-ts --inputPath ../local-tracking-plans/tracking-plan-web.json --outputPath ./pages/generated",
-    "generate": "yarn run typewriter-local"
+    "typewriter": "node ../../dist/src/index.js gen-ts --inputPath ../local-tracking-plans/tracking-plan-web.json --outputPath ./pages/generated"
   },
   "dependencies": {
     "@zeit/next-typescript": "1.1.0",
