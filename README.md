@@ -45,7 +45,7 @@ $ yarn add -D typewriter
 
 ## JSON Schema Setup
 
-> Using [Segment Protocols](https://segment.com/product/protocols)? We'll generate your clients directly from your Tracking Plans. See the [instructions below](#protocols-customers).
+> Using [Segment Protocols](https://segment.com/product/protocols)? You can download a JSON Schema version of your Tracking Plan directly from the Segment Platform API. See the [instructions below](#protocols-customers).
 
 Typewriter supports generating clients from multiple events without collisions, where each event is validated by its own [JSON Schema](http://json-schema.org/). A minimal example might look like:
 
@@ -248,15 +248,19 @@ To see a full working example, see the [iOS Objective C example here](./examples
 
 If you use [Segment Protocols](https://segment.com/product/protocols), you can automatically generate clients from your Tracking Plan for any supported language.
 
-You'll need to first generate an API token:
+To do so, you'll need your workspace slug and Tracking Plan id. You can find both in the URL when viewing your Tracking Plan: `https://app.segment.com/<WORKSPACE_SLUG>/protocols/tracking-plans/<TRACKING_PLAN_ID>`
+
+1) You'll need to first generate a personal API token:
+
 ```sh
 $ USER=me@example.com
 $ PASS=<redacted>
+$ WORKSPACE_SLUG=foobar
 
 $ curl \
-  -d '{"access_token": {"description": "Typewriter Personal Access Token", "scopes": "workspace:read"}}' \
+  -d "{'access_token': {'description': 'Typewriter Personal Access Token', 'scopes': 'workspace:read', 'workspaceNames': [ 'workspaces/${WORKSPACE_SLUG}' ] }}" \
   -u "$USER:$PASS" \
-  https://platform.segmentapis.com/v1alpha/access-tokens
+  https://platform.segmentapis.com/v1beta/access-tokens
 {
   "name": "access-tokens/42",
   "description": "Typewriter Personal Access Token",
@@ -266,17 +270,19 @@ $ curl \
 }
 ```
 
-Then, instead of passing an `inputPath`, pass your `trackingPlanId`, `workspaceSlug` and `token`. You find the first two in the URL when viewing your Tracking Plan: `https://app.segment.com/<WORKSPACE_SLUG>/protocols/tracking-plans/<TRACKING_PLAN_ID>`
+2) Then, you can download a Tracking Plan with the `sync` command:
 
 ```sh
-$ typewriter gen-js \
-  --trackingPlanId [your_tracking_plan_id]
-  --workspaceSlug [your_workspace_slug] \
-  --token [your_token] \
-  --outputPath ./generated
+$ TRACKING_PLAN_ID=rs_foobar
+$ PERSONAL_ACCESS_TOKEN=1234.4321
+
+$ typewriter sync \
+  --trackingPlanId ${TRACKING_PLAN_ID} \
+  --token ${PERSONAL_ACCESS_TOKEN} \
+  --outputPath ./generated/tracking-plan.json
 ```
 
-Great! You're now setup to follow any of the [quickstarts above](#quickstarts)!
+3) Great! You're now setup to follow any of the [quickstarts above](#quickstarts)!
 
 ## Contributing
 
