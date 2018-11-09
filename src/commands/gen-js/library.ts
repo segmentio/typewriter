@@ -4,9 +4,8 @@ import { version } from '../../../package.json'
 import { camelCase } from 'lodash'
 import * as prettier from 'prettier'
 import * as Ajv from 'ajv'
-import * as omitDeep from 'omit-deep-lodash'
-import { removeEmptyRequireds } from '../../lib/utils'
 import { command, Client } from '.'
+import { preprocessRules } from '../../lib/utils'
 
 function getFnName(eventName: string) {
   return camelCase(eventName.replace(/^\d+/, ''))
@@ -53,11 +52,8 @@ export function genJS(
   const trackCalls =
     events.reduce((code, { name, rules }) => {
       const sanitizedFnName = getFnName(name)
-      // In JSON Schema Draft-04, required must have at least one element.
-      // Therefore, we strip `required: []` from your rules so this error isn't surfaced.
-      removeEmptyRequireds(rules)
       // source is just an object; TODO: an upstream PR to specify the type of `source`
-      const compiledValidationSource: any = ajv.compile(omitDeep(rules, 'id')).source
+      const compiledValidationSource: any = ajv.compile(preprocessRules(rules)).source
       const compiledValidationFn = compiledValidationSource.code.replace(/return validate;/, '')
 
       let parameters: string

@@ -21,7 +21,7 @@ The JSON schema used to generate this client is available in [`local-tracking-pl
 You can regenerate the Typewriter client using the following [`make` command](Makefile):
 
 ```sh
-$ make build typewriter-local
+$ make build typewriter
 ```
 
 ## Instrumentation

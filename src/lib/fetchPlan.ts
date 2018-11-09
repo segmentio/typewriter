@@ -2,12 +2,13 @@ import { JSONSchema } from 'json-schema-to-typescript'
 import * as util from 'util'
 import * as fs from 'fs'
 import fetch from 'node-fetch'
+import { dx as trycatch } from '@nucleartide/dx'
 const readFile = util.promisify(fs.readFile)
+import { basename, extname } from 'path'
 
-export interface TrackingPlanResponse {
+export interface TrackingPlan {
   events: TrackedEvent[]
-  resourceId: string
-  trackingPlanName: string
+  name: string
 }
 
 export interface TrackedEvent {
@@ -23,17 +24,25 @@ interface Property {
   key: string
 }
 
-export function transformTrackingPlanResponse(data: any): TrackingPlanResponse {
-  return {
-    events: data.events,
-    resourceId: data.resourceId,
-    trackingPlanName: data.name
-  }
-}
-
-export const getTrackingPlanFromFile = async (path: string) => {
+export const getTrackingPlanFromFile = async (path: string): Promise<TrackingPlan> => {
   const file = await readFile(path, 'utf-8')
-  return transformTrackingPlanResponse(JSON.parse(file))
+
+  const [json, err] = trycatch(JSON.parse)(file)
+  if (err) {
+    console.error(`Unable to parse JSON: ${path}`)
+    throw err
+  }
+
+  if (!json.events) {
+    throw new Error(`Missing "events" array in JSON Schema: ${path}`)
+  }
+
+  const fileName = basename(path, extname(path))
+
+  return {
+    events: json.events,
+    name: fileName
+  }
 }
 
 export const getTrackingPlanFromNetwork = async (
@@ -63,9 +72,8 @@ export const getTrackingPlanFromNetwork = async (
     }
   })
 
-  return transformTrackingPlanResponse({
+  return {
     events,
-    resourceId: trackingPlanId,
-    trackingPlanName: display_name
-  })
+    name: display_name
+  }
 }

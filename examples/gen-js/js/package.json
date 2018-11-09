@@ -3,11 +3,9 @@
   "version": "1.0.0",
   "description": "Example app showcasing Typewriter in JavaScript",
   "scripts": {
-    "build": "yarn run typewriter-local && next build",
-    "dev": "yarn run typewriter-local && next",
-    "typewriter-remote": "node ../../../dist/src/index.js gen-js --trackingPlanId {YOUR_TRACKING_PLAN_ID} --workspaceSlug {YOUR_WORKSPACE_SLUG} --token {YOUR_API_TOKEN} --outputPath ./analytics/generated --declarations ts",
-    "typewriter-local": "node ../../../dist/src/index.js gen-js --inputPath ../../local-tracking-plans/tracking-plan-slothgram.json --outputPath ./analytics/generated --declarations ts",
-    "generate": "yarn run typewriter-local"
+    "build": "yarn run typewriter && next build",
+    "dev": "yarn run typewriter && next",
+    "typewriter": "node ../../../dist/src/index.js gen-js --inputPath ../../local-tracking-plans/tracking-plan-slothgram.json --outputPath ./analytics/generated --declarations ts"
   },
   "keywords": [],
   "author": "Gurdas Nijor <gurdas@segment.com>",

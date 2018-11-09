@@ -13,9 +13,6 @@ export interface SegmentOptions {
   integrations: { [key: string]: boolean };
 }
 
-/**
- * This event is fired when a feed has been viewed
- */
 export interface FeedViewed {
   /**
    * The id of the user this feed belongs to
@@ -23,9 +20,6 @@ export interface FeedViewed {
   profile_id: string;
 }
 
-/**
- * This event is fired when a photo has been viewed
- */
 export interface PhotoViewed {
   /**
    * The id of the viewed photo
@@ -33,9 +27,6 @@ export interface PhotoViewed {
   photo_id: string;
 }
 
-/**
- * A user profile has been viewed
- */
 export interface ProfileViewed {
   /**
    * The id of the user the profile belongs to
@@ -50,27 +41,18 @@ export interface ProfileViewed {
 export default class Analytics {
   constructor(analytics: any, options?: AnalyticsOptions);
 
-  /**
-   * This event is fired when a feed has been viewed
-   */
   feedViewed(
     message: FeedViewed,
     options?: SegmentOptions,
     callback?: AnalyticsJSCallback
   ): void;
 
-  /**
-   * This event is fired when a photo has been viewed
-   */
   photoViewed(
     message: PhotoViewed,
     options?: SegmentOptions,
     callback?: AnalyticsJSCallback
   ): void;
 
-  /**
-   * A user profile has been viewed
-   */
   profileViewed(
     message: ProfileViewed,
     options?: SegmentOptions,

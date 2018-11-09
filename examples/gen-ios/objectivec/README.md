@@ -24,7 +24,7 @@ The generated Typewriter client is available in [`TypewriterExample/Analytics`](
 
 The JSON schema used to generate this client is available in [`local-tracking-plans/tracking-plan.json`](../../local-tracking-plans/tracking-plan.json).
 
-You can regenerate the Typewriter client with `make build typewriter-local`.
+You can regenerate the Typewriter client with `make build typewriter`.
 
 ## Instrumentation
 
