@@ -7,8 +7,7 @@ import * as prettier from 'prettier'
 import * as util from 'util'
 import * as fs from 'fs'
 import * as Ajv from 'ajv'
-import * as omitDeep from 'omit-deep-lodash'
-import { removeEmptyRequireds } from '../lib/utils'
+import { preprocessRules } from '../lib/utils'
 const writeFile = util.promisify(fs.writeFile)
 
 export const command = 'gen-js'
@@ -93,11 +92,8 @@ export async function genJS(
   const trackCalls =
     events.reduce((code, { name, rules }) => {
       const sanitizedFnName = getFnName(name)
-      // In JSON Schema Draft-04, required must have at least one element.
-      // Therefore, we strip `required: []` from your rules so this error isn't surfaced.
-      removeEmptyRequireds(rules)
       // source is just an object; TODO: an upstream PR to specify the type of `source`
-      const compiledValidationSource: any = ajv.compile(omitDeep(rules, 'id')).source
+      const compiledValidationSource: any = ajv.compile(preprocessRules(rules)).source
       const compiledValidationFn = compiledValidationSource.code.replace(/return validate;/, '')
 
       let parameters: string

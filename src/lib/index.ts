@@ -1,47 +1,18 @@
 import { Options } from 'yargs'
-import {
-  getTrackingPlanFromFile,
-  getTrackingPlanFromNetwork,
-  TrackingPlanResponse
-} from './fetchPlan'
+import { getTrackingPlanFromFile, TrackingPlan } from './fetchPlan'
 export { TrackedEvent } from './fetchPlan'
 
-export type HandlerFn = (params: Params, events: TrackingPlanResponse) => Promise<any>
+export type HandlerFn = (params: Params, plan: TrackingPlan) => Promise<any>
 export interface Params {
-  trackingPlanId?: string
-  workspaceSlug?: string
   outputPath?: string
-  inputPath?: string
-  token?: string
+  inputPath: string
 }
 
 export const builder: { [key: string]: Options } = {
   inputPath: {
     type: 'string',
     required: false,
-    description: 'The path to a local tracking plan file',
-    conflicts: ['trackingPlanId', 'workspaceSlug', 'token']
-  },
-  trackingPlanId: {
-    type: 'string',
-    required: false,
-    description: 'The resource id for a Tracking Plan',
-    conflicts: ['inputPath'],
-    implies: ['workspaceSlug', 'token']
-  },
-  workspaceSlug: {
-    type: 'string',
-    required: false,
-    description: 'A slug that corresponds to the workspace that contains the Tracking Plan',
-    conflicts: ['inputPath'],
-    implies: ['trackingPlanId', 'token']
-  },
-  token: {
-    type: 'string',
-    required: false,
-    description: 'The Segment Platform API Personal App Token',
-    conflicts: ['inputPath'],
-    implies: ['trackingPlanId', 'workspaceSlug']
+    description: 'The path to a local tracking plan file'
   },
   outputPath: {
     type: 'string',
@@ -52,12 +23,9 @@ export const builder: { [key: string]: Options } = {
 
 export function getTypedTrackHandler(fn: HandlerFn) {
   return async (params: Params) => {
-    const { workspaceSlug, trackingPlanId, outputPath, inputPath, token } = params
-    const fetchPlan = inputPath
-      ? getTrackingPlanFromFile(inputPath)
-      : getTrackingPlanFromNetwork(workspaceSlug, trackingPlanId, token)
+    const { inputPath, outputPath } = params
 
-    const events = await fetchPlan
+    const events = await getTrackingPlanFromFile(inputPath)
 
     await fn(params, events)
     console.log(`Files written to ${outputPath}`)

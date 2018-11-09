@@ -1,75 +1,65 @@
 {
   "events": [
     {
+      "description": "This event is fired when a feed has been viewed",
       "name": "Feed Viewed",
       "rules": {
         "$schema": "http://json-schema.org/draft-04/schema#",
-        "title": "Feed Viewed",
-        "description": "Fire this event whenever a checkout step is completed",
-        "type": "object",
         "properties": {
-          "properties":{
-            "type": "object",
+          "properties": {
             "properties": {
               "profile_id": {
                 "description": "The id of the user this feed belongs to",
                 "type": "string"
               }
             },
-            "required": [
-              "profile_id"
-            ]
+            "required": ["profile_id"],
+            "type": "object"
           }
-        }
+        },
+        "type": "object"
       }
     },
     {
-      "name": "Photo Viewed",      
+      "description": "This event is fired when a photo has been viewed",
+      "name": "Photo Viewed",
       "rules": {
         "$schema": "http://json-schema.org/draft-04/schema#",
-        "title": "Photo Viewed",
-        "description": "This event is fired when a photo has been viewed",
-        "type": "object",
         "properties": {
-          "properties":{
-            "type": "object",
+          "properties": {
             "properties": {
               "photo_id": {
                 "description": "The id of the viewed photo",
                 "type": "string"
               }
             },
-            "required": [
-              "photo_id"
-            ]
+            "required": ["photo_id"],
+            "type": "object"
           }
-        }
+        },
+        "type": "object"
       }
     },
     {
+      "description": "A user profile has been viewed",
       "name": "Profile Viewed",
       "rules": {
         "$schema": "http://json-schema.org/draft-04/schema#",
-        "title": "Profile Viewed",      
-        "description": "A user profile has been viewed",
-        "type": "object",
         "properties": {
-          "properties":{
-            "type": "object",
+          "properties": {
             "properties": {
               "profile_id": {
                 "description": "The id of the user the profile belongs to",
                 "type": "string"
               }
             },
-            "required": [
-              "profile_id"
-            ]
+            "required": ["profile_id"],
+            "type": "object"
           }
-        }
+        },
+        "type": "object"
       }
     }
   ],
-  "group_traits": null,
-  "identify_traits": []
+  "name": "Typewriter: Slothgram"
 }

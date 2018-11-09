@@ -34,7 +34,7 @@ The generated Typewriter client is available in [`generated/index.js`](./generat
 
 The JSON schema used to generate this client is available in [`local-tracking-plans/tracking-plan-mobile.json`](../local-tracking-plans/tracking-plan-mobile.json).
 
-You can regenerate the Typewriter client with `yarn run typewriter-local`.
+You can regenerate the Typewriter client with `yarn run typewriter`.
 
 ## Instrumentation
 

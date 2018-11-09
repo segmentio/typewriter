@@ -116,9 +116,6 @@ const typeMap: any = {
   ], "any"),
 };
 
-/**
- * Fire this event whenever a checkout step is completed
- */
 export interface FeedViewed {
   /**
    * The id of the user this feed belongs to
@@ -126,9 +123,6 @@ export interface FeedViewed {
   profileID: string;
 }
 
-/**
- * This event is fired when a photo has been viewed
- */
 export interface PhotoViewed {
   /**
    * The id of the viewed photo
@@ -136,9 +130,6 @@ export interface PhotoViewed {
   photoID: string;
 }
 
-/**
- * A user profile has been viewed
- */
 export interface ProfileViewed {
   /**
    * The id of the user the profile belongs to
