@@ -37,12 +37,12 @@ $ yarn add -D typewriter
 
 ## Validation Warnings
 
-| Language          | Run-Time | Build-Time                     |
+| Language          | Build-Time | Run-Time                     |
 |-------------------|----------|--------------------------------|
-| [JavaScript](#javascript--typescript-quickstart)        | ✅ Types<br>✅ Naming<br>✅ Required Properties | ❌ Types<br>❌ Naming<br>❌ Required Properties |
-| [TypeScript](#javascript--typescript-quickstart)        | ✅ Types<br>✅ Naming<br>✅ Required Properties | ✅ Types<br>✅ Naming<br>✅ Required Properties |
-| [Android (Java)](#android-quickstart)    | ✅ Types<br>✅ Naming<br>✅ Required Properties | ✅ Types<br>✅ Naming<br>❌ Required Properties |
-| [iOS (Objective C)](#ios-quickstart) | ✅ Types<br>✅ Naming<br>✅ Required Properties | ✅ Types<br>✅ Naming<br>❌ Required Properties |
+| [JavaScript](#javascript--typescript-quickstart)       | ❌ Types<br>❌ Naming<br>❌ Required Properties<br>✅ Intellisense | ✅ Types<br>✅ Naming<br>✅ Required Properties<br>N/A |
+| [TypeScript](#javascript--typescript-quickstart)        | ✅ Types<br>✅ Naming<br>✅ Required Properties<br>✅ Intellisense | ✅ Types<br>✅ Naming<br>✅ Required Properties<br>N/A |
+| [Android (Java)](#android-quickstart)    | ✅ Types<br>✅ Naming<br>❌ Required Properties<br>✅ Intellisense | ✅ Types<br>✅ Naming<br>✅ Required Properties<br>N/A |
+| [iOS (Objective C)](#ios-quickstart) | ✅ Types<br>✅ Naming<br>❌ Required Properties<br>✅ Intellisense | ✅ Types<br>✅ Naming<br>✅ Required Properties<br>N/A |
 
 ## JSON Schema Setup
 
@@ -247,7 +247,7 @@ If you use [Segment Protocols](https://segment.com/product/protocols), you can a
 
 To do so, you'll need your workspace slug and Tracking Plan id. You can find both in the URL when viewing your Tracking Plan: `https://app.segment.com/<WORKSPACE_SLUG>/protocols/tracking-plans/<TRACKING_PLAN_ID>`
 
-1) You'll need to first generate a personal API token:
+1) First, you'll want to generate a personal API token:
 
 ```sh
 $ USER=me@example.com
@@ -258,13 +258,6 @@ $ curl \
   -d "{'access_token': {'description': 'Typewriter Personal Access Token', 'scopes': 'workspace:read', 'workspaceNames': [ 'workspaces/${WORKSPACE_SLUG}' ] }}" \
   -u "$USER:$PASS" \
   https://platform.segmentapis.com/v1beta/access-tokens
-{
-  "name": "access-tokens/42",
-  "description": "Typewriter Personal Access Token",
-  "scopes": "workspace:read",
-  "create_time": "2018-10-12T22:36:39Z",
-  "token": "Pphs79YSWHJZCVF1a1RoFgrHvbRd6ZGhdaJ4uWrMH73.eMgjTcord46orXR7X8oM1p0SBjGGekQudaulGFWyFcY"
-}
 ```
 
 2) Then, you can download a Tracking Plan with the `sync` command:

@@ -25,8 +25,8 @@ $ yarn build
 
 # Regenerate the JS example to verify Typewriter is installed correctly
 $ node ./dist/src/index.js gen-js \
-  --inputPath ./examples/local-tracking-plans/tracking-plan.json \
-  --outputPath ./examples/js/pages/generated
+  --inputPath ./examples/local-tracking-plans/tracking-plan-slothgram.json \
+  --outputPath ./examples/gen-js/js/analytics/generated
 ```
 
 ### Running Tests
