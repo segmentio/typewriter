@@ -8,7 +8,7 @@ import * as trackingPlan from '../__fixtures__/tracking-plan-fixture.json'
 
 expect.extend({ toMatchFile })
 
-export type SingleFileGenerator = (events: TrackedEvent[]) => Promise<string>
+export type SingleFileGenerator = (events: TrackedEvent[]) => Promise<string> | string
 export type MultiFileGenerator = (
   events: TrackedEvent[]
 ) => Promise<ReadonlyMap<string, SerializedRenderResult>>
