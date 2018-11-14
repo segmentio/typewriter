@@ -3,7 +3,7 @@ const genOptions = (context = {}) => ({
     ...context,
     typewriter: {
       name: "gen-js",
-      version: "3.2.5"
+      version: "4.0.0"
     }
   }
 });

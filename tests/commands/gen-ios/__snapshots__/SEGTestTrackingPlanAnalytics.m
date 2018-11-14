@@ -15,7 +15,7 @@ static NSDictionary<NSString *, id> *_Nullable addTypewriterContextFields(NSDict
     NSDictionary<NSString *, id> *typewriterContext = @{
                                                         @"typewriter": @{
                                                                 @"name": @"gen-ios",
-                                                                @"version": @"3.2.5"
+                                                                @"version": @"4.0.0"
                                                                 }
                                                         };
     NSMutableDictionary *context = [NSMutableDictionary dictionaryWithCapacity:customContext.count + typewriterContext.count];
