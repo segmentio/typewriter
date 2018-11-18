@@ -22,7 +22,6 @@ import { isES3IdentifierStart } from 'quicktype-core/dist/language/JavaScriptUni
 import { Client } from '.'
 
 declare interface Options {
-  trackingPlan: string
   client: Client
 }
 
@@ -85,10 +84,6 @@ export interface SegmentOptions {
   integrations: { [key: string]: boolean }
 }`
 
-const topLevels = `export interface AnalyticsOptions {
-  propertyValidation: boolean
-}`
-
 /** Target language for a.js TypeScript Declarations */
 class AJSTSDeclarationsTargetLanguage extends TypeScriptTargetLanguage {
   private client: Client
@@ -113,7 +108,6 @@ class AJSTSDeclarationsTargetLanguage extends TypeScriptTargetLanguage {
         declareUnions: true
       },
       {
-        trackingPlan: 'FooBar',
         client: this.client
       }
     )
@@ -175,9 +169,6 @@ class AJSTSDeclarationsRenderer extends TypeScriptRenderer {
   }
 
   protected emitAnalyticsCallbackTypes() {
-    this.emitLine(topLevels)
-    this.ensureBlankLine()
-
     if (this.ajsOptions.client === Client.js) {
       this.emitLine(ajsTopLevels)
     } else if (this.ajsOptions.client === Client.node) {
@@ -191,7 +182,7 @@ class AJSTSDeclarationsRenderer extends TypeScriptRenderer {
       'based on your Tracking Plan.'
     ])
     this.emitBlock('export default class Analytics', '', () => {
-      this.emitLine('constructor(analytics: any, options?: AnalyticsOptions)')
+      this.emitLine('constructor(analytics: any)')
       this.ensureBlankLine()
 
       this.emitAnalyticsFunctions()

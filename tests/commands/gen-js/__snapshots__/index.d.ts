@@ -1,7 +1,3 @@
-export interface AnalyticsOptions {
-  propertyValidation: boolean;
-}
-
 export type AnalyticsJSCallback = () => void;
 
 /** A dictionary of options. For example, enable or disable specific destinations for the call. */
@@ -158,7 +154,7 @@ export interface RequiredObject {
  * based on your Tracking Plan.
  */
 export default class Analytics {
-  constructor(analytics: any, options?: AnalyticsOptions);
+  constructor(analytics: any);
 
   the42TerribleEventName3(
     message: The42_TerribleEventName3,
