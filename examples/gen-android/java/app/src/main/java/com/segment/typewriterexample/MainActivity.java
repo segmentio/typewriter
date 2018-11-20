@@ -17,7 +17,6 @@ import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.segment.PRODUCT_NAME";
-    private static final String SEGMENT_WRITE_KEY = "51GMfJ49iiQQPmzj227krjW9ch9gKpMx";
     private KicksAppAnalytics kicksAppAnalytics;
 
     @Override
@@ -25,11 +24,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Analytics analytics = new Analytics.Builder(this, SEGMENT_WRITE_KEY)
-                .trackApplicationLifecycleEvents()
-                .recordScreenViews()
-                .build();
-        this.kicksAppAnalytics = new KicksAppAnalytics(analytics);
+        this.kicksAppAnalytics = new KicksAppAnalytics(Analytics.with(this));
     }
 
     /** Called when the user taps the Send button */

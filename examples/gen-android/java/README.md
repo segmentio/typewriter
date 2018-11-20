@@ -4,7 +4,7 @@ This example repo demonstrates how to setup and use Typewriter in an Android Jav
 
 ## Example Setup
 
-Update the Segment write key in [MainActivity.java](app/src/main/java/com/segment/typewriterexample/MainActivity.java#L20) for the source you want to report analytics to:
+Update the Segment write key in [TypewriterApplication.java](app/src/main/java/com/segment/typewriterexample/TypewriterApplication.java#L8) for the source you want to report analytics to:
 
 ```java
 private static final String SEGMENT_WRITE_KEY = "<Your source write key>";
