@@ -1,7 +1,3 @@
-export interface AnalyticsOptions {
-  propertyValidation: boolean;
-}
-
 export interface Message {
   type: string;
   context: {
@@ -195,7 +191,7 @@ export interface RequiredObject {
  * based on your Tracking Plan.
  */
 export default class Analytics {
-  constructor(analytics: any, options?: AnalyticsOptions);
+  constructor(analytics: any);
 
   the42TerribleEventName3(
     message: TrackMessage<The42_TerribleEventName3>,

@@ -15,13 +15,18 @@ export function genJS(
   events: TrackedEvent[],
   scriptTarget = ScriptTarget.ESNext,
   moduleKind = ModuleKind.ESNext,
-  client = Client.js
+  client = Client.js,
+  runtimeValidation = true
 ) {
   // Force draft-04 compatibility mode for Ajv (defaults to 06)
   const ajv = new Ajv({ schemaId: 'auto', allErrors: true, sourceCode: true })
   ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
 
   const clientName = client === Client.js ? 'analytics.js' : 'analytics-node'
+  const analyticsValidation = `
+  if (!analytics) {
+    throw new Error('An instance of ${clientName} must be provided')
+  }`
   const fileHeader = `
     const genOptions = (context = {}) => ({
       context: {
@@ -37,15 +42,10 @@ export function genJS(
       /**
        * Instantiate a wrapper around an analytics library instance
        * @param {Analytics} analytics - The ${clientName} library to wrap
-       * @param {Object} config - A configuration object to customize runtime behavior
        */
-      constructor(analytics, options = {}) {
-        const { propertyValidation = true } = options
-        if (!analytics) {
-          throw new Error('An instance of ${clientName} must be provided')
-        }
-        this.analytics = analytics
-        this.propertyValidation = propertyValidation
+      constructor(analytics) {
+        ${runtimeValidation ? analyticsValidation : ''}
+        this.analytics = analytics || { track: () => null }
       }
   `
 
@@ -75,16 +75,16 @@ export function genJS(
         validateCall = 'validate(message)'
       }
 
+      const validationCode = `
+      ${compiledValidationFn}
+      if (!${validateCall}) {
+        throw new Error(JSON.stringify(validate.errors, null, 2));
+      }`
+
       return `
       ${code}
       ${sanitizedFnName}(${parameters}) {
-        if (this.propertyValidation) {
-          ${compiledValidationFn}
-          var valid = ${validateCall};
-          if (!valid) {
-            throw new Error(JSON.stringify(validate.errors, null, 2));
-          }
-        }
+        ${runtimeValidation ? validationCode : ''}
         ${trackCall}
       }
     `

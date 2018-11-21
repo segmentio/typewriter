@@ -1,7 +1,3 @@
-export interface AnalyticsOptions {
-  propertyValidation: boolean;
-}
-
 export interface Message {
   type: string;
   context: {
@@ -156,7 +152,7 @@ export interface Product {
  * based on your Tracking Plan.
  */
 export default class Analytics {
-  constructor(analytics: any, options?: AnalyticsOptions);
+  constructor(analytics: any);
 
   orderCompleted(
     message: TrackMessage<OrderCompleted>,

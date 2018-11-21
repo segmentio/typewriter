@@ -26,6 +26,7 @@ interface CompilerParams {
   module?: ModuleKind
   client?: string
   declarations?: string
+  runtimeValidation: boolean
 }
 
 export const builder = {
@@ -57,6 +58,12 @@ export const builder = {
     default: 'none',
     choices: Object.keys(Declarations).filter(k => typeof Declarations[k as any] === 'number'),
     description: 'Type declarations to generate alongside the JS library'
+  },
+  runtimeValidation: {
+    type: 'boolean',
+    default: true,
+    required: false,
+    description: 'Whether to output runtime validation code'
   }
 }
 
@@ -64,7 +71,13 @@ export const handler = getTypedTrackHandler(
   async (params: DefaultParams & CompilerParams, { events }) => {
     const files = []
 
-    const jsLibrary = await genJS(events, params.target, params.module, Client[params.client])
+    const jsLibrary = await genJS(
+      events,
+      params.target,
+      params.module,
+      Client[params.client],
+      params.runtimeValidation
+    )
     files.push(writeFile(`${params.outputPath}/index.js`, jsLibrary))
 
     if (Declarations[params.declarations] === Declarations.ts) {
