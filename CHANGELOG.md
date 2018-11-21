@@ -1,3 +1,22 @@
+# [5.0.0](https://github.com/segmentio/typewriter/compare/4.0.0...5.0.0) (2018-11-21)
+
+
+### Bug Fixes
+
+* crash in Android example on back button ([#33](https://github.com/segmentio/typewriter/issues/33)) ([e60649c](https://github.com/segmentio/typewriter/commit/e60649c))
+
+
+### Features
+
+* add flag to disable run-time validation for gen-js ([#32](https://github.com/segmentio/typewriter/issues/32)) ([69a507e](https://github.com/segmentio/typewriter/commit/69a507e))
+
+
+### BREAKING CHANGES
+
+* the run-time flag, `options.propertyValidation`, which previously could be used to disable validation at run-time, has been removed. It's recommended that you use the build-time flag instead.
+
+
+
 # [4.0.0](https://github.com/segmentio/typewriter/compare/3.2.5...4.0.0) (2018-11-14)
 
 
