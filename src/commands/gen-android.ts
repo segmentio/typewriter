@@ -20,7 +20,7 @@ import {
   StringOption,
   EnumOption
 } from 'quicktype-core/dist/RendererOptions'
-import { javaNameStyle, javaOptions } from 'quicktype-core/dist/language/Java'
+import { javaNameStyle } from 'quicktype-core/dist/language/Java'
 
 import {
   getTypedTrackHandler,
