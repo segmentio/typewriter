@@ -1,3 +1,12 @@
+## [5.0.1](https://github.com/segmentio/typewriter/compare/5.0.0...5.0.1) (2018-12-05)
+
+
+### Bug Fixes
+
+* upgrade quicktype ([#34](https://github.com/segmentio/typewriter/issues/34)) ([b01ee0e](https://github.com/segmentio/typewriter/commit/b01ee0e))
+
+
+
 # [5.0.0](https://github.com/segmentio/typewriter/compare/4.0.0...5.0.0) (2018-11-21)
 
 

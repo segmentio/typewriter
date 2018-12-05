@@ -1,6 +1,6 @@
 {
   "name": "typewriter",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "A compiler for generating strongly typed analytics clients from JSON Schema",
   "keywords": [
     "analytics",
