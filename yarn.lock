@@ -181,6 +181,24 @@
     mkdirp "^0.5.1"
     rimraf "^2.5.2"
 
+"@mark.probst/typescript-json-schema@~0.31.0":
+  version "0.31.0"
+  resolved "https://registry.yarnpkg.com/@mark.probst/typescript-json-schema/-/typescript-json-schema-0.31.0.tgz#8123e73aa6b65ac8a436bc9521fceb1d6c8b2162"
+  integrity sha512-Sar1j3bzgOWV09lRxvtV/V6avb+QgJ/ZcotTlXOXhF4LQJf+V4YH8MjV2aTzNLajVz3S225cSpkuW4Qn6hHXPg==
+  dependencies:
+    glob "~7.1.2"
+    json-stable-stringify "^1.0.1"
+    typescript "~3.0.3"
+    yargs "^12.0.1"
+
+"@mark.probst/unicode-properties@~1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@mark.probst/unicode-properties/-/unicode-properties-1.1.0.tgz#5caafeab4737df93163d6d288007df33f9939b80"
+  integrity sha512-7AQsO0hMmpqDledV7AhBuSYqYPFsKP9PaltMecX9nlnsyFxqtsqUg9/pvB2L/jxvskrDrNkdKYz2KTbQznCtng==
+  dependencies:
+    brfs "^1.4.0"
+    unicode-trie "^0.3.0"
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -6095,25 +6113,27 @@ quick-lru@^1.0.0:
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-1.1.0.tgz#4360b17c61136ad38078397ff11416e186dcfbb8"
   integrity sha1-Q2CxfGETatOAeDl/8RQW4Ybc+7g=
 
-quicktype-core@^6.0.2:
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/quicktype-core/-/quicktype-core-6.0.2.tgz#b16479e8aeb7b5ff3b6804b0f9b159019fe8cdf0"
-  integrity sha512-FeoF/+dgm5djt45CCp1zjx7SazgYMPNACsmNEcus7dGY+QEkngmyWpF+CZD/IWlZ9hC4uprOO7z9PXhMD2ElOg==
+quicktype-core@6.0.19:
+  version "6.0.19"
+  resolved "https://registry.yarnpkg.com/quicktype-core/-/quicktype-core-6.0.19.tgz#cf464b1403e43493f8b25087d8a26addfb1df3ee"
+  integrity sha512-1I08yXRjQNyol8qf/lLk+xG82timVCBTiQJU3wsYXvw1K3IzjDD7X5Uwyq97T/8ir9tkEbYYzkjRFdokjl4Piw==
   dependencies:
+    "@mark.probst/unicode-properties" "~1.1.0"
     "@types/urijs" "github:quicktype/types-urijs"
     collection-utils "^1.0.1"
     js-base64 "^2.4.3"
     pako "^1.0.6"
     pluralize "^7.0.0"
-    unicode-properties "github:quicktype/unicode-properties#dist"
     urijs "^1.19.1"
     wordwrap "^1.0.0"
 
-quicktype@^15.0.144:
-  version "15.0.144"
-  resolved "https://registry.yarnpkg.com/quicktype/-/quicktype-15.0.144.tgz#f3b551e91f9b6f6316fbdc2e7b559091266a01a1"
-  integrity sha512-7EqSDZLsZg59ZZ/RKjCVLyQUqoCOwiNQ15Gy/lGQuOxbVQb+0uZ17ifrmrjr6X3LqoVyPobXt4mjXfNo6D5XSA==
+quicktype@15.0.164:
+  version "15.0.164"
+  resolved "https://registry.yarnpkg.com/quicktype/-/quicktype-15.0.164.tgz#f4b526c2db0d240147a66bde5bb91554f886c883"
+  integrity sha512-QO0pA4e0aKQ67o9VPmyJ8w4l8W8ZeYXXM0rfWbuadUsreElG2NK04z2ORHd3BQyXnVKsfVLbAf5rP0OMGOuQKA==
   dependencies:
+    "@mark.probst/typescript-json-schema" "~0.31.0"
+    "@mark.probst/unicode-properties" "~1.1.0"
     chalk "^2.4.1"
     collection-utils "^1.0.1"
     command-line-args "^4.0.6"
@@ -6128,8 +6148,6 @@ quicktype@^15.0.144:
     pluralize "^7.0.0"
     stream-json "1.1.3"
     string-to-stream "^1.1.0"
-    typescript-json-schema quicktype/typescript-json-schema#8ce897297cd101605a8f331e439e3281585ce12e
-    unicode-properties "github:quicktype/unicode-properties#dist"
     urijs "^1.19.1"
     uuid "^3.2.1"
     wordwrap "^1.0.0"
@@ -7438,16 +7456,7 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript-json-schema@quicktype/typescript-json-schema#8ce897297cd101605a8f331e439e3281585ce12e:
-  version "0.31.0"
-  resolved "https://codeload.github.com/quicktype/typescript-json-schema/tar.gz/8ce897297cd101605a8f331e439e3281585ce12e"
-  dependencies:
-    glob "~7.1.2"
-    json-stable-stringify "^1.0.1"
-    typescript "^3.0.1"
-    yargs "^12.0.1"
-
-typescript@*, typescript@^3.0.1:
+typescript@*:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.1.3.tgz#01b70247a6d3c2467f70c45795ef5ea18ce191d5"
   integrity sha512-+81MUSyX+BaSo+u2RbozuQk/UWx6hfG0a5gHu4ANEM4sU96XbuIyAB+rWBW1u70c6a5QuZfuYICn3s2UjuHUpA==
@@ -7456,6 +7465,11 @@ typescript@^3.1.1:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.1.2.tgz#c03a5d16f30bb60ad8bb6fe8e7cb212eedeec950"
   integrity sha512-gOoGJWbNnFAfP9FlrSV63LYD5DJqYJHG5ky1kOXSl3pCImn4rqWy/flyq1BRd4iChQsoCqjbQaqtmXO4yCVPCA==
+
+typescript@~3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.0.3.tgz#4853b3e275ecdaa27f78fda46dc273a7eb7fc1c8"
+  integrity sha512-kk80vLW9iGtjMnIv11qyxLqZm20UklzuR2tL0QAnDIygIUIemcZMxlMWudl9OOt76H3ntVzcTiddQ1/pAAJMYg==
 
 typical@^2.6.0, typical@^2.6.1:
   version "2.6.1"
@@ -7469,13 +7483,6 @@ uglify-js@^3.1.4:
   dependencies:
     commander "~2.17.1"
     source-map "~0.6.1"
-
-"unicode-properties@github:quicktype/unicode-properties#dist":
-  version "1.1.0"
-  resolved "https://codeload.github.com/quicktype/unicode-properties/tar.gz/d5fddfea1ef9d05c6479a979e225476063e13f52"
-  dependencies:
-    brfs "^1.4.0"
-    unicode-trie "^0.3.0"
 
 unicode-trie@^0.3.0:
   version "0.3.1"

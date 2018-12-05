@@ -6,6 +6,7 @@
       "rules": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "properties": {
+          "context": {},
           "properties": {
             "properties": {
               "profile_id": {
@@ -15,7 +16,8 @@
             },
             "required": ["profile_id"],
             "type": "object"
-          }
+          },
+          "traits": {}
         },
         "type": "object"
       }
@@ -26,6 +28,7 @@
       "rules": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "properties": {
+          "context": {},
           "properties": {
             "properties": {
               "photo_id": {
@@ -35,7 +38,8 @@
             },
             "required": ["photo_id"],
             "type": "object"
-          }
+          },
+          "traits": {}
         },
         "type": "object"
       }
@@ -46,6 +50,7 @@
       "rules": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "properties": {
+          "context": {},
           "properties": {
             "properties": {
               "profile_id": {
@@ -55,7 +60,8 @@
             },
             "required": ["profile_id"],
             "type": "object"
-          }
+          },
+          "traits": {}
         },
         "type": "object"
       }

@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SEGThe42_TerribleEventName3 : NSObject
 /// Really, don't do this.
 @property (nonatomic, nullable, copy) id the0000TerriblePropertyName3;
+/// AcronymStyle bug fixed in v5.0.1
+@property (nonatomic, nullable, copy) id identifierID;
 @end
 
 typedef void (^ SEGThe42_TerribleEventName3BuilderBlock)(SEGThe42_TerribleEventName3Builder *);
@@ -33,6 +35,8 @@ typedef void (^ SEGThe42_TerribleEventName3BuilderBlock)(SEGThe42_TerribleEventN
 + (SEGThe42_TerribleEventName3 *)initWithBlock:(SEGThe42_TerribleEventName3BuilderBlock)block;
 /// Really, don't do this.
 @property (nonatomic, nullable, copy) id the0000TerriblePropertyName3;
+/// AcronymStyle bug fixed in v5.0.1
+@property (nonatomic, nullable, copy) id identifierID;
 @end
 
 @interface SEGExampleEvent : NSObject

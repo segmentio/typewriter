@@ -24,6 +24,7 @@ public final class The42_TerribleEventName3 extends PropertiesSerializable {
      */
     public static class Builder {
         private static String THE_0000_TERRIBLE_PROPERTY_NAME_3__KEY = "0000---terrible-property-name~!3";
+        private static String IDENTIFIER_ID_KEY = "identifier_id";
 
         private Properties properties;
 
@@ -40,6 +41,15 @@ public final class The42_TerribleEventName3 extends PropertiesSerializable {
          */
         public Builder the0000TerriblePropertyName3(final @NonNull Object the0000TerriblePropertyName3) {
             properties.putValue(THE_0000_TERRIBLE_PROPERTY_NAME_3__KEY, the0000TerriblePropertyName3);
+            return this;
+        }
+
+        /**
+         * AcronymStyle bug fixed in v5.0.1
+         * This property is optional and not required to generate a valid The42_TerribleEventName3 object
+         */
+        public Builder identifierID(final @NonNull Object identifierID) {
+            properties.putValue(IDENTIFIER_ID_KEY, identifierID);
             return this;
         }
 

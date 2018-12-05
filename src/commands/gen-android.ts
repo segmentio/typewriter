@@ -14,8 +14,13 @@ import {
 } from 'quicktype-core'
 
 import { modifySource, SerializedRenderResult } from 'quicktype-core/dist/Source'
-import { OptionValues, BooleanOption, StringOption } from 'quicktype-core/dist/RendererOptions'
-import { javaNameStyle } from 'quicktype-core/dist/language/Java'
+import {
+  OptionValues,
+  BooleanOption,
+  StringOption,
+  EnumOption
+} from 'quicktype-core/dist/RendererOptions'
+import { javaNameStyle, javaOptions } from 'quicktype-core/dist/language/Java'
 
 import {
   getTypedTrackHandler,
@@ -26,6 +31,7 @@ import {
 import * as fs from 'fs'
 import * as util from 'util'
 import { map, camelCase, upperFirst } from 'lodash'
+import { AcronymStyleOptions } from 'quicktype-core/dist/support/Acronyms'
 
 const writeFile = util.promisify(fs.writeFile)
 
@@ -61,6 +67,7 @@ declare const analyticsJavaOptions: {
   justTypes: BooleanOption
   packageName: StringOption
   trackingPlan: StringOption
+  acronymStyle: EnumOption<AcronymStyleOptions>
 }
 
 function toKeyName(name: string) {
@@ -80,7 +87,8 @@ class AnalyticsJavaTargetLanguage extends JavaTargetLanguage {
     return new AnalyticsJavaWrapperRenderer(this, renderContext, {
       justTypes: true,
       packageName: this.packageName,
-      trackingPlan: this.trackingPlan
+      trackingPlan: this.trackingPlan,
+      acronymStyle: AcronymStyleOptions.Pascal
     })
   }
   protected get defaultIndentation(): string {
