@@ -69,8 +69,8 @@
     "lodash": "^4.17.10",
     "node-fetch": "^2.2.0",
     "omit-deep-lodash": "^1.1.2",
-    "quicktype": "^15.0.144",
-    "quicktype-core": "^6.0.2",
+    "quicktype": "15.0.164",
+    "quicktype-core": "6.0.19",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
     "sort-keys": "^2.0.0",
@@ -109,7 +109,7 @@
     "tslint-config-standard": "^7.0.0",
     "tslint-plugin-prettier": "^2.0.0",
     "typescript": "^3.1.1",
-    "yarn-run-all": "^3.1.1"
+    "npm-run-all": "^4.1.5"
   },
   "engines": {
     "node": ">=8"

@@ -89,6 +89,7 @@ static id map(id collection, id (^f)(id value)) {
     static NSDictionary<NSString *, NSString *> *properties;
     return properties = properties ? properties : @{
         @"0000---terrible-property-name~!3": @"the0000TerriblePropertyName3",
+        @"identifier_id": @"identifierID",
     };
 }
 
@@ -124,6 +125,7 @@ static id map(id collection, id (^f)(id value)) {
 
     SEGThe42_TerribleEventName3 *the42TerribleEventName3 = [[SEGThe42_TerribleEventName3 alloc] init];
     the42TerribleEventName3.the0000TerriblePropertyName3 = builder.the0000TerriblePropertyName3;
+    the42TerribleEventName3.identifierID = builder.identifierID;
     return the42TerribleEventName3;
 }
 @end

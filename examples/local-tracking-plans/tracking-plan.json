@@ -6,6 +6,7 @@
       "rules": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "properties": {
+          "context": {},
           "properties": {
             "properties": {
               "affiliation": {
@@ -108,7 +109,8 @@
             },
             "required": ["order_id"],
             "type": "object"
-          }
+          },
+          "traits": {}
         },
         "required": ["properties"],
         "type": "object"

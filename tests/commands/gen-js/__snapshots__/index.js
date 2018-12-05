@@ -33,19 +33,7 @@ export default class Analytics {
         var errs__0 = errors;
         var valid1 = true;
         var data1 = data.properties;
-        if (data1 === undefined) {
-          valid1 = false;
-          var err = {
-            keyword: "required",
-            dataPath: (dataPath || "") + "",
-            schemaPath: "#/required",
-            params: { missingProperty: "properties" },
-            message: "should have required property 'properties'"
-          };
-          if (vErrors === null) vErrors = [err];
-          else vErrors.push(err);
-          errors++;
-        } else {
+        if (data1 !== undefined) {
           var errs_1 = errors;
           if (data1 && typeof data1 === "object" && !Array.isArray(data1)) {
             var errs__1 = errors;

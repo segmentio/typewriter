@@ -51,6 +51,10 @@ export interface The42_TerribleEventName3 {
    * Really, don't do this.
    */
   "0000---terrible-property-name~!3"?: any;
+  /**
+   * AcronymStyle bug fixed in v5.0.1
+   */
+  identifier_id?: any;
 }
 
 export interface ExampleEvent {

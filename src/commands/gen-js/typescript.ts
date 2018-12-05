@@ -18,6 +18,7 @@ import { tsFlowOptions } from 'quicktype-core/dist/language/TypeScriptFlow'
 import { utf16StringEscape } from 'quicktype-core/dist/support/Strings'
 import { legalizeName } from 'quicktype-core/dist/language/JavaScript'
 import { isES3IdentifierStart } from 'quicktype-core/dist/language/JavaScriptUnicodeMaps'
+import { AcronymStyleOptions } from 'quicktype-core/dist/support/Acronyms'
 
 import { Client } from '.'
 
@@ -105,7 +106,8 @@ class AJSTSDeclarationsTargetLanguage extends TypeScriptTargetLanguage {
         nicePropertyNames: true,
         runtimeTypecheck: true,
         justTypes: false,
-        declareUnions: true
+        declareUnions: true,
+        acronymStyle: AcronymStyleOptions.Pascal
       },
       {
         client: this.client

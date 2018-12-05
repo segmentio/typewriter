@@ -6,16 +6,21 @@
       "rules": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "properties": {
+          "context": {},
           "properties": {
             "properties": {
               "0000---terrible-property-name~!3": {
                 "description": "Really, don't do this."
+              },
+              "identifier_id": {
+                "description": "AcronymStyle bug fixed in v5.0.1",
+                "key": "identifier_id"
               }
             },
             "type": "object"
-          }
+          },
+          "traits": {}
         },
-        "required": ["properties"],
         "type": "object"
       }
     },
@@ -24,7 +29,11 @@
       "name": "Empty Event",
       "rules": {
         "$schema": "http://json-schema.org/draft-04/schema#",
-        "properties": { "properties": { "type": "object" } },
+        "properties": {
+          "context": {},
+          "properties": { "type": "object" },
+          "traits": {}
+        },
         "required": ["properties"],
         "type": "object"
       }
@@ -35,6 +44,7 @@
       "rules": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "properties": {
+          "context": {},
           "properties": {
             "properties": {
               "optional any": { "description": "Optional any property" },
@@ -191,7 +201,8 @@
               "required object"
             ],
             "type": "object"
-          }
+          },
+          "traits": {}
         },
         "required": ["properties"],
         "type": "object"
