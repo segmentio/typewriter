@@ -104,9 +104,10 @@ $ typewriter gen-js \
 Then, import [`analytics.js`](https://segment.com/docs/sources/website/analytics.js/quickstart/) and the generated Typewriter client to start making type-safe calls!
 
 ```javascript
-import * as analytics from './generated'
+import TypewriterAnalytics from './generated'
 
-// ...
+// Pass in your analytics.js instance to Typewriter
+const analytics = new TypewriterAnalytics(analyticsJS)
 
 analytics.viewedTypewriter({
   profile_id: '1234'
@@ -143,9 +144,10 @@ $ typewriter gen-js \
 Then, import [`analytics-node`](https://segment.com/docs/sources/server/node/quickstart/) and the generated Typewriter client to start making type-safe calls!
 
 ```javascript
-const analytics = require('./generated')
+const TypewriterAnalytics = require('./generated')
 
-// ...
+// Pass in your analytics-node instance to Typewriter
+const analytics = new TypewriterAnalytics(analyticsNode)
 
 analytics.viewedTypewriter({
   properties: {
