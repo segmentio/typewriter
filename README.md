@@ -77,7 +77,7 @@ Typewriter supports generating clients from multiple events without collisions, 
 }
 ```
 
-Typewriter supports JSON Schema [`draft-07`](https://github.com/json-schema-org/json-schema-spec/tree/draft-07).
+Typewriter supports JSON Schema [`draft-04`](https://github.com/json-schema-org/json-schema-spec/tree/draft-04) through [`draft-07`](https://github.com/json-schema-org/json-schema-spec/tree/draft-07).
 
 ## Quickstarts
 
