@@ -207,6 +207,34 @@
         "required": ["properties"],
         "type": "object"
       }
+    },
+    {
+      "description": "This is JSON Schema draft-04 event.",
+      "name": "Draft-04 Event",
+      "rules": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "properties": {
+          "context": {},
+          "properties": { "type": "object" },
+          "traits": {}
+        },
+        "required": ["properties"],
+        "type": "object"
+      }
+    },
+    {
+      "description": "This is JSON Schema draft-06 event.",
+      "name": "Draft-06 Event",
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "properties": {
+          "context": {},
+          "properties": { "type": "object" },
+          "traits": {}
+        },
+        "required": ["properties"],
+        "type": "object"
+      }
     }
   ],
   "name": "Typewriter: Test All The Things"

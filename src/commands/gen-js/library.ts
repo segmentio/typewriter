@@ -20,6 +20,8 @@ export function genJS(
 ) {
   // AJV defaults to JSON Schema draft-07
   const ajv = new Ajv({ schemaId: 'auto', allErrors: true, sourceCode: true })
+  ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
+  ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
 
   const clientName = client === Client.js ? 'analytics.js' : 'analytics-node'
   const analyticsValidation = `

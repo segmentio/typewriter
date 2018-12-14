@@ -66,4 +66,36 @@ public class TestTrackingPlanAnalytics {
     public void exampleEvent(final @Nullable ExampleEvent props, final @Nullable Options options) {
         this.analytics.track("Example Event", props.toProperties(), options);
     }
+
+    /**
+     * @param props {@link Draft04Event} to add extra information to this call.
+     * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
+     */
+    public void draft04Event(final @Nullable Draft04Event props) {
+        this.analytics.track("Draft-04 Event", props.toProperties());
+    }
+
+    /**
+     * @param props {@link Draft04Event} to add extra information to this call.
+     * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
+     */
+    public void draft04Event(final @Nullable Draft04Event props, final @Nullable Options options) {
+        this.analytics.track("Draft-04 Event", props.toProperties(), options);
+    }
+
+    /**
+     * @param props {@link Draft06Event} to add extra information to this call.
+     * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
+     */
+    public void draft06Event(final @Nullable Draft06Event props) {
+        this.analytics.track("Draft-06 Event", props.toProperties());
+    }
+
+    /**
+     * @param props {@link Draft06Event} to add extra information to this call.
+     * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
+     */
+    public void draft06Event(final @Nullable Draft06Event props, final @Nullable Options options) {
+        this.analytics.track("Draft-06 Event", props.toProperties(), options);
+    }
 }

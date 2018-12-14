@@ -1020,6 +1020,132 @@ define(["require", "exports"], function(require, exports) {
       }
       this.analytics.track("Example Event", props, genOptions(context));
     }
+    draft04Event(props, context) {
+      var validate = function(
+        data,
+        dataPath,
+        parentData,
+        parentDataProperty,
+        rootData
+      ) {
+        "use strict";
+        var vErrors = null;
+        var errors = 0;
+        if (data && typeof data === "object" && !Array.isArray(data)) {
+          var errs__0 = errors;
+          var valid1 = true;
+          var data1 = data.properties;
+          if (data1 === undefined) {
+            valid1 = false;
+            var err = {
+              keyword: "required",
+              dataPath: (dataPath || "") + "",
+              schemaPath: "#/required",
+              params: { missingProperty: "properties" },
+              message: "should have required property 'properties'"
+            };
+            if (vErrors === null) vErrors = [err];
+            else vErrors.push(err);
+            errors++;
+          } else {
+            var errs_1 = errors;
+            if (!data1 || typeof data1 !== "object" || Array.isArray(data1)) {
+              var err = {
+                keyword: "type",
+                dataPath: (dataPath || "") + ".properties",
+                schemaPath: "#/properties/properties/type",
+                params: { type: "object" },
+                message: "should be object"
+              };
+              if (vErrors === null) vErrors = [err];
+              else vErrors.push(err);
+              errors++;
+            }
+            var valid1 = errors === errs_1;
+          }
+        } else {
+          var err = {
+            keyword: "type",
+            dataPath: (dataPath || "") + "",
+            schemaPath: "#/type",
+            params: { type: "object" },
+            message: "should be object"
+          };
+          if (vErrors === null) vErrors = [err];
+          else vErrors.push(err);
+          errors++;
+        }
+        validate.errors = vErrors;
+        return errors === 0;
+      };
+      if (!validate({ properties: props })) {
+        throw new Error(JSON.stringify(validate.errors, null, 2));
+      }
+      this.analytics.track("Draft-04 Event", props, genOptions(context));
+    }
+    draft06Event(props, context) {
+      var validate = function(
+        data,
+        dataPath,
+        parentData,
+        parentDataProperty,
+        rootData
+      ) {
+        "use strict";
+        var vErrors = null;
+        var errors = 0;
+        if (data && typeof data === "object" && !Array.isArray(data)) {
+          var errs__0 = errors;
+          var valid1 = true;
+          var data1 = data.properties;
+          if (data1 === undefined) {
+            valid1 = false;
+            var err = {
+              keyword: "required",
+              dataPath: (dataPath || "") + "",
+              schemaPath: "#/required",
+              params: { missingProperty: "properties" },
+              message: "should have required property 'properties'"
+            };
+            if (vErrors === null) vErrors = [err];
+            else vErrors.push(err);
+            errors++;
+          } else {
+            var errs_1 = errors;
+            if (!data1 || typeof data1 !== "object" || Array.isArray(data1)) {
+              var err = {
+                keyword: "type",
+                dataPath: (dataPath || "") + ".properties",
+                schemaPath: "#/properties/properties/type",
+                params: { type: "object" },
+                message: "should be object"
+              };
+              if (vErrors === null) vErrors = [err];
+              else vErrors.push(err);
+              errors++;
+            }
+            var valid1 = errors === errs_1;
+          }
+        } else {
+          var err = {
+            keyword: "type",
+            dataPath: (dataPath || "") + "",
+            schemaPath: "#/type",
+            params: { type: "object" },
+            message: "should be object"
+          };
+          if (vErrors === null) vErrors = [err];
+          else vErrors.push(err);
+          errors++;
+        }
+        validate.errors = vErrors;
+        return errors === 0;
+      };
+      if (!validate({ properties: props })) {
+        throw new Error(JSON.stringify(validate.errors, null, 2));
+      }
+      this.analytics.track("Draft-06 Event", props, genOptions(context));
+    }
   }
   exports.default = Analytics;
 });

@@ -502,6 +502,24 @@ static id map(id collection, id (^f)(id value)) {
 {
     [self.analytics track:@"Example Event" properties:[props JSONDictionary] options:addTypewriterContextFields(options)];
 }
+
+- (void)draft04Event:(SEGDraft04Event *)props
+{
+    [self draft04Event:props withOptions:@{}];
+}
+- (void)draft04Event:(SEGDraft04Event *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options
+{
+    [self.analytics track:@"Draft-04 Event" properties:[props JSONDictionary] options:addTypewriterContextFields(options)];
+}
+
+- (void)draft06Event:(SEGDraft06Event *)props
+{
+    [self draft06Event:props withOptions:@{}];
+}
+- (void)draft06Event:(SEGDraft06Event *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options
+{
+    [self.analytics track:@"Draft-06 Event" properties:[props JSONDictionary] options:addTypewriterContextFields(options)];
+}
 @end
 
 NS_ASSUME_NONNULL_END
