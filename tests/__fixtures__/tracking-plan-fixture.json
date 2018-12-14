@@ -4,7 +4,7 @@
       "description": "Don't do this.",
       "name": "42_--terrible==event++name~!3",
       "rules": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
+        "$schema": "http://json-schema.org/draft-07/schema#",
         "properties": {
           "context": {},
           "properties": {
@@ -28,7 +28,7 @@
       "description": "This is an empty event.",
       "name": "Empty Event",
       "rules": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
+        "$schema": "http://json-schema.org/draft-07/schema#",
         "properties": {
           "context": {},
           "properties": { "type": "object" },
@@ -42,7 +42,7 @@
       "description": "This event contains all supported variations of properties.",
       "name": "Example Event",
       "rules": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
+        "$schema": "http://json-schema.org/draft-07/schema#",
         "properties": {
           "context": {},
           "properties": {
