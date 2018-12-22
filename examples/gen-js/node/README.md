@@ -29,7 +29,7 @@ $ node ./bin/www
   node:server Listening on port 3000 +0ms
 ```
 
-Once you run the app, go the debugger to see events coming in!
+Once you run the app, go to the debugger to see events coming in!
 
 ## Typewriter Usage
 

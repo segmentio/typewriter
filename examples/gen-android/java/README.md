@@ -10,7 +10,7 @@ Update the Segment write key in [TypewriterApplication.java](app/src/main/java/c
 private static final String SEGMENT_WRITE_KEY = "<Your source write key>";
 ```
 
-Once you run the app, go the debugger to see events coming in!
+Once you run the app, go to the debugger to see events coming in!
 
 ## Typewriter Usage
 

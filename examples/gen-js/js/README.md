@@ -25,7 +25,7 @@ DONE  Compiled successfully in 1564ms                                       18:0
 > Ready on http://localhost:3000
 ```
 
-Once you run the app, go the debugger to see events coming in!
+Once you run the app, go to the debugger to see events coming in!
 
 ## Typewriter Usage
 

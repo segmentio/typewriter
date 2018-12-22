@@ -28,7 +28,7 @@ Version: typescript 3.1.1
 Time: 2219ms
 ```
 
-Once you run the app, go the debugger to see events coming in!
+Once you run the app, go to the debugger to see events coming in!
 
 ## Typewriter Usage
 

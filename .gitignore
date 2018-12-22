@@ -73,3 +73,5 @@ dist
 
 # We use yarn.lock
 package-lock.json
+
+vendor

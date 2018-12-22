@@ -16,7 +16,7 @@ Update the Segment write key in [`AppDelegate.m`](TypewriterExample/AppDelegate.
 NSString *const SEGMENT_WRITE_KEY = @"<Your source write key>";
 ```
 
-Once you run the app, go the debugger to see events coming in!
+Once you run the app, go to the debugger to see events coming in!
 
 ## Typewriter Usage
 
