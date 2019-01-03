@@ -51,7 +51,7 @@ func main() {
 	}
 
 	// Typewriter
-	err = typewriterClient.OrderCompleted(typewriter.TrackOptions{
+	err = typewriterClient.OrderCompleted(typewriter.OrderCompletedMessage{
 	  UserId: "123456",
 	  Properties: typewriter.OrderCompleted{
 	    OrderID: ksuid.New().String(),
