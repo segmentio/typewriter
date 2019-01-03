@@ -46,13 +46,13 @@ type Product struct {
 // OrderCompletedMessage represents the object sent in a track
 // call as described in https://segment.com/docs/libraries/http/#track
 type OrderCompletedMessage struct {
-	MessageId    string                 `json:"messageId,omitempty"`
-	AnonymousId  string                 `json:"anonymousId,omitempty"`
-	UserId       string                 `json:"userId,omitempty"`
-	Timestamp    time.Time              `json:"timestamp,omitempty"`
-	Context      *analytics.Context     `json:"context,omitempty"`
-	Properties   OrderCompleted         `json:"properties,omitempty"`
-	Integrations analytics.Integrations `json:"integrations,omitempty"`
+	MessageId    string                   `json:"messageId,omitempty"`
+	AnonymousId  string                   `json:"anonymousId,omitempty"`
+	UserId       string                   `json:"userId,omitempty"`
+	Timestamp    time.Time                `json:"timestamp,omitempty"`
+	Context      *analytics.Context       `json:"context,omitempty"`
+	Properties   OrderCompletedProperties `json:"properties,omitempty"`
+	Integrations analytics.Integrations   `json:"integrations,omitempty"`
 }
 
 type Client struct {
@@ -91,6 +91,9 @@ func String(s string) *string {
 // in the cart as event properties, with the same properties from
 // the previous calls.
 func (c *Client) OrderCompleted(msg OrderCompletedMessage) error {
+	// TODO: JSON Schema validation with gojsonschema
+	// Similar to schema-service: https://github.com/xeipuuv/gojsonschema
+
 	props, err := toProperties(msg.Properties)
 	if err != nil {
 		return err

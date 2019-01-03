@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/segmentio/analytics-go"
 	"github.com/segmentio/ksuid"
-  "github.com/segmentio/typewriter/examples/gen-go/pkg/typewriter/generated"
-  "os"
+	"github.com/segmentio/typewriter/examples/gen-go/pkg/typewriter"
+	"os"
 	"strings"
 	"time"
 )
@@ -52,21 +52,21 @@ func main() {
 
 	// Typewriter
 	err = typewriterClient.OrderCompleted(typewriter.OrderCompletedMessage{
-	  UserId: "123456",
-	  Properties: typewriter.OrderCompleted{
-	    OrderID: ksuid.New().String(),
-	    Currency: typewriter.String("USD"),
-	    Products: []typewriter.Product{
-	      {
-	        Brand: typewriter.String("Kicks App"),
-	        Name: &name,
-	        Price: typewriter.Float(9.99),
-        },
-      },
-      Total: typewriter.Float(9.99),
-    },
-  })
-  if err != nil {
-    fmt.Println("error with typewriter client:", err)
-  }
+		UserId: "123456",
+		Properties: typewriter.OrderCompleted{
+			OrderID:  ksuid.New().String(),
+			Currency: typewriter.String("USD"),
+			Products: []typewriter.Product{
+				{
+					Brand: typewriter.String("Kicks App"),
+					Name:  &name,
+					Price: typewriter.Float(9.99),
+				},
+			},
+			Total: typewriter.Float(9.99),
+		},
+	})
+	if err != nil {
+		fmt.Println("error with typewriter client:", err)
+	}
 }
