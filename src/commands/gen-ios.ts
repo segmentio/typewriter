@@ -559,7 +559,7 @@ export async function genObjC(events: TrackedEvent[], { trackingPlan, classPrefi
 
   events.forEach(({ name, rules }) => {
     const schema = {
-      $schema: 'http://json-schema.org/draft-04/schema#',
+      $schema: rules.$schema || 'http://json-schema.org/draft-07/schema#',
       title: rules.title,
       description: rules.description,
       ...rules.properties.properties

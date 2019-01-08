@@ -4,7 +4,7 @@
       "description": "Fire this event whenever an order/transaction was successfully completed by the customer. Include all items in the cart as event properties, with the same properties from the previous calls.",
       "name": "Order Completed",
       "rules": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
+        "$schema": "http://json-schema.org/draft-07/schema#",
         "properties": {
           "context": {},
           "properties": {

@@ -4,7 +4,7 @@
       "description": "This event is fired when a feed has been viewed",
       "name": "Feed Viewed",
       "rules": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
+        "$schema": "http://json-schema.org/draft-07/schema#",
         "properties": {
           "context": {},
           "properties": {
@@ -26,7 +26,7 @@
       "description": "This event is fired when a photo has been viewed",
       "name": "Photo Viewed",
       "rules": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
+        "$schema": "http://json-schema.org/draft-07/schema#",
         "properties": {
           "context": {},
           "properties": {
@@ -48,7 +48,7 @@
       "description": "A user profile has been viewed",
       "name": "Profile Viewed",
       "rules": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
+        "$schema": "http://json-schema.org/draft-07/schema#",
         "properties": {
           "context": {},
           "properties": {

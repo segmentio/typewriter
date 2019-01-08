@@ -34,5 +34,17 @@ class Analytics {
     });
     this.analytics.track(message, callback);
   }
+  draft04Event(message, callback) {
+    message = Object.assign({}, message, genOptions(message.context), {
+      event: "Draft-04 Event"
+    });
+    this.analytics.track(message, callback);
+  }
+  draft06Event(message, callback) {
+    message = Object.assign({}, message, genOptions(message.context), {
+      event: "Draft-06 Event"
+    });
+    this.analytics.track(message, callback);
+  }
 }
 exports.default = Analytics;

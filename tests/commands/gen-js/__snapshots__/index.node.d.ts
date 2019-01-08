@@ -229,4 +229,24 @@ export default class Analytics {
     message: TrackMessage<ExampleEvent>,
     callback?: AnalyticsNodeCallback
   ): void;
+
+  /**
+   * Optional object (empty) property
+   *
+   * Required object (empty) property
+   */
+  draft04Event(
+    message: TrackMessage<{ [key: string]: any }>,
+    callback?: AnalyticsNodeCallback
+  ): void;
+
+  /**
+   * Optional object (empty) property
+   *
+   * Required object (empty) property
+   */
+  draft06Event(
+    message: TrackMessage<{ [key: string]: any }>,
+    callback?: AnalyticsNodeCallback
+  ): void;
 }

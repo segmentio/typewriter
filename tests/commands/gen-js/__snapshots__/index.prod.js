@@ -28,4 +28,10 @@ export default class Analytics {
   exampleEvent(props, context) {
     this.analytics.track("Example Event", props, genOptions(context));
   }
+  draft04Event(props, context) {
+    this.analytics.track("Draft-04 Event", props, genOptions(context));
+  }
+  draft06Event(props, context) {
+    this.analytics.track("Draft-06 Event", props, genOptions(context));
+  }
 }

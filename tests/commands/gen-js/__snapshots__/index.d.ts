@@ -188,4 +188,26 @@ export default class Analytics {
     options?: SegmentOptions,
     callback?: AnalyticsJSCallback
   ): void;
+
+  /**
+   * Optional object (empty) property
+   *
+   * Required object (empty) property
+   */
+  draft04Event(
+    message: { [key: string]: any },
+    options?: SegmentOptions,
+    callback?: AnalyticsJSCallback
+  ): void;
+
+  /**
+   * Optional object (empty) property
+   *
+   * Required object (empty) property
+   */
+  draft06Event(
+    message: { [key: string]: any },
+    options?: SegmentOptions,
+    callback?: AnalyticsJSCallback
+  ): void;
 }

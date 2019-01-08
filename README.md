@@ -57,7 +57,7 @@ Typewriter supports generating clients from multiple events without collisions, 
       "name": "Viewed Typewriter",
       "description": "Fired when a user views the Typewriter landing page",
       "rules": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
+        "$schema": "http://json-schema.org/draft-07/schema#",
         "type": "object",
         "properties": {
           "properties": {
@@ -77,7 +77,7 @@ Typewriter supports generating clients from multiple events without collisions, 
 }
 ```
 
-Typewriter currently uses JSON Schema [`draft-04`](https://github.com/json-schema-org/json-schema-spec/tree/draft-04).
+Typewriter supports JSON Schema [`draft-04`](https://github.com/json-schema-org/json-schema-spec/tree/draft-04) through [`draft-07`](https://github.com/json-schema-org/json-schema-spec/tree/draft-07).
 
 ## Quickstarts
 
