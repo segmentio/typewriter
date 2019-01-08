@@ -44,6 +44,19 @@ export interface TrackMessage<PropertiesType> {
    * https://segment.com/docs/spec/common/#context
    */
   context?: Object;
+  /**
+   * A dictionary of destination names that the message should be sent to.
+   * By default all destinations are enabled. 'All' is a special key that
+   * applies when no key for a specific destination is found.
+   * https://segment.com/docs/spec/common/#integrations
+   */
+  integrations?: {
+    All?: boolean;
+    AppsFlyer?: {
+      appsFlyerId: string;
+    };
+    [key: string]: boolean | { [key: string]: string };
+  };
 }
 
 export interface OrderCompleted {

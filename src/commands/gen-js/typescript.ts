@@ -72,6 +72,19 @@ export interface TrackMessage<PropertiesType> {
    * https://segment.com/docs/spec/common/#context
    */
   context?: Object;
+  /**
+   * A dictionary of destination names that the message should be sent to.
+   * By default all destinations are enabled. 'All' is a special key that
+   * applies when no key for a specific destination is found.
+   * https://segment.com/docs/spec/common/#integrations
+   */
+  integrations?: {
+    All?: boolean
+    AppsFlyer?: {
+      appsFlyerId: string
+    }
+    [key: string]: boolean | { [key: string]: string }
+  }
 }`
 
 const ajsTopLevels = `export type AnalyticsJSCallback = () => void
@@ -82,7 +95,13 @@ export interface SegmentOptions {
    * Selectivly filter destinations. By default all destinations are enabled.
    * https://segment.com/docs/sources/website/analytics.js/#selecting-destinations
    */
-  integrations: { [key: string]: boolean }
+  integrations: {
+    All?: boolean
+    AppsFlyer?: {
+      appsFlyerId: string
+    }
+    [key: string]: boolean | { [key: string]: string }
+  }
 }`
 
 /** Target language for a.js TypeScript Declarations */
