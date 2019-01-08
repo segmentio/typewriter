@@ -6,7 +6,13 @@ export interface SegmentOptions {
    * Selectivly filter destinations. By default all destinations are enabled.
    * https://segment.com/docs/sources/website/analytics.js/#selecting-destinations
    */
-  integrations: { [key: string]: boolean };
+  integrations: {
+    All: boolean;
+    AppsFlyer: {
+      appsFlyerId: string;
+    };
+    [key: string]: boolean | { [key: string]: string };
+  };
 }
 
 export interface FeedViewed {
