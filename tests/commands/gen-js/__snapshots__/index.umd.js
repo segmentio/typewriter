@@ -13,7 +13,7 @@
       ...context,
       typewriter: {
         name: "gen-js",
-        version: "5.0.1"
+        version: "5.0.2"
       }
     }
   });

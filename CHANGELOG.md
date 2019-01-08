@@ -1,3 +1,12 @@
+## [5.0.2](https://github.com/segmentio/typewriter/compare/5.0.1...5.0.2) (2019-01-08)
+
+
+### Bug Fixes
+
+* add integrations to node.js and support the AppsFlyer exception [SCH-1407] ([#39](https://github.com/segmentio/typewriter/issues/39)) ([a5819f5](https://github.com/segmentio/typewriter/commit/a5819f5))
+
+
+
 ## [5.0.1](https://github.com/segmentio/typewriter/compare/5.0.0...5.0.1) (2018-12-05)
 
 
