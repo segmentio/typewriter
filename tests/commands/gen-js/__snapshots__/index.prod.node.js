@@ -4,7 +4,7 @@ const genOptions = (context = {}) => ({
   context: Object.assign({}, context, {
     typewriter: {
       name: "gen-js",
-      version: "5.0.2"
+      version: "5.1.0"
     }
   })
 });

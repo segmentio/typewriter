@@ -1,3 +1,12 @@
+# [5.1.0](https://github.com/segmentio/typewriter/compare/5.0.2...5.1.0) (2019-01-08)
+
+
+### Features
+
+* update Typewriter to support JSON Schema draft-07 [SCH-1381] ([#36](https://github.com/segmentio/typewriter/issues/36)) ([a92628a](https://github.com/segmentio/typewriter/commit/a92628a))
+
+
+
 ## [5.0.2](https://github.com/segmentio/typewriter/compare/5.0.1...5.0.2) (2019-01-08)
 
 
