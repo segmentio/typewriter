@@ -7,8 +7,8 @@ export interface SegmentOptions {
    * https://segment.com/docs/sources/website/analytics.js/#selecting-destinations
    */
   integrations: {
-    All: boolean;
-    AppsFlyer: {
+    All?: boolean;
+    AppsFlyer?: {
       appsFlyerId: string;
     };
     [key: string]: boolean | { [key: string]: string };

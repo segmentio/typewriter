@@ -51,8 +51,8 @@ export interface TrackMessage<PropertiesType> {
    * https://segment.com/docs/spec/common/#integrations
    */
   integrations?: {
-    All: boolean;
-    AppsFlyer: {
+    All?: boolean;
+    AppsFlyer?: {
       appsFlyerId: string;
     };
     [key: string]: boolean | { [key: string]: string };

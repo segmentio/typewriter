@@ -79,29 +79,29 @@ export interface TrackMessage<PropertiesType> {
    * https://segment.com/docs/spec/common/#integrations
    */
   integrations?: {
-    All: boolean
-		AppsFlyer: {
-			appsFlyerId: string
-		}
-		[key: string]: boolean | { [key: string]: string }
-	}
+    All?: boolean
+    AppsFlyer?: {
+      appsFlyerId: string
+    }
+    [key: string]: boolean | { [key: string]: string }
+  }
 }`
 
 const ajsTopLevels = `export type AnalyticsJSCallback = () => void
 
 /** A dictionary of options. For example, enable or disable specific destinations for the call. */
 export interface SegmentOptions {
-	/**
+  /**
    * Selectivly filter destinations. By default all destinations are enabled.
    * https://segment.com/docs/sources/website/analytics.js/#selecting-destinations
    */
-	integrations: {
-    All: boolean
-		AppsFlyer: {
-			appsFlyerId: string
-		}
-		[key: string]: boolean | { [key: string]: string }
-	}
+  integrations: {
+    All?: boolean
+    AppsFlyer?: {
+      appsFlyerId: string
+    }
+    [key: string]: boolean | { [key: string]: string }
+  }
 }`
 
 /** Target language for a.js TypeScript Declarations */
