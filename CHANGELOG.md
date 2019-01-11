@@ -1,3 +1,12 @@
+## [5.1.1](https://github.com/segmentio/typewriter/compare/5.1.0...5.1.1) (2019-01-11)
+
+
+### Bug Fixes
+
+* move typescript to a production dep ([#40](https://github.com/segmentio/typewriter/issues/40)) ([a042b6b](https://github.com/segmentio/typewriter/commit/a042b6b))
+
+
+
 # [5.1.0](https://github.com/segmentio/typewriter/compare/5.0.2...5.1.0) (2019-01-08)
 
 
