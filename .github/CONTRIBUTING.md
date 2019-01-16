@@ -23,7 +23,7 @@ When you are ready to start on a PR:
 - `command`: the name of the command (`gen-js`, `gen-go`, etc.).
 - `desc`: the description shown in `typewriter --help`.
 - `builder`: an object that captures the parameters your command takes. In the majority of cases, you can just re-export `builder` from [`src/lib/index.ts`](../src/lib/index.ts).
-- `handler`: a function that accepts user-specified `params` and Tracking Plan `events`. This is where you can extract type information and other metadata from the `events` and use it compile your Typewriter client, usually with some kind of JSON Schema library (see `Compiling a Typewriter Client` below).
+- `handler`: a function that accepts user-specified `params` and Tracking Plan `events`. This is where you can extract type information and other metadata from the `events` and use it compile your Typewriter client, usually with some kind of JSON Schema library (see `Implementing a Typewriter Client Compiler` below).
 
 ```typescript
 /*
@@ -70,7 +70,7 @@ export const handler = getTypedTrackHandler(async (params: Params, { events }) =
 })
 ```
 
-3) Implement your compiler, following the instruction under `Compiling a Typewriter Client` below.
+3) Implement your compiler, following the instruction under `Implementing a Typewriter Client Compiler` below.
 
 4) Most importantly, make sure to include an example program in the [`examples/`](../examples) directory that shows how to use your client library. You should use the Tracking Plan from [`examples/local-tracking-plans/tracking-plan.json`](../examples/local-tracking-plans/tracking-plan.json).
 
@@ -87,14 +87,14 @@ test('genGo - compiled output matches snapshot', async () => {
 
 > If you have any questions, feel free to raise them in the issue for your language proposal. We're happy to help out!
 
-### Compiling a Typewriter Client
+### Implementing a Typewriter Client Compiler
 
 For context, it's useful to have some background on JSON Schema. Here are some great resources:
 - [Understanding JSON Schema](https://json-schema.org/understanding-json-schema/)
   - Also: [The Official JSON Schema Spec](https://json-schema.org/specification.html)
 - [The Meta Schema](https://github.com/json-schema-org/json-schema-spec/blob/draft-07/schema.json)
 
-At a high-level, a Typewriter client exposes a series of analytics functions, each of which represents a single `track` event. Together, these events form a Tracking Plan and each event has a corresponding JSON Schema. Each of these functions are typed, to provide **build-time validation**, if the underlying language can support it. All functions should support **run-time validation**, since portions of JSON Schema cannot be represented as types (such as regex on strings, for example). Both types of validation are generated using some kind of JSON Schema library, with the former usually generated with [`QuickType`](https://github.com/quicktype/quicktype), while the latter is always a language-specific JSON Schema library ([`AJV.js`](https://github.com/epoberezkin/ajv), [`gojsonschema`](https://github.com/xeipuuv/gojsonschema), etc.).
+At a high-level, a Typewriter client exposes a series of analytics functions, each of which represents a single [`track`](https://segment.com/docs/spec/track/) event. Together, these events form a Tracking Plan and each event has a corresponding JSON Schema. Each of these functions are typed, to provide **build-time validation**, if the underlying language can support it. All functions should support **run-time validation**, since portions of JSON Schema cannot be represented as types (such as regex on strings, for example). Both types of validation are generated using some kind of JSON Schema library, with the former usually generated with [`QuickType`](https://github.com/quicktype/quicktype), while the latter is always a language-specific JSON Schema library ([`AJV.js`](https://github.com/epoberezkin/ajv), [`gojsonschema`](https://github.com/xeipuuv/gojsonschema), etc.).
 
 As an example, TypeScript supports build-time validation through TypeScript declarations ([example](../examples/gen-js/ts/analytics/generated/index.d.ts)) which are compiled using [`QuickType`](https://github.com/quicktype/quicktype). Conversely, JavaScript can only support run-time validation, so we use [`AJV.js`](https://github.com/epoberezkin/ajv) to pre-compile a validation function that executes at run-time ([example](../examples/gen-js/js/analytics/generated/index.js)).
 
