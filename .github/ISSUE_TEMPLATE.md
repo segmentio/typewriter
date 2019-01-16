@@ -19,7 +19,7 @@ Please consider the following items when filing a bug report:
 * Actual.
 * Minimal reproducible example.
 
-## In the case of a feature/language request ✍️
+## In the case of a feature/language proposal ✍️
 
 Please consider the following items when filing a feature request:
 
