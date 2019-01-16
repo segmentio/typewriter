@@ -11,34 +11,6 @@ you scope it out and make sure it is a good fit for Typewriter.
 
 ## Developing on Typewriter
 
-### Build and run locally
-
-```sh
-# Install dependencies
-$ yarn
-# Build the Typewriter CLI
-$ yarn build
-
-# Test your Typewriter installation by regenerating the JS example.
-$ node ./dist/src/index.js gen-js \
-  --inputPath ./examples/local-tracking-plans/tracking-plan-slothgram.json \
-  --outputPath ./examples/gen-js/js/analytics/generated
-```
-
-### Running Tests
-
-```sh
-$ yarn test
-```
-
-### Regenerate All Example Clients
-
-You can regenerate all [example clients](../examples) by running:
-
-```sh
-$ yarn run generate-examples
-```
-
 ### Adding a New Language Target
 
 > Before working towards adding a new language target, please [open an issue on GitHub](https://github.com/segmentio/typewriter/issues/new) that walks through your proposal for the new language support. See the [issue template](ISSUE_TEMPLATE.md) for details.
@@ -142,6 +114,34 @@ The high-level flow for compiling a Typewriter client is as follows:
     - Issue a call to the underlying analytics instance ([`analytics.js`](https://segment.com/docs/sources/website/analytics.js/), [`analytics-go`](https://segment.com/docs/sources/server/go/), etc.).
 
 Since JSON Schema has an extensive spec, we only explicitely support the features that are supported by the Segment Protocols Tracking Plan Editor (and tested in: [`tests/__fixtures__/*`](../tests/__fixtures__/tracking-plan-fixture.json)). We'll be working towards improving support for other JSON Schema features (such as `enums`, `anyOf/oneOf/....`, etc.) in the near future. However, when adding support for a new language, you'll only need to support the features documented in [`tests/__fixtures__/*`](../tests/__fixtures__/tracking-plan-fixture.json), at minimum.
+
+### Build and run locally
+
+```sh
+# Install dependencies
+$ yarn
+# Build the Typewriter CLI
+$ yarn build
+
+# Test your Typewriter installation by regenerating the JS example.
+$ node ./dist/src/index.js gen-js \
+  --inputPath ./examples/local-tracking-plans/tracking-plan-slothgram.json \
+  --outputPath ./examples/gen-js/js/analytics/generated
+```
+
+### Running Tests
+
+```sh
+$ yarn test
+```
+
+### Regenerate All Example Clients
+
+You can regenerate all [example clients](../examples) by running:
+
+```sh
+$ yarn run generate-examples
+```
 
 ### Conventions
 
