@@ -19,12 +19,21 @@ Please consider the following items when filing a bug report:
 * Actual.
 * Minimal reproducible example.
 
-## In the case of a feature/language proposal ✍️
+## In the case of a feature proposal ✍️
 
-Please consider the following items when filing a feature request:
+Please detail the following items when filing a feature request:
 
-* **Usage**, including a proposed API, if possible.
-* Problem that feature/component addresses.
+* Any proposed changes, if relevant.
+* The problem that this feature addresses.
+
+## In the case of a language proposal 🗺
+
+Please detail the following items when filing a language proposal:
+
+* A proposed API (for the CLI and for analytics functions in the new client).
+* Explain what library you would use for run-time JSON Schema validation.
+* Whether the language will support build-time validation.
+* Any language-specific considerations
 
 See the [contributing guide](CONTRIBUTING.md) for more details.
 
