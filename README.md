@@ -280,5 +280,5 @@ $ typewriter sync \
 
 ## Contributing
 
-- To submit an issue, bug report, or feature request, [file an issue here](issues).
-- To develop on Typewriter, see [CONTRIBUTING.md](./.github/CONTRIBUTING.md).
+- To submit a bug report or feature request, [file an issue here](issues).
+- To develop on Typewriter or propose a new language, see [CONTRIBUTING.md](./.github/CONTRIBUTING.md).
