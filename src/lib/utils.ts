@@ -1,6 +1,6 @@
 import * as omitDeep from 'omit-deep-lodash'
 import * as sortKeys from 'sort-keys'
-import { flow } from 'lodash'
+import { get, flow } from 'lodash'
 
 /**
  * Remove all instances of `required: []` from a JSON Schema.
@@ -10,7 +10,7 @@ import { flow } from 'lodash'
  *
  * Inspired by: https://softwareengineering.stackexchange.com/a/323670
  */
-function removeEmptyRequireds(obj: object) {
+function removeEmptyRequireds(obj: any) {
   for (const property in obj) {
     if (obj.hasOwnProperty(property)) {
       const value = obj[property]
@@ -36,11 +36,11 @@ function removeEmptyRequireds(obj: object) {
 export const preprocessRules = flow(
   // In JSON Schema Draft-04, required fields must have at least one element.
   // Therefore, we strip `required: []` from your rules so this error isn't surfaced.
-  rules => {
+  (rules: any) => {
     removeEmptyRequireds(rules)
     return rules
   },
   // Enforce a deterministic ordering to reduce verson control deltas.
-  rules => sortKeys(rules, { deep: true }),
-  rules => omitDeep(rules, 'id')
+  (rules: any) => sortKeys(rules, { deep: true }),
+  (rules: any) => omitDeep(rules, 'id')
 )

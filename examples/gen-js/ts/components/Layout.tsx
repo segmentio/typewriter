@@ -1,6 +1,6 @@
 import Head from 'next/head'
 
-export default (props) => (
+const Layout: React.SFC<{}> = (props) => (
   <div>
     <Head>
       <meta name='viewport' content='width=device-width, initial-scale=1' />
@@ -15,3 +15,5 @@ export default (props) => (
     {props.children}
   </div>
 )
+
+export default Layout

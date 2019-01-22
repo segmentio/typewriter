@@ -1,5 +1,5 @@
 import { TrackedEvent } from '../../lib'
-import { camelCase } from 'lodash'
+import { get, camelCase } from 'lodash'
 import * as prettier from 'prettier'
 
 import {
@@ -83,7 +83,7 @@ export interface TrackMessage<PropertiesType> {
     AppsFlyer?: {
       appsFlyerId: string
     }
-    [key: string]: boolean | { [key: string]: string }
+    [key: string]: boolean | { [key: string]: string } | undefined
   }
 }`
 
@@ -244,7 +244,7 @@ export async function genTSDeclarations(
       $schema: rules.$schema || 'http://json-schema.org/draft-07/schema#',
       title: rules.title,
       description: rules.description,
-      ...rules.properties.properties
+      ...get(rules, 'properties.properties', {})
     }
 
     inputData.addSource(

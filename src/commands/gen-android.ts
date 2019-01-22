@@ -30,7 +30,7 @@ import {
 } from '../lib'
 import * as fs from 'fs'
 import * as util from 'util'
-import { map, camelCase, upperFirst } from 'lodash'
+import { get, map, camelCase, upperFirst } from 'lodash'
 import { AcronymStyleOptions } from 'quicktype-core/dist/support/Acronyms'
 
 const writeFile = util.promisify(fs.writeFile)
@@ -291,7 +291,7 @@ class AnalyticsJavaWrapperRenderer extends JavaRenderer {
       ],
       () => {
         const rawEventName = name
-          .proposeUnstyledNames(null)
+          .proposeUnstyledNames(new Map())
           .values()
           .next().value
         this.emitLine([
@@ -361,7 +361,7 @@ export async function genJava(
       $schema: rules.$schema || 'http://json-schema.org/draft-07/schema#',
       title: rules.title,
       description: rules.description,
-      ...rules.properties.properties
+      ...get(rules, 'properties.properties', {})
     }
 
     inputData.addSource(
@@ -373,8 +373,7 @@ export async function genJava(
 
   const lang = new AnalyticsJavaTargetLanguage(packageName, trackingPlan)
 
-  const files = await quicktypeMultiFile({ lang, inputData })
-  return files
+  return await quicktypeMultiFile({ lang, inputData })
 }
 
 export const handler = getTypedTrackHandler(async (params: Params, { events }) => {
@@ -382,11 +381,13 @@ export const handler = getTypedTrackHandler(async (params: Params, { events }) =
 
   if (params.language === 'java') {
     files = await genJava(events, params)
+  } else {
+    throw new Error(`Invalid language: ${params.language}`)
   }
 
   return Promise.all(
     map([...files.keys()], (fileName: string) => {
-      return writeFile(`${params.outputPath}/${fileName}`, files.get(fileName).lines.join('\n'))
+      return writeFile(`${params.outputPath}/${fileName}`, files.get(fileName)!.lines.join('\n'))
     })
   )
 })

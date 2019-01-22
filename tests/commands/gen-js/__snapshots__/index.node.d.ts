@@ -55,7 +55,7 @@ export interface TrackMessage<PropertiesType> {
     AppsFlyer?: {
       appsFlyerId: string;
     };
-    [key: string]: boolean | { [key: string]: string };
+    [key: string]: boolean | { [key: string]: string } | undefined;
   };
 }
 
