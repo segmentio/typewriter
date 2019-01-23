@@ -25,7 +25,7 @@ import {
 import { version } from '../../package.json'
 import * as fs from 'fs'
 import * as util from 'util'
-import { map, camelCase, upperFirst } from 'lodash'
+import { map, camelCase, upperFirst, get } from 'lodash'
 
 const writeFile = util.promisify(fs.writeFile)
 
@@ -156,7 +156,7 @@ class AnalyticsObjectiveCWrapperRenderer extends ObjectiveCRenderer {
       this.emitLine('- (instancetype)initWithAnalytics:(SEGAnalytics *)analytics;')
       this.ensureBlankLine()
 
-      this.forEachTopLevel('leading-and-interposing', (c: ClassType, name: Name) => {
+      this.forEachTopLevel('leading-and-interposing', (c: Type, name: Name) => {
         this.emitDescription(this.descriptionForType(c))
         this.emitLine(['- (void)', this.variableNameForTopLevel(name), ':(', name, ' *)props;'])
         this.emitLine([
@@ -410,7 +410,7 @@ class AnalyticsObjectiveCWrapperRenderer extends ObjectiveCRenderer {
 
   protected rawName(name: Name) {
     return name
-      .proposeUnstyledNames(null)
+      .proposeUnstyledNames(new Map())
       .values()
       .next().value
   }
@@ -426,7 +426,7 @@ class AnalyticsObjectiveCWrapperRenderer extends ObjectiveCRenderer {
       })
       this.ensureBlankLine()
 
-      this.forEachTopLevel('leading-and-interposing', (_: ClassType, className: Name) => {
+      this.forEachTopLevel('leading-and-interposing', (_: Type, className: Name) => {
         this.emitAnalyticsWrapperMethod(className, { withOptions: false })
         this.emitAnalyticsWrapperMethod(className, { withOptions: true })
       })
@@ -562,7 +562,7 @@ export async function genObjC(events: TrackedEvent[], { trackingPlan, classPrefi
       $schema: rules.$schema || 'http://json-schema.org/draft-07/schema#',
       title: rules.title,
       description: rules.description,
-      ...rules.properties.properties
+      ...get(rules, 'properties.properties', {})
     }
 
     inputData.addSource(
@@ -583,11 +583,13 @@ export const handler = getTypedTrackHandler(async (params: Params, { events }) =
 
   if (params.language === 'objectivec') {
     files = await genObjC(events, params)
+  } else {
+    throw new Error(`Invalid language: ${params.language}`)
   }
 
   return Promise.all(
     map([...files.keys()], (fileName: string) => {
-      return writeFile(`${params.outputPath}/${fileName}`, files.get(fileName).lines.join('\n'))
+      return writeFile(`${params.outputPath}/${fileName}`, files.get(fileName)!.lines.join('\n'))
     })
   )
 })

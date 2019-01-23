@@ -1,13 +1,18 @@
 import React from 'react'
 import Frame from './Frame'
 
-export default class extends React.Component<any> {
+interface Props {
+  id: string
+  onDismiss: () => void
+}
+
+export default class extends React.Component<Props> {
   private shim: any
   private photoWrap: any
 
   public render () {
     return (
-      <div ref={el => (this.shim = el)} className='shim' onClick={(e) => this.dismiss(e)}>
+      <div ref={el => (this.shim = el)} className='shim' onClick={(e: React.MouseEvent<HTMLDivElement>) => this.dismiss(e)}>
         <div ref={el => (this.photoWrap = el)} className='photo'>
           <Frame id={this.props.id} />
         </div>
@@ -32,7 +37,7 @@ export default class extends React.Component<any> {
     )
   }
 
-  private dismiss = (e) => {
+  private dismiss = (e: React.MouseEvent) => {
     if (this.shim === e.target ||
        this.photoWrap === e.target) {
       if (this.props.onDismiss) {

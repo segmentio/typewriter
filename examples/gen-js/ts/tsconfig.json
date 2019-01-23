@@ -5,6 +5,8 @@
     "module": "esnext",
     "jsx": "preserve",
     "allowJs": true,
+    "strict": true,
+    "strictNullChecks": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "noUnusedLocals": true,
@@ -13,6 +15,7 @@
     "preserveConstEnums": true,
     "sourceMap": true,
     "skipLibCheck": true,
+    "outDir": "dist",
     "baseUrl": ".",
     "typeRoots": ["./node_modules/@types"],
     "lib": ["dom", "es2015", "es2016"]

@@ -2,9 +2,8 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitAny": false,
+    "strict": true,
+    "strictFunctionTypes": false,
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",

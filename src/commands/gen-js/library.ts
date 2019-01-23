@@ -57,9 +57,9 @@ export function genJS(
       const compiledValidationSource: any = ajv.compile(preprocessRules(rules)).source
       const compiledValidationFn = compiledValidationSource.code.replace(/return validate;/, '')
 
-      let parameters: string
-      let trackCall: string
-      let validateCall: string
+      let parameters = ''
+      let trackCall = ''
+      let validateCall = ''
       if (client === Client.js) {
         parameters = 'props, context'
         trackCall = `this.analytics.track('${name}', props, genOptions(context))`

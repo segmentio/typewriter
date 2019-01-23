@@ -12,20 +12,20 @@ export const command = 'gen-js'
 export const desc = 'Generate a strongly typed JavaScript analytics.js client'
 
 export enum Client {
-  js = 0,
-  node = 1
+  js = 'js',
+  node = 'node'
 }
 
 export enum Declarations {
-  none = 0,
-  ts = 1
+  none = 'none',
+  ts = 'ts'
 }
 
-interface CompilerParams {
+interface Params extends DefaultParams {
   target?: ScriptTarget
   module?: ModuleKind
-  client?: string
-  declarations?: string
+  client: keyof typeof Client
+  declarations: keyof typeof Declarations
   runtimeValidation: boolean
 }
 
@@ -48,15 +48,15 @@ export const builder = {
   client: {
     type: 'string',
     required: false,
-    default: 'js',
-    choices: Object.keys(Client).filter(k => typeof Client[k as any] === 'number'),
+    default: Client.js,
+    choices: Object.keys(Client),
     description: 'Segment analytics library to generate for'
   },
   declarations: {
     type: 'string',
     required: false,
-    default: 'none',
-    choices: Object.keys(Declarations).filter(k => typeof Declarations[k as any] === 'number'),
+    default: Declarations.none,
+    choices: Object.keys(Declarations),
     description: 'Type declarations to generate alongside the JS library'
   },
   runtimeValidation: {
@@ -67,24 +67,22 @@ export const builder = {
   }
 }
 
-export const handler = getTypedTrackHandler(
-  async (params: DefaultParams & CompilerParams, { events }) => {
-    const files = []
+export const handler = getTypedTrackHandler(async (params: Params, { events }) => {
+  const files = []
 
-    const jsLibrary = await genJS(
-      events,
-      params.target,
-      params.module,
-      Client[params.client],
-      params.runtimeValidation
-    )
-    files.push(writeFile(`${params.outputPath}/index.js`, jsLibrary))
+  const jsLibrary = await genJS(
+    events,
+    params.target,
+    params.module,
+    Client[params.client],
+    params.runtimeValidation
+  )
+  files.push(writeFile(`${params.outputPath}/index.js`, jsLibrary))
 
-    if (Declarations[params.declarations] === Declarations.ts) {
-      const declarations = await genTSDeclarations(events, Client[params.client])
-      files.push(writeFile(`${params.outputPath}/index.d.ts`, declarations))
-    }
-
-    return Promise.all(files)
+  if (Declarations[params.declarations] === Declarations.ts) {
+    const declarations = await genTSDeclarations(events, Client[params.client])
+    files.push(writeFile(`${params.outputPath}/index.d.ts`, declarations))
   }
-)
+
+  return Promise.all(files)
+})

@@ -20,7 +20,7 @@ export default class extends React.Component<any> {
     Router.push('/')
   }
 
-  public showPhoto (e, id) {
+  public showPhoto (e: React.MouseEvent, id: string) {
     e.preventDefault()
     Router.push(`/?photoId=${id}`, `/photo?id=${id}`)
   }
@@ -39,12 +39,12 @@ export default class extends React.Component<any> {
               />
           }
           {
-            photos.map((id) => (
+            photos.map((id: string) => (
               <div key={id} className='photo'>
                 <a
                   className='photoLink'
                   href={`/photo?id=${id}`}
-                  onClick={(e) => this.showPhoto(e, id)}
+                  onClick={(e: React.MouseEvent<HTMLAnchorElement>) => this.showPhoto(e, id)}
                 >
                   {id}
                 </a>
