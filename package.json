@@ -167,7 +167,13 @@
   "release-it": {
     "increment": "conventional:angular",
     "scripts": {
-      "beforeStage": "yarn test && yarn build && yarn generate-examples && yarn test -u"
+      "changelog": "npx conventional-changelog -p angular | tail -n +3",
+      "beforeStart": "yarn test",
+      "beforeStage": "yarn build && yarn generate-examples && yarn test -u && npx conventional-changelog -p angular -i CHANGELOG.md -s"
+    },
+    "github": {
+      "release": true,
+      "releaseNotes": "npx conventional-changelog -p angular | tail -n +3"
     }
   }
 }
