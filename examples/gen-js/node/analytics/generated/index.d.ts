@@ -43,7 +43,7 @@ export interface TrackMessage<PropertiesType> {
    * A dictionary of extra context to attach to the call.
    * https://segment.com/docs/spec/common/#context
    */
-  context?: Object;
+  context?: any;
   /**
    * A dictionary of destination names that the message should be sent to.
    * By default all destinations are enabled. 'All' is a special key that
@@ -55,7 +55,7 @@ export interface TrackMessage<PropertiesType> {
     AppsFlyer?: {
       appsFlyerId: string;
     };
-    [key: string]: boolean | { [key: string]: string };
+    [key: string]: boolean | { [key: string]: string } | undefined;
   };
 }
 

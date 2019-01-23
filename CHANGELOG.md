@@ -1,3 +1,12 @@
+## [5.1.3](https://github.com/segmentio/typewriter/compare/5.1.2...5.1.3) (2019-01-23)
+
+
+### Bug Fixes
+
+* update release-it 7 -> 10 ([#44](https://github.com/segmentio/typewriter/issues/44)) ([2706d9f](https://github.com/segmentio/typewriter/commit/2706d9f))
+
+
+
 ## [5.1.1](https://github.com/segmentio/typewriter/compare/5.1.0...5.1.1) (2019-01-11)
 
 

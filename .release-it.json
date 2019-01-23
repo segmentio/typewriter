@@ -1,7 +1,0 @@
-{
-  "buildCommand": "yarn build && yarn generate-examples && yarn test -u",
-  "increment": "conventional:angular",
-  "beforeChangelogCommand": "conventional-changelog --preset angular --infile CHANGELOG.md --same-file",
-  "changelogCommand": "conventional-changelog --preset angular | tail -n +3",
-  "safeBump": false
-}

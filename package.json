@@ -1,6 +1,6 @@
 {
   "name": "typewriter",
-  "version": "5.1.1",
+  "version": "5.1.3",
   "description": "A compiler for generating strongly typed analytics clients from JSON Schema",
   "keywords": [
     "analytics",
@@ -170,6 +170,9 @@
       "changelog": "npx conventional-changelog -p angular | tail -n +3",
       "beforeStart": "yarn test",
       "beforeStage": "yarn build && yarn generate-examples && yarn test -u && npx conventional-changelog -p angular -i CHANGELOG.md -s"
+    },
+    "git": {
+      "commitMessage": "docs(changelog): release ${version}"
     },
     "github": {
       "release": true,
