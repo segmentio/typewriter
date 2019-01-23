@@ -1,6 +1,6 @@
 {
   "name": "typewriter",
-  "version": "5.1.2",
+  "version": "5.1.1",
   "description": "A compiler for generating strongly typed analytics clients from JSON Schema",
   "keywords": [
     "analytics",
@@ -45,7 +45,7 @@
     "prepare": "yarn run build",
     "lint": "tslint src/**/*.ts",
     "precommit": "lint-staged",
-    "release": "yarn test && release-it",
+    "release": "release-it",
     "sync-fixtures:examples-standard": "yarn start sync --trackingPlanId 'rs_1AnzsusuSkTIlWw7Pq7MCcmVeo2' --workspaceSlug 'schema-test' --token \"${SEGMENT_SCHEMA_TEST_READ_ONLY_API_TOKEN}\" --outputPath ./examples/local-tracking-plans/tracking-plan.json",
     "sync-fixtures:examples-slothgram": "yarn start sync --trackingPlanId 'rs_1CawusBJdQmYmspt8rWXtdb7COT' --workspaceSlug 'schema-test' --token \"${SEGMENT_SCHEMA_TEST_READ_ONLY_API_TOKEN}\" --outputPath ./examples/local-tracking-plans/tracking-plan-slothgram.json",
     "sync-fixtures:test": "yarn start sync --trackingPlanId 'rs_1BRLuNotOa7lgAVEib6r12Vp9lv' --workspaceSlug 'schema-test' --token \"${SEGMENT_SCHEMA_TEST_READ_ONLY_API_TOKEN}\" --outputPath ./tests/__fixtures__/tracking-plan-fixture.json",
@@ -103,7 +103,7 @@
     "lint-staged": "^7.3.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.5.3",
-    "release-it": "^7.5.0",
+    "release-it": "^10.0.0",
     "test": "^0.6.0",
     "ts-jest": "^22.4.2",
     "tslint": "^5.10.0",
@@ -139,7 +139,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS; printf \"\n\n\""
+      "commit-msg": "(commitlint -E HUSKY_GIT_PARAMS && printf \"\n\n\") || (printf \"\n\n\" && exit 1)"
     }
   },
   "commitlint": {
@@ -163,5 +163,17 @@
     "testMatch": [
       "**/?(*.)+(spec|test).+(ts|js)?(x)"
     ]
+  },
+  "release-it": {
+    "increment": "conventional:angular",
+    "scripts": {
+      "changelog": "npx conventional-changelog -p angular | tail -n +3",
+      "beforeStart": "yarn test",
+      "beforeStage": "yarn build && yarn generate-examples && yarn test -u && npx conventional-changelog -p angular -i CHANGELOG.md -s"
+    },
+    "github": {
+      "release": true,
+      "releaseNotes": "npx conventional-changelog -p angular | tail -n +3"
+    }
   }
 }
