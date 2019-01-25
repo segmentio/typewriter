@@ -100,7 +100,7 @@ export interface SegmentOptions {
     AppsFlyer?: {
       appsFlyerId: string
     }
-    [key: string]: boolean | { [key: string]: string }
+    [key: string]: boolean | { [key: string]: string } | undefined
   }
 }`
 
