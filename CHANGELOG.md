@@ -1,3 +1,13 @@
+## [5.1.4](https://github.com/segmentio/typewriter/compare/5.1.3...5.1.4) (2019-01-25)
+
+
+### Bug Fixes
+
+* apply strictNullCheck fix in analytics.js client ([#46](https://github.com/segmentio/typewriter/issues/46)) ([fb368f6](https://github.com/segmentio/typewriter/commit/fb368f6)), closes [#43](https://github.com/segmentio/typewriter/issues/43)
+* move husky to dev dependencies ([#45](https://github.com/segmentio/typewriter/issues/45)) ([5a6ef07](https://github.com/segmentio/typewriter/commit/5a6ef07))
+
+
+
 ## [5.1.3](https://github.com/segmentio/typewriter/compare/5.1.2...5.1.3) (2019-01-23)
 
 
