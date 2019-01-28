@@ -211,7 +211,7 @@ export default class Analytics {
   constructor(analytics: any);
 
   the42TerribleEventName3(
-    message: TrackMessage<The42_TerribleEventName3>,
+    message?: TrackMessage<The42_TerribleEventName3>,
     callback?: AnalyticsNodeCallback
   ): void;
 
@@ -221,12 +221,12 @@ export default class Analytics {
    * Required object (empty) property
    */
   emptyEvent(
-    message: TrackMessage<{ [key: string]: any }>,
+    message?: TrackMessage<{ [key: string]: any }>,
     callback?: AnalyticsNodeCallback
   ): void;
 
   exampleEvent(
-    message: TrackMessage<ExampleEvent>,
+    message?: TrackMessage<ExampleEvent>,
     callback?: AnalyticsNodeCallback
   ): void;
 
@@ -236,7 +236,7 @@ export default class Analytics {
    * Required object (empty) property
    */
   draft04Event(
-    message: TrackMessage<{ [key: string]: any }>,
+    message?: TrackMessage<{ [key: string]: any }>,
     callback?: AnalyticsNodeCallback
   ): void;
 
@@ -246,7 +246,7 @@ export default class Analytics {
    * Required object (empty) property
    */
   draft06Event(
-    message: TrackMessage<{ [key: string]: any }>,
+    message?: TrackMessage<{ [key: string]: any }>,
     callback?: AnalyticsNodeCallback
   ): void;
 }
