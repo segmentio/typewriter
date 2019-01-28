@@ -1,24 +1,52 @@
-const genOptions = (context = {}) => ({
-  context: {
-    ...context,
-    typewriter: {
-      name: "gen-js",
-      version: "5.1.4"
-    }
+"use strict";
+var __assign =
+  (this && this.__assign) ||
+  function() {
+    __assign =
+      Object.assign ||
+      function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+          s = arguments[i];
+          for (var p in s)
+            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+      };
+    return __assign.apply(this, arguments);
+  };
+Object.defineProperty(exports, "__esModule", { value: true });
+var genOptions = function(context) {
+  if (context === void 0) {
+    context = {};
   }
-});
-export default class Analytics {
+  return {
+    context: __assign({}, context, {
+      typewriter: {
+        name: "gen-js",
+        version: "5.1.4"
+      }
+    })
+  };
+};
+var Analytics = /** @class */ (function() {
   /**
    * Instantiate a wrapper around an analytics library instance
-   * @param {Analytics} analytics - The analytics.js library to wrap
+   * @param {Analytics} analytics - The analytics-node library to wrap
    */
-  constructor(analytics) {
+  function Analytics(analytics) {
     if (!analytics) {
-      throw new Error("An instance of analytics.js must be provided");
+      throw new Error("An instance of analytics-node must be provided");
     }
-    this.analytics = analytics || { track: () => null };
+    this.analytics = analytics || {
+      track: function() {
+        return null;
+      }
+    };
   }
-  terribleEventName3(props = {}, context) {
+  Analytics.prototype.terribleEventName3 = function(message, callback) {
+    if (message === void 0) {
+      message = {};
+    }
     var validate = function(
       data,
       dataPath,
@@ -67,16 +95,18 @@ export default class Analytics {
       validate.errors = vErrors;
       return errors === 0;
     };
-    if (!validate({ properties: props })) {
+    if (!validate(message)) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    this.analytics.track(
-      "42_--terrible==event++name~!3",
-      props,
-      genOptions(context)
-    );
-  }
-  emptyEvent(props = {}, context) {
+    message = __assign({}, message, genOptions(message.context), {
+      event: "42_--terrible==event++name~!3"
+    });
+    this.analytics.track(message, callback);
+  };
+  Analytics.prototype.emptyEvent = function(message, callback) {
+    if (message === void 0) {
+      message = {};
+    }
     var validate = function(
       data,
       dataPath,
@@ -134,12 +164,18 @@ export default class Analytics {
       validate.errors = vErrors;
       return errors === 0;
     };
-    if (!validate({ properties: props })) {
+    if (!validate(message)) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    this.analytics.track("Empty Event", props, genOptions(context));
-  }
-  exampleEvent(props = {}, context) {
+    message = __assign({}, message, genOptions(message.context), {
+      event: "Empty Event"
+    });
+    this.analytics.track(message, callback);
+  };
+  Analytics.prototype.exampleEvent = function(message, callback) {
+    if (message === void 0) {
+      message = {};
+    }
     var pattern0 = new RegExp("FOO|BAR");
     var validate = function(
       data,
@@ -973,12 +1009,18 @@ export default class Analytics {
       validate.errors = vErrors;
       return errors === 0;
     };
-    if (!validate({ properties: props })) {
+    if (!validate(message)) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    this.analytics.track("Example Event", props, genOptions(context));
-  }
-  draft04Event(props = {}, context) {
+    message = __assign({}, message, genOptions(message.context), {
+      event: "Example Event"
+    });
+    this.analytics.track(message, callback);
+  };
+  Analytics.prototype.draft04Event = function(message, callback) {
+    if (message === void 0) {
+      message = {};
+    }
     var validate = function(
       data,
       dataPath,
@@ -1036,12 +1078,18 @@ export default class Analytics {
       validate.errors = vErrors;
       return errors === 0;
     };
-    if (!validate({ properties: props })) {
+    if (!validate(message)) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    this.analytics.track("Draft-04 Event", props, genOptions(context));
-  }
-  draft06Event(props = {}, context) {
+    message = __assign({}, message, genOptions(message.context), {
+      event: "Draft-04 Event"
+    });
+    this.analytics.track(message, callback);
+  };
+  Analytics.prototype.draft06Event = function(message, callback) {
+    if (message === void 0) {
+      message = {};
+    }
     var validate = function(
       data,
       dataPath,
@@ -1099,9 +1147,14 @@ export default class Analytics {
       validate.errors = vErrors;
       return errors === 0;
     };
-    if (!validate({ properties: props })) {
+    if (!validate(message)) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    this.analytics.track("Draft-06 Event", props, genOptions(context));
-  }
-}
+    message = __assign({}, message, genOptions(message.context), {
+      event: "Draft-06 Event"
+    });
+    this.analytics.track(message, callback);
+  };
+  return Analytics;
+})();
+exports.default = Analytics;

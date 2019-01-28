@@ -61,11 +61,11 @@ export function genJS(
       let trackCall = ''
       let validateCall = ''
       if (client === Client.js) {
-        parameters = 'props, context'
+        parameters = 'props = {}, context'
         trackCall = `this.analytics.track('${name}', props, genOptions(context))`
         validateCall = 'validate({ properties: props })'
       } else if (client === Client.node) {
-        parameters = 'message, callback'
+        parameters = 'message = {}, callback'
         trackCall = `
         message = {
           ...message,

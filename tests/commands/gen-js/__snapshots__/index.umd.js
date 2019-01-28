@@ -28,7 +28,7 @@
       }
       this.analytics = analytics || { track: () => null };
     }
-    terribleEventName3(props, context) {
+    terribleEventName3(props = {}, context) {
       var validate = function(
         data,
         dataPath,
@@ -86,7 +86,7 @@
         genOptions(context)
       );
     }
-    emptyEvent(props, context) {
+    emptyEvent(props = {}, context) {
       var validate = function(
         data,
         dataPath,
@@ -149,7 +149,7 @@
       }
       this.analytics.track("Empty Event", props, genOptions(context));
     }
-    exampleEvent(props, context) {
+    exampleEvent(props = {}, context) {
       var pattern0 = new RegExp("FOO|BAR");
       var validate = function(
         data,
@@ -1027,7 +1027,7 @@
       }
       this.analytics.track("Example Event", props, genOptions(context));
     }
-    draft04Event(props, context) {
+    draft04Event(props = {}, context) {
       var validate = function(
         data,
         dataPath,
@@ -1090,7 +1090,7 @@
       }
       this.analytics.track("Draft-04 Event", props, genOptions(context));
     }
-    draft06Event(props, context) {
+    draft06Event(props = {}, context) {
       var validate = function(
         data,
         dataPath,

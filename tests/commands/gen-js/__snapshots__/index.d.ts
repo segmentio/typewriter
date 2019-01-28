@@ -167,7 +167,7 @@ export default class Analytics {
   constructor(analytics: any);
 
   the42TerribleEventName3(
-    message: The42_TerribleEventName3,
+    props?: The42_TerribleEventName3,
     options?: SegmentOptions,
     callback?: AnalyticsJSCallback
   ): void;
@@ -178,13 +178,13 @@ export default class Analytics {
    * Required object (empty) property
    */
   emptyEvent(
-    message: { [key: string]: any },
+    props?: { [key: string]: any },
     options?: SegmentOptions,
     callback?: AnalyticsJSCallback
   ): void;
 
   exampleEvent(
-    message: ExampleEvent,
+    props?: ExampleEvent,
     options?: SegmentOptions,
     callback?: AnalyticsJSCallback
   ): void;
@@ -195,7 +195,7 @@ export default class Analytics {
    * Required object (empty) property
    */
   draft04Event(
-    message: { [key: string]: any },
+    props?: { [key: string]: any },
     options?: SegmentOptions,
     callback?: AnalyticsJSCallback
   ): void;
@@ -206,7 +206,7 @@ export default class Analytics {
    * Required object (empty) property
    */
   draft06Event(
-    message: { [key: string]: any },
+    props?: { [key: string]: any },
     options?: SegmentOptions,
     callback?: AnalyticsJSCallback
   ): void;

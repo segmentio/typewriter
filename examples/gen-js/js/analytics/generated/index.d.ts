@@ -44,19 +44,19 @@ export default class Analytics {
   constructor(analytics: any);
 
   feedViewed(
-    message: FeedViewed,
+    message?: FeedViewed,
     options?: SegmentOptions,
     callback?: AnalyticsJSCallback
   ): void;
 
   photoViewed(
-    message: PhotoViewed,
+    message?: PhotoViewed,
     options?: SegmentOptions,
     callback?: AnalyticsJSCallback
   ): void;
 
   profileViewed(
-    message: ProfileViewed,
+    message?: ProfileViewed,
     options?: SegmentOptions,
     callback?: AnalyticsJSCallback
   ): void;

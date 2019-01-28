@@ -16,31 +16,31 @@ class Analytics {
   constructor(analytics) {
     this.analytics = analytics || { track: () => null };
   }
-  terribleEventName3(message, callback) {
+  terribleEventName3(message = {}, callback) {
     message = Object.assign({}, message, genOptions(message.context), {
       event: "42_--terrible==event++name~!3"
     });
     this.analytics.track(message, callback);
   }
-  emptyEvent(message, callback) {
+  emptyEvent(message = {}, callback) {
     message = Object.assign({}, message, genOptions(message.context), {
       event: "Empty Event"
     });
     this.analytics.track(message, callback);
   }
-  exampleEvent(message, callback) {
+  exampleEvent(message = {}, callback) {
     message = Object.assign({}, message, genOptions(message.context), {
       event: "Example Event"
     });
     this.analytics.track(message, callback);
   }
-  draft04Event(message, callback) {
+  draft04Event(message = {}, callback) {
     message = Object.assign({}, message, genOptions(message.context), {
       event: "Draft-04 Event"
     });
     this.analytics.track(message, callback);
   }
-  draft06Event(message, callback) {
+  draft06Event(message = {}, callback) {
     message = Object.assign({}, message, genOptions(message.context), {
       event: "Draft-06 Event"
     });

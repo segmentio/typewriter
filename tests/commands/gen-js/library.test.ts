@@ -48,3 +48,17 @@ test('genJS - compiled output matches snapshot - no runtime validation (analytic
     'index.prod.node.js'
   )
 })
+
+test('genJS - compiled output matches snapshot - ES5', async () => {
+  await testSnapshotSingleFile(
+    events => genJS(events, ScriptTarget.ES5, ModuleKind.CommonJS, Client.js),
+    'index.es5.js'
+  )
+})
+
+test('genJS - compiled output matches snapshot - ES5 (analytics-node)', async () => {
+  await testSnapshotSingleFile(
+    events => genJS(events, ScriptTarget.ES5, ModuleKind.CommonJS, Client.node),
+    'index.es5.node.js'
+  )
+})
