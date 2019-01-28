@@ -18,7 +18,7 @@ export default class Analytics {
     }
     this.analytics = analytics || { track: () => null };
   }
-  feedViewed(props, context) {
+  feedViewed(props = {}, context) {
     var validate = function(
       data,
       dataPath,
@@ -101,7 +101,7 @@ export default class Analytics {
     }
     this.analytics.track("Feed Viewed", props, genOptions(context));
   }
-  photoViewed(props, context) {
+  photoViewed(props = {}, context) {
     var validate = function(
       data,
       dataPath,
@@ -184,7 +184,7 @@ export default class Analytics {
     }
     this.analytics.track("Photo Viewed", props, genOptions(context));
   }
-  profileViewed(props, context) {
+  profileViewed(props = {}, context) {
     var validate = function(
       data,
       dataPath,

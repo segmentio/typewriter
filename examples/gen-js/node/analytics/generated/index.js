@@ -19,7 +19,7 @@ class Analytics {
     }
     this.analytics = analytics || { track: () => null };
   }
-  orderCompleted(message, callback) {
+  orderCompleted(message = {}, callback) {
     var validate = function(
       data,
       dataPath,

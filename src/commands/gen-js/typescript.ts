@@ -217,7 +217,7 @@ class AJSTSDeclarationsRenderer extends TypeScriptRenderer {
       if (this.ajsOptions.client === Client.js) {
         this.emitLine([
           camelCaseName,
-          '(message?: ',
+          '(props?: ',
           this.sourceFor(t).source,
           ', options?: SegmentOptions, callback?: AnalyticsJSCallback): void'
         ])

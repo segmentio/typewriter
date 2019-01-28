@@ -15,23 +15,23 @@ export default class Analytics {
   constructor(analytics) {
     this.analytics = analytics || { track: () => null };
   }
-  terribleEventName3(props, context) {
+  terribleEventName3(props = {}, context) {
     this.analytics.track(
       "42_--terrible==event++name~!3",
       props,
       genOptions(context)
     );
   }
-  emptyEvent(props, context) {
+  emptyEvent(props = {}, context) {
     this.analytics.track("Empty Event", props, genOptions(context));
   }
-  exampleEvent(props, context) {
+  exampleEvent(props = {}, context) {
     this.analytics.track("Example Event", props, genOptions(context));
   }
-  draft04Event(props, context) {
+  draft04Event(props = {}, context) {
     this.analytics.track("Draft-04 Event", props, genOptions(context));
   }
-  draft06Event(props, context) {
+  draft06Event(props = {}, context) {
     this.analytics.track("Draft-06 Event", props, genOptions(context));
   }
 }

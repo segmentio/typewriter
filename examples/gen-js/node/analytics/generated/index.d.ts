@@ -168,7 +168,7 @@ export default class Analytics {
   constructor(analytics: any);
 
   orderCompleted(
-    message: TrackMessage<OrderCompleted>,
+    message?: TrackMessage<OrderCompleted>,
     callback?: AnalyticsNodeCallback
   ): void;
 }

@@ -19,7 +19,7 @@ class Analytics {
     }
     this.analytics = analytics || { track: () => null };
   }
-  terribleEventName3(message, callback) {
+  terribleEventName3(message = {}, callback) {
     var validate = function(
       data,
       dataPath,
@@ -76,7 +76,7 @@ class Analytics {
     });
     this.analytics.track(message, callback);
   }
-  emptyEvent(message, callback) {
+  emptyEvent(message = {}, callback) {
     var validate = function(
       data,
       dataPath,
@@ -142,7 +142,7 @@ class Analytics {
     });
     this.analytics.track(message, callback);
   }
-  exampleEvent(message, callback) {
+  exampleEvent(message = {}, callback) {
     var pattern0 = new RegExp("FOO|BAR");
     var validate = function(
       data,
@@ -984,7 +984,7 @@ class Analytics {
     });
     this.analytics.track(message, callback);
   }
-  draft04Event(message, callback) {
+  draft04Event(message = {}, callback) {
     var validate = function(
       data,
       dataPath,
@@ -1050,7 +1050,7 @@ class Analytics {
     });
     this.analytics.track(message, callback);
   }
-  draft06Event(message, callback) {
+  draft06Event(message = {}, callback) {
     var validate = function(
       data,
       dataPath,
