@@ -1,3 +1,12 @@
+## [5.1.7](https://github.com/segmentio/typewriter/compare/5.1.6...5.1.7) (2019-01-29)
+
+
+### Bug Fixes
+
+* location should be optional ([#49](https://github.com/segmentio/typewriter/issues/49)) ([e27cfe8](https://github.com/segmentio/typewriter/commit/e27cfe8))
+
+
+
 ## [5.1.6](https://github.com/segmentio/typewriter/compare/5.1.5...5.1.6) (2019-01-29)
 
 
