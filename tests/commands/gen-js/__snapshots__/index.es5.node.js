@@ -23,7 +23,7 @@ var genOptions = function(context) {
     context: __assign({}, context, {
       typewriter: {
         name: "gen-js",
-        version: "5.1.4"
+        version: "5.1.5"
       }
     })
   };

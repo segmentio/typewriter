@@ -1,3 +1,12 @@
+## [5.1.5](https://github.com/segmentio/typewriter/compare/5.1.4...5.1.5) (2019-01-29)
+
+
+### Bug Fixes
+
+* optional message parameter in JS clients ([#47](https://github.com/segmentio/typewriter/issues/47)) ([177069d](https://github.com/segmentio/typewriter/commit/177069d))
+
+
+
 ## [5.1.4](https://github.com/segmentio/typewriter/compare/5.1.3...5.1.4) (2019-01-25)
 
 
