@@ -1,13 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const genOptions = (context = {}) => ({
-  context: Object.assign({}, context, {
-    typewriter: {
-      name: "gen-js",
-      version: "5.1.7"
-    }
-  })
-});
 class Analytics {
   /**
    * Instantiate a wrapper around an analytics library instance
@@ -18,6 +10,14 @@ class Analytics {
       throw new Error("An instance of analytics-node must be provided");
     }
     this.analytics = analytics || { track: () => null };
+  }
+  addTypewriterContext(context = {}) {
+    return Object.assign({}, context, {
+      typewriter: {
+        name: "gen-js",
+        version: "5.1.7"
+      }
+    });
   }
   orderCompleted(message = {}, callback) {
     var validate = function(
@@ -565,7 +565,8 @@ class Analytics {
     if (!validate(message)) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    message = Object.assign({}, message, genOptions(message.context), {
+    message = Object.assign({}, message, {
+      context: this.addTypewriterContext(message.context),
       event: "Order Completed"
     });
     this.analytics.track(message, callback);

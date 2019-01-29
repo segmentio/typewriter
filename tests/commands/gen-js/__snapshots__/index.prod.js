@@ -1,12 +1,3 @@
-const genOptions = (context = {}) => ({
-  context: {
-    ...context,
-    typewriter: {
-      name: "gen-js",
-      version: "5.1.7"
-    }
-  }
-});
 export default class Analytics {
   /**
    * Instantiate a wrapper around an analytics library instance
@@ -15,23 +6,43 @@ export default class Analytics {
   constructor(analytics) {
     this.analytics = analytics || { track: () => null };
   }
-  terribleEventName3(props = {}, context) {
-    this.analytics.track(
-      "42_--terrible==event++name~!3",
-      props,
-      genOptions(context)
-    );
+  addTypewriterContext(context = {}) {
+    return {
+      ...context,
+      typewriter: {
+        name: "gen-js",
+        version: "5.1.7"
+      }
+    };
   }
-  emptyEvent(props = {}, context) {
-    this.analytics.track("Empty Event", props, genOptions(context));
+  terribleEventName3(props = {}, options) {
+    this.analytics.track("42_--terrible==event++name~!3", props, {
+      ...options,
+      context: this.addTypewriterContext(options.context)
+    });
   }
-  exampleEvent(props = {}, context) {
-    this.analytics.track("Example Event", props, genOptions(context));
+  emptyEvent(props = {}, options) {
+    this.analytics.track("Empty Event", props, {
+      ...options,
+      context: this.addTypewriterContext(options.context)
+    });
   }
-  draft04Event(props = {}, context) {
-    this.analytics.track("Draft-04 Event", props, genOptions(context));
+  exampleEvent(props = {}, options) {
+    this.analytics.track("Example Event", props, {
+      ...options,
+      context: this.addTypewriterContext(options.context)
+    });
   }
-  draft06Event(props = {}, context) {
-    this.analytics.track("Draft-06 Event", props, genOptions(context));
+  draft04Event(props = {}, options) {
+    this.analytics.track("Draft-04 Event", props, {
+      ...options,
+      context: this.addTypewriterContext(options.context)
+    });
+  }
+  draft06Event(props = {}, options) {
+    this.analytics.track("Draft-06 Event", props, {
+      ...options,
+      context: this.addTypewriterContext(options.context)
+    });
   }
 }

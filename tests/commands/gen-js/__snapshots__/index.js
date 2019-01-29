@@ -1,12 +1,3 @@
-const genOptions = (context = {}) => ({
-  context: {
-    ...context,
-    typewriter: {
-      name: "gen-js",
-      version: "5.1.7"
-    }
-  }
-});
 export default class Analytics {
   /**
    * Instantiate a wrapper around an analytics library instance
@@ -18,7 +9,16 @@ export default class Analytics {
     }
     this.analytics = analytics || { track: () => null };
   }
-  terribleEventName3(props = {}, context) {
+  addTypewriterContext(context = {}) {
+    return {
+      ...context,
+      typewriter: {
+        name: "gen-js",
+        version: "5.1.7"
+      }
+    };
+  }
+  terribleEventName3(props = {}, options) {
     var validate = function(
       data,
       dataPath,
@@ -70,13 +70,12 @@ export default class Analytics {
     if (!validate({ properties: props })) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    this.analytics.track(
-      "42_--terrible==event++name~!3",
-      props,
-      genOptions(context)
-    );
+    this.analytics.track("42_--terrible==event++name~!3", props, {
+      ...options,
+      context: this.addTypewriterContext(options.context)
+    });
   }
-  emptyEvent(props = {}, context) {
+  emptyEvent(props = {}, options) {
     var validate = function(
       data,
       dataPath,
@@ -137,9 +136,12 @@ export default class Analytics {
     if (!validate({ properties: props })) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    this.analytics.track("Empty Event", props, genOptions(context));
+    this.analytics.track("Empty Event", props, {
+      ...options,
+      context: this.addTypewriterContext(options.context)
+    });
   }
-  exampleEvent(props = {}, context) {
+  exampleEvent(props = {}, options) {
     var pattern0 = new RegExp("FOO|BAR");
     var validate = function(
       data,
@@ -976,9 +978,12 @@ export default class Analytics {
     if (!validate({ properties: props })) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    this.analytics.track("Example Event", props, genOptions(context));
+    this.analytics.track("Example Event", props, {
+      ...options,
+      context: this.addTypewriterContext(options.context)
+    });
   }
-  draft04Event(props = {}, context) {
+  draft04Event(props = {}, options) {
     var validate = function(
       data,
       dataPath,
@@ -1039,9 +1044,12 @@ export default class Analytics {
     if (!validate({ properties: props })) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    this.analytics.track("Draft-04 Event", props, genOptions(context));
+    this.analytics.track("Draft-04 Event", props, {
+      ...options,
+      context: this.addTypewriterContext(options.context)
+    });
   }
-  draft06Event(props = {}, context) {
+  draft06Event(props = {}, options) {
     var validate = function(
       data,
       dataPath,
@@ -1102,6 +1110,9 @@ export default class Analytics {
     if (!validate({ properties: props })) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    this.analytics.track("Draft-06 Event", props, genOptions(context));
+    this.analytics.track("Draft-06 Event", props, {
+      ...options,
+      context: this.addTypewriterContext(options.context)
+    });
   }
 }
