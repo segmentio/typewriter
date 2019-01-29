@@ -169,7 +169,7 @@ export interface SegmentOptions {
    * Selectivly filter destinations. By default all destinations are enabled.
    * https://segment.com/docs/sources/website/analytics.js/#selecting-destinations
    */
-  integrations: {
+  integrations?: {
     All?: boolean
     AppsFlyer?: {
       appsFlyerId: string
@@ -180,7 +180,7 @@ export interface SegmentOptions {
    * A dictionary of extra context to attach to the call.
    * https://segment.com/docs/spec/common/#context
    */
-  context: Context
+  context?: Context
 }`
 
 /** Target language for a.js TypeScript Declarations */
