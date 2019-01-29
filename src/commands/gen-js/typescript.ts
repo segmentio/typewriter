@@ -26,6 +26,80 @@ declare interface Options {
   client: Client
 }
 
+const sharedTopLevels = `/**
+ * Context is a dictionary of extra information that provides useful context about a datapoint.
+ * @see {@link https://segment.com/docs/spec/common/#context}
+ */
+export interface Context {
+  active?: boolean
+  app?: {
+    name?: string
+    version?: string
+    build?: string
+  }
+  campaign?: {
+    name?: string
+    source?: string
+    medium?: string
+    term?: string
+    content?: string
+  }
+  device?: {
+    id?: string
+    manufacturer?: string
+    model?: string
+    name?: string
+    type?: string
+    version?: string
+  }
+  ip?: string
+  locale?: string
+  location: {
+    city?: string
+    country?: string
+    latitude?: string
+    longitude?: string
+    region?: string
+    speed?: string
+  }
+  network?: {
+    bluetooth?: string
+    carrier?: string
+    cellular?: string
+    wifi?: string
+  }
+  os?: {
+    name?: string
+    version?: string
+  }
+  page?: {
+    hash?: string
+    path?: string
+    referrer?: string
+    search?: string
+    title?: string
+    url?: string
+  }
+  referrer?: {
+    type?: string
+    name?: string
+    url?: string
+    link?: string
+  }
+  screen?: {
+    density?: string
+    height?: string
+    width?: string
+  }
+  timezone?: string
+  groupId?: string
+  traits?: {
+    [key: string]: any
+  }
+  userAgent?: string
+  [key: string]: any
+}`
+
 const nodeTopLevels = `export interface Message {
   type: string;
   context: {
@@ -71,7 +145,7 @@ export interface TrackMessage<PropertiesType> {
    * A dictionary of extra context to attach to the call.
    * https://segment.com/docs/spec/common/#context
    */
-  context?: any;
+  context?: Context;
   /**
    * A dictionary of destination names that the message should be sent to.
    * By default all destinations are enabled. 'All' is a special key that
@@ -102,6 +176,11 @@ export interface SegmentOptions {
     }
     [key: string]: boolean | { [key: string]: string } | undefined
   }
+  /**
+   * A dictionary of extra context to attach to the call.
+   * https://segment.com/docs/spec/common/#context
+   */
+  context: Context
 }`
 
 /** Target language for a.js TypeScript Declarations */
@@ -190,6 +269,8 @@ class AJSTSDeclarationsRenderer extends TypeScriptRenderer {
   }
 
   protected emitAnalyticsCallbackTypes() {
+    this.emitLine(sharedTopLevels)
+
     if (this.ajsOptions.client === Client.js) {
       this.emitLine(ajsTopLevels)
     } else if (this.ajsOptions.client === Client.node) {
