@@ -1,3 +1,12 @@
+## [5.1.6](https://github.com/segmentio/typewriter/compare/5.1.5...5.1.6) (2019-01-29)
+
+
+### Bug Fixes
+
+* include `context` typedef for both node and ajs top levels ([#48](https://github.com/segmentio/typewriter/issues/48)) ([37f88c1](https://github.com/segmentio/typewriter/commit/37f88c1))
+
+
+
 ## [5.1.5](https://github.com/segmentio/typewriter/compare/5.1.4...5.1.5) (2019-01-29)
 
 
