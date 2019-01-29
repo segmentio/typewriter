@@ -26,7 +26,7 @@ export interface Context {
   };
   ip?: string;
   locale?: string;
-  location: {
+  location?: {
     city?: string;
     country?: string;
     latitude?: string;
