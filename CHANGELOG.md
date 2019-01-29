@@ -1,3 +1,12 @@
+## [5.1.8](https://github.com/segmentio/typewriter/compare/5.1.7...5.1.8) (2019-01-29)
+
+
+### Bug Fixes
+
+* all SegmentOptions should be optional ([#50](https://github.com/segmentio/typewriter/issues/50)) ([e332779](https://github.com/segmentio/typewriter/commit/e332779))
+
+
+
 ## [5.1.7](https://github.com/segmentio/typewriter/compare/5.1.6...5.1.7) (2019-01-29)
 
 

@@ -10,7 +10,7 @@ System.register([], function(exports_1, context_1) {
           ...context,
           typewriter: {
             name: "gen-js",
-            version: "5.1.7"
+            version: "5.1.8"
           }
         }
       });
