@@ -1,3 +1,36 @@
+# [6.0.0](https://github.com/segmentio/typewriter/compare/5.1.8...6.0.0) (2019-01-30)
+
+
+### Bug Fixes
+
+* javascript clients accepted context rather than options ([#51](https://github.com/segmentio/typewriter/issues/51)) ([5222145](https://github.com/segmentio/typewriter/commit/5222145))
+
+
+### BREAKING CHANGES
+
+* if you previously passed `context` directly as the final
+  parameter to the `analytics.js` or `analytics-node` clients, then you'll
+  need to update it, like so:
+
+  If you made a call like:
+
+  ```
+  typewriter.thingHappened({ when: 'now' }, { groupId: 123 })
+  ```
+
+  Then you would need to update it to:
+
+  ```
+  typewriter.thingHappened({ when: 'now' }, {
+    context: { groupId: 123 }
+  })
+  ```
+
+  This allows you to pass `integrations` and other fields in through this
+  object, and aligns the TypeScript declarations with the underlying library.
+
+
+
 ## [5.1.8](https://github.com/segmentio/typewriter/compare/5.1.7...5.1.8) (2019-01-29)
 
 
