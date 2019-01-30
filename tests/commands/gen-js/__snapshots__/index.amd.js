@@ -21,7 +21,7 @@ define(["require", "exports"], function(require, exports) {
         }
       };
     }
-    terribleEventName3(props = {}, options) {
+    terribleEventName3(props = {}, options = {}, callback) {
       var validate = function(
         data,
         dataPath,
@@ -73,12 +73,17 @@ define(["require", "exports"], function(require, exports) {
       if (!validate({ properties: props })) {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
-      this.analytics.track("42_--terrible==event++name~!3", props, {
-        ...options,
-        context: this.addTypewriterContext(options.context)
-      });
+      this.analytics.track(
+        "42_--terrible==event++name~!3",
+        props,
+        {
+          ...options,
+          context: this.addTypewriterContext(options.context)
+        },
+        callback
+      );
     }
-    emptyEvent(props = {}, options) {
+    emptyEvent(props = {}, options = {}, callback) {
       var validate = function(
         data,
         dataPath,
@@ -139,12 +144,17 @@ define(["require", "exports"], function(require, exports) {
       if (!validate({ properties: props })) {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
-      this.analytics.track("Empty Event", props, {
-        ...options,
-        context: this.addTypewriterContext(options.context)
-      });
+      this.analytics.track(
+        "Empty Event",
+        props,
+        {
+          ...options,
+          context: this.addTypewriterContext(options.context)
+        },
+        callback
+      );
     }
-    exampleEvent(props = {}, options) {
+    exampleEvent(props = {}, options = {}, callback) {
       var pattern0 = new RegExp("FOO|BAR");
       var validate = function(
         data,
@@ -1020,12 +1030,17 @@ define(["require", "exports"], function(require, exports) {
       if (!validate({ properties: props })) {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
-      this.analytics.track("Example Event", props, {
-        ...options,
-        context: this.addTypewriterContext(options.context)
-      });
+      this.analytics.track(
+        "Example Event",
+        props,
+        {
+          ...options,
+          context: this.addTypewriterContext(options.context)
+        },
+        callback
+      );
     }
-    draft04Event(props = {}, options) {
+    draft04Event(props = {}, options = {}, callback) {
       var validate = function(
         data,
         dataPath,
@@ -1086,12 +1101,17 @@ define(["require", "exports"], function(require, exports) {
       if (!validate({ properties: props })) {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
-      this.analytics.track("Draft-04 Event", props, {
-        ...options,
-        context: this.addTypewriterContext(options.context)
-      });
+      this.analytics.track(
+        "Draft-04 Event",
+        props,
+        {
+          ...options,
+          context: this.addTypewriterContext(options.context)
+        },
+        callback
+      );
     }
-    draft06Event(props = {}, options) {
+    draft06Event(props = {}, options = {}, callback) {
       var validate = function(
         data,
         dataPath,
@@ -1152,10 +1172,15 @@ define(["require", "exports"], function(require, exports) {
       if (!validate({ properties: props })) {
         throw new Error(JSON.stringify(validate.errors, null, 2));
       }
-      this.analytics.track("Draft-06 Event", props, {
-        ...options,
-        context: this.addTypewriterContext(options.context)
-      });
+      this.analytics.track(
+        "Draft-06 Event",
+        props,
+        {
+          ...options,
+          context: this.addTypewriterContext(options.context)
+        },
+        callback
+      );
     }
   }
   exports.default = Analytics;

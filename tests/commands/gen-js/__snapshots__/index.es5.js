@@ -41,9 +41,12 @@ var Analytics = /** @class */ (function() {
       }
     });
   };
-  Analytics.prototype.terribleEventName3 = function(props, options) {
+  Analytics.prototype.terribleEventName3 = function(props, options, callback) {
     if (props === void 0) {
       props = {};
+    }
+    if (options === void 0) {
+      options = {};
     }
     var validate = function(
       data,
@@ -101,12 +104,16 @@ var Analytics = /** @class */ (function() {
       props,
       __assign({}, options, {
         context: this.addTypewriterContext(options.context)
-      })
+      }),
+      callback
     );
   };
-  Analytics.prototype.emptyEvent = function(props, options) {
+  Analytics.prototype.emptyEvent = function(props, options, callback) {
     if (props === void 0) {
       props = {};
+    }
+    if (options === void 0) {
+      options = {};
     }
     var validate = function(
       data,
@@ -173,12 +180,16 @@ var Analytics = /** @class */ (function() {
       props,
       __assign({}, options, {
         context: this.addTypewriterContext(options.context)
-      })
+      }),
+      callback
     );
   };
-  Analytics.prototype.exampleEvent = function(props, options) {
+  Analytics.prototype.exampleEvent = function(props, options, callback) {
     if (props === void 0) {
       props = {};
+    }
+    if (options === void 0) {
+      options = {};
     }
     var pattern0 = new RegExp("FOO|BAR");
     var validate = function(
@@ -1021,12 +1032,16 @@ var Analytics = /** @class */ (function() {
       props,
       __assign({}, options, {
         context: this.addTypewriterContext(options.context)
-      })
+      }),
+      callback
     );
   };
-  Analytics.prototype.draft04Event = function(props, options) {
+  Analytics.prototype.draft04Event = function(props, options, callback) {
     if (props === void 0) {
       props = {};
+    }
+    if (options === void 0) {
+      options = {};
     }
     var validate = function(
       data,
@@ -1093,12 +1108,16 @@ var Analytics = /** @class */ (function() {
       props,
       __assign({}, options, {
         context: this.addTypewriterContext(options.context)
-      })
+      }),
+      callback
     );
   };
-  Analytics.prototype.draft06Event = function(props, options) {
+  Analytics.prototype.draft06Event = function(props, options, callback) {
     if (props === void 0) {
       props = {};
+    }
+    if (options === void 0) {
+      options = {};
     }
     var validate = function(
       data,
@@ -1165,7 +1184,8 @@ var Analytics = /** @class */ (function() {
       props,
       __assign({}, options, {
         context: this.addTypewriterContext(options.context)
-      })
+      }),
+      callback
     );
   };
   return Analytics;

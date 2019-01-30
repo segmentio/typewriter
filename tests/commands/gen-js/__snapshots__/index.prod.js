@@ -15,34 +15,59 @@ export default class Analytics {
       }
     };
   }
-  terribleEventName3(props = {}, options) {
-    this.analytics.track("42_--terrible==event++name~!3", props, {
-      ...options,
-      context: this.addTypewriterContext(options.context)
-    });
+  terribleEventName3(props = {}, options = {}, callback) {
+    this.analytics.track(
+      "42_--terrible==event++name~!3",
+      props,
+      {
+        ...options,
+        context: this.addTypewriterContext(options.context)
+      },
+      callback
+    );
   }
-  emptyEvent(props = {}, options) {
-    this.analytics.track("Empty Event", props, {
-      ...options,
-      context: this.addTypewriterContext(options.context)
-    });
+  emptyEvent(props = {}, options = {}, callback) {
+    this.analytics.track(
+      "Empty Event",
+      props,
+      {
+        ...options,
+        context: this.addTypewriterContext(options.context)
+      },
+      callback
+    );
   }
-  exampleEvent(props = {}, options) {
-    this.analytics.track("Example Event", props, {
-      ...options,
-      context: this.addTypewriterContext(options.context)
-    });
+  exampleEvent(props = {}, options = {}, callback) {
+    this.analytics.track(
+      "Example Event",
+      props,
+      {
+        ...options,
+        context: this.addTypewriterContext(options.context)
+      },
+      callback
+    );
   }
-  draft04Event(props = {}, options) {
-    this.analytics.track("Draft-04 Event", props, {
-      ...options,
-      context: this.addTypewriterContext(options.context)
-    });
+  draft04Event(props = {}, options = {}, callback) {
+    this.analytics.track(
+      "Draft-04 Event",
+      props,
+      {
+        ...options,
+        context: this.addTypewriterContext(options.context)
+      },
+      callback
+    );
   }
-  draft06Event(props = {}, options) {
-    this.analytics.track("Draft-06 Event", props, {
-      ...options,
-      context: this.addTypewriterContext(options.context)
-    });
+  draft06Event(props = {}, options = {}, callback) {
+    this.analytics.track(
+      "Draft-06 Event",
+      props,
+      {
+        ...options,
+        context: this.addTypewriterContext(options.context)
+      },
+      callback
+    );
   }
 }

@@ -18,7 +18,7 @@ export default class Analytics {
       }
     };
   }
-  feedViewed(props = {}, options) {
+  feedViewed(props = {}, options = {}, callback) {
     var validate = function(
       data,
       dataPath,
@@ -99,12 +99,17 @@ export default class Analytics {
     if (!validate({ properties: props })) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    this.analytics.track("Feed Viewed", props, {
-      ...options,
-      context: this.addTypewriterContext(options.context)
-    });
+    this.analytics.track(
+      "Feed Viewed",
+      props,
+      {
+        ...options,
+        context: this.addTypewriterContext(options.context)
+      },
+      callback
+    );
   }
-  photoViewed(props = {}, options) {
+  photoViewed(props = {}, options = {}, callback) {
     var validate = function(
       data,
       dataPath,
@@ -185,12 +190,17 @@ export default class Analytics {
     if (!validate({ properties: props })) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    this.analytics.track("Photo Viewed", props, {
-      ...options,
-      context: this.addTypewriterContext(options.context)
-    });
+    this.analytics.track(
+      "Photo Viewed",
+      props,
+      {
+        ...options,
+        context: this.addTypewriterContext(options.context)
+      },
+      callback
+    );
   }
-  profileViewed(props = {}, options) {
+  profileViewed(props = {}, options = {}, callback) {
     var validate = function(
       data,
       dataPath,
@@ -271,9 +281,14 @@ export default class Analytics {
     if (!validate({ properties: props })) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    this.analytics.track("Profile Viewed", props, {
-      ...options,
-      context: this.addTypewriterContext(options.context)
-    });
+    this.analytics.track(
+      "Profile Viewed",
+      props,
+      {
+        ...options,
+        context: this.addTypewriterContext(options.context)
+      },
+      callback
+    );
   }
 }
