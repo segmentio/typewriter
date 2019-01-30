@@ -242,7 +242,7 @@ export interface RequiredObject {
  * based on your Tracking Plan.
  */
 export default class Analytics {
-  constructor(analytics: any);
+  constructor(analytics: any, options: { onError: (errors: object) => void });
 
   the42TerribleEventName3(
     props?: The42_TerribleEventName3,

@@ -11,13 +11,21 @@
   class Analytics {
     /**
      * Instantiate a wrapper around an analytics library instance
-     * @param {Analytics} analytics - The analytics.js library to wrap
+     * @param {Analytics} analytics The analytics.js library to wrap
+     * @param {Object} [options] Optional configuration of the Typewriter client
+     * @param {function} [options.onError] Error handler fired when run-time validation errors
+     *     are raised.
      */
-    constructor(analytics) {
+    constructor(analytics, options = {}) {
       if (!analytics) {
         throw new Error("An instance of analytics.js must be provided");
       }
       this.analytics = analytics || { track: () => null };
+      this.onError =
+        options.onError ||
+        (() => {
+          throw new Error(JSON.stringify(errors, null, 2));
+        });
     }
     addTypewriterContext(context = {}) {
       return {
@@ -78,7 +86,8 @@
         return errors === 0;
       };
       if (!validate({ properties: props })) {
-        throw new Error(JSON.stringify(validate.errors, null, 2));
+        this.onError(validate.errors);
+        return;
       }
       this.analytics.track(
         "42_--terrible==event++name~!3",
@@ -149,7 +158,8 @@
         return errors === 0;
       };
       if (!validate({ properties: props })) {
-        throw new Error(JSON.stringify(validate.errors, null, 2));
+        this.onError(validate.errors);
+        return;
       }
       this.analytics.track(
         "Empty Event",
@@ -1035,7 +1045,8 @@
         return errors === 0;
       };
       if (!validate({ properties: props })) {
-        throw new Error(JSON.stringify(validate.errors, null, 2));
+        this.onError(validate.errors);
+        return;
       }
       this.analytics.track(
         "Example Event",
@@ -1106,7 +1117,8 @@
         return errors === 0;
       };
       if (!validate({ properties: props })) {
-        throw new Error(JSON.stringify(validate.errors, null, 2));
+        this.onError(validate.errors);
+        return;
       }
       this.analytics.track(
         "Draft-04 Event",
@@ -1177,7 +1189,8 @@
         return errors === 0;
       };
       if (!validate({ properties: props })) {
-        throw new Error(JSON.stringify(validate.errors, null, 2));
+        this.onError(validate.errors);
+        return;
       }
       this.analytics.track(
         "Draft-06 Event",

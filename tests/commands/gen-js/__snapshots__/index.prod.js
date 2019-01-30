@@ -1,10 +1,18 @@
 export default class Analytics {
   /**
    * Instantiate a wrapper around an analytics library instance
-   * @param {Analytics} analytics - The analytics.js library to wrap
+   * @param {Analytics} analytics The analytics.js library to wrap
+   * @param {Object} [options] Optional configuration of the Typewriter client
+   * @param {function} [options.onError] Error handler fired when run-time validation errors
+   *     are raised.
    */
-  constructor(analytics) {
+  constructor(analytics, options = {}) {
     this.analytics = analytics || { track: () => null };
+    this.onError =
+      options.onError ||
+      (() => {
+        throw new Error(JSON.stringify(errors, null, 2));
+      });
   }
   addTypewriterContext(context = {}) {
     return {

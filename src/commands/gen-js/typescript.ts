@@ -283,8 +283,23 @@ class AJSTSDeclarationsRenderer extends TypeScriptRenderer {
       'Analytics provides a strongly-typed wrapper around Segment Analytics',
       'based on your Tracking Plan.'
     ])
+    this.emitLine(`interface AnalyticsOptions {
+      onError: (error: {
+        eventName: string
+        validationErrors: Array<{
+          keyword: string
+          dataPath: string
+          schemaPath: string
+          params: object
+          message: string
+          propertyName?: string
+          parentSchema?: object
+          data?: any
+        }>
+      }) => void
+    }`)
     this.emitBlock('export default class Analytics', '', () => {
-      this.emitLine('constructor(analytics: any)')
+      this.emitLine('constructor(analytics: any, options?: AnalyticsOptions)')
       this.ensureBlankLine()
 
       this.emitAnalyticsFunctions()
