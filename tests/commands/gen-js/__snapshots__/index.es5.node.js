@@ -15,19 +15,6 @@ var __assign =
     return __assign.apply(this, arguments);
   };
 Object.defineProperty(exports, "__esModule", { value: true });
-var genOptions = function(context) {
-  if (context === void 0) {
-    context = {};
-  }
-  return {
-    context: __assign({}, context, {
-      typewriter: {
-        name: "gen-js",
-        version: "5.1.8"
-      }
-    })
-  };
-};
 var Analytics = /** @class */ (function() {
   /**
    * Instantiate a wrapper around an analytics library instance
@@ -43,6 +30,17 @@ var Analytics = /** @class */ (function() {
       }
     };
   }
+  Analytics.prototype.addTypewriterContext = function(context) {
+    if (context === void 0) {
+      context = {};
+    }
+    return __assign({}, context, {
+      typewriter: {
+        name: "gen-js",
+        version: "5.1.8"
+      }
+    });
+  };
   Analytics.prototype.terribleEventName3 = function(message, callback) {
     if (message === void 0) {
       message = {};
@@ -98,7 +96,8 @@ var Analytics = /** @class */ (function() {
     if (!validate(message)) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    message = __assign({}, message, genOptions(message.context), {
+    message = __assign({}, message, {
+      context: this.addTypewriterContext(message.context),
       event: "42_--terrible==event++name~!3"
     });
     this.analytics.track(message, callback);
@@ -167,7 +166,8 @@ var Analytics = /** @class */ (function() {
     if (!validate(message)) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    message = __assign({}, message, genOptions(message.context), {
+    message = __assign({}, message, {
+      context: this.addTypewriterContext(message.context),
       event: "Empty Event"
     });
     this.analytics.track(message, callback);
@@ -1012,7 +1012,8 @@ var Analytics = /** @class */ (function() {
     if (!validate(message)) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    message = __assign({}, message, genOptions(message.context), {
+    message = __assign({}, message, {
+      context: this.addTypewriterContext(message.context),
       event: "Example Event"
     });
     this.analytics.track(message, callback);
@@ -1081,7 +1082,8 @@ var Analytics = /** @class */ (function() {
     if (!validate(message)) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    message = __assign({}, message, genOptions(message.context), {
+    message = __assign({}, message, {
+      context: this.addTypewriterContext(message.context),
       event: "Draft-04 Event"
     });
     this.analytics.track(message, callback);
@@ -1150,7 +1152,8 @@ var Analytics = /** @class */ (function() {
     if (!validate(message)) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    message = __assign({}, message, genOptions(message.context), {
+    message = __assign({}, message, {
+      context: this.addTypewriterContext(message.context),
       event: "Draft-06 Event"
     });
     this.analytics.track(message, callback);

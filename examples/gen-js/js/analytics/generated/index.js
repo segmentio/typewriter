@@ -1,12 +1,3 @@
-const genOptions = (context = {}) => ({
-  context: {
-    ...context,
-    typewriter: {
-      name: "gen-js",
-      version: "5.1.8"
-    }
-  }
-});
 export default class Analytics {
   /**
    * Instantiate a wrapper around an analytics library instance
@@ -18,7 +9,16 @@ export default class Analytics {
     }
     this.analytics = analytics || { track: () => null };
   }
-  feedViewed(props = {}, context) {
+  addTypewriterContext(context = {}) {
+    return {
+      ...context,
+      typewriter: {
+        name: "gen-js",
+        version: "5.1.8"
+      }
+    };
+  }
+  feedViewed(props = {}, options = {}, callback) {
     var validate = function(
       data,
       dataPath,
@@ -99,9 +99,17 @@ export default class Analytics {
     if (!validate({ properties: props })) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    this.analytics.track("Feed Viewed", props, genOptions(context));
+    this.analytics.track(
+      "Feed Viewed",
+      props,
+      {
+        ...options,
+        context: this.addTypewriterContext(options.context)
+      },
+      callback
+    );
   }
-  photoViewed(props = {}, context) {
+  photoViewed(props = {}, options = {}, callback) {
     var validate = function(
       data,
       dataPath,
@@ -182,9 +190,17 @@ export default class Analytics {
     if (!validate({ properties: props })) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    this.analytics.track("Photo Viewed", props, genOptions(context));
+    this.analytics.track(
+      "Photo Viewed",
+      props,
+      {
+        ...options,
+        context: this.addTypewriterContext(options.context)
+      },
+      callback
+    );
   }
-  profileViewed(props = {}, context) {
+  profileViewed(props = {}, options = {}, callback) {
     var validate = function(
       data,
       dataPath,
@@ -265,6 +281,14 @@ export default class Analytics {
     if (!validate({ properties: props })) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    this.analytics.track("Profile Viewed", props, genOptions(context));
+    this.analytics.track(
+      "Profile Viewed",
+      props,
+      {
+        ...options,
+        context: this.addTypewriterContext(options.context)
+      },
+      callback
+    );
   }
 }

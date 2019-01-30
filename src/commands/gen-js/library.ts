@@ -29,16 +29,6 @@ export function genJS(
     throw new Error('An instance of ${clientName} must be provided')
   }`
   const fileHeader = `
-    const genOptions = (context = {}) => ({
-      context: {
-        ...context,
-        typewriter: {
-          name: "${command}",
-          version: "${version}"
-        }
-      }
-    })
-
     export default class Analytics {
       /**
        * Instantiate a wrapper around an analytics library instance
@@ -47,6 +37,16 @@ export function genJS(
       constructor(analytics) {
         ${runtimeValidation ? analyticsValidation : ''}
         this.analytics = analytics || { track: () => null }
+      }
+
+      addTypewriterContext(context = {}) {
+        return {
+          ...context,
+          typewriter: {
+            name: "${command}",
+            version: "${version}"
+          }
+        }
       }
   `
 
@@ -61,15 +61,18 @@ export function genJS(
       let trackCall = ''
       let validateCall = ''
       if (client === Client.js) {
-        parameters = 'props = {}, context'
-        trackCall = `this.analytics.track('${name}', props, genOptions(context))`
+        parameters = 'props = {}, options = {}, callback'
+        trackCall = `this.analytics.track('${name}', props, {
+          ...options,
+          context: this.addTypewriterContext(options.context)
+        }, callback)`
         validateCall = 'validate({ properties: props })'
       } else if (client === Client.node) {
         parameters = 'message = {}, callback'
         trackCall = `
         message = {
           ...message,
-          ...genOptions(message.context),
+          context: this.addTypewriterContext(message.context),
           event: '${name}'
         }
         this.analytics.track(message, callback)`

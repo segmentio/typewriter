@@ -15,19 +15,6 @@ var __assign =
     return __assign.apply(this, arguments);
   };
 Object.defineProperty(exports, "__esModule", { value: true });
-var genOptions = function(context) {
-  if (context === void 0) {
-    context = {};
-  }
-  return {
-    context: __assign({}, context, {
-      typewriter: {
-        name: "gen-js",
-        version: "5.1.8"
-      }
-    })
-  };
-};
 var Analytics = /** @class */ (function() {
   /**
    * Instantiate a wrapper around an analytics library instance
@@ -43,9 +30,23 @@ var Analytics = /** @class */ (function() {
       }
     };
   }
-  Analytics.prototype.terribleEventName3 = function(props, context) {
+  Analytics.prototype.addTypewriterContext = function(context) {
+    if (context === void 0) {
+      context = {};
+    }
+    return __assign({}, context, {
+      typewriter: {
+        name: "gen-js",
+        version: "5.1.8"
+      }
+    });
+  };
+  Analytics.prototype.terribleEventName3 = function(props, options, callback) {
     if (props === void 0) {
       props = {};
+    }
+    if (options === void 0) {
+      options = {};
     }
     var validate = function(
       data,
@@ -101,12 +102,18 @@ var Analytics = /** @class */ (function() {
     this.analytics.track(
       "42_--terrible==event++name~!3",
       props,
-      genOptions(context)
+      __assign({}, options, {
+        context: this.addTypewriterContext(options.context)
+      }),
+      callback
     );
   };
-  Analytics.prototype.emptyEvent = function(props, context) {
+  Analytics.prototype.emptyEvent = function(props, options, callback) {
     if (props === void 0) {
       props = {};
+    }
+    if (options === void 0) {
+      options = {};
     }
     var validate = function(
       data,
@@ -168,11 +175,21 @@ var Analytics = /** @class */ (function() {
     if (!validate({ properties: props })) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    this.analytics.track("Empty Event", props, genOptions(context));
+    this.analytics.track(
+      "Empty Event",
+      props,
+      __assign({}, options, {
+        context: this.addTypewriterContext(options.context)
+      }),
+      callback
+    );
   };
-  Analytics.prototype.exampleEvent = function(props, context) {
+  Analytics.prototype.exampleEvent = function(props, options, callback) {
     if (props === void 0) {
       props = {};
+    }
+    if (options === void 0) {
+      options = {};
     }
     var pattern0 = new RegExp("FOO|BAR");
     var validate = function(
@@ -1010,11 +1027,21 @@ var Analytics = /** @class */ (function() {
     if (!validate({ properties: props })) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    this.analytics.track("Example Event", props, genOptions(context));
+    this.analytics.track(
+      "Example Event",
+      props,
+      __assign({}, options, {
+        context: this.addTypewriterContext(options.context)
+      }),
+      callback
+    );
   };
-  Analytics.prototype.draft04Event = function(props, context) {
+  Analytics.prototype.draft04Event = function(props, options, callback) {
     if (props === void 0) {
       props = {};
+    }
+    if (options === void 0) {
+      options = {};
     }
     var validate = function(
       data,
@@ -1076,11 +1103,21 @@ var Analytics = /** @class */ (function() {
     if (!validate({ properties: props })) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    this.analytics.track("Draft-04 Event", props, genOptions(context));
+    this.analytics.track(
+      "Draft-04 Event",
+      props,
+      __assign({}, options, {
+        context: this.addTypewriterContext(options.context)
+      }),
+      callback
+    );
   };
-  Analytics.prototype.draft06Event = function(props, context) {
+  Analytics.prototype.draft06Event = function(props, options, callback) {
     if (props === void 0) {
       props = {};
+    }
+    if (options === void 0) {
+      options = {};
     }
     var validate = function(
       data,
@@ -1142,7 +1179,14 @@ var Analytics = /** @class */ (function() {
     if (!validate({ properties: props })) {
       throw new Error(JSON.stringify(validate.errors, null, 2));
     }
-    this.analytics.track("Draft-06 Event", props, genOptions(context));
+    this.analytics.track(
+      "Draft-06 Event",
+      props,
+      __assign({}, options, {
+        context: this.addTypewriterContext(options.context)
+      }),
+      callback
+    );
   };
   return Analytics;
 })();
