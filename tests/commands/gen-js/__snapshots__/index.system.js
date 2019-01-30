@@ -20,8 +20,8 @@ System.register([], function(exports_1, context_1) {
           this.analytics = analytics || { track: () => null };
           this.onError =
             options.onError ||
-            (() => {
-              throw new Error(JSON.stringify(errors, null, 2));
+            (error => {
+              throw new Error(JSON.stringify(error, null, 2));
             });
         }
         addTypewriterContext(context = {}) {
@@ -87,7 +87,10 @@ System.register([], function(exports_1, context_1) {
             return errors === 0;
           };
           if (!validate({ properties: props })) {
-            this.onError(validate.errors);
+            this.onError({
+              eventName: "42_--terrible==event++name~!3",
+              validationErrors: validate.errors
+            });
             return;
           }
           this.analytics.track(
@@ -163,7 +166,10 @@ System.register([], function(exports_1, context_1) {
             return errors === 0;
           };
           if (!validate({ properties: props })) {
-            this.onError(validate.errors);
+            this.onError({
+              eventName: "Empty Event",
+              validationErrors: validate.errors
+            });
             return;
           }
           this.analytics.track(
@@ -1079,7 +1085,10 @@ System.register([], function(exports_1, context_1) {
             return errors === 0;
           };
           if (!validate({ properties: props })) {
-            this.onError(validate.errors);
+            this.onError({
+              eventName: "Example Event",
+              validationErrors: validate.errors
+            });
             return;
           }
           this.analytics.track(
@@ -1155,7 +1164,10 @@ System.register([], function(exports_1, context_1) {
             return errors === 0;
           };
           if (!validate({ properties: props })) {
-            this.onError(validate.errors);
+            this.onError({
+              eventName: "Draft-04 Event",
+              validationErrors: validate.errors
+            });
             return;
           }
           this.analytics.track(
@@ -1231,7 +1243,10 @@ System.register([], function(exports_1, context_1) {
             return errors === 0;
           };
           if (!validate({ properties: props })) {
-            this.onError(validate.errors);
+            this.onError({
+              eventName: "Draft-06 Event",
+              validationErrors: validate.errors
+            });
             return;
           }
           this.analytics.track(

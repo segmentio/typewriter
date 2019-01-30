@@ -241,8 +241,25 @@ export interface RequiredObject {
  * Analytics provides a strongly-typed wrapper around Segment Analytics
  * based on your Tracking Plan.
  */
+interface AnalyticsOptions {
+  onError: (
+    error: {
+      eventName: string;
+      validationErrors: Array<{
+        keyword: string;
+        dataPath: string;
+        schemaPath: string;
+        params: object;
+        message: string;
+        propertyName?: string;
+        parentSchema?: object;
+        data?: any;
+      }>;
+    }
+  ) => void;
+}
 export default class Analytics {
-  constructor(analytics: any, options: { onError: (errors: object) => void });
+  constructor(analytics: any, options?: AnalyticsOptions);
 
   the42TerribleEventName3(
     props?: The42_TerribleEventName3,

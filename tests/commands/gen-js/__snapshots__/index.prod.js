@@ -8,11 +8,6 @@ export default class Analytics {
    */
   constructor(analytics, options = {}) {
     this.analytics = analytics || { track: () => null };
-    this.onError =
-      options.onError ||
-      (() => {
-        throw new Error(JSON.stringify(errors, null, 2));
-      });
   }
   addTypewriterContext(context = {}) {
     return {
