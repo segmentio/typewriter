@@ -241,23 +241,30 @@ export interface RequiredObject {
  * Analytics provides a strongly-typed wrapper around Segment Analytics
  * based on your Tracking Plan.
  */
-interface AnalyticsOptions {
-  onError: (
-    error: {
-      eventName: string;
-      validationErrors: Array<{
-        keyword: string;
-        dataPath: string;
-        schemaPath: string;
-        params: object;
-        message: string;
-        propertyName?: string;
-        parentSchema?: object;
-        data?: any;
-      }>;
-    }
-  ) => void;
+
+// From https://github.com/epoberezkin/ajv/blob/0c31c1e2a81e315511c60a0dd7420a72cb181e61/lib/ajv.d.ts#L279
+interface AjvErrorObject {
+  keyword: string;
+  dataPath: string;
+  schemaPath: string;
+  params: object;
+  message: string;
+  propertyName?: string;
+  parentSchema?: object;
+  data?: any;
 }
+
+// An invalid event with its associated collection of validation errors.
+interface InvalidEvent {
+  eventName: string;
+  validationErrors: AjvErrorObject[];
+}
+
+// Options to customize the runtime behavior of a Typewriter client.
+interface AnalyticsOptions {
+  onError(event: InvalidEvent): void;
+}
+
 export default class Analytics {
   constructor(analytics: any, options?: AnalyticsOptions);
 
