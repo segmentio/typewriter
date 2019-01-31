@@ -28,15 +28,23 @@ export function genJS(
   if (!analytics) {
     throw new Error('An instance of ${clientName} must be provided')
   }`
+  const errorHandler = `
+  this.onError = options.onError || (error => {
+    throw new Error(JSON.stringify(error, null, 2));
+  })`
   const fileHeader = `
     export default class Analytics {
       /**
        * Instantiate a wrapper around an analytics library instance
-       * @param {Analytics} analytics - The ${clientName} library to wrap
+       * @param {Analytics} analytics The ${clientName} library to wrap
+       * @param {Object} [options] Optional configuration of the Typewriter client
+       * @param {function} [options.onError] Error handler fired when run-time validation errors
+       *     are raised.
        */
-      constructor(analytics) {
+      constructor(analytics, options = {}) {
         ${runtimeValidation ? analyticsValidation : ''}
         this.analytics = analytics || { track: () => null }
+        ${runtimeValidation ? errorHandler : ''}
       }
 
       addTypewriterContext(context = {}) {
@@ -82,7 +90,8 @@ export function genJS(
       const validationCode = `
       ${compiledValidationFn}
       if (!${validateCall}) {
-        throw new Error(JSON.stringify(validate.errors, null, 2));
+        this.onError({ eventName: '${name}', validationErrors: validate.errors })
+        return
       }`
 
       return `

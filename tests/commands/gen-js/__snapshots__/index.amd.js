@@ -4,13 +4,21 @@ define(["require", "exports"], function(require, exports) {
   class Analytics {
     /**
      * Instantiate a wrapper around an analytics library instance
-     * @param {Analytics} analytics - The analytics.js library to wrap
+     * @param {Analytics} analytics The analytics.js library to wrap
+     * @param {Object} [options] Optional configuration of the Typewriter client
+     * @param {function} [options.onError] Error handler fired when run-time validation errors
+     *     are raised.
      */
-    constructor(analytics) {
+    constructor(analytics, options = {}) {
       if (!analytics) {
         throw new Error("An instance of analytics.js must be provided");
       }
       this.analytics = analytics || { track: () => null };
+      this.onError =
+        options.onError ||
+        (error => {
+          throw new Error(JSON.stringify(error, null, 2));
+        });
     }
     addTypewriterContext(context = {}) {
       return {
@@ -71,7 +79,11 @@ define(["require", "exports"], function(require, exports) {
         return errors === 0;
       };
       if (!validate({ properties: props })) {
-        throw new Error(JSON.stringify(validate.errors, null, 2));
+        this.onError({
+          eventName: "42_--terrible==event++name~!3",
+          validationErrors: validate.errors
+        });
+        return;
       }
       this.analytics.track(
         "42_--terrible==event++name~!3",
@@ -142,7 +154,11 @@ define(["require", "exports"], function(require, exports) {
         return errors === 0;
       };
       if (!validate({ properties: props })) {
-        throw new Error(JSON.stringify(validate.errors, null, 2));
+        this.onError({
+          eventName: "Empty Event",
+          validationErrors: validate.errors
+        });
+        return;
       }
       this.analytics.track(
         "Empty Event",
@@ -1028,7 +1044,11 @@ define(["require", "exports"], function(require, exports) {
         return errors === 0;
       };
       if (!validate({ properties: props })) {
-        throw new Error(JSON.stringify(validate.errors, null, 2));
+        this.onError({
+          eventName: "Example Event",
+          validationErrors: validate.errors
+        });
+        return;
       }
       this.analytics.track(
         "Example Event",
@@ -1099,7 +1119,11 @@ define(["require", "exports"], function(require, exports) {
         return errors === 0;
       };
       if (!validate({ properties: props })) {
-        throw new Error(JSON.stringify(validate.errors, null, 2));
+        this.onError({
+          eventName: "Draft-04 Event",
+          validationErrors: validate.errors
+        });
+        return;
       }
       this.analytics.track(
         "Draft-04 Event",
@@ -1170,7 +1194,11 @@ define(["require", "exports"], function(require, exports) {
         return errors === 0;
       };
       if (!validate({ properties: props })) {
-        throw new Error(JSON.stringify(validate.errors, null, 2));
+        this.onError({
+          eventName: "Draft-06 Event",
+          validationErrors: validate.errors
+        });
+        return;
       }
       this.analytics.track(
         "Draft-06 Event",

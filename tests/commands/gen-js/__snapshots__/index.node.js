@@ -3,13 +3,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 class Analytics {
   /**
    * Instantiate a wrapper around an analytics library instance
-   * @param {Analytics} analytics - The analytics-node library to wrap
+   * @param {Analytics} analytics The analytics-node library to wrap
+   * @param {Object} [options] Optional configuration of the Typewriter client
+   * @param {function} [options.onError] Error handler fired when run-time validation errors
+   *     are raised.
    */
-  constructor(analytics) {
+  constructor(analytics, options = {}) {
     if (!analytics) {
       throw new Error("An instance of analytics-node must be provided");
     }
     this.analytics = analytics || { track: () => null };
+    this.onError =
+      options.onError ||
+      (error => {
+        throw new Error(JSON.stringify(error, null, 2));
+      });
   }
   addTypewriterContext(context = {}) {
     return Object.assign({}, context, {
@@ -69,7 +77,11 @@ class Analytics {
       return errors === 0;
     };
     if (!validate(message)) {
-      throw new Error(JSON.stringify(validate.errors, null, 2));
+      this.onError({
+        eventName: "42_--terrible==event++name~!3",
+        validationErrors: validate.errors
+      });
+      return;
     }
     message = Object.assign({}, message, {
       context: this.addTypewriterContext(message.context),
@@ -136,7 +148,11 @@ class Analytics {
       return errors === 0;
     };
     if (!validate(message)) {
-      throw new Error(JSON.stringify(validate.errors, null, 2));
+      this.onError({
+        eventName: "Empty Event",
+        validationErrors: validate.errors
+      });
+      return;
     }
     message = Object.assign({}, message, {
       context: this.addTypewriterContext(message.context),
@@ -979,7 +995,11 @@ class Analytics {
       return errors === 0;
     };
     if (!validate(message)) {
-      throw new Error(JSON.stringify(validate.errors, null, 2));
+      this.onError({
+        eventName: "Example Event",
+        validationErrors: validate.errors
+      });
+      return;
     }
     message = Object.assign({}, message, {
       context: this.addTypewriterContext(message.context),
@@ -1046,7 +1066,11 @@ class Analytics {
       return errors === 0;
     };
     if (!validate(message)) {
-      throw new Error(JSON.stringify(validate.errors, null, 2));
+      this.onError({
+        eventName: "Draft-04 Event",
+        validationErrors: validate.errors
+      });
+      return;
     }
     message = Object.assign({}, message, {
       context: this.addTypewriterContext(message.context),
@@ -1113,7 +1137,11 @@ class Analytics {
       return errors === 0;
     };
     if (!validate(message)) {
-      throw new Error(JSON.stringify(validate.errors, null, 2));
+      this.onError({
+        eventName: "Draft-06 Event",
+        validationErrors: validate.errors
+      });
+      return;
     }
     message = Object.assign({}, message, {
       context: this.addTypewriterContext(message.context),
