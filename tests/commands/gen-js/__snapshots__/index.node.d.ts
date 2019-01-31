@@ -282,7 +282,7 @@ export interface RequiredObject {
  */
 
 // From https://github.com/epoberezkin/ajv/blob/0c31c1e2a81e315511c60a0dd7420a72cb181e61/lib/ajv.d.ts#L279
-interface AjvErrorObject {
+export interface AjvErrorObject {
   keyword: string;
   dataPath: string;
   schemaPath: string;
@@ -294,13 +294,13 @@ interface AjvErrorObject {
 }
 
 // An invalid event with its associated collection of validation errors.
-interface InvalidEvent {
+export interface InvalidEvent {
   eventName: string;
   validationErrors: AjvErrorObject[];
 }
 
 // Options to customize the runtime behavior of a Typewriter client.
-interface AnalyticsOptions {
+export interface AnalyticsOptions {
   onError(event: InvalidEvent): void;
 }
 
