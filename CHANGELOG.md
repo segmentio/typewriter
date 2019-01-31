@@ -1,3 +1,12 @@
+# [6.1.0](https://github.com/segmentio/typewriter/compare/6.0.0...6.1.0) (2019-01-31)
+
+
+### Features
+
+* custom error handlers ([#52](https://github.com/segmentio/typewriter/issues/52)) ([7f073d8](https://github.com/segmentio/typewriter/commit/7f073d8))
+
+
+
 # [6.0.0](https://github.com/segmentio/typewriter/compare/5.1.8...6.0.0) (2019-01-30)
 
 

@@ -25,7 +25,7 @@ define(["require", "exports"], function(require, exports) {
         ...context,
         typewriter: {
           name: "gen-js",
-          version: "6.0.0"
+          version: "6.1.0"
         }
       };
     }
