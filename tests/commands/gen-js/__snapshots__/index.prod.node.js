@@ -15,7 +15,7 @@ class Analytics {
     return Object.assign({}, context, {
       typewriter: {
         name: "gen-js",
-        version: "6.1.0"
+        version: "6.1.1"
       }
     });
   }

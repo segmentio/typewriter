@@ -1,3 +1,12 @@
+## [6.1.1](https://github.com/segmentio/typewriter/compare/6.1.0...6.1.1) (2019-01-31)
+
+
+### Bug Fixes
+
+* export analytics options ([#53](https://github.com/segmentio/typewriter/issues/53)) ([2b15c20](https://github.com/segmentio/typewriter/commit/2b15c20))
+
+
+
 # [6.1.0](https://github.com/segmentio/typewriter/compare/6.0.0...6.1.0) (2019-01-31)
 
 
