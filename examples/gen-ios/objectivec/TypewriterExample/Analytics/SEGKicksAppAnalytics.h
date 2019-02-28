@@ -134,6 +134,9 @@ typedef void (^ SEGProductBuilderBlock)(SEGProductBuilder *);
 
 - (void)orderCompleted:(SEGOrderCompleted *)props;
 - (void)orderCompleted:(SEGOrderCompleted *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options;
+
+- (void)emptyEvent:(SEGEmptyEvent *)props;
+- (void)emptyEvent:(SEGEmptyEvent *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options;
 @end
 
 NS_ASSUME_NONNULL_END

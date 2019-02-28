@@ -8,7 +8,8 @@ import {
   ClassType,
   Name,
   TargetLanguage,
-  Sourcelike
+  Sourcelike,
+  ObjectType
 } from 'quicktype-core'
 
 import { modifySource, SerializedRenderResult } from 'quicktype-core/dist/Source'
@@ -267,21 +268,28 @@ class AnalyticsJavaWrapperRenderer extends JavaRenderer {
     hasProperties: boolean,
     withOptions: boolean
   ): void {
-    this.emitDescriptionBlock([
-      // TODO: Emit a function description, once we support top-level event descriptions in JSON Schema
-      ['@param props {@link ', name, '} to add extra information to this call.'],
+    // TODO: Emit a function description, once we support top-level event descriptions in JSON Schema
+    const description: Sourcelike = [
       ['@see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>']
-    ])
+    ]
+    if (hasProperties) {
+      description.unshift([
+        '@param props {@link ',
+        name,
+        '} to add extra information to this call.'
+      ])
+    }
+    this.emitDescriptionBlock(description)
+
     const camelCaseName = modifySource(camelCase, name)
     this.emitBlock(
       [
         'public void ',
         camelCaseName,
-        '(final @Nullable ',
-        // If no properties are specified, then allow any properties.
-        hasProperties ? name : 'Object',
-        ' props',
-        withOptions ? ', final @Nullable Options options' : '',
+        '(',
+        ...(hasProperties ? ['final @Nullable ', name, ' props'] : []),
+        hasProperties && withOptions ? ', ' : '',
+        withOptions ? 'final @Nullable Options options' : '',
         ')'
       ],
       () => {
@@ -292,7 +300,8 @@ class AnalyticsJavaWrapperRenderer extends JavaRenderer {
         this.emitLine([
           'this.analytics.track("',
           rawEventName,
-          '", props.toProperties()',
+          '", ',
+          hasProperties ? 'props.toProperties()' : 'new Properties()',
           withOptions ? ', options' : '',
           ');'
         ])
@@ -331,16 +340,12 @@ class AnalyticsJavaWrapperRenderer extends JavaRenderer {
       this.ensureBlankLine()
 
       this.forEachTopLevel('leading-and-interposing', (t, name) => {
-        const hasProperties = true // TODO
-        const rawEventName = name
-          .proposeUnstyledNames(new Map())
-          .values()
-          .next().value
-        console.log(`${rawEventName}: ${t.getChildren().size} ${t.getAttributes().size}`)
-        console.log(util.inspect(t.getNonAttributeChildren(), false, 4, true))
-        this.emitAnalyticsEventWrapper(name, hasProperties, false)
-        this.ensureBlankLine()
-        this.emitAnalyticsEventWrapper(name, hasProperties, true)
+        if (t instanceof ObjectType) {
+          const hasProperties = t.getProperties().size > 0
+          this.emitAnalyticsEventWrapper(name, hasProperties, false)
+          this.ensureBlankLine()
+          this.emitAnalyticsEventWrapper(name, hasProperties, true)
+        }
       })
     })
   }

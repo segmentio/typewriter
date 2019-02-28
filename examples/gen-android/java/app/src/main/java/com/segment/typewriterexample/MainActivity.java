@@ -10,6 +10,7 @@ import com.segment.analytics.Analytics;
 import com.segment.analytics.KicksAppAnalytics;
 import com.segment.analytics.OrderCompleted;
 import com.segment.analytics.Product;
+import com.segment.analytics.Properties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,5 +58,7 @@ public class MainActivity extends AppCompatActivity {
                .build();
 
        this.kicksAppAnalytics.orderCompleted(order);
+
+       this.kicksAppAnalytics.emptyEvent();
     }
 }

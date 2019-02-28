@@ -34,4 +34,18 @@ public class KicksAppAnalytics {
     public void orderCompleted(final @Nullable OrderCompleted props, final @Nullable Options options) {
         this.analytics.track("Order Completed", props.toProperties(), options);
     }
+
+    /**
+     * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
+     */
+    public void emptyEvent() {
+        this.analytics.track("Empty Event", new Properties());
+    }
+
+    /**
+     * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
+     */
+    public void emptyEvent(final @Nullable Options options) {
+        this.analytics.track("Empty Event", new Properties(), options);
+    }
 }
