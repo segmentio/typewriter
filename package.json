@@ -65,8 +65,8 @@
     "lodash": "^4.17.10",
     "node-fetch": "^2.2.0",
     "omit-deep-lodash": "^1.1.2",
-    "quicktype": "15.0.164",
-    "quicktype-core": "6.0.19",
+    "quicktype": "15.0.174",
+    "quicktype-core": "6.0.26",
     "sort-keys": "^2.0.0",
     "typescript": "^3.2.2",
     "yargs": "^12.0.2"
