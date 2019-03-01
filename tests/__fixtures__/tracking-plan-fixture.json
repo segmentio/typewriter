@@ -25,6 +25,34 @@
       }
     },
     {
+      "description": "This is JSON Schema draft-04 event.",
+      "name": "Draft-04 Event",
+      "rules": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "properties": {
+          "context": {},
+          "properties": { "type": "object" },
+          "traits": {}
+        },
+        "required": ["properties"],
+        "type": "object"
+      }
+    },
+    {
+      "description": "This is JSON Schema draft-06 event.",
+      "name": "Draft-06 Event",
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "properties": {
+          "context": {},
+          "properties": { "type": "object" },
+          "traits": {}
+        },
+        "required": ["properties"],
+        "type": "object"
+      }
+    },
+    {
       "description": "This is an empty event.",
       "name": "Empty Event",
       "rules": {
@@ -79,9 +107,17 @@
                 "description": "Optional integer property",
                 "type": "integer"
               },
+              "optional nullable string": {
+                "description": "",
+                "type": ["string", "null"]
+              },
               "optional number": {
                 "description": "Optional number property",
                 "type": "number"
+              },
+              "optional number or string": {
+                "description": "",
+                "type": ["number", "string"]
               },
               "optional object": {
                 "description": "Optional object property",
@@ -152,10 +188,18 @@
                 "description": "Required integer property",
                 "type": "integer"
               },
+              "required nullable string": {
+                "description": "",
+                "type": ["string", "null"]
+              },
               "required number": {
                 "description": "Required number property",
                 "key": "required number",
                 "type": "number"
+              },
+              "required number or string": {
+                "description": "",
+                "type": ["number", "string"]
               },
               "required object": {
                 "description": "Required object property",
@@ -198,38 +242,12 @@
               "required array (empty)",
               "required array",
               "required object (empty)",
-              "required object"
+              "required object",
+              "required number or string",
+              "required nullable string"
             ],
             "type": "object"
           },
-          "traits": {}
-        },
-        "required": ["properties"],
-        "type": "object"
-      }
-    },
-    {
-      "description": "This is JSON Schema draft-04 event.",
-      "name": "Draft-04 Event",
-      "rules": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "properties": {
-          "context": {},
-          "properties": { "type": "object" },
-          "traits": {}
-        },
-        "required": ["properties"],
-        "type": "object"
-      }
-    },
-    {
-      "description": "This is JSON Schema draft-06 event.",
-      "name": "Draft-06 Event",
-      "rules": {
-        "$schema": "http://json-schema.org/draft-06/schema#",
-        "properties": {
-          "context": {},
-          "properties": { "type": "object" },
           "traits": {}
         },
         "required": ["properties"],
