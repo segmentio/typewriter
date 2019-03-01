@@ -1,6 +1,6 @@
 import { Options } from 'yargs'
-import { getTrackingPlanFromFile, TrackingPlan } from './fetchPlan'
-export { TrackedEvent } from './fetchPlan'
+import { getTrackingPlanFromFile, TrackingPlan } from './api'
+export { TrackedEvent } from './api'
 
 export type HandlerFn = (params: Params, plan: TrackingPlan) => Promise<any>
 export interface Params {

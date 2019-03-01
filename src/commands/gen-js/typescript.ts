@@ -1,4 +1,4 @@
-import { TrackedEvent } from '../../lib'
+import { TrackedEvent } from '../../lib/cli'
 import { get, camelCase } from 'lodash'
 import * as prettier from 'prettier'
 

@@ -22,7 +22,8 @@ import {
   TrackedEvent,
   builder as defaultBuilder,
   Params as DefaultParams
-} from '../lib'
+} from '../lib/cli'
+import { getRawName } from '../lib/naming'
 import { version } from '../../package.json'
 import * as fs from 'fs'
 import * as util from 'util'
@@ -408,7 +409,7 @@ class AnalyticsObjectiveCWrapperRenderer extends ObjectiveCRenderer {
         if (withOptions) {
           this.emitLine([
             '[self.analytics track:@"',
-            this.rawName(name),
+            getRawName(name),
             '" properties:',
             hasProperties ? '[props JSONDictionary]' : '@{}',
             withOptions ? ' options:addTypewriterContextFields(options)' : '',
@@ -425,15 +426,6 @@ class AnalyticsObjectiveCWrapperRenderer extends ObjectiveCRenderer {
         }
       }
     )
-  }
-
-  protected rawName(name: Name) {
-    return name
-      .proposeUnstyledNames(new Map())
-      .values()
-      .next()
-      .value // Escape any double quotes.
-      .replace(/"/g, '\\"')
   }
 
   protected emitAnalyticsWrapperImplementation(fileName: string) {

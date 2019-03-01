@@ -1,11 +1,11 @@
-import { TrackedEvent } from '../../lib'
+import { TrackedEvent } from '../../lib/cli'
 import { transpileModule, ModuleKind, ScriptTarget } from 'typescript'
 import { version } from '../../../package.json'
 import { camelCase } from 'lodash'
 import * as prettier from 'prettier'
 import * as Ajv from 'ajv'
 import { command, Client } from '.'
-import { preprocessRules } from '../../lib/utils'
+import { preprocessRules } from '../../lib/rules'
 
 function getFnName(eventName: string) {
   return camelCase(eventName.replace(/^\d+/, ''))

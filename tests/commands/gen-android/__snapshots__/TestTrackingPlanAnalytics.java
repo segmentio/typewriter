@@ -24,7 +24,7 @@ public class TestTrackingPlanAnalytics {
      * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
      */
     public void the42TerribleEventName3(final @Nullable The42_TerribleEventName3 props) {
-        this.analytics.track("42_--terrible=="event'++name~!3", props.toProperties());
+        this.analytics.track("42_--terrible==\"event'++name~!3", props.toProperties());
     }
 
     /**
@@ -32,7 +32,7 @@ public class TestTrackingPlanAnalytics {
      * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
      */
     public void the42TerribleEventName3(final @Nullable The42_TerribleEventName3 props, final @Nullable Options options) {
-        this.analytics.track("42_--terrible=="event'++name~!3", props.toProperties(), options);
+        this.analytics.track("42_--terrible==\"event'++name~!3", props.toProperties(), options);
     }
 
     /**

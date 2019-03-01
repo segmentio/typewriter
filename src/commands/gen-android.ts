@@ -13,12 +13,7 @@ import {
 } from 'quicktype-core'
 
 import { modifySource, SerializedRenderResult } from 'quicktype-core/dist/Source'
-import {
-  OptionValues,
-  BooleanOption,
-  StringOption,
-  EnumOption
-} from 'quicktype-core/dist/RendererOptions'
+import { OptionValues, BooleanOption, StringOption } from 'quicktype-core/dist/RendererOptions'
 import { javaNameStyle, javaOptions } from 'quicktype-core/dist/language/Java'
 
 import {
@@ -26,11 +21,12 @@ import {
   TrackedEvent,
   builder as defaultBuilder,
   Params as DefaultParams
-} from '../lib'
+} from '../lib/cli'
 import * as fs from 'fs'
 import * as util from 'util'
 import { get, map, camelCase, upperFirst } from 'lodash'
 import { AcronymStyleOptions } from 'quicktype-core/dist/support/Acronyms'
+import { getRawName } from '../lib/naming'
 
 const writeFile = util.promisify(fs.writeFile)
 
@@ -293,13 +289,9 @@ class AnalyticsJavaWrapperRenderer extends JavaRenderer {
         ')'
       ],
       () => {
-        const rawEventName = name
-          .proposeUnstyledNames(new Map())
-          .values()
-          .next().value
         this.emitLine([
           'this.analytics.track("',
-          rawEventName,
+          getRawName(name),
           '", ',
           hasProperties ? 'props.toProperties()' : 'new Properties()',
           withOptions ? ', options' : '',
