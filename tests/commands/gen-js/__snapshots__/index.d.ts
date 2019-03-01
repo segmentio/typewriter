@@ -136,7 +136,7 @@ export interface ExampleEvent {
   /**
    * Optional object (empty) property
    */
-  "optional object (empty)"?: { [key: string]: any };
+  "optional object (empty)"?: {};
   /**
    * Optional string property
    */
@@ -176,7 +176,7 @@ export interface ExampleEvent {
   /**
    * Required object (empty) property
    */
-  "required object (empty)": { [key: string]: any };
+  "required object (empty)": {};
   /**
    * Required string property
    */
@@ -280,7 +280,7 @@ export default class Analytics {
    * Required object (empty) property
    */
   emptyEvent(
-    props?: { [key: string]: any },
+    props?: {},
     options?: SegmentOptions,
     callback?: AnalyticsJSCallback
   ): void;
@@ -297,7 +297,7 @@ export default class Analytics {
    * Required object (empty) property
    */
   draft04Event(
-    props?: { [key: string]: any },
+    props?: {},
     options?: SegmentOptions,
     callback?: AnalyticsJSCallback
   ): void;
@@ -308,7 +308,7 @@ export default class Analytics {
    * Required object (empty) property
    */
   draft06Event(
-    props?: { [key: string]: any },
+    props?: {},
     options?: SegmentOptions,
     callback?: AnalyticsJSCallback
   ): void;

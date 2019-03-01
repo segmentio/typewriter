@@ -10,9 +10,11 @@ import {
   TypeScriptRenderer,
   RenderContext,
   TargetLanguage,
-  ClassType
+  ClassType,
+  Type,
+  MapType
 } from 'quicktype-core'
-import { modifySource } from 'quicktype-core/dist/Source'
+import { modifySource, MultiWord, singleWord } from 'quicktype-core/dist/Source'
 import { OptionValues } from 'quicktype-core/dist/RendererOptions'
 import { tsFlowOptions } from 'quicktype-core/dist/language/TypeScriptFlow'
 import { utf16StringEscape } from 'quicktype-core/dist/support/Strings'
@@ -335,6 +337,15 @@ class AJSTSDeclarationsRenderer extends TypeScriptRenderer {
         ])
       }
     })
+  }
+
+  protected sourceFor(t: Type): MultiWord {
+    // Override sourceFor behavior to disable `{ [key: string]: any }`
+    if (t instanceof MapType) {
+      return singleWord('{}')
+    }
+
+    return super.sourceFor(t)
   }
 }
 

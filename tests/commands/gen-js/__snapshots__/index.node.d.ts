@@ -175,7 +175,7 @@ export interface ExampleEvent {
   /**
    * Optional object (empty) property
    */
-  "optional object (empty)"?: { [key: string]: any };
+  "optional object (empty)"?: {};
   /**
    * Optional string property
    */
@@ -215,7 +215,7 @@ export interface ExampleEvent {
   /**
    * Required object (empty) property
    */
-  "required object (empty)": { [key: string]: any };
+  "required object (empty)": {};
   /**
    * Required string property
    */
@@ -318,7 +318,7 @@ export default class Analytics {
    * Required object (empty) property
    */
   emptyEvent(
-    message?: TrackMessage<{ [key: string]: any }>,
+    message?: TrackMessage<{}>,
     callback?: AnalyticsNodeCallback
   ): void;
 
@@ -333,7 +333,7 @@ export default class Analytics {
    * Required object (empty) property
    */
   draft04Event(
-    message?: TrackMessage<{ [key: string]: any }>,
+    message?: TrackMessage<{}>,
     callback?: AnalyticsNodeCallback
   ): void;
 
@@ -343,7 +343,7 @@ export default class Analytics {
    * Required object (empty) property
    */
   draft06Event(
-    message?: TrackMessage<{ [key: string]: any }>,
+    message?: TrackMessage<{}>,
     callback?: AnalyticsNodeCallback
   ): void;
 }
