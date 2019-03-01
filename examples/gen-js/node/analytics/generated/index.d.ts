@@ -268,9 +268,4 @@ export default class Analytics {
     message?: TrackMessage<OrderCompleted>,
     callback?: AnalyticsNodeCallback
   ): void;
-
-  emptyEvent(
-    message?: TrackMessage<{ [key: string]: any }>,
-    callback?: AnalyticsNodeCallback
-  ): void;
 }

@@ -225,15 +225,6 @@ static id map(id collection, id (^f)(id value)) {
 {
     [self.analytics track:@"Order Completed" properties:[props JSONDictionary] options:addTypewriterContextFields(options)];
 }
-
-- (void)emptyEvent
-{
-    [self emptyEvent:@{}];
-}
-- (void)emptyEvent:(NSDictionary<NSString *, id> *_Nullable)options
-{
-    [self.analytics track:@"Empty Event" properties:@{} options:addTypewriterContextFields(options)];
-}
 @end
 
 NS_ASSUME_NONNULL_END
