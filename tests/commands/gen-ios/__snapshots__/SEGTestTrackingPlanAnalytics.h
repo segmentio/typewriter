@@ -200,8 +200,8 @@ typedef void (^ SEGRequiredObjectBuilderBlock)(SEGRequiredObjectBuilder *);
 /// Optional object (empty) property
 ///
 /// Required object (empty) property
-- (void)emptyEvent:(SEGEmptyEvent *)props;
-- (void)emptyEvent:(SEGEmptyEvent *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options;
+- (void)emptyEvent;
+- (void)emptyEvent:(NSDictionary<NSString *, id> *_Nullable)options;
 
 - (void)exampleEvent:(SEGExampleEvent *)props;
 - (void)exampleEvent:(SEGExampleEvent *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options;
@@ -209,14 +209,14 @@ typedef void (^ SEGRequiredObjectBuilderBlock)(SEGRequiredObjectBuilder *);
 /// Optional object (empty) property
 ///
 /// Required object (empty) property
-- (void)draft04Event:(SEGDraft04Event *)props;
-- (void)draft04Event:(SEGDraft04Event *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options;
+- (void)draft04Event;
+- (void)draft04Event:(NSDictionary<NSString *, id> *_Nullable)options;
 
 /// Optional object (empty) property
 ///
 /// Required object (empty) property
-- (void)draft06Event:(SEGDraft06Event *)props;
-- (void)draft06Event:(SEGDraft06Event *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options;
+- (void)draft06Event;
+- (void)draft06Event:(NSDictionary<NSString *, id> *_Nullable)options;
 @end
 
 NS_ASSUME_NONNULL_END

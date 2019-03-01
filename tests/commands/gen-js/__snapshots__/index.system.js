@@ -88,13 +88,13 @@ System.register([], function(exports_1, context_1) {
           };
           if (!validate({ properties: props })) {
             this.onError({
-              eventName: "42_--terrible==event++name~!3",
+              eventName: "42_--terrible==\"event'++name~!3",
               validationErrors: validate.errors
             });
             return;
           }
           this.analytics.track(
-            "42_--terrible==event++name~!3",
+            "42_--terrible==\"event'++name~!3",
             props,
             {
               ...options,

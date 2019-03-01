@@ -482,16 +482,16 @@ static id map(id collection, id (^f)(id value)) {
 }
 - (void)the42TerribleEventName3:(SEGThe42_TerribleEventName3 *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options
 {
-    [self.analytics track:@"42_--terrible==event++name~!3" properties:[props JSONDictionary] options:addTypewriterContextFields(options)];
+    [self.analytics track:@"42_--terrible==\"event'++name~!3" properties:[props JSONDictionary] options:addTypewriterContextFields(options)];
 }
 
-- (void)emptyEvent:(SEGEmptyEvent *)props
+- (void)emptyEvent
 {
-    [self emptyEvent:props withOptions:@{}];
+    [self emptyEvent:@{}];
 }
-- (void)emptyEvent:(SEGEmptyEvent *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options
+- (void)emptyEvent:(NSDictionary<NSString *, id> *_Nullable)options
 {
-    [self.analytics track:@"Empty Event" properties:[props JSONDictionary] options:addTypewriterContextFields(options)];
+    [self.analytics track:@"Empty Event" properties:@{} options:addTypewriterContextFields(options)];
 }
 
 - (void)exampleEvent:(SEGExampleEvent *)props
@@ -503,22 +503,22 @@ static id map(id collection, id (^f)(id value)) {
     [self.analytics track:@"Example Event" properties:[props JSONDictionary] options:addTypewriterContextFields(options)];
 }
 
-- (void)draft04Event:(SEGDraft04Event *)props
+- (void)draft04Event
 {
-    [self draft04Event:props withOptions:@{}];
+    [self draft04Event:@{}];
 }
-- (void)draft04Event:(SEGDraft04Event *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options
+- (void)draft04Event:(NSDictionary<NSString *, id> *_Nullable)options
 {
-    [self.analytics track:@"Draft-04 Event" properties:[props JSONDictionary] options:addTypewriterContextFields(options)];
+    [self.analytics track:@"Draft-04 Event" properties:@{} options:addTypewriterContextFields(options)];
 }
 
-- (void)draft06Event:(SEGDraft06Event *)props
+- (void)draft06Event
 {
-    [self draft06Event:props withOptions:@{}];
+    [self draft06Event:@{}];
 }
-- (void)draft06Event:(SEGDraft06Event *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options
+- (void)draft06Event:(NSDictionary<NSString *, id> *_Nullable)options
 {
-    [self.analytics track:@"Draft-06 Event" properties:[props JSONDictionary] options:addTypewriterContextFields(options)];
+    [self.analytics track:@"Draft-06 Event" properties:@{} options:addTypewriterContextFields(options)];
 }
 @end
 

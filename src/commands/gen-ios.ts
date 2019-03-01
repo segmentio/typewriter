@@ -10,7 +10,8 @@ import {
   ClassType,
   Name,
   Sourcelike,
-  Type
+  Type,
+  ObjectType
 } from 'quicktype-core'
 import { stringEscape } from 'quicktype-core/dist/support/Strings'
 import { OptionValues, StringOption } from 'quicktype-core/dist/RendererOptions'
@@ -59,9 +60,8 @@ export type Params = DefaultParams & {
   classPrefix: string
 }
 
-declare const analyticsIOSObjectiveCOptions: typeof objcOptions & {
+declare type analyticsIOSObjectiveCOptions = typeof objcOptions & {
   trackingPlan: StringOption
-  classPrefix: StringOption
 }
 
 class AnalyticsObjectiveCTargetLanguage extends ObjectiveCTargetLanguage {
@@ -97,7 +97,7 @@ class AnalyticsObjectiveCWrapperRenderer extends ObjectiveCRenderer {
   constructor(
     targetLanguage: TargetLanguage,
     renderContext: RenderContext,
-    protected readonly options: OptionValues<typeof analyticsIOSObjectiveCOptions>
+    protected readonly options: OptionValues<analyticsIOSObjectiveCOptions>
   ) {
     super(targetLanguage, renderContext, options)
   }
@@ -156,16 +156,23 @@ class AnalyticsObjectiveCWrapperRenderer extends ObjectiveCRenderer {
       this.emitLine('- (instancetype)initWithAnalytics:(SEGAnalytics *)analytics;')
       this.ensureBlankLine()
 
-      this.forEachTopLevel('leading-and-interposing', (c: Type, name: Name) => {
-        this.emitDescription(this.descriptionForType(c))
-        this.emitLine(['- (void)', this.variableNameForTopLevel(name), ':(', name, ' *)props;'])
-        this.emitLine([
-          '- (void)',
-          this.variableNameForTopLevel(name),
-          ':(',
-          name,
-          ' *)props withOptions:(NSDictionary<NSString *, id> *_Nullable)options;'
-        ])
+      this.forEachTopLevel('leading-and-interposing', (t: Type, name: Name) => {
+        if (t instanceof ObjectType) {
+          this.emitDescription(this.descriptionForType(t))
+          const hasProperties = t.getProperties().size > 0
+          this.emitLine([
+            '- (void)',
+            this.variableNameForTopLevel(name),
+            ...(hasProperties ? [':(', name, ' *)props;'] : [';'])
+          ])
+          this.emitLine([
+            '- (void)',
+            this.variableNameForTopLevel(name),
+            ':',
+            ...(hasProperties ? ['(', name, ' *)props withOptions:'] : []),
+            '(NSDictionary<NSString *, id> *_Nullable)options;'
+          ])
+        }
       })
     })
   }
@@ -381,28 +388,40 @@ class AnalyticsObjectiveCWrapperRenderer extends ObjectiveCRenderer {
     )
   }
 
-  protected emitAnalyticsWrapperMethod(name: Name, options: { withOptions: boolean }) {
+  protected emitAnalyticsWrapperMethod(name: Name, hasProperties: boolean, withOptions: boolean) {
     const camelCaseName = this.variableNameForTopLevel(name)
     this.emitMethod(
       [
         '- (void)',
         camelCaseName,
-        ':(',
-        name,
-        ' *)props',
-        options.withOptions ? ' withOptions:(NSDictionary<NSString *, id> *_Nullable)options' : ''
+        hasProperties || withOptions ? ':' : '',
+        ...(hasProperties ? ['(', name, ' *)props'] : []),
+        hasProperties && withOptions ? ' ' : '',
+        ...(withOptions
+          ? [
+              hasProperties ? 'withOptions:' : '',
+              '(NSDictionary<NSString *, id> *_Nullable)options'
+            ]
+          : [])
       ],
       () => {
-        if (options.withOptions) {
+        if (withOptions) {
           this.emitLine([
             '[self.analytics track:@"',
             this.rawName(name),
-            '" properties:[props JSONDictionary]',
-            options.withOptions ? ' options:addTypewriterContextFields(options)' : '',
+            '" properties:',
+            hasProperties ? '[props JSONDictionary]' : '@{}',
+            withOptions ? ' options:addTypewriterContextFields(options)' : '',
             '];'
           ])
         } else {
-          this.emitLine(['[self ', camelCaseName, ':props withOptions:@{}];'])
+          this.emitLine([
+            '[self ',
+            camelCaseName,
+            ':',
+            hasProperties ? 'props withOptions:' : '',
+            '@{}];'
+          ])
         }
       }
     )
@@ -412,7 +431,9 @@ class AnalyticsObjectiveCWrapperRenderer extends ObjectiveCRenderer {
     return name
       .proposeUnstyledNames(new Map())
       .values()
-      .next().value
+      .next()
+      .value // Escape any double quotes.
+      .replace(/"/g, '\\"')
   }
 
   protected emitAnalyticsWrapperImplementation(fileName: string) {
@@ -426,9 +447,12 @@ class AnalyticsObjectiveCWrapperRenderer extends ObjectiveCRenderer {
       })
       this.ensureBlankLine()
 
-      this.forEachTopLevel('leading-and-interposing', (_: Type, className: Name) => {
-        this.emitAnalyticsWrapperMethod(className, { withOptions: false })
-        this.emitAnalyticsWrapperMethod(className, { withOptions: true })
+      this.forEachTopLevel('leading-and-interposing', (t: Type, className: Name) => {
+        if (t instanceof ObjectType) {
+          const hasProperties = t.getProperties().size > 0
+          this.emitAnalyticsWrapperMethod(className, hasProperties, false)
+          this.emitAnalyticsWrapperMethod(className, hasProperties, true)
+        }
       })
     })
   }

@@ -75,3 +75,5 @@ dist
 package-lock.json
 
 .vscode
+
+examples/local-tracking-plans/experiment.json

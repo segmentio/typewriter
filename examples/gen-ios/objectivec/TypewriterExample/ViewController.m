@@ -47,6 +47,8 @@
     }];
     [self.kicksAppAnalytics orderCompleted:order];
     
+    [self.kicksAppAnalytics emptyEvent];
+    
     self.sentTextView.alpha = 1;
     [UIView animateWithDuration:0.5 delay:1 options:UIViewAnimationOptionCurveEaseIn animations:^{ self.sentTextView.alpha = 0;} completion:nil];
 }
