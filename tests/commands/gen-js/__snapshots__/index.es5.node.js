@@ -117,6 +117,154 @@ var Analytics = /** @class */ (function() {
     });
     this.analytics.track(message, callback);
   };
+  Analytics.prototype.draft04Event = function(message, callback) {
+    if (message === void 0) {
+      message = {};
+    }
+    var validate = function(
+      data,
+      dataPath,
+      parentData,
+      parentDataProperty,
+      rootData
+    ) {
+      "use strict";
+      var vErrors = null;
+      var errors = 0;
+      if (data && typeof data === "object" && !Array.isArray(data)) {
+        var errs__0 = errors;
+        var valid1 = true;
+        var data1 = data.properties;
+        if (data1 === undefined) {
+          valid1 = false;
+          var err = {
+            keyword: "required",
+            dataPath: (dataPath || "") + "",
+            schemaPath: "#/required",
+            params: { missingProperty: "properties" },
+            message: "should have required property 'properties'"
+          };
+          if (vErrors === null) vErrors = [err];
+          else vErrors.push(err);
+          errors++;
+        } else {
+          var errs_1 = errors;
+          if (!data1 || typeof data1 !== "object" || Array.isArray(data1)) {
+            var err = {
+              keyword: "type",
+              dataPath: (dataPath || "") + ".properties",
+              schemaPath: "#/properties/properties/type",
+              params: { type: "object" },
+              message: "should be object"
+            };
+            if (vErrors === null) vErrors = [err];
+            else vErrors.push(err);
+            errors++;
+          }
+          var valid1 = errors === errs_1;
+        }
+      } else {
+        var err = {
+          keyword: "type",
+          dataPath: (dataPath || "") + "",
+          schemaPath: "#/type",
+          params: { type: "object" },
+          message: "should be object"
+        };
+        if (vErrors === null) vErrors = [err];
+        else vErrors.push(err);
+        errors++;
+      }
+      validate.errors = vErrors;
+      return errors === 0;
+    };
+    if (!validate(message)) {
+      this.onError({
+        eventName: "Draft-04 Event",
+        validationErrors: validate.errors
+      });
+      return;
+    }
+    message = __assign({}, message, {
+      context: this.addTypewriterContext(message.context),
+      event: "Draft-04 Event"
+    });
+    this.analytics.track(message, callback);
+  };
+  Analytics.prototype.draft06Event = function(message, callback) {
+    if (message === void 0) {
+      message = {};
+    }
+    var validate = function(
+      data,
+      dataPath,
+      parentData,
+      parentDataProperty,
+      rootData
+    ) {
+      "use strict";
+      var vErrors = null;
+      var errors = 0;
+      if (data && typeof data === "object" && !Array.isArray(data)) {
+        var errs__0 = errors;
+        var valid1 = true;
+        var data1 = data.properties;
+        if (data1 === undefined) {
+          valid1 = false;
+          var err = {
+            keyword: "required",
+            dataPath: (dataPath || "") + "",
+            schemaPath: "#/required",
+            params: { missingProperty: "properties" },
+            message: "should have required property 'properties'"
+          };
+          if (vErrors === null) vErrors = [err];
+          else vErrors.push(err);
+          errors++;
+        } else {
+          var errs_1 = errors;
+          if (!data1 || typeof data1 !== "object" || Array.isArray(data1)) {
+            var err = {
+              keyword: "type",
+              dataPath: (dataPath || "") + ".properties",
+              schemaPath: "#/properties/properties/type",
+              params: { type: "object" },
+              message: "should be object"
+            };
+            if (vErrors === null) vErrors = [err];
+            else vErrors.push(err);
+            errors++;
+          }
+          var valid1 = errors === errs_1;
+        }
+      } else {
+        var err = {
+          keyword: "type",
+          dataPath: (dataPath || "") + "",
+          schemaPath: "#/type",
+          params: { type: "object" },
+          message: "should be object"
+        };
+        if (vErrors === null) vErrors = [err];
+        else vErrors.push(err);
+        errors++;
+      }
+      validate.errors = vErrors;
+      return errors === 0;
+    };
+    if (!validate(message)) {
+      this.onError({
+        eventName: "Draft-06 Event",
+        validationErrors: validate.errors
+      });
+      return;
+    }
+    message = __assign({}, message, {
+      context: this.addTypewriterContext(message.context),
+      event: "Draft-06 Event"
+    });
+    this.analytics.track(message, callback);
+  };
   Analytics.prototype.emptyEvent = function(message, callback) {
     if (message === void 0) {
       message = {};
@@ -403,6 +551,26 @@ var Analytics = /** @class */ (function() {
               }
               var valid2 = errors === errs_2;
             }
+            var data2 = data1["optional nullable string"];
+            if (data2 !== undefined) {
+              var errs_2 = errors;
+              if (typeof data2 !== "string" && data2 !== null) {
+                var err = {
+                  keyword: "type",
+                  dataPath:
+                    (dataPath || "") +
+                    ".properties['optional nullable string']",
+                  schemaPath:
+                    "#/properties/properties/properties/optional%20nullable%20string/type",
+                  params: { type: "string,null" },
+                  message: "should be string,null"
+                };
+                if (vErrors === null) vErrors = [err];
+                else vErrors.push(err);
+                errors++;
+              }
+              var valid2 = errors === errs_2;
+            }
             if (data1["optional number"] !== undefined) {
               var errs_2 = errors;
               if (typeof data1["optional number"] !== "number") {
@@ -413,6 +581,26 @@ var Analytics = /** @class */ (function() {
                     "#/properties/properties/properties/optional%20number/type",
                   params: { type: "number" },
                   message: "should be number"
+                };
+                if (vErrors === null) vErrors = [err];
+                else vErrors.push(err);
+                errors++;
+              }
+              var valid2 = errors === errs_2;
+            }
+            var data2 = data1["optional number or string"];
+            if (data2 !== undefined) {
+              var errs_2 = errors;
+              if (typeof data2 !== "number" && typeof data2 !== "string") {
+                var err = {
+                  keyword: "type",
+                  dataPath:
+                    (dataPath || "") +
+                    ".properties['optional number or string']",
+                  schemaPath:
+                    "#/properties/properties/properties/optional%20number%20or%20string/type",
+                  params: { type: "number,string" },
+                  message: "should be number,string"
                 };
                 if (vErrors === null) vErrors = [err];
                 else vErrors.push(err);
@@ -777,6 +965,39 @@ var Analytics = /** @class */ (function() {
               }
               var valid2 = errors === errs_2;
             }
+            var data2 = data1["required nullable string"];
+            if (data2 === undefined) {
+              valid2 = false;
+              var err = {
+                keyword: "required",
+                dataPath: (dataPath || "") + ".properties",
+                schemaPath: "#/properties/properties/required",
+                params: { missingProperty: "required nullable string" },
+                message:
+                  "should have required property 'required nullable string'"
+              };
+              if (vErrors === null) vErrors = [err];
+              else vErrors.push(err);
+              errors++;
+            } else {
+              var errs_2 = errors;
+              if (typeof data2 !== "string" && data2 !== null) {
+                var err = {
+                  keyword: "type",
+                  dataPath:
+                    (dataPath || "") +
+                    ".properties['required nullable string']",
+                  schemaPath:
+                    "#/properties/properties/properties/required%20nullable%20string/type",
+                  params: { type: "string,null" },
+                  message: "should be string,null"
+                };
+                if (vErrors === null) vErrors = [err];
+                else vErrors.push(err);
+                errors++;
+              }
+              var valid2 = errors === errs_2;
+            }
             if (data1["required number"] === undefined) {
               valid2 = false;
               var err = {
@@ -799,6 +1020,39 @@ var Analytics = /** @class */ (function() {
                     "#/properties/properties/properties/required%20number/type",
                   params: { type: "number" },
                   message: "should be number"
+                };
+                if (vErrors === null) vErrors = [err];
+                else vErrors.push(err);
+                errors++;
+              }
+              var valid2 = errors === errs_2;
+            }
+            var data2 = data1["required number or string"];
+            if (data2 === undefined) {
+              valid2 = false;
+              var err = {
+                keyword: "required",
+                dataPath: (dataPath || "") + ".properties",
+                schemaPath: "#/properties/properties/required",
+                params: { missingProperty: "required number or string" },
+                message:
+                  "should have required property 'required number or string'"
+              };
+              if (vErrors === null) vErrors = [err];
+              else vErrors.push(err);
+              errors++;
+            } else {
+              var errs_2 = errors;
+              if (typeof data2 !== "number" && typeof data2 !== "string") {
+                var err = {
+                  keyword: "type",
+                  dataPath:
+                    (dataPath || "") +
+                    ".properties['required number or string']",
+                  schemaPath:
+                    "#/properties/properties/properties/required%20number%20or%20string/type",
+                  params: { type: "number,string" },
+                  message: "should be number,string"
                 };
                 if (vErrors === null) vErrors = [err];
                 else vErrors.push(err);
@@ -1041,7 +1295,7 @@ var Analytics = /** @class */ (function() {
     });
     this.analytics.track(message, callback);
   };
-  Analytics.prototype.draft04Event = function(message, callback) {
+  Analytics.prototype.checkIn = function(message, callback) {
     if (message === void 0) {
       message = {};
     }
@@ -1059,19 +1313,7 @@ var Analytics = /** @class */ (function() {
         var errs__0 = errors;
         var valid1 = true;
         var data1 = data.properties;
-        if (data1 === undefined) {
-          valid1 = false;
-          var err = {
-            keyword: "required",
-            dataPath: (dataPath || "") + "",
-            schemaPath: "#/required",
-            params: { missingProperty: "properties" },
-            message: "should have required property 'properties'"
-          };
-          if (vErrors === null) vErrors = [err];
-          else vErrors.push(err);
-          errors++;
-        } else {
+        if (data1 !== undefined) {
           var errs_1 = errors;
           if (!data1 || typeof data1 !== "object" || Array.isArray(data1)) {
             var err = {
@@ -1104,18 +1346,18 @@ var Analytics = /** @class */ (function() {
     };
     if (!validate(message)) {
       this.onError({
-        eventName: "Draft-04 Event",
+        eventName: "check_in",
         validationErrors: validate.errors
       });
       return;
     }
     message = __assign({}, message, {
       context: this.addTypewriterContext(message.context),
-      event: "Draft-04 Event"
+      event: "check_in"
     });
     this.analytics.track(message, callback);
   };
-  Analytics.prototype.draft06Event = function(message, callback) {
+  Analytics.prototype.checkin = function(message, callback) {
     if (message === void 0) {
       message = {};
     }
@@ -1133,19 +1375,7 @@ var Analytics = /** @class */ (function() {
         var errs__0 = errors;
         var valid1 = true;
         var data1 = data.properties;
-        if (data1 === undefined) {
-          valid1 = false;
-          var err = {
-            keyword: "required",
-            dataPath: (dataPath || "") + "",
-            schemaPath: "#/required",
-            params: { missingProperty: "properties" },
-            message: "should have required property 'properties'"
-          };
-          if (vErrors === null) vErrors = [err];
-          else vErrors.push(err);
-          errors++;
-        } else {
+        if (data1 !== undefined) {
           var errs_1 = errors;
           if (!data1 || typeof data1 !== "object" || Array.isArray(data1)) {
             var err = {
@@ -1177,15 +1407,12 @@ var Analytics = /** @class */ (function() {
       return errors === 0;
     };
     if (!validate(message)) {
-      this.onError({
-        eventName: "Draft-06 Event",
-        validationErrors: validate.errors
-      });
+      this.onError({ eventName: "checkin", validationErrors: validate.errors });
       return;
     }
     message = __assign({}, message, {
       context: this.addTypewriterContext(message.context),
-      event: "Draft-06 Event"
+      event: "checkin"
     });
     this.analytics.track(message, callback);
   };

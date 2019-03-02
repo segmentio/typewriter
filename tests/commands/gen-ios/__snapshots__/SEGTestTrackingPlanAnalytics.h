@@ -27,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Really, don't do this.
 @property (nonatomic, nullable, copy) id the0000TerriblePropertyName3;
 /// AcronymStyle bug fixed in v5.0.1
+@property (nonatomic, nullable, copy) id the42_TerribleEventName3_IdentifierID;
+/// Duplicate key error in Android
 @property (nonatomic, nullable, copy) id identifierID;
 @end
 
@@ -36,6 +38,8 @@ typedef void (^ SEGThe42_TerribleEventName3BuilderBlock)(SEGThe42_TerribleEventN
 /// Really, don't do this.
 @property (nonatomic, nullable, copy) id the0000TerriblePropertyName3;
 /// AcronymStyle bug fixed in v5.0.1
+@property (nonatomic, nullable, copy) id the42_TerribleEventName3_IdentifierID;
+/// Duplicate key error in Android
 @property (nonatomic, nullable, copy) id identifierID;
 @end
 
@@ -50,8 +54,10 @@ typedef void (^ SEGThe42_TerribleEventName3BuilderBlock)(SEGThe42_TerribleEventN
 @property (nonatomic, nullable, assign) NSNumber *isOptionalBoolean;
 /// Optional integer property
 @property (nonatomic, nullable, assign) NSNumber *optionalInt;
+@property (nonatomic, nullable, copy)   NSString *optionalNullableString;
 /// Optional number property
 @property (nonatomic, nullable, assign) NSNumber *optionalNumber;
+@property (nonatomic, nullable, copy)   id optionalNumberOrString;
 /// Optional object property
 @property (nonatomic, nullable, strong) SEGOptionalObject *optionalObject;
 /// Optional object (empty) property
@@ -70,8 +76,10 @@ typedef void (^ SEGThe42_TerribleEventName3BuilderBlock)(SEGThe42_TerribleEventN
 @property (nonatomic, assign) NSNumber *isRequiredBoolean;
 /// Required integer property
 @property (nonatomic, assign) NSNumber *requiredInt;
+@property (nonatomic, copy)   NSString *requiredNullableString;
 /// Required number property
 @property (nonatomic, assign) NSNumber *requiredNumber;
+@property (nonatomic, copy)   id requiredNumberOrString;
 /// Required object property
 @property (nonatomic, strong) SEGRequiredObject *requiredObject;
 /// Required object (empty) property
@@ -95,8 +103,10 @@ typedef void (^ SEGExampleEventBuilderBlock)(SEGExampleEventBuilder *);
 @property (nonatomic, nullable, assign) NSNumber *isOptionalBoolean;
 /// Optional integer property
 @property (nonatomic, nullable, assign) NSNumber *optionalInt;
+@property (nonatomic, nullable, copy)   NSString *optionalNullableString;
 /// Optional number property
 @property (nonatomic, nullable, assign) NSNumber *optionalNumber;
+@property (nonatomic, nullable, copy)   id optionalNumberOrString;
 /// Optional object property
 @property (nonatomic, nullable, strong) SEGOptionalObject *optionalObject;
 /// Optional object (empty) property
@@ -115,8 +125,10 @@ typedef void (^ SEGExampleEventBuilderBlock)(SEGExampleEventBuilder *);
 @property (nonatomic, assign) NSNumber *isRequiredBoolean;
 /// Required integer property
 @property (nonatomic, assign) NSNumber *requiredInt;
+@property (nonatomic, copy)   NSString *requiredNullableString;
 /// Required number property
 @property (nonatomic, assign) NSNumber *requiredNumber;
+@property (nonatomic, copy)   id requiredNumberOrString;
 /// Required object property
 @property (nonatomic, strong) SEGRequiredObject *requiredObject;
 /// Required object (empty) property
@@ -200,6 +212,18 @@ typedef void (^ SEGRequiredObjectBuilderBlock)(SEGRequiredObjectBuilder *);
 /// Optional object (empty) property
 ///
 /// Required object (empty) property
+- (void)draft04Event;
+- (void)draft04Event:(NSDictionary<NSString *, id> *_Nullable)options;
+
+/// Optional object (empty) property
+///
+/// Required object (empty) property
+- (void)draft06Event;
+- (void)draft06Event:(NSDictionary<NSString *, id> *_Nullable)options;
+
+/// Optional object (empty) property
+///
+/// Required object (empty) property
 - (void)emptyEvent;
 - (void)emptyEvent:(NSDictionary<NSString *, id> *_Nullable)options;
 
@@ -209,14 +233,14 @@ typedef void (^ SEGRequiredObjectBuilderBlock)(SEGRequiredObjectBuilder *);
 /// Optional object (empty) property
 ///
 /// Required object (empty) property
-- (void)draft04Event;
-- (void)draft04Event:(NSDictionary<NSString *, id> *_Nullable)options;
+- (void)checkIn;
+- (void)checkIn:(NSDictionary<NSString *, id> *_Nullable)options;
 
 /// Optional object (empty) property
 ///
 /// Required object (empty) property
-- (void)draft06Event;
-- (void)draft06Event:(NSDictionary<NSString *, id> *_Nullable)options;
+- (void)checkin;
+- (void)checkin:(NSDictionary<NSString *, id> *_Nullable)options;
 @end
 
 NS_ASSUME_NONNULL_END

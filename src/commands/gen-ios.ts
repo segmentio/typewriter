@@ -1,7 +1,5 @@
 import {
   quicktypeMultiFile,
-  InputData,
-  JSONSchemaInput,
   ObjectiveCTargetLanguage,
   ObjectiveCRenderer,
   RenderContext,
@@ -27,7 +25,8 @@ import { getRawName } from '../lib/naming'
 import { version } from '../../package.json'
 import * as fs from 'fs'
 import * as util from 'util'
-import { map, camelCase, upperFirst, get } from 'lodash'
+import { map, camelCase, upperFirst } from 'lodash'
+import { processEventsForQuickType } from '../lib/rules'
 
 const writeFile = util.promisify(fs.writeFile)
 
@@ -571,27 +570,10 @@ class AnalyticsObjectiveCWrapperRenderer extends ObjectiveCRenderer {
 }
 
 export async function genObjC(events: TrackedEvent[], { trackingPlan, classPrefix }: Params) {
-  const inputData = new InputData()
-
-  events.forEach(({ name, rules }) => {
-    const schema = {
-      $schema: rules.$schema || 'http://json-schema.org/draft-07/schema#',
-      title: rules.title,
-      description: rules.description,
-      ...get(rules, 'properties.properties', {})
-    }
-
-    inputData.addSource(
-      'schema',
-      { name, uris: [name], schema: JSON.stringify(schema) },
-      () => new JSONSchemaInput(undefined)
-    )
+  return quicktypeMultiFile({
+    lang: new AnalyticsObjectiveCTargetLanguage(trackingPlan, classPrefix),
+    inputData: processEventsForQuickType(events)
   })
-
-  const lang = new AnalyticsObjectiveCTargetLanguage(trackingPlan, classPrefix)
-
-  const files = await quicktypeMultiFile({ lang, inputData })
-  return files
 }
 
 export const handler = getTypedTrackHandler(async (params: Params, { events }) => {
