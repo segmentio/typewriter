@@ -251,18 +251,6 @@ class AnalyticsJavaWrapperRenderer extends JavaRenderer {
     )
   }
 
-  protected javaType(reference: boolean, t: Type, withIssues: boolean = false): Sourcelike {
-    // Handle the special case of converting a `List<Object>` -> `List<Properties>`
-    if (t instanceof ArrayType) {
-      const javaType = this.javaType(false, t.items, withIssues)
-      if (javaType === 'Object') {
-        return 'List<Properties>'
-      }
-    }
-
-    return super.javaType(reference, t, withIssues)
-  }
-
   protected emitAnalyticsWrapper(): void {
     const className = upperFirst(camelCase(`${this.options.trackingPlan || ''}Analytics`))
     this.emitFileHeader(className, [
