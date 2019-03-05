@@ -1,6 +1,6 @@
-import { getTypedTrackHandler } from '../../lib'
+import { getTypedTrackHandler } from '../../lib/cli'
 import { ModuleKind, ScriptTarget } from 'typescript'
-import { builder as defaultBuilder, Params as DefaultParams } from '../../lib'
+import { builder as defaultBuilder, Params as DefaultParams } from '../../lib/cli'
 import * as util from 'util'
 import * as fs from 'fs'
 const writeFile = util.promisify(fs.writeFile)

@@ -1,4 +1,4 @@
-import { TrackedEvent } from '../../lib'
+import { TrackedEvent } from '../../lib/cli'
 import { get, camelCase } from 'lodash'
 import * as prettier from 'prettier'
 
@@ -10,9 +10,11 @@ import {
   TypeScriptRenderer,
   RenderContext,
   TargetLanguage,
-  ClassType
+  ClassType,
+  Type,
+  MapType
 } from 'quicktype-core'
-import { modifySource } from 'quicktype-core/dist/Source'
+import { modifySource, MultiWord, singleWord } from 'quicktype-core/dist/Source'
 import { OptionValues } from 'quicktype-core/dist/RendererOptions'
 import { tsFlowOptions } from 'quicktype-core/dist/language/TypeScriptFlow'
 import { utf16StringEscape } from 'quicktype-core/dist/support/Strings'
@@ -319,18 +321,26 @@ class AJSTSDeclarationsRenderer extends TypeScriptRenderer {
     this.forEachTopLevel('leading-and-interposing', (t, name) => {
       const camelCaseName = modifySource(camelCase, name)
       this.emitDescription(this.descriptionForType(t))
+
+      // Override sourceFor behavior to disable `{ [key: string]: any }`
+      // if no properties are set for an event.
+      let type = this.sourceFor(t).source
+      if (t instanceof MapType) {
+        type = '{}'
+      }
+
       if (this.ajsOptions.client === Client.js) {
         this.emitLine([
           camelCaseName,
           '(props?: ',
-          this.sourceFor(t).source,
+          type,
           ', options?: SegmentOptions, callback?: AnalyticsJSCallback): void'
         ])
       } else if (this.ajsOptions.client === Client.node) {
         this.emitLine([
           camelCaseName,
           '(message?: TrackMessage<',
-          this.sourceFor(t).source,
+          type,
           '>, callback?: AnalyticsNodeCallback): void'
         ])
       }

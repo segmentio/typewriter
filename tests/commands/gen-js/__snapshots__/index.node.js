@@ -78,14 +78,14 @@ class Analytics {
     };
     if (!validate(message)) {
       this.onError({
-        eventName: "42_--terrible==event++name~!3",
+        eventName: "42_--terrible==\"event'++name~!3",
         validationErrors: validate.errors
       });
       return;
     }
     message = Object.assign({}, message, {
       context: this.addTypewriterContext(message.context),
-      event: "42_--terrible==event++name~!3"
+      event: "42_--terrible==\"event'++name~!3"
     });
     this.analytics.track(message, callback);
   }

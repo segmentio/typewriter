@@ -1,11 +1,11 @@
-import { TrackedEvent } from '../../lib'
+import { TrackedEvent } from '../../lib/cli'
 import { transpileModule, ModuleKind, ScriptTarget } from 'typescript'
 import { version } from '../../../package.json'
 import { camelCase } from 'lodash'
 import * as prettier from 'prettier'
 import * as Ajv from 'ajv'
 import { command, Client } from '.'
-import { preprocessRules } from '../../lib/utils'
+import { preprocessRules } from '../../lib/rules'
 
 function getFnName(eventName: string) {
   return camelCase(eventName.replace(/^\d+/, ''))
@@ -61,6 +61,8 @@ export function genJS(
   const trackCalls =
     events.reduce((code, { name, rules }) => {
       const sanitizedFnName = getFnName(name)
+      const sanitizedEventName = name.replace(/'/g, "\\'")
+
       // source is just an object; TODO: an upstream PR to specify the type of `source`
       const compiledValidationSource: any = ajv.compile(preprocessRules(rules)).source
       const compiledValidationFn = compiledValidationSource.code.replace(/return validate;/, '')
@@ -70,7 +72,7 @@ export function genJS(
       let validateCall = ''
       if (client === Client.js) {
         parameters = 'props = {}, options = {}, callback'
-        trackCall = `this.analytics.track('${name}', props, {
+        trackCall = `this.analytics.track('${sanitizedEventName}', props, {
           ...options,
           context: this.addTypewriterContext(options.context)
         }, callback)`
@@ -81,7 +83,7 @@ export function genJS(
         message = {
           ...message,
           context: this.addTypewriterContext(message.context),
-          event: '${name}'
+          event: '${sanitizedEventName}'
         }
         this.analytics.track(message, callback)`
         validateCall = 'validate(message)'
@@ -90,7 +92,7 @@ export function genJS(
       const validationCode = `
       ${compiledValidationFn}
       if (!${validateCall}) {
-        this.onError({ eventName: '${name}', validationErrors: validate.errors })
+        this.onError({ eventName: '${sanitizedEventName}', validationErrors: validate.errors })
         return
       }`
 

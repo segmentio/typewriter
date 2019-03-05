@@ -280,7 +280,7 @@ export default class Analytics {
    * Required object (empty) property
    */
   emptyEvent(
-    props?: { [key: string]: any },
+    props?: {},
     options?: SegmentOptions,
     callback?: AnalyticsJSCallback
   ): void;
@@ -297,7 +297,7 @@ export default class Analytics {
    * Required object (empty) property
    */
   draft04Event(
-    props?: { [key: string]: any },
+    props?: {},
     options?: SegmentOptions,
     callback?: AnalyticsJSCallback
   ): void;
@@ -308,7 +308,7 @@ export default class Analytics {
    * Required object (empty) property
    */
   draft06Event(
-    props?: { [key: string]: any },
+    props?: {},
     options?: SegmentOptions,
     callback?: AnalyticsJSCallback
   ): void;

@@ -20,7 +20,7 @@ export default class Analytics {
   }
   terribleEventName3(props = {}, options = {}, callback) {
     this.analytics.track(
-      "42_--terrible==event++name~!3",
+      "42_--terrible==\"event'++name~!3",
       props,
       {
         ...options,

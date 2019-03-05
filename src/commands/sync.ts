@@ -3,8 +3,8 @@ import { Options } from 'yargs'
 import * as fs from 'fs'
 import * as util from 'util'
 import { dirname } from 'path'
-import { getTrackingPlanFromNetwork } from '../lib/fetchPlan'
-import { preprocessRules } from '../lib/utils'
+import { getTrackingPlanFromNetwork } from '../lib/api'
+import { preprocessRules } from '../lib/rules'
 import * as prettier from 'prettier'
 const writeFile = util.promisify(fs.writeFile)
 const stat = util.promisify(fs.stat)

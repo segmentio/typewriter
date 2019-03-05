@@ -9,29 +9,24 @@ import {
   Name,
   TargetLanguage,
   Sourcelike,
-  ArrayType,
-  Type
+  ObjectType
 } from 'quicktype-core'
 
 import { modifySource, SerializedRenderResult } from 'quicktype-core/dist/Source'
-import {
-  OptionValues,
-  BooleanOption,
-  StringOption,
-  EnumOption
-} from 'quicktype-core/dist/RendererOptions'
-import { javaNameStyle } from 'quicktype-core/dist/language/Java'
+import { OptionValues, BooleanOption, StringOption } from 'quicktype-core/dist/RendererOptions'
+import { javaNameStyle, javaOptions } from 'quicktype-core/dist/language/Java'
 
 import {
   getTypedTrackHandler,
   TrackedEvent,
   builder as defaultBuilder,
   Params as DefaultParams
-} from '../lib'
+} from '../lib/cli'
 import * as fs from 'fs'
 import * as util from 'util'
 import { get, map, camelCase, upperFirst } from 'lodash'
 import { AcronymStyleOptions } from 'quicktype-core/dist/support/Acronyms'
+import { getRawName } from '../lib/naming'
 
 const writeFile = util.promisify(fs.writeFile)
 
@@ -63,11 +58,9 @@ export type Params = DefaultParams & {
   language: string
 }
 
-declare const analyticsJavaOptions: {
+declare type analyticsJavaOptions = typeof javaOptions & {
   justTypes: BooleanOption
-  packageName: StringOption
   trackingPlan: StringOption
-  acronymStyle: EnumOption<AcronymStyleOptions>
 }
 
 function toKeyName(name: string) {
@@ -88,7 +81,8 @@ class AnalyticsJavaTargetLanguage extends JavaTargetLanguage {
       justTypes: true,
       packageName: this.packageName,
       trackingPlan: this.trackingPlan,
-      acronymStyle: AcronymStyleOptions.Pascal
+      acronymStyle: AcronymStyleOptions.Pascal,
+      useList: true
     })
   }
   protected get defaultIndentation(): string {
@@ -104,7 +98,7 @@ class AnalyticsJavaWrapperRenderer extends JavaRenderer {
   constructor(
     targetLanguage: TargetLanguage,
     renderContext: RenderContext,
-    protected readonly options: OptionValues<typeof analyticsJavaOptions>
+    protected readonly options: OptionValues<analyticsJavaOptions>
   ) {
     super(targetLanguage, renderContext, options)
   }
@@ -130,13 +124,6 @@ class AnalyticsJavaWrapperRenderer extends JavaRenderer {
     this.forEachClassProperty(c, 'none', (_, jsonName) => {
       this.emitLine('private static String ', toKeyName(jsonName), ' = "', jsonName, '";')
     })
-  }
-
-  protected javaType(reference: boolean, t: Type, withIssues: boolean = false): Sourcelike {
-    if (t instanceof ArrayType) {
-      return ['List<', this.javaType(false, t.items, withIssues), '>']
-    }
-    return super.javaType(reference, t, withIssues)
   }
 
   protected emitBuilderSetters(c: ClassType, className: Name): void {
@@ -272,32 +259,41 @@ class AnalyticsJavaWrapperRenderer extends JavaRenderer {
     this.finishFile()
   }
 
-  protected emitAnalyticsEventWrapper(name: Name, withOptions: boolean): void {
-    this.emitDescriptionBlock([
-      // TODO: Emit a function description, once we support top-level event descriptions in JSON Schema
-      ['@param props {@link ', name, '} to add extra information to this call.'],
+  protected emitAnalyticsEventWrapper(
+    name: Name,
+    hasProperties: boolean,
+    withOptions: boolean
+  ): void {
+    // TODO: Emit a function description, once we support top-level event descriptions in JSON Schema
+    const description: Sourcelike = [
       ['@see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>']
-    ])
+    ]
+    if (hasProperties) {
+      description.unshift([
+        '@param props {@link ',
+        name,
+        '} to add extra information to this call.'
+      ])
+    }
+    this.emitDescriptionBlock(description)
+
     const camelCaseName = modifySource(camelCase, name)
     this.emitBlock(
       [
         'public void ',
         camelCaseName,
-        '(final @Nullable ',
-        name,
-        ' props',
-        withOptions ? ', final @Nullable Options options' : '',
+        '(',
+        ...(hasProperties ? ['final @Nullable ', name, ' props'] : []),
+        hasProperties && withOptions ? ', ' : '',
+        withOptions ? 'final @Nullable Options options' : '',
         ')'
       ],
       () => {
-        const rawEventName = name
-          .proposeUnstyledNames(new Map())
-          .values()
-          .next().value
         this.emitLine([
           'this.analytics.track("',
-          rawEventName,
-          '", props.toProperties()',
+          getRawName(name),
+          '", ',
+          hasProperties ? 'props.toProperties()' : 'new Properties()',
           withOptions ? ', options' : '',
           ');'
         ])
@@ -335,10 +331,13 @@ class AnalyticsJavaWrapperRenderer extends JavaRenderer {
       })
       this.ensureBlankLine()
 
-      this.forEachTopLevel('leading-and-interposing', (_, name) => {
-        this.emitAnalyticsEventWrapper(name, false)
-        this.ensureBlankLine()
-        this.emitAnalyticsEventWrapper(name, true)
+      this.forEachTopLevel('leading-and-interposing', (t, name) => {
+        if (t instanceof ObjectType) {
+          const hasProperties = t.getProperties().size > 0
+          this.emitAnalyticsEventWrapper(name, hasProperties, false)
+          this.ensureBlankLine()
+          this.emitAnalyticsEventWrapper(name, hasProperties, true)
+        }
       })
     })
   }

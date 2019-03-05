@@ -73,3 +73,11 @@ dist
 
 # We use yarn.lock
 package-lock.json
+
+.vscode
+
+# Whitelist the two Tracking Plans we use for examples, so that we can test
+# our example apps with other Tracking Plans without accidentally committing.
+examples/local-tracking-plans/*
+!examples/local-tracking-plans/tracking-plan.json
+!examples/local-tracking-plans/tracking-plan-slothgram.json

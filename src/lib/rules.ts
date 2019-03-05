@@ -1,6 +1,6 @@
 import * as omitDeep from 'omit-deep-lodash'
 import * as sortKeys from 'sort-keys'
-import { get, flow } from 'lodash'
+import { flow } from 'lodash'
 
 /**
  * Remove all instances of `required: []` from a JSON Schema.

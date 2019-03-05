@@ -22,7 +22,7 @@ class Analytics {
   terribleEventName3(message = {}, callback) {
     message = Object.assign({}, message, {
       context: this.addTypewriterContext(message.context),
-      event: "42_--terrible==event++name~!3"
+      event: "42_--terrible==\"event'++name~!3"
     });
     this.analytics.track(message, callback);
   }

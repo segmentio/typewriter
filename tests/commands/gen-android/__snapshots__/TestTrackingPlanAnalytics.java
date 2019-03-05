@@ -24,7 +24,7 @@ public class TestTrackingPlanAnalytics {
      * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
      */
     public void the42TerribleEventName3(final @Nullable The42_TerribleEventName3 props) {
-        this.analytics.track("42_--terrible==event++name~!3", props.toProperties());
+        this.analytics.track("42_--terrible==\"event'++name~!3", props.toProperties());
     }
 
     /**
@@ -32,23 +32,21 @@ public class TestTrackingPlanAnalytics {
      * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
      */
     public void the42TerribleEventName3(final @Nullable The42_TerribleEventName3 props, final @Nullable Options options) {
-        this.analytics.track("42_--terrible==event++name~!3", props.toProperties(), options);
+        this.analytics.track("42_--terrible==\"event'++name~!3", props.toProperties(), options);
     }
 
     /**
-     * @param props {@link EmptyEvent} to add extra information to this call.
      * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
      */
-    public void emptyEvent(final @Nullable EmptyEvent props) {
-        this.analytics.track("Empty Event", props.toProperties());
+    public void emptyEvent() {
+        this.analytics.track("Empty Event", new Properties());
     }
 
     /**
-     * @param props {@link EmptyEvent} to add extra information to this call.
      * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
      */
-    public void emptyEvent(final @Nullable EmptyEvent props, final @Nullable Options options) {
-        this.analytics.track("Empty Event", props.toProperties(), options);
+    public void emptyEvent(final @Nullable Options options) {
+        this.analytics.track("Empty Event", new Properties(), options);
     }
 
     /**
@@ -68,34 +66,30 @@ public class TestTrackingPlanAnalytics {
     }
 
     /**
-     * @param props {@link Draft04Event} to add extra information to this call.
      * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
      */
-    public void draft04Event(final @Nullable Draft04Event props) {
-        this.analytics.track("Draft-04 Event", props.toProperties());
+    public void draft04Event() {
+        this.analytics.track("Draft-04 Event", new Properties());
     }
 
     /**
-     * @param props {@link Draft04Event} to add extra information to this call.
      * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
      */
-    public void draft04Event(final @Nullable Draft04Event props, final @Nullable Options options) {
-        this.analytics.track("Draft-04 Event", props.toProperties(), options);
+    public void draft04Event(final @Nullable Options options) {
+        this.analytics.track("Draft-04 Event", new Properties(), options);
     }
 
     /**
-     * @param props {@link Draft06Event} to add extra information to this call.
      * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
      */
-    public void draft06Event(final @Nullable Draft06Event props) {
-        this.analytics.track("Draft-06 Event", props.toProperties());
+    public void draft06Event() {
+        this.analytics.track("Draft-06 Event", new Properties());
     }
 
     /**
-     * @param props {@link Draft06Event} to add extra information to this call.
      * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
      */
-    public void draft06Event(final @Nullable Draft06Event props, final @Nullable Options options) {
-        this.analytics.track("Draft-06 Event", props.toProperties(), options);
+    public void draft06Event(final @Nullable Options options) {
+        this.analytics.track("Draft-06 Event", new Properties(), options);
     }
 }
