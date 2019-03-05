@@ -322,18 +322,26 @@ class AJSTSDeclarationsRenderer extends TypeScriptRenderer {
     this.forEachTopLevel('leading-and-interposing', (t, name) => {
       const camelCaseName = modifySource(camelCase, name)
       this.emitDescription(this.descriptionForType(t))
+
+      // Override sourceFor behavior to disable `{ [key: string]: any }`
+      // if no properties are set for an event.
+      let type = this.sourceFor(t).source
+      if (t instanceof MapType) {
+        type = '{}'
+      }
+
       if (this.ajsOptions.client === Client.js) {
         this.emitLine([
           camelCaseName,
           '(props?: ',
-          this.sourceFor(t).source,
+          type,
           ', options?: SegmentOptions, callback?: AnalyticsJSCallback): void'
         ])
       } else if (this.ajsOptions.client === Client.node) {
         this.emitLine([
           camelCaseName,
           '(message?: TrackMessage<',
-          this.sourceFor(t).source,
+          type,
           '>, callback?: AnalyticsNodeCallback): void'
         ])
       }

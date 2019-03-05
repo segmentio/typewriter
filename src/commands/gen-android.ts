@@ -7,14 +7,12 @@ import {
   Name,
   TargetLanguage,
   Sourcelike,
-  ObjectType,
-  Type,
-  ArrayType
+  ObjectType
 } from 'quicktype-core'
 
 import { modifySource, SerializedRenderResult } from 'quicktype-core/dist/Source'
 import { OptionValues, BooleanOption, StringOption } from 'quicktype-core/dist/RendererOptions'
-import { javaNameStyle, javaOptions } from 'quicktype-core/dist/language/Java'
+import { javaOptions } from 'quicktype-core/dist/language/Java'
 
 import {
   getTypedTrackHandler,
