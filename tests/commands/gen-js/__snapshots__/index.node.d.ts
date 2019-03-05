@@ -175,7 +175,7 @@ export interface ExampleEvent {
   /**
    * Optional object (empty) property
    */
-  "optional object (empty)"?: {};
+  "optional object (empty)"?: { [key: string]: any };
   /**
    * Optional string property
    */
@@ -215,7 +215,7 @@ export interface ExampleEvent {
   /**
    * Required object (empty) property
    */
-  "required object (empty)": {};
+  "required object (empty)": { [key: string]: any };
   /**
    * Required string property
    */
