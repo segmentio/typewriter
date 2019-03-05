@@ -347,15 +347,6 @@ class AJSTSDeclarationsRenderer extends TypeScriptRenderer {
       }
     })
   }
-
-  protected sourceFor(t: Type): MultiWord {
-    // Override sourceFor behavior to disable `{ [key: string]: any }`
-    if (t instanceof MapType) {
-      return singleWord('{}')
-    }
-
-    return super.sourceFor(t)
-  }
 }
 
 export async function genTSDeclarations(
