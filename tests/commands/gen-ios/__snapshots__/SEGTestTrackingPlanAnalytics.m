@@ -89,7 +89,8 @@ static id map(id collection, id (^f)(id value)) {
     static NSDictionary<NSString *, NSString *> *properties;
     return properties = properties ? properties : @{
         @"0000---terrible-property-name~!3": @"the0000TerriblePropertyName3",
-        @"identifier_id": @"identifierID",
+        @"identifier_id": @"the42_TerribleEventName3_IdentifierID",
+        @"identifierId": @"identifierID",
     };
 }
 
@@ -125,6 +126,7 @@ static id map(id collection, id (^f)(id value)) {
 
     SEGThe42_TerribleEventName3 *the42TerribleEventName3 = [[SEGThe42_TerribleEventName3 alloc] init];
     the42TerribleEventName3.the0000TerriblePropertyName3 = builder.the0000TerriblePropertyName3;
+    the42TerribleEventName3.the42_TerribleEventName3_IdentifierID = builder.the42_TerribleEventName3_IdentifierID;
     the42TerribleEventName3.identifierID = builder.identifierID;
     return the42TerribleEventName3;
 }
@@ -140,7 +142,9 @@ static id map(id collection, id (^f)(id value)) {
         @"optional array (empty)": @"optionalArrayEmpty",
         @"optional boolean": @"isOptionalBoolean",
         @"optional int": @"optionalInt",
+        @"optional nullable string": @"optionalNullableString",
         @"optional number": @"optionalNumber",
+        @"optional number or string": @"optionalNumberOrString",
         @"optional object": @"optionalObject",
         @"optional object (empty)": @"optionalObjectEmpty",
         @"optional string": @"optionalString",
@@ -150,7 +154,9 @@ static id map(id collection, id (^f)(id value)) {
         @"required array (empty)": @"requiredArrayEmpty",
         @"required boolean": @"isRequiredBoolean",
         @"required int": @"requiredInt",
+        @"required nullable string": @"requiredNullableString",
         @"required number": @"requiredNumber",
+        @"required number or string": @"requiredNumberOrString",
         @"required object": @"requiredObject",
         @"required object (empty)": @"requiredObjectEmpty",
         @"required string": @"requiredString",
@@ -217,8 +223,16 @@ static id map(id collection, id (^f)(id value)) {
         @throw [NSException exceptionWithName:@"Missing Required Property" reason:@"SEGExampleEvent is missing a required property: requiredInt" userInfo:NULL];
     }
 
+    if (builder.requiredNullableString == NULL) {
+        @throw [NSException exceptionWithName:@"Missing Required Property" reason:@"SEGExampleEvent is missing a required property: requiredNullableString" userInfo:NULL];
+    }
+
     if (builder.requiredNumber == NULL) {
         @throw [NSException exceptionWithName:@"Missing Required Property" reason:@"SEGExampleEvent is missing a required property: requiredNumber" userInfo:NULL];
+    }
+
+    if (builder.requiredNumberOrString == NULL) {
+        @throw [NSException exceptionWithName:@"Missing Required Property" reason:@"SEGExampleEvent is missing a required property: requiredNumberOrString" userInfo:NULL];
     }
 
     if (builder.requiredObject == NULL) {
@@ -243,7 +257,9 @@ static id map(id collection, id (^f)(id value)) {
     exampleEvent.optionalArrayEmpty = builder.optionalArrayEmpty;
     exampleEvent.isOptionalBoolean = builder.isOptionalBoolean;
     exampleEvent.optionalInt = builder.optionalInt;
+    exampleEvent.optionalNullableString = builder.optionalNullableString;
     exampleEvent.optionalNumber = builder.optionalNumber;
+    exampleEvent.optionalNumberOrString = builder.optionalNumberOrString;
     exampleEvent.optionalObject = builder.optionalObject;
     exampleEvent.optionalObjectEmpty = builder.optionalObjectEmpty;
     exampleEvent.optionalString = builder.optionalString;
@@ -253,7 +269,9 @@ static id map(id collection, id (^f)(id value)) {
     exampleEvent.requiredArrayEmpty = builder.requiredArrayEmpty;
     exampleEvent.isRequiredBoolean = builder.isRequiredBoolean;
     exampleEvent.requiredInt = builder.requiredInt;
+    exampleEvent.requiredNullableString = builder.requiredNullableString;
     exampleEvent.requiredNumber = builder.requiredNumber;
+    exampleEvent.requiredNumberOrString = builder.requiredNumberOrString;
     exampleEvent.requiredObject = builder.requiredObject;
     exampleEvent.requiredObjectEmpty = builder.requiredObjectEmpty;
     exampleEvent.requiredString = builder.requiredString;
@@ -485,6 +503,24 @@ static id map(id collection, id (^f)(id value)) {
     [self.analytics track:@"42_--terrible==\"event'++name~!3" properties:[props JSONDictionary] options:addTypewriterContextFields(options)];
 }
 
+- (void)draft04Event
+{
+    [self draft04Event:@{}];
+}
+- (void)draft04Event:(NSDictionary<NSString *, id> *_Nullable)options
+{
+    [self.analytics track:@"Draft-04 Event" properties:@{} options:addTypewriterContextFields(options)];
+}
+
+- (void)draft06Event
+{
+    [self draft06Event:@{}];
+}
+- (void)draft06Event:(NSDictionary<NSString *, id> *_Nullable)options
+{
+    [self.analytics track:@"Draft-06 Event" properties:@{} options:addTypewriterContextFields(options)];
+}
+
 - (void)emptyEvent
 {
     [self emptyEvent:@{}];
@@ -503,22 +539,22 @@ static id map(id collection, id (^f)(id value)) {
     [self.analytics track:@"Example Event" properties:[props JSONDictionary] options:addTypewriterContextFields(options)];
 }
 
-- (void)draft04Event
+- (void)checkIn
 {
-    [self draft04Event:@{}];
+    [self checkIn:@{}];
 }
-- (void)draft04Event:(NSDictionary<NSString *, id> *_Nullable)options
+- (void)checkIn:(NSDictionary<NSString *, id> *_Nullable)options
 {
-    [self.analytics track:@"Draft-04 Event" properties:@{} options:addTypewriterContextFields(options)];
+    [self.analytics track:@"check_in" properties:@{} options:addTypewriterContextFields(options)];
 }
 
-- (void)draft06Event
+- (void)checkin
 {
-    [self draft06Event:@{}];
+    [self checkin:@{}];
 }
-- (void)draft06Event:(NSDictionary<NSString *, id> *_Nullable)options
+- (void)checkin:(NSDictionary<NSString *, id> *_Nullable)options
 {
-    [self.analytics track:@"Draft-06 Event" properties:@{} options:addTypewriterContextFields(options)];
+    [self.analytics track:@"checkin" properties:@{} options:addTypewriterContextFields(options)];
 }
 @end
 

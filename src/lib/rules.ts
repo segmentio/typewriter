@@ -1,6 +1,8 @@
 import * as omitDeep from 'omit-deep-lodash'
 import * as sortKeys from 'sort-keys'
-import { flow } from 'lodash'
+import { flow, get } from 'lodash'
+import { InputData, JSONSchemaInput } from 'quicktype-core'
+import { TrackedEvent } from './api'
 
 /**
  * Remove all instances of `required: []` from a JSON Schema.
@@ -44,3 +46,28 @@ export const preprocessRules = flow(
   (rules: any) => sortKeys(rules, { deep: true }),
   (rules: any) => omitDeep(rules, 'id')
 )
+
+/**
+ * Generates a QuickType InputData object that contains all JSON Schemas
+ * from a set of Events.
+ */
+export const processEventsForQuickType = (events: TrackedEvent[]) => {
+  const inputData = new InputData()
+
+  events.forEach(({ name, rules }) => {
+    const schema = {
+      $schema: rules.$schema || 'http://json-schema.org/draft-07/schema#',
+      title: rules.title,
+      description: rules.description,
+      ...get(rules, 'properties.properties', {})
+    }
+
+    inputData.addSource(
+      'schema',
+      { name, uris: [name], schema: JSON.stringify(schema) },
+      () => new JSONSchemaInput(undefined)
+    )
+  })
+
+  return inputData
+}

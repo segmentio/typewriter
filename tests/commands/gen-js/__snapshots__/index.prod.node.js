@@ -26,6 +26,20 @@ class Analytics {
     });
     this.analytics.track(message, callback);
   }
+  draft04Event(message = {}, callback) {
+    message = Object.assign({}, message, {
+      context: this.addTypewriterContext(message.context),
+      event: "Draft-04 Event"
+    });
+    this.analytics.track(message, callback);
+  }
+  draft06Event(message = {}, callback) {
+    message = Object.assign({}, message, {
+      context: this.addTypewriterContext(message.context),
+      event: "Draft-06 Event"
+    });
+    this.analytics.track(message, callback);
+  }
   emptyEvent(message = {}, callback) {
     message = Object.assign({}, message, {
       context: this.addTypewriterContext(message.context),
@@ -40,17 +54,17 @@ class Analytics {
     });
     this.analytics.track(message, callback);
   }
-  draft04Event(message = {}, callback) {
+  checkIn(message = {}, callback) {
     message = Object.assign({}, message, {
       context: this.addTypewriterContext(message.context),
-      event: "Draft-04 Event"
+      event: "check_in"
     });
     this.analytics.track(message, callback);
   }
-  draft06Event(message = {}, callback) {
+  checkin(message = {}, callback) {
     message = Object.assign({}, message, {
       context: this.addTypewriterContext(message.context),
-      event: "Draft-06 Event"
+      event: "checkin"
     });
     this.analytics.track(message, callback);
   }

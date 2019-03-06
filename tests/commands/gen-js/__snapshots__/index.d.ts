@@ -102,6 +102,10 @@ export interface The42_TerribleEventName3 {
    * AcronymStyle bug fixed in v5.0.1
    */
   identifier_id?: any;
+  /**
+   * Duplicate key error in Android
+   */
+  identifierId?: any;
 }
 
 export interface ExampleEvent {
@@ -125,10 +129,12 @@ export interface ExampleEvent {
    * Optional integer property
    */
   "optional int"?: number;
+  "optional nullable string"?: null | string;
   /**
    * Optional number property
    */
   "optional number"?: number;
+  "optional number or string"?: NumberOrString;
   /**
    * Optional object property
    */
@@ -165,10 +171,12 @@ export interface ExampleEvent {
    * Required integer property
    */
   "required int": number;
+  "required nullable string": null | string;
   /**
    * Required number property
    */
   "required number": number;
+  "required number or string": NumberOrString;
   /**
    * Required object property
    */
@@ -197,6 +205,8 @@ export interface OptionalArray {
    */
   "required sub-property": string;
 }
+
+export type NumberOrString = number | string;
 
 /**
  * Optional object property
@@ -279,6 +289,28 @@ export default class Analytics {
    *
    * Required object (empty) property
    */
+  draft04Event(
+    props?: {},
+    options?: SegmentOptions,
+    callback?: AnalyticsJSCallback
+  ): void;
+
+  /**
+   * Optional object (empty) property
+   *
+   * Required object (empty) property
+   */
+  draft06Event(
+    props?: {},
+    options?: SegmentOptions,
+    callback?: AnalyticsJSCallback
+  ): void;
+
+  /**
+   * Optional object (empty) property
+   *
+   * Required object (empty) property
+   */
   emptyEvent(
     props?: {},
     options?: SegmentOptions,
@@ -296,7 +328,7 @@ export default class Analytics {
    *
    * Required object (empty) property
    */
-  draft04Event(
+  checkIn(
     props?: {},
     options?: SegmentOptions,
     callback?: AnalyticsJSCallback
@@ -307,7 +339,7 @@ export default class Analytics {
    *
    * Required object (empty) property
    */
-  draft06Event(
+  checkin(
     props?: {},
     options?: SegmentOptions,
     callback?: AnalyticsJSCallback

@@ -29,6 +29,28 @@ export default class Analytics {
       callback
     );
   }
+  draft04Event(props = {}, options = {}, callback) {
+    this.analytics.track(
+      "Draft-04 Event",
+      props,
+      {
+        ...options,
+        context: this.addTypewriterContext(options.context)
+      },
+      callback
+    );
+  }
+  draft06Event(props = {}, options = {}, callback) {
+    this.analytics.track(
+      "Draft-06 Event",
+      props,
+      {
+        ...options,
+        context: this.addTypewriterContext(options.context)
+      },
+      callback
+    );
+  }
   emptyEvent(props = {}, options = {}, callback) {
     this.analytics.track(
       "Empty Event",
@@ -51,9 +73,9 @@ export default class Analytics {
       callback
     );
   }
-  draft04Event(props = {}, options = {}, callback) {
+  checkIn(props = {}, options = {}, callback) {
     this.analytics.track(
-      "Draft-04 Event",
+      "check_in",
       props,
       {
         ...options,
@@ -62,9 +84,9 @@ export default class Analytics {
       callback
     );
   }
-  draft06Event(props = {}, options = {}, callback) {
+  checkin(props = {}, options = {}, callback) {
     this.analytics.track(
-      "Draft-06 Event",
+      "checkin",
       props,
       {
         ...options,

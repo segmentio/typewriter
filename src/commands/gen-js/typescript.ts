@@ -23,6 +23,7 @@ import { isES3IdentifierStart } from 'quicktype-core/dist/language/JavaScriptUni
 import { AcronymStyleOptions } from 'quicktype-core/dist/support/Acronyms'
 
 import { Client } from '.'
+import { processEventsForQuickType } from '../../lib/rules'
 
 declare interface Options {
   client: Client
@@ -352,28 +353,9 @@ export async function genTSDeclarations(
   events: TrackedEvent[],
   client = Client.js
 ): Promise<string> {
-  const inputData = new InputData()
-
-  events.forEach(({ name, rules }) => {
-    const schema = {
-      $schema: rules.$schema || 'http://json-schema.org/draft-07/schema#',
-      title: rules.title,
-      description: rules.description,
-      ...get(rules, 'properties.properties', {})
-    }
-
-    inputData.addSource(
-      'schema',
-      { name, uris: [name], schema: JSON.stringify(schema) },
-      () => new JSONSchemaInput(undefined)
-    )
-  })
-
-  const lang = new AJSTSDeclarationsTargetLanguage(client)
-
   const { lines } = await quicktype({
-    lang,
-    inputData,
+    lang: new AJSTSDeclarationsTargetLanguage(client),
+    inputData: processEventsForQuickType(events),
     rendererOptions: { 'nice-property-names': 'true' }
   })
 
