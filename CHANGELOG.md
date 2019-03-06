@@ -1,3 +1,13 @@
+## [6.1.3](https://github.com/segmentio/typewriter/compare/6.1.2...6.1.3) (2019-03-06)
+
+
+### Bug Fixes
+
+* handle empty events without compile errors in mobile clients [SCH-1641] ([#56](https://github.com/segmentio/typewriter/issues/56)) ([326e8cc](https://github.com/segmentio/typewriter/commit/326e8cc))
+* handle values with multiple types (including null) [SCH-1643] ([#57](https://github.com/segmentio/typewriter/issues/57)) ([6cce0f7](https://github.com/segmentio/typewriter/commit/6cce0f7))
+
+
+
 ## [6.1.2](https://github.com/segmentio/typewriter/compare/6.1.1...6.1.2) (2019-02-26)
 
 
