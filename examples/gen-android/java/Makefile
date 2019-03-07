@@ -2,7 +2,7 @@
 
 ROOT_PATH := ../../..
 LOCAL_INPUT_PATH := ${ROOT_PATH}/examples/local-tracking-plans/tracking-plan.json
-OUTPUT_PATH := app/src/main/java/com/segment/analytics
+OUTPUT_PATH := app/src/main/java/com/segment/generated
 
 .PHONY: build
 build:
@@ -18,7 +18,7 @@ typewriter:
 	@node ${ROOT_PATH}/dist/src/index.js gen-android \
 		--inputPath ${LOCAL_INPUT_PATH} \
 		--outputPath ${OUTPUT_PATH} \
-		--package 'com.segment.analytics' \
+		--package 'com.segment.generated' \
 		--language 'java' \
 		--trackingPlan 'Kicks App'
 

@@ -7,7 +7,9 @@ import {
   Name,
   TargetLanguage,
   Sourcelike,
-  ObjectType
+  ObjectType,
+  Type,
+  ArrayType
 } from 'quicktype-core'
 
 import { modifySource, SerializedRenderResult } from 'quicktype-core/dist/Source'
@@ -195,7 +197,10 @@ class AnalyticsJavaWrapperRenderer extends JavaRenderer {
   }
 
   protected emitClassDefinition(c: ClassType, className: Name): void {
-    this.emitFileHeader(className, ['android.support.annotation.NonNull'])
+    this.emitFileHeader(className, [
+      'com.segment.analytics.Properties',
+      'android.support.annotation.NonNull'
+    ])
     // TODO: Emit class description, once we support top-level event descriptions in JSON Schema
     // this.emitDescription(this.descriptionForType(c));
     this.emitClassAttributes(c, className)
@@ -205,6 +210,25 @@ class AnalyticsJavaWrapperRenderer extends JavaRenderer {
       this.emitClassBuilderDefinition(c, className)
     })
     this.finishFile()
+  }
+
+  /**
+   * Note: we override javaType in order to handle the special case of converting a
+   * `List<Object>` -> `List<Properties>`. We need this because Properties will serialize a List<Object>
+   * using the toString method on each Object, so it prevents users from supplying nested objects.
+   * By forcing users to use Properties, we force them to serialize subproperties as Strings.
+   *
+   * This also handles Objects that appear as properties, or recursively as List<List<...<Object>...>>.
+   */
+  protected javaType(reference: boolean, t: Type, withIssues: boolean = false): Sourcelike {
+    if (t instanceof ArrayType) {
+      const javaType = this.javaType(false, t.items, withIssues)
+      if (javaType === 'Object') {
+        return 'List<Properties>'
+      }
+    }
+
+    return super.javaType(reference, t, withIssues)
   }
 
   protected emitAnalyticsEventWrapper(
@@ -254,6 +278,7 @@ class AnalyticsJavaWrapperRenderer extends JavaRenderer {
     this.emitFileHeader(className, [
       'com.segment.analytics.Analytics',
       'com.segment.analytics.Options',
+      'com.segment.analytics.Properties',
       'android.content.Context',
       'android.support.annotation.NonNull',
       'android.support.annotation.Nullable'

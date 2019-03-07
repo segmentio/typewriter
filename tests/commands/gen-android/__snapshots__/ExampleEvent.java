@@ -2,6 +2,7 @@
 package com.segment.analytics;
 
 import java.util.*;
+import com.segment.analytics.Properties;
 import android.support.annotation.NonNull;
 
 public final class ExampleEvent {
@@ -50,7 +51,7 @@ public final class ExampleEvent {
          * Optional array (empty) property
          * This property is optional and not required to generate a valid ExampleEvent object
          */
-        public Builder optionalArrayEmpty(final @NonNull List<Object> optionalArrayEmpty) {
+        public Builder optionalArrayEmpty(final @NonNull List<Properties> optionalArrayEmpty) {
             properties.putValue("optional array (empty)", optionalArrayEmpty);
             return this;
         }
@@ -156,7 +157,7 @@ public final class ExampleEvent {
          * Required array (empty) property
          * This property is required to generate a valid ExampleEvent object
          */
-        public Builder requiredArrayEmpty(final @NonNull List<Object> requiredArrayEmpty) {
+        public Builder requiredArrayEmpty(final @NonNull List<Properties> requiredArrayEmpty) {
             properties.putValue("required array (empty)", requiredArrayEmpty);
             return this;
         }

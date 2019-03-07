@@ -2,6 +2,7 @@
 package com.segment.analytics;
 
 import java.util.*;
+import com.segment.analytics.Properties;
 import android.support.annotation.NonNull;
 
 public final class RequiredArray {
