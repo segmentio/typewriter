@@ -347,7 +347,7 @@ export default class Analytics {
 	/**
 	 * This is JSON Schema draft-04 event.
 	 */
-	public Idraft04Event(
+	public draft04Event(
 		props: Record<string, any>,
 		options: SegmentOptions = {},
 		callback?: AnalyticsJSCallback
@@ -363,7 +363,7 @@ export default class Analytics {
 	/**
 	 * This is JSON Schema draft-06 event.
 	 */
-	public Idraft06Event(
+	public draft06Event(
 		props: Record<string, any>,
 		options: SegmentOptions = {},
 		callback?: AnalyticsJSCallback
