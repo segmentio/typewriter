@@ -1,0 +1,28 @@
+{
+  "title": "Nested Fixture",
+  "description": "This fixture validates generation for objects nested within other objects or arrays.",
+  "type": "object",
+  "properties": {
+    "nested-object": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {}
+      }
+    },
+    "nested-array": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "address": {}
+        }
+      }
+    }
+  }
+}

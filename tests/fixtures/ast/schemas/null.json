@@ -1,0 +1,60 @@
+{
+  "title": "Null Fixture",
+  "description": "This fixture validates generation for nulls in JSON Schema.",
+  "type": "object",
+  "properties": {
+    "null-type": {
+      "type": "null"
+    },
+    "nullable-string": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "null-union": {
+      "type": [
+        "string",
+        "boolean",
+        "null"
+      ]
+    },
+    "simple-null-enum": {
+      "enum": [
+        null
+      ]
+    },
+    "multi-value-null-enum": {
+      "enum": [
+        true,
+        false,
+        null
+      ]
+    },
+    "nullable-string-enum": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "yes",
+        "no",
+        null
+      ]
+    },
+    "null-enum-union": {
+      "type": [
+        "string",
+        "boolean",
+        "null"
+      ],
+      "enum": [
+        true,
+        false,
+        "yes",
+        "no",
+        null
+      ]
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "title": "Union Types Fixture",
+  "description": "This fixture validates generation for JSON Schema union types.",
+  "type": "object",
+  "properties": {
+    "primitive-union": {
+      "type": [
+        "string",
+        "number"
+      ]
+    },
+    "primitive-or-object-union": {
+      "type": [
+        "string",
+        "object"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {}
+      }
+    },
+    "array-or-object-union": {
+      "type": [
+        "array",
+        "object"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {}
+      },
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

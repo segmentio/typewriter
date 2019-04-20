@@ -1,0 +1,71 @@
+{
+	"name": "typewriter",
+	"version": "7.0.0",
+	"main": "index.js",
+	"repository": "ssh://git@github.com/segmentio/typewriter.git",
+	"author": "Colin King <colin.king@segment.com>",
+	"license": "MIT",
+	"private": true,
+	"scripts": {
+		"run": "¯\\_(ツ)_/¯",
+		"test": "jest",
+		"lint": "eslint './src/**/*.{ts,tsx}'"
+	},
+	"eslintConfig": {
+		"parser": "@typescript-eslint/parser",
+		"plugins": [
+			"@typescript-eslint",
+			"prettier"
+		],
+		"extends": [
+			"plugin:@typescript-eslint/recommended",
+			"prettier/@typescript-eslint",
+			"plugin:prettier/recommended"
+		],
+		"parserOptions": {
+			"ecmaVersion": 2018,
+			"sourceType": "module"
+		},
+		"rules": {
+			"prettier/prettier": [
+				"error",
+				{
+					"useTabs": true,
+					"semi": false,
+					"singleQuote": true,
+					"trailingComma": "es5"
+				}
+			],
+			"@typescript-eslint/explicit-function-return-type": "off",
+			"@typescript-eslint/no-use-before-define": [
+				"error",
+				"nofunc"
+			]
+		}
+	},
+	"jest": {
+		"transform": {
+			"^.+\\.tsx?$": "ts-jest"
+		}
+	},
+	"devDependencies": {
+		"@types/jest": "^24.0.11",
+		"@types/json-schema": "^7.0.3",
+		"@types/lodash": "^4.14.123",
+		"@types/node": "^11.13.6",
+		"@typescript-eslint/eslint-plugin": "^1.6.0",
+		"@typescript-eslint/parser": "^1.6.0",
+		"eslint": "^5.16.0",
+		"eslint-config-prettier": "^4.1.0",
+		"eslint-plugin-prettier": "^3.0.1",
+		"jest": "^24.7.1",
+		"prettier": "^1.16.4",
+		"ts-jest": "^24.0.2",
+		"type-fest": "^0.3.0",
+		"typescript": "^3.4.2"
+	},
+	"dependencies": {
+		"handlebars": "^4.1.2",
+		"lodash": "^4.17.11"
+	}
+}
