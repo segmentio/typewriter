@@ -65,6 +65,7 @@
 		"typescript": "^3.4.2"
 	},
 	"dependencies": {
+		"caller-path": "^2.0.0",
 		"handlebars": "^4.1.2",
 		"lodash": "^4.17.11"
 	}

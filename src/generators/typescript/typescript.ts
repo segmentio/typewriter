@@ -1,13 +1,8 @@
 import { File, Options } from '../../gen'
-import { Schema, Type } from '../../ast'
-import * as fs from 'fs'
-import * as Handlebars from 'handlebars'
+import { Schema, Type, getPropertiesSchema } from '../../ast'
 import { camelCase, capitalize } from 'lodash'
-import { promisify } from 'util'
-import { resolve } from 'path'
-import Namer from '../../namer'
-
-const readFile = promisify(fs.readFile)
+import namer from './namer'
+import { getTemplate } from 'src/templates'
 
 // The context that will be passed to Handlebars to perform rendering.
 // Everything in this context should be properly sanitized.
@@ -25,7 +20,7 @@ interface TrackCall {
 	// The optional function description.
 	description?: string
 	// The type of the analytics properties object.
-	propsType: string
+	type: string
 }
 
 // Represents a generated interface.
@@ -46,93 +41,42 @@ interface TSInterfaceProperty {
 	type: string
 }
 
-// See: https://mathiasbynens.be/notes/reserved-keywords#ecmascript-6
-// prettier-ignore
-const reservedWords = [
-	'do', 'if', 'in', 'for', 'let', 'new', 'try', 'var', 'case', 'else', 'enum', 'eval', 'null', 'this',
-	'true', 'void', 'with', 'await', 'break', 'catch', 'class', 'const', 'false', 'super', 'throw',
-	'while', 'yield', 'delete', 'export', 'import', 'public', 'return', 'static', 'switch', 'typeof',
-	'default', 'extends', 'finally', 'package', 'private', 'continue', 'debugger', 'function', 'arguments',
-	'interface', 'protected', 'implements', 'instanceof',
-]
-
-const namer = new Namer({
-	reservedWords,
-	quoteChar: "'",
-	// Note: we don't support the full range of allowed JS chars, instead focusing on a subset.
-	// The full regex 11k+ chars: https://mathiasbynens.be/demo/javascript-identifier-regex
-	// See: https://mathiasbynens.be/notes/javascript-identifiers-es6
-	allowedIdentifierStartingChars: 'A-Za-z_$',
-	allowedIdentifierChars: 'A-Za-z0-9_$',
-})
-
 export default async function(
 	events: Schema[],
 	opts: Options
 ): Promise<File[]> {
-	const context = generateContext(events)
-
-	// Render the Handlebars template using the generated TemplateContext.
-	const templateContent = await readFile(resolve(__dirname, './template.hbs'), {
-		encoding: 'utf-8',
-	})
-	const templater = Handlebars.compile(templateContent, {
-		noEscape: true,
-	})
-	const contents = templater(context)
-
-	return [
-		{
-			path: 'index.ts',
-			contents,
-		},
-	]
+	return Promise.all([
+		getTemplate<TemplateContext>(
+			'./index.ts.hbs',
+			'index.ts',
+			getContext(events)
+		),
+	])
 }
 
-function generateContext(events: Schema[]): TemplateContext {
-	// Render a TemplateContext based on the set of schemas.
+function getContext(events: Schema[]): TemplateContext {
+	// Render a TemplateContext based on the set of event schemas.
 	const context: TemplateContext = {
 		trackCalls: [],
 		interfaces: [],
 	}
 
 	for (var event of events) {
-		// Generate interfaces for each event's properties.
-		// First, pull out the schema for the event's properties, with a sane default:
-		let properties: Schema = {
-			name: 'properties',
-			type: Type.OBJECT,
-			properties: [],
-		}
-		if (event.type === Type.OBJECT) {
-			const propertiesSchema = event.properties.find(
-				(schema: Schema): boolean => schema.name === 'properties'
-			)
-			if (propertiesSchema && propertiesSchema.type === Type.OBJECT) {
-				properties = propertiesSchema
-			}
-		}
-
-		// Use the event's name and description when generating an interface
-		// to represent these properties.
-		properties.name = event.name
-		properties.description = event.description
+		// Recursively generate all types, into the context, for the schema.
+		const rootType = getTypeForSchema(getPropertiesSchema(event), context)
 
 		context.trackCalls.push({
 			functionName: namer.escapeIdentifier(camelCase(event.name)),
 			eventName: namer.escapeString(event.name),
 			description: event.description,
-			propsType: generateTypeDeclarations(properties, context),
+			type: rootType,
 		})
 	}
 
 	return context
 }
 
-function generateTypeDeclarations(
-	schema: Schema,
-	context: TemplateContext
-): string {
+function getTypeForSchema(schema: Schema, context: TemplateContext): string {
 	let type: string
 	if (schema.type === Type.ANY) {
 		type = 'any'
@@ -147,6 +91,7 @@ function generateTypeDeclarations(
 		if (schema.properties.length === 0) {
 			type = 'Record<string, any>'
 		} else {
+			// Otherwise generate an interface to represent the object.
 			const properties: TSInterfaceProperty[] = []
 			for (var property of schema.properties) {
 				properties.push({
@@ -155,7 +100,7 @@ function generateTypeDeclarations(
 					name: namer.escapeString(property.name),
 					description: property.description,
 					isRequired: !!property.isRequired,
-					type: generateTypeDeclarations(property, context),
+					type: getTypeForSchema(property, context),
 				})
 			}
 
@@ -173,7 +118,7 @@ function generateTypeDeclarations(
 			...schema.items,
 		}
 
-		type = `${generateTypeDeclarations(itemsSchema, context)}[]`
+		type = `${getTypeForSchema(itemsSchema, context)}[]`
 	} else if (schema.type === Type.UNION) {
 		const types = schema.types.map(t => {
 			const subSchema = {
@@ -182,7 +127,7 @@ function generateTypeDeclarations(
 				...t,
 			}
 
-			return generateTypeDeclarations(subSchema, context)
+			return getTypeForSchema(subSchema, context)
 		})
 
 		type = types.join(' | ')

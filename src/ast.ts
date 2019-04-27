@@ -98,6 +98,36 @@ function toType(t: string): Type {
 	}
 }
 
+// getPropertiesSchema extracts the Schema for `.properties` from an
+// event schema.
+export function getPropertiesSchema(event: Schema): ObjectTypeSchema {
+	// If `.properties` doesn't exist in the user-supplied JSON Schema,
+	// default to no properties as a sane default.
+	let properties: Schema = {
+		// Use the event's name and description when generating an interface
+		// to represent these properties.
+		name: event.name,
+		description: event.description,
+		type: Type.OBJECT,
+		properties: [],
+	}
+
+	// Events should always be a type="object" at the root, anything
+	// else would not match on a Segment analytics event.
+	if (event.type === Type.OBJECT) {
+		const propertiesSchema = event.properties.find(
+			(schema: Schema): boolean => schema.name === 'properties'
+		)
+		// The schema representing `.properties` in the Segement analytics
+		// event should also always be an object.
+		if (propertiesSchema && propertiesSchema.type === Type.OBJECT) {
+			properties = propertiesSchema
+		}
+	}
+
+	return properties
+}
+
 // parse transforms a JSON Schema into a standardized Schema.
 export function parse(
 	raw: JSONSchema7,
