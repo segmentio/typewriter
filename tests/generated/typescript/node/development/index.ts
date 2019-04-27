@@ -462,6 +462,7 @@ export default class Analytics {
 			callback
 		)
 	}
+
 	/**
 	 * This is JSON Schema draft-04 event.
 	 */
@@ -496,6 +497,7 @@ export default class Analytics {
 			callback
 		)
 	}
+
 	/**
 	 * This is JSON Schema draft-06 event.
 	 */
@@ -530,6 +532,7 @@ export default class Analytics {
 			callback
 		)
 	}
+
 	/**
 	 * This is an empty event.
 	 */
@@ -564,6 +567,7 @@ export default class Analytics {
 			callback
 		)
 	}
+
 	/**
 	 * This event contains all supported variations of properties.
 	 */
@@ -792,6 +796,7 @@ export default class Analytics {
 			callback
 		)
 	}
+
 	/**
 	 * checkin != check_in bug
 	 */
@@ -824,6 +829,7 @@ export default class Analytics {
 			callback
 		)
 	}
+
 	/**
 	 * checkin != check_in bug
 	 */

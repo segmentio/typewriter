@@ -426,6 +426,7 @@ export function I42TerribleEventName3(
 		)
 	}
 }
+
 /**
  * This is JSON Schema draft-04 event.
  */
@@ -470,6 +471,7 @@ export function draft04Event(
 		)
 	}
 }
+
 /**
  * This is JSON Schema draft-06 event.
  */
@@ -514,6 +516,7 @@ export function draft06Event(
 		)
 	}
 }
+
 /**
  * This is an empty event.
  */
@@ -558,6 +561,7 @@ export function emptyEvent(
 		)
 	}
 }
+
 /**
  * This event contains all supported variations of properties.
  */
@@ -796,6 +800,7 @@ export function exampleEvent(
 		)
 	}
 }
+
 /**
  * checkin != check_in bug
  */
@@ -838,6 +843,7 @@ export function checkIn(
 		)
 	}
 }
+
 /**
  * checkin != check_in bug
  */
