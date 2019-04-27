@@ -2,12 +2,15 @@ import { File, DefaultOptions, Language } from '../../gen'
 import { Schema, Type, getPropertiesSchema } from '../../ast'
 import { camelCase, capitalize } from 'lodash'
 import namer from './namer'
-import { getTemplate } from 'src/templates'
+import * as prettier from 'prettier'
+import { generateFromTemplate } from 'src/templates'
 import { transpileModule, ModuleKind, ScriptTarget } from 'typescript'
 
 // The context that will be passed to Handlebars to perform rendering.
 // Everything in this context should be properly sanitized.
 interface TemplateContext {
+	isDevelopment: boolean
+
 	trackCalls: TrackCall[]
 	interfaces: TSInterface[]
 }
@@ -48,34 +51,84 @@ interface TSInterfaceProperty {
 // The Node environment will use analytics-node, and generate class which
 // accepts an analytics object. Analytics calls will be class methods.
 export enum Environment {
-	BROWSER = 1,
-	NODE = 2,
+	BROWSER = 'browser',
+	NODE = 'node',
 }
 
-export interface Options extends DefaultOptions {
-	lang: Language.TYPESCRIPT
+interface JavaScriptOptions {
+	lang: Language.JAVASCRIPT
 	env: Environment
 	// JavaScript transpilation settings:
-	scriptTarget: ScriptTarget
-	moduleTarget: ModuleKind
+	scriptTarget?: ScriptTarget
+	moduleTarget?: ModuleKind
 }
+
+interface TypeScriptOptions {
+	env: Environment
+	lang: Language.TYPESCRIPT
+}
+
+export type Options = DefaultOptions & (JavaScriptOptions | TypeScriptOptions)
 
 export default async function(
 	events: Schema[],
 	opts: Options
 ): Promise<File[]> {
-	return Promise.all([
-		getTemplate<TemplateContext>(
-			'generators/typescript/index.ts.hbs',
-			'index.ts',
-			getContext(events)
-		),
-	])
+	const files = [
+		{
+			path: opts.lang === Language.TYPESCRIPT ? 'index.ts' : 'index.js',
+			contents: await generateFromTemplate<TemplateContext>(
+				`generators/javascript/${opts.env}.hbs`,
+				getContext(events, opts)
+			),
+		},
+	]
+
+	return files.map(f => formatFile(f, opts))
 }
 
-function getContext(events: Schema[]): TemplateContext {
+function formatFile(f: File, opts: Options): File {
+	let contents = f.contents
+
+	// If we are generating a JavaScript client, transpile the client
+	// from TypeScript into JavaScript.
+	if (opts.lang === Language.JAVASCRIPT) {
+		// If we're generating a JavaScript client, compile
+		// from TypeScript to JavaScript.
+		const { outputText } = transpileModule(f.contents, {
+			compilerOptions: {
+				target: opts.scriptTarget || ScriptTarget.ESNext,
+				module: opts.moduleTarget || ModuleKind.ESNext,
+			},
+		})
+
+		contents = outputText
+	}
+
+	// Apply stylistic formatting, via Prettier.
+	const formattedContents = prettier.format(contents, {
+		parser: opts.lang === Language.TYPESCRIPT ? 'typescript' : 'babel',
+		// Overwrite a few of the standard prettier settings to match with our Typewriter configuration:
+		useTabs: true,
+		singleQuote: true,
+		semi: false,
+		trailingComma:
+			opts.lang === Language.JAVASCRIPT &&
+			opts.scriptTarget === ScriptTarget.ES3
+				? 'none'
+				: 'es5',
+	})
+
+	return {
+		...f,
+		contents: formattedContents,
+	}
+}
+
+function getContext(events: Schema[], opts: Options): TemplateContext {
 	// Render a TemplateContext based on the set of event schemas.
 	const context: TemplateContext = {
+		isDevelopment: opts.isDevelopment,
 		trackCalls: [],
 		interfaces: [],
 	}

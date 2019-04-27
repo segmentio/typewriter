@@ -1,5 +1,6 @@
 import { JSONSchema7 } from 'json-schema'
 import gen, { Options } from '../src/gen'
+import { Environment } from '../src/generators/javascript'
 import { Language } from '../src/gen'
 import * as trackingPlan from './fixtures/generators/tracking-plan.json'
 import * as fs from 'fs'
@@ -22,13 +23,41 @@ interface Event {
 }
 
 describe('generators', () => {
-	test('TypeScript', async () => {
-		await generateClient('./generated/typescript', {
-			lang: Language.TYPESCRIPT,
+	describe('TypeScript', () => {
+		test('Browser', async () => {
+			await generateClient('./generated/typescript/browser', {
+				lang: Language.TYPESCRIPT,
+				isDevelopment: true,
+				env: Environment.BROWSER,
+			})
+		})
+
+		test('Node', async () => {
+			await generateClient('./generated/typescript/node', {
+				lang: Language.TYPESCRIPT,
+				isDevelopment: true,
+				env: Environment.NODE,
+			})
 		})
 	})
 
-	// TODO: generate other language clients
+	describe('JavaScript', () => {
+		test('Browser', async () => {
+			await generateClient('./generated/javascript/browser', {
+				lang: Language.JAVASCRIPT,
+				isDevelopment: true,
+				env: Environment.BROWSER,
+			})
+		})
+
+		test('Node', async () => {
+			await generateClient('./generated/javascript/node', {
+				lang: Language.JAVASCRIPT,
+				isDevelopment: true,
+				env: Environment.NODE,
+			})
+		})
+	})
 })
 
 async function generateClient(outputPath: string, opts: Options) {

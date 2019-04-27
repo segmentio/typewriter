@@ -40,7 +40,8 @@
 			"@typescript-eslint/no-use-before-define": [
 				"error",
 				"nofunc"
-			]
+			],
+			"@typescript-eslint/no-namespace": "off"
 		}
 	},
 	"jest": {
@@ -56,6 +57,7 @@
 		"@types/json-schema": "^7.0.3",
 		"@types/lodash": "^4.14.123",
 		"@types/node": "^11.13.6",
+		"@types/prettier": "^1.16.3",
 		"@typescript-eslint/eslint-plugin": "^1.6.0",
 		"@typescript-eslint/parser": "^1.6.0",
 		"eslint": "^5.16.0",
@@ -63,7 +65,6 @@
 		"eslint-plugin-prettier": "^3.0.1",
 		"husky": "^2.1.0",
 		"jest": "^24.7.1",
-		"prettier": "^1.16.4",
 		"ts-jest": "^24.0.2",
 		"type-fest": "^0.3.0",
 		"typescript": "^3.4.2"
@@ -71,6 +72,7 @@
 	"dependencies": {
 		"caller-path": "^2.0.0",
 		"handlebars": "^4.1.2",
-		"lodash": "^4.17.11"
+		"lodash": "^4.17.11",
+		"prettier": "^1.17.0"
 	}
 }

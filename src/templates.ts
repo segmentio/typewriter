@@ -3,18 +3,14 @@ import * as Handlebars from 'handlebars'
 import { promisify } from 'util'
 import { resolve } from 'path'
 
-import { File } from './gen'
-
 const readFile = promisify(fs.readFile)
 
-// Renders a template using the provided context, using a template
-// specified relative to the `src` directory. The generated File
-// will use the specified outputPath as the path name.
-export async function getTemplate<Context = Record<string, any>>(
+// Renders a string generated from a template using the provided context.
+// The template path is relative to the `src` directory.
+export async function generateFromTemplate<Context = Record<string, any>>(
 	templatePath: string,
-	outputPath: string,
 	context: Context
-): Promise<File> {
+): Promise<string> {
 	const path = resolve(__dirname, templatePath)
 
 	const template = await readFile(path, {
@@ -24,8 +20,5 @@ export async function getTemplate<Context = Record<string, any>>(
 		noEscape: true,
 	})
 
-	return {
-		path: outputPath,
-		contents: templater(context),
-	}
+	return templater(context)
 }

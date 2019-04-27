@@ -1,9 +1,10 @@
 import { JSONSchema7 } from 'json-schema'
-import typescript from './generators/typescript'
+import javascript from './generators/javascript'
 import { parse } from './ast'
-import { Options as TypeScriptOptions } from './generators/typescript'
+import { Options as JavaScriptOptions } from './generators/javascript'
 
 export enum Language {
+	JAVASCRIPT,
 	TYPESCRIPT,
 }
 
@@ -15,7 +16,7 @@ export interface DefaultOptions {
 	isDevelopment: boolean
 }
 
-export type Options = TypeScriptOptions
+export type Options = JavaScriptOptions
 
 export interface File {
 	path: string
@@ -28,8 +29,8 @@ export default async function gen(
 ): Promise<File[]> {
 	const asts = rawSchemas.map(s => parse(s))
 
-	if (opts.lang === Language.TYPESCRIPT) {
-		return await typescript(asts, opts)
+	if (opts.lang === Language.TYPESCRIPT || opts.lang === Language.JAVASCRIPT) {
+		return await javascript(asts, opts)
 	} else {
 		throw new Error('Invalid language')
 	}
