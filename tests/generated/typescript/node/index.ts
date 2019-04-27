@@ -3,6 +3,16 @@
  */
 
 /**
+ * Ajv is a peer dependency for development builds. It's used to apply run-time validation
+ * to message payloads before passing them on to the underlying analytics instance.
+ *
+ * Note that the production bundle does not depend on Ajv.
+ *
+ * You can install it with: `npm install --save-dev ajv`.
+ */
+import Ajv from 'ajv'
+
+/**
  * Type definitions for Segment's analytics-node.
  */
 export namespace Segment {
@@ -124,33 +134,6 @@ export namespace Segment {
 	}
 
 	export type Callback = (err: Error) => void
-}
-
-/**
- * Type definitions for run-time validation errors.
- */
-namespace RuntimeValidation {
-	/** An invalid event with its associated collection of validation errors. */
-	export interface InvalidEvent {
-		eventName: string
-		validationErrors: ValidationError[]
-	}
-
-	/**
-	 * Validation error raised by AJV.js.
-	 * See: https://github.com/epoberezkin/ajv
-	 * Specifically: https://github.com/epoberezkin/ajv/blob/0c31c1e2a81e315511c60a0dd7420a72cb181e61/lib/ajv.d.ts#L279
-	 */
-	export interface ValidationError {
-		keyword: string
-		dataPath: string
-		schemaPath: string
-		params: object
-		message: string
-		propertyName?: string
-		parentSchema?: object
-		data?: any
-	}
 }
 
 interface Properties {
@@ -342,29 +325,93 @@ function withEventName<P>(
 }
 
 /** Options to customize the runtime behavior of a Typewriter client. */
-export interface AnalyticsOptions {
-	onError?(event: RuntimeValidation.InvalidEvent): void
+export interface TypewriterOptions {
+	/**
+	 * Handler fired when if an event does not match its spec. Returns a boolean
+	 * indicating if the message should still be sent to Segment. This handler
+	 * does not fire in production mode, because it requires inlining the full
+	 * JSON Schema spec.
+	 *
+	 * By default, it will throw errors if NODE_ENV = "test" so that tests will fail
+	 * if a message does not match the spec. Otherwise, errors will be logged to stderr.
+	 * Also by default, invalid messages will be dropped.
+	 */
+	onValidationError?(
+		message: Segment.TrackMessage<Record<string, any>>,
+		validationErrors: Ajv.ErrorObject[]
+	): boolean
+}
+
+export function defaultValidationErrorHandler(
+	message: Segment.TrackMessage<Record<string, any>>,
+	validationErrors: Ajv.ErrorObject[]
+): boolean {
+	const msg = JSON.stringify(
+		{
+			type: 'Typewriter JSON Schema Validation Error',
+			description:
+				`You made an analytics call (${
+					message.event
+				}) using Typewriter that doesn't match the ` +
+				'Tracking Plan spec. Your analytics call will continue to fire in production.',
+			errors: validationErrors,
+		},
+		null,
+		2
+	)
+
+	if (process.env.NODE_ENV === 'test') {
+		throw new Error(msg)
+	}
+	console.error(msg)
+
+	return false
 }
 
 /**
- * Analytics provides a strongly-typed wrapper around Segment Analytics
- * based on your Tracking Plan.
+ * A strongly-typed wrapper around analytics-node automatically generated based on your Tracking Plan.
  */
 export default class Analytics {
 	private analytics: Segment.AnalyticsNode
+	private onValidationError: (
+		event: Segment.TrackMessage<Record<string, any>>,
+		validationErrors: Ajv.ErrorObject[]
+	) => boolean
 
 	/**
 	 * Instantiate a wrapper around an analytics-node instance.
 	 * @param {Segment.AnalyticsNode} analytics The analytics-node library to wrap
-	 * @param {AnalyticsOptions} [options] Optional configuration of the Typewriter client
-	 * @param {function} [options.onError] Error handler fired when run-time validation errors
+	 * @param {TypewriterOptions} [options] Optional configuration of the Typewriter client
+	 * @param {function} [options.onValidationError] Error handler fired when run-time validation errors
 	 *     are raised.
 	 */
 	public constructor(
 		analytics: Segment.AnalyticsNode,
-		options: AnalyticsOptions = {}
+		options: TypewriterOptions = {}
 	) {
 		this.analytics = analytics || { track: () => null }
+		this.onValidationError =
+			options.onValidationError || defaultValidationErrorHandler
+	}
+
+	/**
+	 * Validates a message against a JSON Schema using Ajv. If the message
+	 * is invalid, the `onValidationError` handler will be called.
+	 * Returns true if the message should be sent on to Segment, and false otherwise.
+	 */
+	private matchesSchema(
+		message: Segment.TrackMessage<Record<string, any>>,
+		schema: string
+	): boolean {
+		const ajv = new Ajv({ schemaId: 'auto', allErrors: true, verbose: true })
+		ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
+		ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
+
+		if (!ajv.validate(schema, message) && ajv.errors) {
+			return this.onValidationError(message, ajv.errors)
+		}
+
+		return true
 	}
 
 	/**
@@ -374,6 +421,37 @@ export default class Analytics {
 		message: Segment.TrackMessage<Properties>,
 		callback?: Segment.Callback
 	): void {
+		const schema = `
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"properties": {
+		"context": {},
+		"properties": {
+			"properties": {
+				"0000---terrible-property-name~!3": {
+					"description": "Really, don't do this."
+				},
+				"identifierId": {
+					"description": "Duplicate key error in Android"
+				},
+				"identifier_id": {
+					"description": "AcronymStyle bug fixed in v5.0.1",
+					"key": "identifier_id"
+				}
+			},
+			"type": "object"
+		},
+		"traits": {}
+	},
+	"type": "object",
+	"title": "42_--terrible==\"event'++name~!3",
+	"description": "Don't do this."
+}
+		`
+		if (!this.matchesSchema(message, schema)) {
+			return
+		}
+
 		this.analytics.track(
 			withTypewriterContext(
 				withEventName(message, '42_--terrible=="event\'++name~!3')
@@ -389,6 +467,28 @@ export default class Analytics {
 		message: Segment.TrackMessage<Record<string, any>>,
 		callback?: Segment.Callback
 	): void {
+		const schema = `
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"properties": {
+		"context": {},
+		"properties": {
+			"type": "object"
+		},
+		"traits": {}
+	},
+	"required": [
+		"properties"
+	],
+	"type": "object",
+	"title": "Draft-04 Event",
+	"description": "This is JSON Schema draft-04 event."
+}
+		`
+		if (!this.matchesSchema(message, schema)) {
+			return
+		}
+
 		this.analytics.track(
 			withTypewriterContext(withEventName(message, 'Draft-04 Event')),
 			callback
@@ -402,6 +502,28 @@ export default class Analytics {
 		message: Segment.TrackMessage<Record<string, any>>,
 		callback?: Segment.Callback
 	): void {
+		const schema = `
+{
+	"$schema": "http://json-schema.org/draft-06/schema#",
+	"properties": {
+		"context": {},
+		"properties": {
+			"type": "object"
+		},
+		"traits": {}
+	},
+	"required": [
+		"properties"
+	],
+	"type": "object",
+	"title": "Draft-06 Event",
+	"description": "This is JSON Schema draft-06 event."
+}
+		`
+		if (!this.matchesSchema(message, schema)) {
+			return
+		}
+
 		this.analytics.track(
 			withTypewriterContext(withEventName(message, 'Draft-06 Event')),
 			callback
@@ -415,6 +537,28 @@ export default class Analytics {
 		message: Segment.TrackMessage<Record<string, any>>,
 		callback?: Segment.Callback
 	): void {
+		const schema = `
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"properties": {
+		"context": {},
+		"properties": {
+			"type": "object"
+		},
+		"traits": {}
+	},
+	"required": [
+		"properties"
+	],
+	"type": "object",
+	"title": "Empty Event",
+	"description": "This is an empty event."
+}
+		`
+		if (!this.matchesSchema(message, schema)) {
+			return
+		}
+
 		this.analytics.track(
 			withTypewriterContext(withEventName(message, 'Empty Event')),
 			callback
@@ -428,6 +572,222 @@ export default class Analytics {
 		message: Segment.TrackMessage<Properties>,
 		callback?: Segment.Callback
 	): void {
+		const schema = `
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"properties": {
+		"context": {},
+		"properties": {
+			"properties": {
+				"optional any": {
+					"description": "Optional any property"
+				},
+				"optional array": {
+					"description": "Optional array property",
+					"items": {
+						"description": "",
+						"properties": {
+							"optional sub-property": {
+								"description": "Optional sub-property",
+								"type": "string"
+							},
+							"required sub-property": {
+								"description": "Required sub-property",
+								"type": "string"
+							}
+						},
+						"required": [
+							"required sub-property"
+						],
+						"type": "object"
+					},
+					"type": "array"
+				},
+				"optional array (empty)": {
+					"description": "Optional array (empty) property",
+					"type": "array"
+				},
+				"optional boolean": {
+					"description": "Optional boolean property",
+					"type": "boolean"
+				},
+				"optional int": {
+					"description": "Optional integer property",
+					"type": "integer"
+				},
+				"optional nullable string": {
+					"description": "",
+					"type": [
+						"string",
+						"null"
+					]
+				},
+				"optional number": {
+					"description": "Optional number property",
+					"type": "number"
+				},
+				"optional number or string": {
+					"description": "",
+					"type": [
+						"number",
+						"string"
+					]
+				},
+				"optional object": {
+					"description": "Optional object property",
+					"key": "optional object",
+					"properties": {
+						"optional sub-property": {
+							"description": "Optional sub-property",
+							"key": "optional sub-property",
+							"type": "string"
+						},
+						"required sub-property": {
+							"description": "Required sub-property",
+							"key": "required sub-property",
+							"type": "string"
+						}
+					},
+					"required": [
+						"required sub-property"
+					],
+					"type": "object"
+				},
+				"optional object (empty)": {
+					"description": "Optional object (empty) property",
+					"key": "optional object (empty)",
+					"type": "object"
+				},
+				"optional string": {
+					"description": "Optional string property",
+					"type": "string"
+				},
+				"optional string regex": {
+					"description": "Optional string regex property",
+					"pattern": "FOO|BAR",
+					"type": "string"
+				},
+				"required any": {
+					"description": "Required any property",
+					"key": "required any"
+				},
+				"required array": {
+					"description": "Required array property",
+					"items": {
+						"description": "",
+						"properties": {
+							"optional sub-property": {
+								"description": "Optional sub-property",
+								"type": "string"
+							},
+							"required sub-property": {
+								"description": "Required sub-property",
+								"type": "string"
+							}
+						},
+						"required": [
+							"required sub-property"
+						],
+						"type": "object"
+					},
+					"type": "array"
+				},
+				"required array (empty)": {
+					"description": "Required array (empty) property",
+					"key": "required array (empty)",
+					"type": "array"
+				},
+				"required boolean": {
+					"description": "Required boolean property",
+					"key": "required boolean",
+					"type": "boolean"
+				},
+				"required int": {
+					"description": "Required integer property",
+					"type": "integer"
+				},
+				"required nullable string": {
+					"description": "",
+					"type": [
+						"string",
+						"null"
+					]
+				},
+				"required number": {
+					"description": "Required number property",
+					"key": "required number",
+					"type": "number"
+				},
+				"required number or string": {
+					"description": "",
+					"type": [
+						"number",
+						"string"
+					]
+				},
+				"required object": {
+					"description": "Required object property",
+					"key": "required object",
+					"properties": {
+						"optional sub-property": {
+							"description": "Optional sub-property",
+							"type": "string"
+						},
+						"required sub-property": {
+							"description": "Required sub-property",
+							"type": "string"
+						}
+					},
+					"required": [
+						"required sub-property"
+					],
+					"type": "object"
+				},
+				"required object (empty)": {
+					"description": "Required object (empty) property",
+					"key": "required object (empty)",
+					"type": "object"
+				},
+				"required string": {
+					"description": "Required string property",
+					"type": "string"
+				},
+				"required string regex": {
+					"description": "Required string regex property",
+					"pattern": "FOO|BAR",
+					"type": "string"
+				}
+			},
+			"required": [
+				"required int",
+				"required string",
+				"required any",
+				"required string regex",
+				"required boolean",
+				"required number",
+				"required array (empty)",
+				"required array",
+				"required object (empty)",
+				"required object",
+				"required number or string",
+				"required nullable string"
+			],
+			"type": "object"
+		},
+		"traits": {}
+	},
+	"required": [
+		"properties"
+	],
+	"type": "object",
+	"title": "Example Event",
+	"description": "This event contains all supported variations of properties."
+}
+		`
+		if (!this.matchesSchema(message, schema)) {
+			return
+		}
+
 		this.analytics.track(
 			withTypewriterContext(withEventName(message, 'Example Event')),
 			callback
@@ -441,6 +801,26 @@ export default class Analytics {
 		message: Segment.TrackMessage<Record<string, any>>,
 		callback?: Segment.Callback
 	): void {
+		const schema = `
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"labels": {},
+	"properties": {
+		"context": {},
+		"properties": {
+			"type": "object"
+		},
+		"traits": {}
+	},
+	"type": "object",
+	"title": "check_in",
+	"description": "checkin != check_in bug"
+}
+		`
+		if (!this.matchesSchema(message, schema)) {
+			return
+		}
+
 		this.analytics.track(
 			withTypewriterContext(withEventName(message, 'check_in')),
 			callback
@@ -454,6 +834,26 @@ export default class Analytics {
 		message: Segment.TrackMessage<Record<string, any>>,
 		callback?: Segment.Callback
 	): void {
+		const schema = `
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"labels": {},
+	"properties": {
+		"context": {},
+		"properties": {
+			"type": "object"
+		},
+		"traits": {}
+	},
+	"type": "object",
+	"title": "checkin",
+	"description": "checkin != check_in bug"
+}
+		`
+		if (!this.matchesSchema(message, schema)) {
+			return
+		}
+
 		this.analytics.track(
 			withTypewriterContext(withEventName(message, 'checkin')),
 			callback

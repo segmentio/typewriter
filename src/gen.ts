@@ -1,6 +1,6 @@
 import { JSONSchema7 } from 'json-schema'
 import javascript from './generators/javascript'
-import { parse } from './ast'
+import { parse, Schema } from './ast'
 import { Options as JavaScriptOptions } from './generators/javascript'
 
 export enum Language {
@@ -23,14 +23,31 @@ export interface File {
 	contents: string
 }
 
+export interface GenerationConfig {
+	tracks: {
+		raw: JSONSchema7
+		schema: Schema
+	}[]
+	options: Options
+}
+
 export default async function gen(
 	rawSchemas: JSONSchema7[],
-	opts: Options
+	options: Options
 ): Promise<File[]> {
-	const asts = rawSchemas.map(s => parse(s))
+	const config = {
+		tracks: rawSchemas.map(s => ({
+			raw: s,
+			schema: parse(s),
+		})),
+		options,
+	}
 
-	if (opts.lang === Language.TYPESCRIPT || opts.lang === Language.JAVASCRIPT) {
-		return await javascript(asts, opts)
+	if (
+		options.lang === Language.TYPESCRIPT ||
+		options.lang === Language.JAVASCRIPT
+	) {
+		return await javascript(config)
 	} else {
 		throw new Error('Invalid language')
 	}

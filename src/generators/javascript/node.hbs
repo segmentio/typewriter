@@ -3,6 +3,16 @@
  */
 
 /**
+ * Ajv is a peer dependency for development builds. It's used to apply run-time validation
+ * to message payloads before passing them on to the underlying analytics instance.
+ *
+ * Note that the production bundle does not depend on Ajv.
+ * 
+ * You can install it with: `npm install --save-dev ajv`.
+ */
+import Ajv from 'ajv'
+
+/**
  * Type definitions for Segment's analytics-node.
  */
 export namespace Segment {
@@ -125,33 +135,6 @@ export namespace Segment {
 
 	export type Callback = (err: Error) => void
 }
-
-/**
- * Type definitions for run-time validation errors.
- */
-namespace RuntimeValidation {
-	/** An invalid event with its associated collection of validation errors. */
-	export interface InvalidEvent {
-		eventName: string
-		validationErrors: ValidationError[]
-	}
-
-	/**
-	 * Validation error raised by AJV.js.
-	 * See: https://github.com/epoberezkin/ajv
-	 * Specifically: https://github.com/epoberezkin/ajv/blob/0c31c1e2a81e315511c60a0dd7420a72cb181e61/lib/ajv.d.ts#L279
-	 */
-	export interface ValidationError {
-		keyword: string
-		dataPath: string
-		schemaPath: string
-		params: object
-		message: string
-		propertyName?: string
-		parentSchema?: object
-		data?: any
-	}
-}
 {{#each interfaces}}
 
 {{#if description}}
@@ -197,31 +180,85 @@ function withEventName<P>(message: Segment.TrackMessage<P>, eventName: string): 
 }
 
 /** Options to customize the runtime behavior of a Typewriter client. */
-export interface AnalyticsOptions {
-	onError?(event: RuntimeValidation.InvalidEvent): void
+export interface TypewriterOptions {
+	/**
+	 * Handler fired when if an event does not match its spec. Returns a boolean
+	 * indicating if the message should still be sent to Segment. This handler
+	 * does not fire in production mode, because it requires inlining the full
+	 * JSON Schema spec.
+	 *
+	 * By default, it will throw errors if NODE_ENV = "test" so that tests will fail
+	 * if a message does not match the spec. Otherwise, errors will be logged to stderr.
+	 * Also by default, invalid messages will be dropped.
+	 */
+	onValidationError?(
+		message: Segment.TrackMessage<Record<string, any>>,
+		validationErrors: Ajv.ErrorObject[]
+	): boolean
+}
+
+export function defaultValidationErrorHandler(message: Segment.TrackMessage<Record<string, any>>, validationErrors: Ajv.ErrorObject[]): boolean {
+	const msg = JSON.stringify({
+		type: 'Typewriter JSON Schema Validation Error',
+		description:
+			`You made an analytics call (${message.event}) using Typewriter that doesn't match the ` +
+			'Tracking Plan spec. Your analytics call will continue to fire in production.',
+		errors: validationErrors,
+	}, null, 2)
+
+	if (process.env.NODE_ENV === 'test') {
+		throw new Error(msg)
+	}
+	console.error(msg)
+
+	return false
 }
 
 /**
- * Analytics provides a strongly-typed wrapper around Segment Analytics
- * based on your Tracking Plan.
+ * A strongly-typed wrapper around analytics-node automatically generated based on your Tracking Plan.
  */
 export default class Analytics {
 	private analytics: Segment.AnalyticsNode
+	private onValidationError: (
+		event: Segment.TrackMessage<Record<string, any>>,
+		validationErrors: Ajv.ErrorObject[]
+	) => boolean
 
 	/**
 	 * Instantiate a wrapper around an analytics-node instance.
 	 * @param {Segment.AnalyticsNode} analytics The analytics-node library to wrap
-	 * @param {AnalyticsOptions} [options] Optional configuration of the Typewriter client
-	 * @param {function} [options.onError] Error handler fired when run-time validation errors
+	 * @param {TypewriterOptions} [options] Optional configuration of the Typewriter client
+	 * @param {function} [options.onValidationError] Error handler fired when run-time validation errors
 	 *     are raised.
 	 */
 	public constructor(
 		analytics: Segment.AnalyticsNode,
-		options: AnalyticsOptions = {}
+		options: TypewriterOptions = {}
 	) {
 		this.analytics = analytics || { track: () => null }
+		this.onValidationError = options.onValidationError || defaultValidationErrorHandler
 	}
-	{{#each trackCalls}}
+	
+	/**
+	 * Validates a message against a JSON Schema using Ajv. If the message
+	 * is invalid, the `onValidationError` handler will be called.
+	 * Returns true if the message should be sent on to Segment, and false otherwise.
+	 */
+	private matchesSchema(
+		message: Segment.TrackMessage<Record<string, any>>,
+		schema: string
+	): boolean {
+		const ajv = new Ajv({ schemaId: 'auto', allErrors: true, verbose: true })
+		ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
+		ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
+
+		if (!ajv.validate(schema, message) && ajv.errors) {
+			return this.onValidationError(message, ajv.errors)
+		}
+
+		return true
+	}
+	{{#each tracks}}
 
 	{{#if description}}
 	/**
@@ -232,6 +269,13 @@ export default class Analytics {
 		message: Segment.TrackMessage<{{type}}>,
 		callback?: Segment.Callback
 	): void {
+		const schema = `
+{{rawJSONSchema}}
+		`
+		if (!this.matchesSchema(message, schema)) {
+			return
+		}
+
 		this.analytics.track(
 			withTypewriterContext(withEventName(message, '{{eventName}}')),
 			callback

@@ -1,4 +1,4 @@
-import { File, DefaultOptions, Language } from '../../gen'
+import { File, DefaultOptions, Language, GenerationConfig } from '../../gen'
 import { Schema, Type, getPropertiesSchema } from '../../ast'
 import { camelCase, capitalize } from 'lodash'
 import namer from './namer'
@@ -11,7 +11,7 @@ import { transpileModule, ModuleKind, ScriptTarget } from 'typescript'
 interface TemplateContext {
 	isDevelopment: boolean
 
-	trackCalls: TrackCall[]
+	tracks: TrackCall[]
 	interfaces: TSInterface[]
 }
 
@@ -25,6 +25,8 @@ interface TrackCall {
 	description?: string
 	// The type of the analytics properties object.
 	type: string
+	// The raw JSON Schema for the event.
+	rawJSONSchema: string
 }
 
 // Represents a generated interface.
@@ -70,21 +72,19 @@ interface TypeScriptOptions {
 
 export type Options = DefaultOptions & (JavaScriptOptions | TypeScriptOptions)
 
-export default async function(
-	events: Schema[],
-	opts: Options
-): Promise<File[]> {
+export default async function(config: GenerationConfig): Promise<File[]> {
 	const files = [
 		{
-			path: opts.lang === Language.TYPESCRIPT ? 'index.ts' : 'index.js',
+			path:
+				config.options.lang === Language.TYPESCRIPT ? 'index.ts' : 'index.js',
 			contents: await generateFromTemplate<TemplateContext>(
-				`generators/javascript/${opts.env}.hbs`,
-				getContext(events, opts)
+				`generators/javascript/${config.options.env}.hbs`,
+				getContext(config)
 			),
 		},
 	]
 
-	return files.map(f => formatFile(f, opts))
+	return files.map(f => formatFile(f, config.options))
 }
 
 function formatFile(f: File, opts: Options): File {
@@ -125,23 +125,25 @@ function formatFile(f: File, opts: Options): File {
 	}
 }
 
-function getContext(events: Schema[], opts: Options): TemplateContext {
+function getContext(config: GenerationConfig): TemplateContext {
 	// Render a TemplateContext based on the set of event schemas.
 	const context: TemplateContext = {
-		isDevelopment: opts.isDevelopment,
-		trackCalls: [],
+		isDevelopment: config.options.isDevelopment,
+		tracks: [],
 		interfaces: [],
 	}
 
-	for (var event of events) {
+	for (var track of config.tracks) {
+		const { schema } = track
 		// Recursively generate all types, into the context, for the schema.
-		const rootType = getTypeForSchema(getPropertiesSchema(event), context)
+		const rootType = getTypeForSchema(getPropertiesSchema(schema), context)
 
-		context.trackCalls.push({
-			functionName: namer.escapeIdentifier(camelCase(event.name)),
-			eventName: namer.escapeString(event.name),
-			description: event.description,
+		context.tracks.push({
+			functionName: namer.escapeIdentifier(camelCase(schema.name)),
+			eventName: namer.escapeString(schema.name),
+			description: schema.description,
 			type: rootType,
+			rawJSONSchema: JSON.stringify(track.raw, null, '\t'),
 		})
 	}
 
