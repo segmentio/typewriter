@@ -136,7 +136,10 @@ export namespace Segment {
 	export type Callback = (err: Error) => void
 }
 
-interface Properties {
+/**
+ * Don't do this.
+ */
+interface I42terribleeventname3 {
 	/**
 	 * Really, don't do this.
 	 */
@@ -207,7 +210,10 @@ interface Requiredobject {
 	'required sub-property': string
 }
 
-interface Properties {
+/**
+ * This event contains all supported variations of properties.
+ */
+interface Exampleevent {
 	/**
 	 * Optional any property
 	 */
@@ -418,7 +424,7 @@ export default class Analytics {
 	 * Don't do this.
 	 */
 	public I42TerribleEventName3(
-		message: Segment.TrackMessage<Properties>,
+		message: Segment.TrackMessage<I42terribleeventname3>,
 		callback?: Segment.Callback
 	): void {
 		const schema = `
@@ -569,7 +575,7 @@ export default class Analytics {
 	 * This event contains all supported variations of properties.
 	 */
 	public exampleEvent(
-		message: Segment.TrackMessage<Properties>,
+		message: Segment.TrackMessage<Exampleevent>,
 		callback?: Segment.Callback
 	): void {
 		const schema = `

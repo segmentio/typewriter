@@ -101,16 +101,7 @@ function toType(t: string): Type {
 // getPropertiesSchema extracts the Schema for `.properties` from an
 // event schema.
 export function getPropertiesSchema(event: Schema): ObjectTypeSchema {
-	// If `.properties` doesn't exist in the user-supplied JSON Schema,
-	// default to no properties as a sane default.
-	let properties: Schema = {
-		// Use the event's name and description when generating an interface
-		// to represent these properties.
-		name: event.name,
-		description: event.description,
-		type: Type.OBJECT,
-		properties: [],
-	}
+	let properties: ObjectTypeSchema | null = null
 
 	// Events should always be a type="object" at the root, anything
 	// else would not match on a Segment analytics event.
@@ -125,7 +116,17 @@ export function getPropertiesSchema(event: Schema): ObjectTypeSchema {
 		}
 	}
 
-	return properties
+	return {
+		// If `.properties` doesn't exist in the user-supplied JSON Schema,
+		// default to an empty object schema as a sane default.
+		type: Type.OBJECT,
+		properties: [],
+		...(properties || {}),
+		// Use the event's name and description when generating an interface
+		// to represent these properties.
+		name: event.name,
+		description: event.description,
+	}
 }
 
 // parse transforms a JSON Schema into a standardized Schema.

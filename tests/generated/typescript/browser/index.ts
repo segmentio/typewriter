@@ -143,7 +143,10 @@ namespace RuntimeValidation {
 	}
 }
 
-interface Properties {
+/**
+ * Don't do this.
+ */
+interface I42terribleeventname3 {
 	/**
 	 * Really, don't do this.
 	 */
@@ -214,7 +217,10 @@ interface Requiredobject {
 	'required sub-property': string
 }
 
-interface Properties {
+/**
+ * This event contains all supported variations of properties.
+ */
+interface Exampleevent {
 	/**
 	 * Optional any property
 	 */
@@ -326,7 +332,7 @@ function withTypewriterContext(options: Segment.Options = {}): Segment.Options {
  * Don't do this.
  */
 export function I42TerribleEventName3(
-	props: Properties,
+	props: I42terribleeventname3,
 	options?: Segment.Options,
 	callback?: Segment.Callback
 ): void {
@@ -398,7 +404,7 @@ export function emptyEvent(
  * This event contains all supported variations of properties.
  */
 export function exampleEvent(
-	props: Properties,
+	props: Exampleevent,
 	options?: Segment.Options,
 	callback?: Segment.Callback
 ): void {
