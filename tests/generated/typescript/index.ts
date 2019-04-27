@@ -97,10 +97,7 @@ export interface SegmentOptions {
 	context?: Context
 }
 
-/**
- * Don't do this.
- */
-interface I42terribleeventname3 {
+interface Properties {
 	/**
 	 * Really, don't do this.
 	 */
@@ -171,10 +168,7 @@ interface Requiredobject {
 	'required sub-property': string
 }
 
-/**
- * This event contains all supported variations of properties.
- */
-interface Exampleevent {
+interface Properties {
 	/**
 	 * Optional any property
 	 */
@@ -332,7 +326,7 @@ export default class Analytics {
 	 * Don't do this.
 	 */
 	public I42TerribleEventName3(
-		props: I42terribleeventname3,
+		props: ,
 		options: SegmentOptions = {},
 		callback?: AnalyticsJSCallback
 	): void {
@@ -348,7 +342,7 @@ export default class Analytics {
 	 * This is JSON Schema draft-04 event.
 	 */
 	public draft04Event(
-		props: Record<string, any>,
+		props: ,
 		options: SegmentOptions = {},
 		callback?: AnalyticsJSCallback
 	): void {
@@ -364,7 +358,7 @@ export default class Analytics {
 	 * This is JSON Schema draft-06 event.
 	 */
 	public draft06Event(
-		props: Record<string, any>,
+		props: ,
 		options: SegmentOptions = {},
 		callback?: AnalyticsJSCallback
 	): void {
@@ -380,7 +374,7 @@ export default class Analytics {
 	 * This is an empty event.
 	 */
 	public emptyEvent(
-		props: Record<string, any>,
+		props: ,
 		options: SegmentOptions = {},
 		callback?: AnalyticsJSCallback
 	): void {
@@ -396,7 +390,7 @@ export default class Analytics {
 	 * This event contains all supported variations of properties.
 	 */
 	public exampleEvent(
-		props: Exampleevent,
+		props: ,
 		options: SegmentOptions = {},
 		callback?: AnalyticsJSCallback
 	): void {
@@ -412,7 +406,7 @@ export default class Analytics {
 	 * checkin != check_in bug
 	 */
 	public checkIn(
-		props: Record<string, any>,
+		props: ,
 		options: SegmentOptions = {},
 		callback?: AnalyticsJSCallback
 	): void {
@@ -428,7 +422,7 @@ export default class Analytics {
 	 * checkin != check_in bug
 	 */
 	public checkin(
-		props: Record<string, any>,
+		props: ,
 		options: SegmentOptions = {},
 		callback?: AnalyticsJSCallback
 	): void {

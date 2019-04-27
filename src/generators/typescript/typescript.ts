@@ -47,7 +47,7 @@ export default async function(
 ): Promise<File[]> {
 	return Promise.all([
 		getTemplate<TemplateContext>(
-			'./index.ts.hbs',
+			'generators/typescript/index.ts.hbs',
 			'index.ts',
 			getContext(events)
 		),

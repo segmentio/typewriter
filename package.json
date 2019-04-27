@@ -44,6 +44,9 @@
 		}
 	},
 	"jest": {
+		"modulePaths": [
+			"<rootDir>/"
+		],
 		"transform": {
 			"^.+\\.tsx?$": "ts-jest"
 		}
