@@ -1,8 +1,9 @@
-import { File, Options } from '../../gen'
+import { File, DefaultOptions, Language } from '../../gen'
 import { Schema, Type, getPropertiesSchema } from '../../ast'
 import { camelCase, capitalize } from 'lodash'
 import namer from './namer'
 import { getTemplate } from 'src/templates'
+import { transpileModule, ModuleKind, ScriptTarget } from 'typescript'
 
 // The context that will be passed to Handlebars to perform rendering.
 // Everything in this context should be properly sanitized.
@@ -39,6 +40,24 @@ interface TSInterfaceProperty {
 	description?: string
 	isRequired: boolean
 	type: string
+}
+
+// Which JavaScript environment to generate for.
+// The browser environments will use analytics-js, window.analytics, and
+// generate analytics calls as functions.
+// The Node environment will use analytics-node, and generate class which
+// accepts an analytics object. Analytics calls will be class methods.
+export enum Environment {
+	BROWSER = 1,
+	NODE = 2,
+}
+
+export interface Options extends DefaultOptions {
+	lang: Language.TYPESCRIPT
+	env: Environment
+	// JavaScript transpilation settings:
+	scriptTarget: ScriptTarget
+	moduleTarget: ModuleKind
 }
 
 export default async function(
