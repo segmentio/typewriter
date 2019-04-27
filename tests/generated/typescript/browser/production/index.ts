@@ -113,34 +113,8 @@ namespace Segment {
 		userAgent?: string
 	}
 
+	/** The callback exposed by analytics.js. */
 	export type Callback = () => void
-}
-
-/**
- * Type definitions for run-time validation errors.
- */
-namespace RuntimeValidation {
-	/** An invalid event with its associated collection of validation errors. */
-	export interface InvalidEvent {
-		eventName: string
-		validationErrors: ValidationError[]
-	}
-
-	/**
-	 * Validation error raised by AJV.js.
-	 * See: https://github.com/epoberezkin/ajv
-	 * Specifically: https://github.com/epoberezkin/ajv/blob/0c31c1e2a81e315511c60a0dd7420a72cb181e61/lib/ajv.d.ts#L279
-	 */
-	export interface ValidationError {
-		keyword: string
-		dataPath: string
-		schemaPath: string
-		params: object
-		message: string
-		propertyName?: string
-		parentSchema?: object
-		data?: any
-	}
 }
 
 /**
@@ -160,7 +134,6 @@ interface I42TerribleEventName3 {
 	 */
 	identifier_id?: any
 }
-
 /**
  * Optional array property
  */
@@ -174,7 +147,6 @@ interface OptionalArray {
 	 */
 	'required sub-property': string
 }
-
 /**
  * Optional object property
  */
@@ -188,7 +160,6 @@ interface OptionalObject {
 	 */
 	'required sub-property': string
 }
-
 /**
  * Required array property
  */
@@ -202,7 +173,6 @@ interface RequiredArray {
 	 */
 	'required sub-property': string
 }
-
 /**
  * Required object property
  */
@@ -216,7 +186,6 @@ interface RequiredObject {
 	 */
 	'required sub-property': string
 }
-
 /**
  * This event contains all supported variations of properties.
  */
@@ -307,14 +276,33 @@ interface ExampleEvent {
 	'required string regex': string
 }
 
-// TODO:
-// Options to customize the runtime behavior of a Typewriter client.
-// export interface AnalyticsOptions {
-//	onError?(event: InvalidEvent): void
-// }
+/** Options to customize the runtime behavior of a Typewriter client. */
+export interface TypewriterOptions {
+	/**
+	 * Handler fired when if an event does not match its spec. Returns a boolean
+	 * indicating if the message should still be sent to Segment. This handler
+	 * does not fire in production mode, because it requires inlining the full
+	 * JSON Schema spec.
+	 *
+	 * By default, it will throw errors if NODE_ENV = "test" so that tests will fail
+	 * if a message does not match the spec. Otherwise, errors will be logged to stderr.
+	 * Also by default, invalid messages will be dropped.
+	 */
+	onValidationError?: ValidationErrorHandler
+}
 
-// Helper to attach metadata on Typewriter to outbound requests.
-// This is used for attribution and debugging by the Segment team.
+export type ValidationErrorHandler = (
+	message: Record<string, any>,
+	validationErrors: any[]
+) => boolean
+
+/** Update the run-time configuration of this Typewriter client. */
+export function setTypewriterOptions(options: TypewriterOptions) {}
+
+/**
+ * Helper to attach metadata on Typewriter to outbound requests.
+ * This is used for attribution and debugging by the Segment team.
+ */
 function withTypewriterContext(options: Segment.Options = {}): Segment.Options {
 	return {
 		...options,
@@ -345,7 +333,6 @@ export function I42TerribleEventName3(
 		)
 	}
 }
-
 /**
  * This is JSON Schema draft-04 event.
  */
@@ -363,7 +350,6 @@ export function draft04Event(
 		)
 	}
 }
-
 /**
  * This is JSON Schema draft-06 event.
  */
@@ -381,7 +367,6 @@ export function draft06Event(
 		)
 	}
 }
-
 /**
  * This is an empty event.
  */
@@ -399,7 +384,6 @@ export function emptyEvent(
 		)
 	}
 }
-
 /**
  * This event contains all supported variations of properties.
  */
@@ -417,7 +401,6 @@ export function exampleEvent(
 		)
 	}
 }
-
 /**
  * checkin != check_in bug
  */
@@ -435,7 +418,6 @@ export function checkIn(
 		)
 	}
 }
-
 /**
  * checkin != check_in bug
  */

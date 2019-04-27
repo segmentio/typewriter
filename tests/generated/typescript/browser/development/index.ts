@@ -12,46 +12,31 @@
  */
 import Ajv from 'ajv'
 
+declare global {
+	interface Window {
+		analytics?: Segment.AnalyticsJS
+	}
+}
+
 /**
- * Type definitions for Segment's analytics-node.
+ * Type definitions for Segment's analytics.js.
  */
-export namespace Segment {
-	/** A minimal interface for Segment's analytics-node. */
-	export interface AnalyticsNode {
+namespace Segment {
+	/** A minimal interface for Segment's analytics.js. */
+	export interface AnalyticsJS {
 		track: (
-			message: TrackMessage<Record<string, any>>,
+			event: string,
+			properties?: Record<string, any>,
+			options?: Options,
 			callback?: Callback
 		) => void
 	}
 
-	/**
-	 * TrackMessage represents a message payload for an analytics `.track()` call.
-	 * See: https://segment.com/docs/spec/track/
-	 */
-	export interface TrackMessage<PropertiesType> extends Record<string, any> {
-		/** The ID for this user in your database. */
-		userId: string | number
-		/** An ID to associated with the user when you don’t know who they are. */
-		anonymousId?: string | number
-		/** A dictionary of properties for the event. */
-		properties?: PropertiesType
+	/** A dictionary of options. For example, enable or disable specific destinations for the call. */
+	export interface Options {
 		/**
-		 * A Javascript date object representing when the track took place.
-		 * If the track just happened, leave it out and we’ll use the server’s
-		 * time. If you’re importing data from the past make sure you to send
-		 * a timestamp.
-		 */
-		timestamp?: Date
-		/**
-		 * A dictionary of extra context to attach to the call.
-		 * https://segment.com/docs/spec/common/#context
-		 */
-		context?: Context
-		/**
-		 * A dictionary of destination names that the message should be sent to.
-		 * By default all destinations are enabled. 'All' is a special key that
-		 * applies when no key for a specific destination is found.
-		 * https://segment.com/docs/spec/common/#integrations
+		 * Selectivly filter destinations. By default all destinations are enabled.
+		 * https://segment.com/docs/sources/website/analytics.js/#selecting-destinations
 		 */
 		integrations?: {
 			All?: boolean
@@ -60,6 +45,11 @@ export namespace Segment {
 			}
 			[key: string]: boolean | { [key: string]: string } | undefined
 		}
+		/**
+		 * A dictionary of extra context to attach to the call.
+		 * https://segment.com/docs/spec/common/#context
+		 */
+		context?: Context
 	}
 
 	/**
@@ -133,7 +123,8 @@ export namespace Segment {
 		userAgent?: string
 	}
 
-	export type Callback = (err: Error) => void
+	/** The callback exposed by analytics.js. */
+	export type Callback = () => void
 }
 
 /**
@@ -153,7 +144,6 @@ interface I42TerribleEventName3 {
 	 */
 	identifier_id?: any
 }
-
 /**
  * Optional array property
  */
@@ -167,7 +157,6 @@ interface OptionalArray {
 	 */
 	'required sub-property': string
 }
-
 /**
  * Optional object property
  */
@@ -181,7 +170,6 @@ interface OptionalObject {
 	 */
 	'required sub-property': string
 }
-
 /**
  * Required array property
  */
@@ -195,7 +183,6 @@ interface RequiredArray {
 	 */
 	'required sub-property': string
 }
-
 /**
  * Required object property
  */
@@ -209,7 +196,6 @@ interface RequiredObject {
 	 */
 	'required sub-property': string
 }
-
 /**
  * This event contains all supported variations of properties.
  */
@@ -300,36 +286,6 @@ interface ExampleEvent {
 	'required string regex': string
 }
 
-/**
- * Helper to attach metadata on Typewriter to outbound requests.
- * This is used for attribution and debugging by the Segment team.
- */
-function withTypewriterContext<P>(
-	message: Segment.TrackMessage<P>
-): Segment.TrackMessage<P> {
-	return {
-		...message,
-		context: {
-			...(message.context || {}),
-			typewriter: {
-				language: 'ts',
-				version: '7.0.0',
-			},
-		},
-	}
-}
-
-/** Helper to insert an event name into a track call. */
-function withEventName<P>(
-	message: Segment.TrackMessage<P>,
-	eventName: string
-): Segment.TrackMessage<P> {
-	return {
-		...message,
-		event: eventName,
-	}
-}
-
 /** Options to customize the runtime behavior of a Typewriter client. */
 export interface TypewriterOptions {
 	/**
@@ -342,16 +298,18 @@ export interface TypewriterOptions {
 	 * if a message does not match the spec. Otherwise, errors will be logged to stderr.
 	 * Also by default, invalid messages will be dropped.
 	 */
-	onValidationError?(
-		message: Segment.TrackMessage<Record<string, any>>,
-		validationErrors: Ajv.ErrorObject[]
-	): boolean
+	onValidationError?: ValidationErrorHandler
 }
 
-export function defaultValidationErrorHandler(
-	message: Segment.TrackMessage<Record<string, any>>,
+export type ValidationErrorHandler = (
+	message: Record<string, any>,
 	validationErrors: Ajv.ErrorObject[]
-): boolean {
+) => boolean
+
+export const defaultValidationErrorHandler: ValidationErrorHandler = (
+	message,
+	validationErrors
+) => {
 	const msg = JSON.stringify(
 		{
 			type: 'Typewriter JSON Schema Validation Error',
@@ -374,60 +332,56 @@ export function defaultValidationErrorHandler(
 	return false
 }
 
+let onValidationError = defaultValidationErrorHandler
+
+/** Update the run-time configuration of this Typewriter client. */
+export function setTypewriterOptions(options: TypewriterOptions) {
+	onValidationError = options.onValidationError || onValidationError
+}
+
 /**
- * A strongly-typed wrapper around analytics-node automatically generated based on your Tracking Plan.
+ * Validates a message against a JSON Schema using Ajv. If the message
+ * is invalid, the `onValidationError` handler will be called.
+ * Returns true if the message should be sent on to Segment, and false otherwise.
  */
-export default class Analytics {
-	private analytics: Segment.AnalyticsNode
-	private onValidationError: (
-		event: Segment.TrackMessage<Record<string, any>>,
-		validationErrors: Ajv.ErrorObject[]
-	) => boolean
+function matchesSchema(message: Record<string, any>, schema: string): boolean {
+	const ajv = new Ajv({ schemaId: 'auto', allErrors: true, verbose: true })
+	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
+	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
 
-	/**
-	 * Instantiate a wrapper around an analytics-node instance.
-	 * @param {Segment.AnalyticsNode} analytics The analytics-node library to wrap
-	 * @param {TypewriterOptions} [options] Optional configuration of the Typewriter client
-	 * @param {function} [options.onValidationError] Error handler fired when run-time validation errors
-	 *     are raised.
-	 */
-	public constructor(
-		analytics: Segment.AnalyticsNode,
-		options: TypewriterOptions = {}
-	) {
-		this.analytics = analytics || { track: () => null }
-		this.onValidationError =
-			options.onValidationError || defaultValidationErrorHandler
+	if (!ajv.validate(schema, message) && ajv.errors) {
+		return onValidationError(message, ajv.errors)
 	}
 
-	/**
-	 * Validates a message against a JSON Schema using Ajv. If the message
-	 * is invalid, the `onValidationError` handler will be called.
-	 * Returns true if the message should be sent on to Segment, and false otherwise.
-	 */
-	private matchesSchema(
-		message: Segment.TrackMessage<Record<string, any>>,
-		schema: string
-	): boolean {
-		const ajv = new Ajv({ schemaId: 'auto', allErrors: true, verbose: true })
-		ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
-		ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
+	return true
+}
 
-		if (!ajv.validate(schema, message) && ajv.errors) {
-			return this.onValidationError(message, ajv.errors)
-		}
-
-		return true
+/**
+ * Helper to attach metadata on Typewriter to outbound requests.
+ * This is used for attribution and debugging by the Segment team.
+ */
+function withTypewriterContext(options: Segment.Options = {}): Segment.Options {
+	return {
+		...options,
+		context: {
+			...(options.context || {}),
+			typewriter: {
+				language: 'ts',
+				version: '7.0.0',
+			},
+		},
 	}
+}
 
-	/**
-	 * Don't do this.
-	 */
-	public I42TerribleEventName3(
-		message: Segment.TrackMessage<I42TerribleEventName3>,
-		callback?: Segment.Callback
-	): void {
-		const schema = `
+/**
+ * Don't do this.
+ */
+export function I42TerribleEventName3(
+	props: I42TerribleEventName3,
+	options?: Segment.Options,
+	callback?: Segment.Callback
+): void {
+	const schema = `
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"properties": {
@@ -453,27 +407,34 @@ export default class Analytics {
 	"title": "42_--terrible==\"event'++name~!3",
 	"description": "Don't do this."
 }
-		`
-		if (!this.matchesSchema(message, schema)) {
-			return
-		}
+	`
+	const message = {
+		event: '42_--terrible=="event\'++name~!3',
+		properties: props || {},
+		options,
+	}
+	if (!matchesSchema(message, schema)) {
+		return
+	}
 
-		this.analytics.track(
-			withTypewriterContext(
-				withEventName(message, '42_--terrible=="event\'++name~!3')
-			),
+	if (window.analytics) {
+		window.analytics.track(
+			'42_--terrible=="event\'++name~!3',
+			props || {},
+			withTypewriterContext(options),
 			callback
 		)
 	}
-
-	/**
-	 * This is JSON Schema draft-04 event.
-	 */
-	public draft04Event(
-		message: Segment.TrackMessage<Record<string, any>>,
-		callback?: Segment.Callback
-	): void {
-		const schema = `
+}
+/**
+ * This is JSON Schema draft-04 event.
+ */
+export function draft04Event(
+	props: Record<string, any>,
+	options?: Segment.Options,
+	callback?: Segment.Callback
+): void {
+	const schema = `
 {
 	"$schema": "http://json-schema.org/draft-04/schema#",
 	"properties": {
@@ -490,25 +451,34 @@ export default class Analytics {
 	"title": "Draft-04 Event",
 	"description": "This is JSON Schema draft-04 event."
 }
-		`
-		if (!this.matchesSchema(message, schema)) {
-			return
-		}
+	`
+	const message = {
+		event: 'Draft-04 Event',
+		properties: props || {},
+		options,
+	}
+	if (!matchesSchema(message, schema)) {
+		return
+	}
 
-		this.analytics.track(
-			withTypewriterContext(withEventName(message, 'Draft-04 Event')),
+	if (window.analytics) {
+		window.analytics.track(
+			'Draft-04 Event',
+			props || {},
+			withTypewriterContext(options),
 			callback
 		)
 	}
-
-	/**
-	 * This is JSON Schema draft-06 event.
-	 */
-	public draft06Event(
-		message: Segment.TrackMessage<Record<string, any>>,
-		callback?: Segment.Callback
-	): void {
-		const schema = `
+}
+/**
+ * This is JSON Schema draft-06 event.
+ */
+export function draft06Event(
+	props: Record<string, any>,
+	options?: Segment.Options,
+	callback?: Segment.Callback
+): void {
+	const schema = `
 {
 	"$schema": "http://json-schema.org/draft-06/schema#",
 	"properties": {
@@ -525,25 +495,34 @@ export default class Analytics {
 	"title": "Draft-06 Event",
 	"description": "This is JSON Schema draft-06 event."
 }
-		`
-		if (!this.matchesSchema(message, schema)) {
-			return
-		}
+	`
+	const message = {
+		event: 'Draft-06 Event',
+		properties: props || {},
+		options,
+	}
+	if (!matchesSchema(message, schema)) {
+		return
+	}
 
-		this.analytics.track(
-			withTypewriterContext(withEventName(message, 'Draft-06 Event')),
+	if (window.analytics) {
+		window.analytics.track(
+			'Draft-06 Event',
+			props || {},
+			withTypewriterContext(options),
 			callback
 		)
 	}
-
-	/**
-	 * This is an empty event.
-	 */
-	public emptyEvent(
-		message: Segment.TrackMessage<Record<string, any>>,
-		callback?: Segment.Callback
-	): void {
-		const schema = `
+}
+/**
+ * This is an empty event.
+ */
+export function emptyEvent(
+	props: Record<string, any>,
+	options?: Segment.Options,
+	callback?: Segment.Callback
+): void {
+	const schema = `
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"properties": {
@@ -560,25 +539,34 @@ export default class Analytics {
 	"title": "Empty Event",
 	"description": "This is an empty event."
 }
-		`
-		if (!this.matchesSchema(message, schema)) {
-			return
-		}
+	`
+	const message = {
+		event: 'Empty Event',
+		properties: props || {},
+		options,
+	}
+	if (!matchesSchema(message, schema)) {
+		return
+	}
 
-		this.analytics.track(
-			withTypewriterContext(withEventName(message, 'Empty Event')),
+	if (window.analytics) {
+		window.analytics.track(
+			'Empty Event',
+			props || {},
+			withTypewriterContext(options),
 			callback
 		)
 	}
-
-	/**
-	 * This event contains all supported variations of properties.
-	 */
-	public exampleEvent(
-		message: Segment.TrackMessage<ExampleEvent>,
-		callback?: Segment.Callback
-	): void {
-		const schema = `
+}
+/**
+ * This event contains all supported variations of properties.
+ */
+export function exampleEvent(
+	props: ExampleEvent,
+	options?: Segment.Options,
+	callback?: Segment.Callback
+): void {
+	const schema = `
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"properties": {
@@ -789,25 +777,34 @@ export default class Analytics {
 	"title": "Example Event",
 	"description": "This event contains all supported variations of properties."
 }
-		`
-		if (!this.matchesSchema(message, schema)) {
-			return
-		}
+	`
+	const message = {
+		event: 'Example Event',
+		properties: props || {},
+		options,
+	}
+	if (!matchesSchema(message, schema)) {
+		return
+	}
 
-		this.analytics.track(
-			withTypewriterContext(withEventName(message, 'Example Event')),
+	if (window.analytics) {
+		window.analytics.track(
+			'Example Event',
+			props || {},
+			withTypewriterContext(options),
 			callback
 		)
 	}
-
-	/**
-	 * checkin != check_in bug
-	 */
-	public checkIn(
-		message: Segment.TrackMessage<Record<string, any>>,
-		callback?: Segment.Callback
-	): void {
-		const schema = `
+}
+/**
+ * checkin != check_in bug
+ */
+export function checkIn(
+	props: Record<string, any>,
+	options?: Segment.Options,
+	callback?: Segment.Callback
+): void {
+	const schema = `
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"labels": {},
@@ -822,25 +819,34 @@ export default class Analytics {
 	"title": "check_in",
 	"description": "checkin != check_in bug"
 }
-		`
-		if (!this.matchesSchema(message, schema)) {
-			return
-		}
+	`
+	const message = {
+		event: 'check_in',
+		properties: props || {},
+		options,
+	}
+	if (!matchesSchema(message, schema)) {
+		return
+	}
 
-		this.analytics.track(
-			withTypewriterContext(withEventName(message, 'check_in')),
+	if (window.analytics) {
+		window.analytics.track(
+			'check_in',
+			props || {},
+			withTypewriterContext(options),
 			callback
 		)
 	}
-
-	/**
-	 * checkin != check_in bug
-	 */
-	public checkin(
-		message: Segment.TrackMessage<Record<string, any>>,
-		callback?: Segment.Callback
-	): void {
-		const schema = `
+}
+/**
+ * checkin != check_in bug
+ */
+export function checkin(
+	props: Record<string, any>,
+	options?: Segment.Options,
+	callback?: Segment.Callback
+): void {
+	const schema = `
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"labels": {},
@@ -855,13 +861,21 @@ export default class Analytics {
 	"title": "checkin",
 	"description": "checkin != check_in bug"
 }
-		`
-		if (!this.matchesSchema(message, schema)) {
-			return
-		}
+	`
+	const message = {
+		event: 'checkin',
+		properties: props || {},
+		options,
+	}
+	if (!matchesSchema(message, schema)) {
+		return
+	}
 
-		this.analytics.track(
-			withTypewriterContext(withEventName(message, 'checkin')),
+	if (window.analytics) {
+		window.analytics.track(
+			'checkin',
+			props || {},
+			withTypewriterContext(options),
 			callback
 		)
 	}

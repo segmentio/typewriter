@@ -23,44 +23,51 @@ interface Event {
 }
 
 describe('generators', () => {
-	describe('TypeScript', () => {
-		test('Browser', async () => {
-			await generateClient('./generated/typescript/browser', {
-				lang: Language.TYPESCRIPT,
-				isDevelopment: true,
-				env: Environment.BROWSER,
-			})
-		})
-
-		test('Node', async () => {
-			await generateClient('./generated/typescript/node', {
-				lang: Language.TYPESCRIPT,
-				isDevelopment: true,
-				env: Environment.NODE,
-			})
-		})
+	// TODO: clean up these tests.
+	describe('typescript', () => {
+		for (var isDevelopment of [true, false]) {
+			for (var env of [Environment.NODE, Environment.BROWSER]) {
+				;((isDevelopment: boolean, env: Environment) => {
+					const developmentString = isDevelopment ? 'development' : 'production'
+					test(`${env} - ${developmentString}`, async () => {
+						const options: Options = {
+							lang: Language.TYPESCRIPT,
+							isDevelopment,
+							env,
+						}
+						await generateClient(
+							`./generated/typescript/${env}/${developmentString}`,
+							options
+						)
+					})
+				})(isDevelopment, env)
+			}
+		}
 	})
 
-	describe('JavaScript', () => {
-		test('Browser', async () => {
-			await generateClient('./generated/javascript/browser', {
-				lang: Language.JAVASCRIPT,
-				isDevelopment: true,
-				env: Environment.BROWSER,
-			})
-		})
-
-		test('Node', async () => {
-			await generateClient('./generated/javascript/node', {
-				lang: Language.JAVASCRIPT,
-				isDevelopment: true,
-				env: Environment.NODE,
-			})
-		})
+	describe('javascript', () => {
+		for (var isDevelopment of [true, false]) {
+			for (var env of [Environment.BROWSER, Environment.NODE]) {
+				;((isDevelopment: boolean, env: Environment) => {
+					const developmentString = isDevelopment ? 'development' : 'production'
+					test(`${env} - ${developmentString}`, async () => {
+						const options: Options = {
+							lang: Language.JAVASCRIPT,
+							isDevelopment,
+							env,
+						}
+						await generateClient(
+							`./generated/javascript/${env}/${developmentString}`,
+							options
+						)
+					})
+				})(isDevelopment, env)
+			}
+		}
 	})
 })
 
-async function generateClient(outputPath: string, opts: Options) {
+async function generateClient(path: string, opts: Options) {
 	const plan = trackingPlan as TrackingPlan
 	const jsonSchemas: JSONSchema7[] = plan.events.map(event => ({
 		...event.rules,
@@ -70,7 +77,7 @@ async function generateClient(outputPath: string, opts: Options) {
 
 	const files = await gen(jsonSchemas, opts)
 
-	const dirPath = resolve(__dirname, outputPath)
+	const dirPath = resolve(__dirname, path)
 	if (!(await exists(dirPath))) {
 		await mkdir(dirPath, {
 			recursive: true,

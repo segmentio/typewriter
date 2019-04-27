@@ -10,6 +10,7 @@ export enum Language {
 
 // Options that all clients must support.
 export interface DefaultOptions {
+	lang: Language
 	// Whether or not to generate a development bundle. If so, analytics payloads will
 	// be validated against the full JSON Schema before being sent to the underlying
 	// analytics instance.

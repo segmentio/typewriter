@@ -11,6 +11,9 @@
 		"test": "jest",
 		"lint": "eslint './src/**/*.{ts,tsx}'"
 	},
+	"engines": {
+		"node": ">=0.10.15"
+	},
 	"eslintConfig": {
 		"parser": "@typescript-eslint/parser",
 		"plugins": [

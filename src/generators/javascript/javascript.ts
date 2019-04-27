@@ -66,8 +66,8 @@ interface JavaScriptOptions {
 }
 
 interface TypeScriptOptions {
-	env: Environment
 	lang: Language.TYPESCRIPT
+	env: Environment
 }
 
 export type Options = DefaultOptions & (JavaScriptOptions | TypeScriptOptions)
