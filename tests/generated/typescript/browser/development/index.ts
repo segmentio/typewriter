@@ -130,7 +130,7 @@ namespace Segment {
 /**
  * Don't do this.
  */
-interface I42TerribleEventName3 {
+export interface I42TerribleEventName3 {
 	/**
 	 * Really, don't do this.
 	 */
@@ -147,7 +147,7 @@ interface I42TerribleEventName3 {
 /**
  * Optional array property
  */
-interface OptionalArray {
+export interface OptionalArray {
 	/**
 	 * Optional sub-property
 	 */
@@ -160,7 +160,7 @@ interface OptionalArray {
 /**
  * Optional object property
  */
-interface OptionalObject {
+export interface OptionalObject {
 	/**
 	 * Optional sub-property
 	 */
@@ -173,7 +173,7 @@ interface OptionalObject {
 /**
  * Required array property
  */
-interface RequiredArray {
+export interface RequiredArray {
 	/**
 	 * Optional sub-property
 	 */
@@ -186,7 +186,7 @@ interface RequiredArray {
 /**
  * Required object property
  */
-interface RequiredObject {
+export interface RequiredObject {
 	/**
 	 * Optional sub-property
 	 */
@@ -199,7 +199,7 @@ interface RequiredObject {
 /**
  * This event contains all supported variations of properties.
  */
-interface ExampleEvent {
+export interface ExampleEvent {
 	/**
 	 * Optional any property
 	 */
