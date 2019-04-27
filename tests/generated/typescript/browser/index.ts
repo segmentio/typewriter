@@ -146,7 +146,7 @@ namespace RuntimeValidation {
 /**
  * Don't do this.
  */
-interface I42terribleeventname3 {
+interface I42TerribleEventName3 {
 	/**
 	 * Really, don't do this.
 	 */
@@ -164,7 +164,7 @@ interface I42terribleeventname3 {
 /**
  * Optional array property
  */
-interface Optionalarray {
+interface OptionalArray {
 	/**
 	 * Optional sub-property
 	 */
@@ -178,7 +178,7 @@ interface Optionalarray {
 /**
  * Optional object property
  */
-interface Optionalobject {
+interface OptionalObject {
 	/**
 	 * Optional sub-property
 	 */
@@ -192,7 +192,7 @@ interface Optionalobject {
 /**
  * Required array property
  */
-interface Requiredarray {
+interface RequiredArray {
 	/**
 	 * Optional sub-property
 	 */
@@ -206,7 +206,7 @@ interface Requiredarray {
 /**
  * Required object property
  */
-interface Requiredobject {
+interface RequiredObject {
 	/**
 	 * Optional sub-property
 	 */
@@ -220,7 +220,7 @@ interface Requiredobject {
 /**
  * This event contains all supported variations of properties.
  */
-interface Exampleevent {
+interface ExampleEvent {
 	/**
 	 * Optional any property
 	 */
@@ -228,7 +228,7 @@ interface Exampleevent {
 	/**
 	 * Optional array property
 	 */
-	'optional array'?: Optionalarray[]
+	'optional array'?: OptionalArray[]
 	/**
 	 * Optional array (empty) property
 	 */
@@ -250,7 +250,7 @@ interface Exampleevent {
 	/**
 	 * Optional object property
 	 */
-	'optional object'?: Optionalobject
+	'optional object'?: OptionalObject
 	/**
 	 * Optional object (empty) property
 	 */
@@ -270,7 +270,7 @@ interface Exampleevent {
 	/**
 	 * Required array property
 	 */
-	'required array': Requiredarray[]
+	'required array': RequiredArray[]
 	/**
 	 * Required array (empty) property
 	 */
@@ -292,7 +292,7 @@ interface Exampleevent {
 	/**
 	 * Required object property
 	 */
-	'required object': Requiredobject
+	'required object': RequiredObject
 	/**
 	 * Required object (empty) property
 	 */
@@ -332,7 +332,7 @@ function withTypewriterContext(options: Segment.Options = {}): Segment.Options {
  * Don't do this.
  */
 export function I42TerribleEventName3(
-	props: I42terribleeventname3,
+	props: I42TerribleEventName3,
 	options?: Segment.Options,
 	callback?: Segment.Callback
 ): void {
@@ -404,7 +404,7 @@ export function emptyEvent(
  * This event contains all supported variations of properties.
  */
 export function exampleEvent(
-	props: Exampleevent,
+	props: ExampleEvent,
 	options?: Segment.Options,
 	callback?: Segment.Callback
 ): void {

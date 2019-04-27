@@ -1,6 +1,6 @@
 import { File, DefaultOptions, Language, GenerationConfig } from '../../gen'
 import { Schema, Type, getPropertiesSchema } from '../../ast'
-import { camelCase, capitalize } from 'lodash'
+import { camelCase, upperFirst } from 'lodash'
 import namer from './namer'
 import * as prettier from 'prettier'
 import { generateFromTemplate } from 'src/templates'
@@ -178,7 +178,7 @@ function getTypeForSchema(schema: Schema, context: TemplateContext): string {
 				})
 			}
 
-			type = namer.escapeIdentifier(capitalize(camelCase(schema.name)))
+			type = namer.escapeIdentifier(upperFirst(camelCase(schema.name)))
 			context.interfaces.push({
 				name: type,
 				description: schema.description,

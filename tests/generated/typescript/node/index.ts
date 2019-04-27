@@ -139,7 +139,7 @@ export namespace Segment {
 /**
  * Don't do this.
  */
-interface I42terribleeventname3 {
+interface I42TerribleEventName3 {
 	/**
 	 * Really, don't do this.
 	 */
@@ -157,7 +157,7 @@ interface I42terribleeventname3 {
 /**
  * Optional array property
  */
-interface Optionalarray {
+interface OptionalArray {
 	/**
 	 * Optional sub-property
 	 */
@@ -171,7 +171,7 @@ interface Optionalarray {
 /**
  * Optional object property
  */
-interface Optionalobject {
+interface OptionalObject {
 	/**
 	 * Optional sub-property
 	 */
@@ -185,7 +185,7 @@ interface Optionalobject {
 /**
  * Required array property
  */
-interface Requiredarray {
+interface RequiredArray {
 	/**
 	 * Optional sub-property
 	 */
@@ -199,7 +199,7 @@ interface Requiredarray {
 /**
  * Required object property
  */
-interface Requiredobject {
+interface RequiredObject {
 	/**
 	 * Optional sub-property
 	 */
@@ -213,7 +213,7 @@ interface Requiredobject {
 /**
  * This event contains all supported variations of properties.
  */
-interface Exampleevent {
+interface ExampleEvent {
 	/**
 	 * Optional any property
 	 */
@@ -221,7 +221,7 @@ interface Exampleevent {
 	/**
 	 * Optional array property
 	 */
-	'optional array'?: Optionalarray[]
+	'optional array'?: OptionalArray[]
 	/**
 	 * Optional array (empty) property
 	 */
@@ -243,7 +243,7 @@ interface Exampleevent {
 	/**
 	 * Optional object property
 	 */
-	'optional object'?: Optionalobject
+	'optional object'?: OptionalObject
 	/**
 	 * Optional object (empty) property
 	 */
@@ -263,7 +263,7 @@ interface Exampleevent {
 	/**
 	 * Required array property
 	 */
-	'required array': Requiredarray[]
+	'required array': RequiredArray[]
 	/**
 	 * Required array (empty) property
 	 */
@@ -285,7 +285,7 @@ interface Exampleevent {
 	/**
 	 * Required object property
 	 */
-	'required object': Requiredobject
+	'required object': RequiredObject
 	/**
 	 * Required object (empty) property
 	 */
@@ -424,7 +424,7 @@ export default class Analytics {
 	 * Don't do this.
 	 */
 	public I42TerribleEventName3(
-		message: Segment.TrackMessage<I42terribleeventname3>,
+		message: Segment.TrackMessage<I42TerribleEventName3>,
 		callback?: Segment.Callback
 	): void {
 		const schema = `
@@ -575,7 +575,7 @@ export default class Analytics {
 	 * This event contains all supported variations of properties.
 	 */
 	public exampleEvent(
-		message: Segment.TrackMessage<Exampleevent>,
+		message: Segment.TrackMessage<ExampleEvent>,
 		callback?: Segment.Callback
 	): void {
 		const schema = `
