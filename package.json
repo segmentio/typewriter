@@ -7,10 +7,11 @@
 	"license": "MIT",
 	"private": true,
 	"scripts": {
-		"run": "¯\\_(ツ)_/¯",
+		"dev": "ts-node ./src/cli",
 		"test": "jest",
 		"lint": "eslint './src/**/*.{ts,tsx}'"
 	},
+	"bin": "./build/cli.js",
 	"engines": {
 		"node": ">=0.10.15"
 	},
@@ -18,7 +19,8 @@
 		"parser": "@typescript-eslint/parser",
 		"plugins": [
 			"@typescript-eslint",
-			"prettier"
+			"prettier",
+			"no-null"
 		],
 		"extends": [
 			"plugin:@typescript-eslint/recommended",
@@ -44,7 +46,8 @@
 				"error",
 				"nofunc"
 			],
-			"@typescript-eslint/no-namespace": "off"
+			"@typescript-eslint/no-namespace": "off",
+			"no-null/no-null": "error"
 		}
 	},
 	"jest": {
@@ -65,17 +68,24 @@
 		"@typescript-eslint/parser": "^1.6.0",
 		"eslint": "^5.16.0",
 		"eslint-config-prettier": "^4.1.0",
+		"eslint-plugin-no-null": "^1.0.2",
 		"eslint-plugin-prettier": "^3.0.1",
 		"husky": "^2.1.0",
 		"jest": "^24.7.1",
 		"ts-jest": "^24.0.2",
+		"ts-node": "^8.1.0",
 		"type-fest": "^0.3.0",
 		"typescript": "^3.4.2"
 	},
 	"dependencies": {
+		"@iarna/toml": "^2.2.3",
 		"caller-path": "^2.0.0",
 		"handlebars": "^4.1.2",
+		"ink": "^2.1.1",
 		"lodash": "^4.17.11",
-		"prettier": "^1.17.0"
+		"prettier": "^1.17.0",
+		"prop-types": "^15.7.2",
+		"react": "^16.8.6",
+		"yargs": "^13.2.2"
 	}
 }
