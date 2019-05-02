@@ -58,7 +58,6 @@ export async function get(path = './'): Promise<Config | undefined> {
 	const rawConfig = TOML.parse(file)
 
 	// Validate the provided configuration file using JSON Schema.
-	// TODO: clean up the response from `ajv.errors` to pretty print errors.
 	const schema = JSON.parse(
 		await readFile(resolve(__dirname, './typewriter.toml.schema.json'), {
 			encoding: 'utf-8',
@@ -66,9 +65,18 @@ export async function get(path = './'): Promise<Config | undefined> {
 	)
 	const ajv = new Ajv({ schemaId: 'auto', allErrors: true, verbose: true })
 	if (!ajv.validate(schema, rawConfig) && ajv.errors) {
-		throw new Error(
-			`Invalid \`typewriter.toml\`: ${JSON.stringify(ajv.errors, undefined, 2)}`
-		)
+		let error = 'Invalid `typewriter.toml`:\n'
+		for (var ajvError of ajv.errors) {
+			// Remove the "." prefix from the data path.
+			const dataPath = ajvError.dataPath.replace(/^\./, '')
+			error += `	- ${dataPath.length > 0 ? `${dataPath}: ` : ''}${
+				ajvError.message
+			}\n`
+		}
+
+		// TODO: think of a better way to throw an error, such that we can render it better
+		// than the way yargs handles uncaught errors. Catch and render?
+		throw new Error(error)
 	}
 
 	// We can safely type cast the config, now that is has been validated.

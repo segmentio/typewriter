@@ -1,6 +1,12 @@
 # Typewriter configuration for Typewriter itself 🐶
 # Just run `npx typewriter` to re-generate a client with the latest versions of these events.
 
+# You can supply your Segment API Token via the TYPEWRITER_TOKEN environment variable
+# or a shell command, like below, for whatever secret management your team uses.
+# At Segment, We use segmentio/chamber for secret management: https://github.com/segmentio/chamber
+# Along with segmentio/aws-okta to perform SSO with Okta: https://github.com/segmentio/aws-okta
+tokenCommand = 'aws-okta exec dev-privileged -- chamber exec app -- echo TYPEWRITER_SEGMENT_PROD_TOKEN'
+
 [language]
 name = 'typescript'
 
@@ -13,9 +19,3 @@ workspaceSlug = 'segment_prod'
 [trackingPlans.events]
 'Tracking Plan Created' = 'latest'
 'Tracking Plan Saved' = 'latest'
-
-# You can supply your Segment API Token via the TYPEWRITER_TOKEN environment variable
-# or a shell command, like below, for whatever secret management your team uses.
-# At Segment, We use segmentio/chamber for secret management: https://github.com/segmentio/chamber
-# Along with segmentio/aws-okta to perform SSO with Okta: https://github.com/segmentio/aws-okta
-tokenCommand = 'aws-okta exec dev-privileged -- chamber exec app -- echo TYPEWRITER_SEGMENT_PROD_TOKEN'
