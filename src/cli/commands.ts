@@ -7,6 +7,7 @@ import { resolve } from 'path'
 import * as fs from 'fs'
 import { promisify } from 'util'
 import * as childProcess from 'child_process'
+import { fetchTrackingPlan } from './api'
 
 const mkdir = promisify(fs.mkdir)
 const writeFile = promisify(fs.writeFile)
@@ -76,16 +77,27 @@ async function generateClients({ isDevelopment }: { isDevelopment: boolean }) {
 		)
 	}
 
-	// TODO: sync Tracking Plan
-	const schemas: JSONSchema7[] = []
-
-	// Generate a client and write its files out to the specified path.
-	const files = await gen(schemas, getOptions(cfg, isDevelopment))
-	for (var file of files) {
-		const filePath = resolve(dirPath, file.path)
-		await writeFile(filePath, file.contents, {
-			encoding: 'utf-8',
+	for (var trackingPlanConfig of cfg.trackingPlans) {
+		const trackingPlan = await fetchTrackingPlan({
+			id: trackingPlanConfig.id,
+			workspaceSlug: trackingPlanConfig.workspaceSlug,
+			token,
 		})
+
+		const events = trackingPlan.events.map<JSONSchema7>(e => ({
+			...e.rules,
+			title: e.name,
+			description: e.description,
+		}))
+
+		// Generate a client and write its files out to the specified path.
+		const files = await gen(events, getOptions(cfg, isDevelopment))
+		for (var file of files) {
+			const filePath = resolve(dirPath, file.path)
+			await writeFile(filePath, file.contents, {
+				encoding: 'utf-8',
+			})
+		}
 	}
 }
 
