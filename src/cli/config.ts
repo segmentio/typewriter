@@ -3,29 +3,31 @@ import { promisify } from 'util'
 import { resolve } from 'path'
 import TOML from '@iarna/toml'
 import { generateFromTemplate } from '../templates'
+import Ajv from 'ajv'
 
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
 const exists = promisify(fs.exists)
 
 // A config, stored in a typewriter.toml file.
+// Note: `typewriter.toml.schema.json` must match with this interface.
 export interface Config {
-	languages: Language[]
+	language: Language
 	trackingPlans: TrackingPlan[]
 	tokenCommand?: string
 }
 
 export interface Language {
 	name: string
-	path: string
 	// TODO: language-specific options
 }
 
 export interface TrackingPlan {
 	id: string
-	events: {
+	workspaceSlug: string
+	events?: {
 		// Note: when we support Event Versioning in the Config API,
-		// this will support numeric values which'll map to versions.
+		// then we will support numeric values here, which will map to versions.
 		[key: string]: 'latest'
 	}
 }
@@ -39,8 +41,9 @@ async function getPath(path: string): Promise<string> {
 }
 
 // get looks for, and reads, a typewriter.toml configuration file.
-// If it is invalid or does not exist, it will return undefined.
-// Note path is relative to the directory where the typewriter command
+// If it does not exist, it will return undefined. If the configuration
+// if invalid, an Error will be thrown.
+// Note: path is relative to the directory where the typewriter command
 // was run.
 export async function get(path = './'): Promise<Config | undefined> {
 	// Check if typewriter.toml exists
@@ -52,18 +55,24 @@ export async function get(path = './'): Promise<Config | undefined> {
 	const file = await readFile(configPath, {
 		encoding: 'utf-8',
 	})
-
 	const rawConfig = TOML.parse(file)
-	console.log(rawConfig)
 
-	const config: Config = {
-		languages: [],
-		trackingPlans: [],
+	// Validate the provided configuration file using JSON Schema.
+	// TODO: clean up the response from `ajv.errors` to pretty print errors.
+	const schema = JSON.parse(
+		await readFile(resolve(__dirname, './typewriter.toml.schema.json'), {
+			encoding: 'utf-8',
+		})
+	)
+	const ajv = new Ajv({ schemaId: 'auto', allErrors: true, verbose: true })
+	if (!ajv.validate(schema, rawConfig) && ajv.errors) {
+		throw new Error(
+			`Invalid \`typewriter.toml\`: ${JSON.stringify(ajv.errors, undefined, 2)}`
+		)
 	}
 
-	// TODO!
-
-	return config
+	// We can safely type cast the config, now that is has been validated.
+	return (rawConfig as object) as Config
 }
 
 // set writes a config out to a typewriter.toml file.

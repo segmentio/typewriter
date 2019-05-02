@@ -1,17 +1,16 @@
 # Typewriter configuration for Typewriter itself 🐶
 # Just run `npx typewriter` to re-generate a client with the latest versions of these events.
 
-[[languages]]
+[language]
 name = 'typescript'
-path = 'src/analytics'
 
 # App Tracking Plan
 # https://app.segment.com/segment_prod/protocols/tracking-plans/rs_16W7KaDjpZ09dI341chHKgYJah9
 [[trackingPlans]]
 id = 'rs_16W7KaDjpZ09dI341chHKgYJah9'
-workspace_slug = 'segment_prod'
+workspaceSlug = 'segment_prod'
 
-[[trackingPlans.events]]
+[trackingPlans.events]
 'Tracking Plan Created' = 'latest'
 'Tracking Plan Saved' = 'latest'
 
