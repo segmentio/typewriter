@@ -1,4 +1,4 @@
-import { parse } from '../src/ast'
+import { parse } from '../src/generators/ast'
 import * as fs from 'fs'
 
 describe('AST', () => {

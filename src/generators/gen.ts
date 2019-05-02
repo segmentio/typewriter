@@ -1,7 +1,7 @@
 import { JSONSchema7 } from 'json-schema'
-import javascript from './generators/javascript'
+import javascript from './javascript'
 import { parse, Schema } from './ast'
-import { Options as JavaScriptOptions } from './generators/javascript'
+import { Options as JavaScriptOptions } from './javascript'
 
 export enum Language {
 	JAVASCRIPT,

@@ -1,4 +1,4 @@
-import Namer from '../src/namer'
+import Namer from '../src/generators/namer'
 
 describe('Namer', () => {
 	const namer = new Namer({

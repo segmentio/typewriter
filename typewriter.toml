@@ -5,7 +5,7 @@
 # or a shell command, like below, for whatever secret management your team uses.
 # At Segment, We use segmentio/chamber for secret management: https://github.com/segmentio/chamber
 # Along with segmentio/aws-okta to perform SSO with Okta: https://github.com/segmentio/aws-okta
-tokenCommand = 'aws-okta exec dev-privileged -- chamber exec app -- echo TYPEWRITER_SEGMENT_PROD_TOKEN'
+tokenCommand = 'aws-okta exec dev-privileged -- chamber export app | jq -r .typewriter_segment_prod_token'
 
 [language]
 name = 'typescript'

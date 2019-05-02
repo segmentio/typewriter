@@ -1,4 +1,4 @@
-import Namer from '../../namer'
+import Namer from '../namer'
 
 // See: https://mathiasbynens.be/notes/reserved-keywords#ecmascript-6
 // prettier-ignore

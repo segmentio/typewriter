@@ -101,7 +101,7 @@ function toType(t: string): Type {
 // getPropertiesSchema extracts the Schema for `.properties` from an
 // event schema.
 export function getPropertiesSchema(event: Schema): ObjectTypeSchema {
-	let properties: ObjectTypeSchema | null = null
+	let properties: ObjectTypeSchema | undefined = undefined
 
 	// Events should always be a type="object" at the root, anything
 	// else would not match on a Segment analytics event.
@@ -231,6 +231,7 @@ function parseTypeSpecificFields(
 		// is allowed, so treat this as a single-value enum.
 		const rawTypes = getRawTypes(raw)
 		if (rawTypes.has('null') && rawTypes.size === 1) {
+			// eslint-disable-next-line no-null/no-null
 			fields.enum = [null]
 		}
 
@@ -272,6 +273,7 @@ function getType(raw: JSONSchema7): Type {
 function isNullable(raw: JSONSchema7): boolean {
 	const typeAllowsNull =
 		getRawTypes(raw).has('null') || getType(raw) === Type.ANY
+	// eslint-disable-next-line no-null/no-null
 	const enumAllowsNull = !raw.enum || raw.enum.includes(null)
 
 	return typeAllowsNull && enumAllowsNull
@@ -284,6 +286,7 @@ function getEnum(raw: JSONSchema7): EnumValue[] | undefined {
 	}
 
 	const enm = raw.enum.filter(
+		// eslint-disable-next-line no-null/no-null
 		val => ['boolean', 'number', 'string'].includes(typeof val) || val === null
 	) as EnumValue[]
 

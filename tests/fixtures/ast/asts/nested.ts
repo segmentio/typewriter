@@ -1,4 +1,4 @@
-import { Schema, Type } from '../../../../src/ast'
+import { Schema, Type } from '../../../../src/generators/ast'
 
 const s: Schema = {
 	name: 'Nested Fixture',

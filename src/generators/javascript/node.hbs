@@ -211,7 +211,7 @@ export const defaultValidationErrorHandler: ValidationErrorHandler = (message, v
 			`You made an analytics call (${message.event}) using Typewriter that doesn't match the ` +
 			'Tracking Plan spec. Your analytics call will continue to fire in production.',
 		errors: validationErrors,
-	}, null, 2)
+	}, undefined, 2)
 
 	if (process.env.NODE_ENV === 'test') {
 		throw new Error(msg)

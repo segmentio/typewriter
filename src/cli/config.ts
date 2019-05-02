@@ -12,9 +12,10 @@ const exists = promisify(fs.exists)
 // A config, stored in a typewriter.toml file.
 // Note: `typewriter.toml.schema.json` must match with this interface.
 export interface Config {
+	path: string
+	tokenCommand?: string
 	language: Language
 	trackingPlans: TrackingPlan[]
-	tokenCommand?: string
 }
 
 export interface Language {
@@ -79,8 +80,13 @@ export async function get(path = './'): Promise<Config | undefined> {
 		throw new Error(error)
 	}
 
+	const rawConfigWithDefaults = {
+		...(rawConfig as object),
+		path: await getPath((rawConfig.path as string) || './typewriter'),
+	}
+
 	// We can safely type cast the config, now that is has been validated.
-	return (rawConfig as object) as Config
+	return rawConfigWithDefaults as Config
 }
 
 // set writes a config out to a typewriter.toml file.

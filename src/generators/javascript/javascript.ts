@@ -1,5 +1,5 @@
-import { File, DefaultOptions, Language, GenerationConfig } from '../../gen'
-import { Schema, Type, getPropertiesSchema } from '../../ast'
+import { File, DefaultOptions, Language, GenerationConfig } from '../gen'
+import { Schema, Type, getPropertiesSchema } from '../ast'
 import { camelCase, upperFirst } from 'lodash'
 import namer from './namer'
 import * as prettier from 'prettier'
@@ -143,7 +143,7 @@ function getContext(config: GenerationConfig): TemplateContext {
 			eventName: namer.escapeString(schema.name),
 			description: schema.description,
 			type: rootType,
-			rawJSONSchema: JSON.stringify(track.raw, null, '\t'),
+			rawJSONSchema: JSON.stringify(track.raw, undefined, '\t'),
 		})
 	}
 

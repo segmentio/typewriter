@@ -7,7 +7,7 @@
 	"license": "MIT",
 	"private": true,
 	"scripts": {
-		"dev": "ts-node ./src/cli",
+		"dev": "ts-node -r tsconfig-paths/register ./src/cli",
 		"test": "jest",
 		"lint": "eslint './src/**/*.{ts,tsx}'"
 	},
@@ -74,6 +74,7 @@
 		"jest": "^24.7.1",
 		"ts-jest": "^24.0.2",
 		"ts-node": "^8.1.0",
+		"tsconfig-paths": "^3.8.0",
 		"type-fest": "^0.3.0",
 		"typescript": "^3.4.2"
 	},
