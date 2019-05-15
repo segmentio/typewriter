@@ -8,6 +8,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "ts-node -r tsconfig-paths/register ./src/cli",
+		"build": "tsc",
 		"test": "jest",
 		"lint": "eslint './src/**/*.{ts,tsx}'"
 	},
