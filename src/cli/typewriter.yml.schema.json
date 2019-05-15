@@ -1,5 +1,5 @@
 {
-  "$comment": "JSON Schema specifying what configuration options are allowed in typewriter.toml files.",
+  "$comment": "JSON Schema specifying what configuration options are allowed in typewriter.yml files.",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "required": [
@@ -9,7 +9,7 @@
   "additionalProperties": false,
   "properties": {
     "path": {
-      "$comment": "A directory path relative to this typewriter.toml file, specifying where this language client should be output.",
+      "$comment": "A directory path relative to this typewriter.yml file, specifying where this language client should be output.",
       "default": "./typewriter",
       "type": "string",
       "minLength": 1

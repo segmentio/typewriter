@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import { promisify } from 'util'
 import { resolve } from 'path'
-import TOML from '@iarna/toml'
+import yaml from 'js-yaml'
 import { generateFromTemplate } from '../templates'
 import Ajv from 'ajv'
 
@@ -9,8 +9,8 @@ const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
 const exists = promisify(fs.exists)
 
-// A config, stored in a typewriter.toml file.
-// Note: `typewriter.toml.schema.json` must match with this interface.
+// A config, stored in a typewriter.yml file.
+// Note: `typewriter.yml.schema.json` must match with this interface.
 export interface Config {
 	path: string
 	tokenCommand?: string
@@ -34,20 +34,20 @@ export interface TrackingPlan {
 }
 
 // Want to learn TOML? See: https://learnxinyminutes.com/docs/toml/
-const TYPEWRITER_CONFIG_NAME = 'typewriter.toml'
+const TYPEWRITER_CONFIG_NAME = 'typewriter.yml'
 
 async function getPath(path: string): Promise<string> {
 	// TODO: recursively move back folders until you find it, ala package.json
 	return resolve(path, TYPEWRITER_CONFIG_NAME)
 }
 
-// get looks for, and reads, a typewriter.toml configuration file.
+// get looks for, and reads, a typewriter.yml configuration file.
 // If it does not exist, it will return undefined. If the configuration
 // if invalid, an Error will be thrown.
 // Note: path is relative to the directory where the typewriter command
 // was run.
 export async function get(path = './'): Promise<Config | undefined> {
-	// Check if typewriter.toml exists
+	// Check if typewriter.yml exists
 	const configPath = await getPath(path)
 	if (!(await exists(configPath))) {
 		return undefined
@@ -56,17 +56,17 @@ export async function get(path = './'): Promise<Config | undefined> {
 	const file = await readFile(configPath, {
 		encoding: 'utf-8',
 	})
-	const rawConfig = TOML.parse(file)
+	const rawConfig = yaml.safeLoad(file)
 
 	// Validate the provided configuration file using JSON Schema.
 	const schema = JSON.parse(
-		await readFile(resolve(__dirname, './typewriter.toml.schema.json'), {
+		await readFile(resolve(__dirname, './typewriter.yml.schema.json'), {
 			encoding: 'utf-8',
 		})
 	)
 	const ajv = new Ajv({ schemaId: 'auto', allErrors: true, verbose: true })
 	if (!ajv.validate(schema, rawConfig) && ajv.errors) {
-		let error = 'Invalid `typewriter.toml`:\n'
+		let error = 'Invalid `typewriter.yml`:\n'
 		for (var ajvError of ajv.errors) {
 			// Remove the "." prefix from the data path.
 			const dataPath = ajvError.dataPath.replace(/^\./, '')
@@ -89,12 +89,12 @@ export async function get(path = './'): Promise<Config | undefined> {
 	return rawConfigWithDefaults as Config
 }
 
-// set writes a config out to a typewriter.toml file.
+// set writes a config out to a typewriter.yml file.
 // Note path is relative to the directory where the typewriter command
 // was run.
 export async function set(config: Config, path = './') {
 	const file = await generateFromTemplate<Config>(
-		'cli/typewriter.toml.hbs',
+		'cli/typewriter.yml.hbs',
 		config
 	)
 

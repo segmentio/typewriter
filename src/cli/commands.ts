@@ -58,7 +58,7 @@ async function generateClients({ isDevelopment }: { isDevelopment: boolean }) {
 
 	if (!cfg) {
 		// TODO: redirect to setting up a config file
-		throw new Error('Unable to find typewriter.toml. Try `typewriter init`')
+		throw new Error('Unable to find typewriter.yml. Try `typewriter init`')
 	}
 
 	// Generate the output directory, if it doesn't exist.
@@ -73,7 +73,7 @@ async function generateClients({ isDevelopment }: { isDevelopment: boolean }) {
 	if (!token) {
 		// TODO: redirect to setting up a token
 		throw new Error(
-			'Unable to find a TYPEWRITER_TOKEN in your environment or a valid `tokenCommand` field in your `typewriter.toml`.'
+			'Unable to find a TYPEWRITER_TOKEN in your environment or a valid `tokenCommand` field in your `typewriter.yml`.'
 		)
 	}
 
@@ -117,9 +117,9 @@ function getOptions(cfg: Config, isDevelopment: boolean): Options {
 			lang: Language.JAVASCRIPT,
 			...sharedOptions,
 		}
+	} else {
+		throw new Error(`Invalid Language Name: ${cfg.language.name}`)
 	}
-
-	throw new Error('inaccessible')
 }
 
 async function getToken(cfg: Config): Promise<string | undefined> {
@@ -147,14 +147,14 @@ export async function token() {
 
 	if (!cfg) {
 		console.log('TODO: implement init via other commands')
-		throw new Error('Unable to find typewriter.toml. Try `typewriter init`')
+		throw new Error('Unable to find typewriter.yml. Try `typewriter init`')
 	}
 
 	const token = await getToken(cfg)
 
 	if (!token) {
 		console.log(
-			'Unable to find a TYPEWRITER_TOKEN in your environment or a valid `tokenCommand` field in your `typewriter.toml`.'
+			'Unable to find a TYPEWRITER_TOKEN in your environment or a valid `tokenCommand` field in your `typewriter.yml`.'
 		)
 	} else {
 		console.log(token)
