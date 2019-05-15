@@ -44,7 +44,7 @@ export const defaultValidationErrorHandler = (message, validationErrors) => {
 				'Tracking Plan spec. Your analytics call will continue to fire in production.',
 			errors: validationErrors,
 		},
-		null,
+		undefined,
 		2
 	)
 	if (process.env.NODE_ENV === 'test') {

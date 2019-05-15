@@ -1,17 +1,24 @@
 import { parse } from '../src/generators/ast'
+import * as astFixtures from './fixtures/asts'
 import * as fs from 'fs'
+import { promisify } from 'util'
+import { resolve } from 'path'
+import { map } from 'lodash'
+
+const readFile = promisify(fs.readFile)
 
 describe('AST', () => {
-	// Read the AST fixtures, and execute a test for each one.
-	const tests = fs
-		.readdirSync('tests/fixtures/ast/schemas')
-		.map(f => f.replace(/\.json$/, ''))
-
-	test.each(tests)('parses %s', async filename => {
+	const foobar = map(astFixtures, (ast, name) => ({ ast, name }))
+	test.each(foobar)('parses %s', async ({ ast, name }) => {
 		expect.assertions(1)
 
-		const { default: ast } = await import(`./fixtures/ast/asts/${filename}.ts`)
-		const schema = await import(`./fixtures/ast/schemas/${filename}.json`)
+		const schemaJSON = await readFile(
+			resolve(__dirname, `./fixtures/schemas/${name}.json`),
+			{
+				encoding: 'utf-8',
+			}
+		)
+		const schema = JSON.parse(schemaJSON)
 
 		expect(parse(schema)).toEqual(ast)
 	})

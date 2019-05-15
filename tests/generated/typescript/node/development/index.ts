@@ -360,7 +360,7 @@ export const defaultValidationErrorHandler: ValidationErrorHandler = (
 				'Tracking Plan spec. Your analytics call will continue to fire in production.',
 			errors: validationErrors,
 		},
-		null,
+		undefined,
 		2
 	)
 

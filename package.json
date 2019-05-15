@@ -92,6 +92,9 @@
       "no-null/no-null": "error"
     }
   },
+  "eslintIgnore": [
+    "tests/generated/**/*"
+  ],
   "jest": {
     "modulePaths": [
       "<rootDir>/"

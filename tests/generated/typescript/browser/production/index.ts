@@ -296,7 +296,10 @@ export type ValidationErrorHandler = (
 	validationErrors: any[]
 ) => boolean
 
-/** Update the run-time configuration of this Typewriter client. */
+/**
+ * Update the run-time configuration of this Typewriter client.
+ * Note that this is currently a no-op for production builds.
+ */
 export function setTypewriterOptions(options: TypewriterOptions) {}
 
 /**

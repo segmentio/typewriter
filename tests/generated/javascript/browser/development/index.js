@@ -21,7 +21,7 @@ export const defaultValidationErrorHandler = (message, validationErrors) => {
 				'Tracking Plan spec. Your analytics call will continue to fire in production.',
 			errors: validationErrors,
 		},
-		null,
+		undefined,
 		2
 	)
 	if (process.env.NODE_ENV === 'test') {
@@ -31,7 +31,10 @@ export const defaultValidationErrorHandler = (message, validationErrors) => {
 	return false
 }
 let onValidationError = defaultValidationErrorHandler
-/** Update the run-time configuration of this Typewriter client. */
+/**
+ * Update the run-time configuration of this Typewriter client.
+ * Note that this is currently a no-op for production builds.
+ */
 export function setTypewriterOptions(options) {
 	onValidationError = options.onValidationError || onValidationError
 }

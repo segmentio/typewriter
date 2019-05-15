@@ -320,7 +320,7 @@ export const defaultValidationErrorHandler: ValidationErrorHandler = (
 				'Tracking Plan spec. Your analytics call will continue to fire in production.',
 			errors: validationErrors,
 		},
-		null,
+		undefined,
 		2
 	)
 
@@ -334,7 +334,10 @@ export const defaultValidationErrorHandler: ValidationErrorHandler = (
 
 let onValidationError = defaultValidationErrorHandler
 
-/** Update the run-time configuration of this Typewriter client. */
+/**
+ * Update the run-time configuration of this Typewriter client.
+ * Note that this is currently a no-op for production builds.
+ */
 export function setTypewriterOptions(options: TypewriterOptions) {
 	onValidationError = options.onValidationError || onValidationError
 }
