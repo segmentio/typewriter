@@ -2,18 +2,13 @@
   "title": "Required Properties Fixture",
   "description": "This fixture validates generation for JSON Schema properties that are marked as required.",
   "type": "object",
-  "required": [
-    "required-property",
-    "required-nested-property"
-  ],
+  "required": ["required-property", "required-nested-property"],
   "properties": {
     "required-property": {},
     "optional-property": {},
     "required-nested-property": {
       "type": "object",
-      "required": [
-        "required-property"
-      ],
+      "required": ["required-property"],
       "properties": {
         "required-property": {},
         "optional-property": {}
@@ -21,9 +16,7 @@
     },
     "optional-nested-property": {
       "type": "object",
-      "required": [
-        "required-property"
-      ],
+      "required": ["required-property"],
       "properties": {
         "required-property": {},
         "optional-property": {}

@@ -1,96 +1,122 @@
 {
-	"name": "typewriter",
-	"version": "7.0.0",
-	"main": "index.js",
-	"repository": "ssh://git@github.com/segmentio/typewriter.git",
-	"author": "Colin King <colin.king@segment.com>",
-	"license": "MIT",
-	"private": true,
-	"scripts": {
-		"dev": "ts-node -r tsconfig-paths/register ./src/cli",
-		"build": "tsc",
-		"test": "jest",
-		"lint": "eslint './src/**/*.{ts,tsx}'"
-	},
-	"bin": "./build/cli.js",
-	"engines": {
-		"node": ">=0.10.15"
-	},
-	"eslintConfig": {
-		"parser": "@typescript-eslint/parser",
-		"plugins": [
-			"@typescript-eslint",
-			"prettier",
-			"no-null"
-		],
-		"extends": [
-			"plugin:@typescript-eslint/recommended",
-			"prettier/@typescript-eslint",
-			"plugin:prettier/recommended"
-		],
-		"parserOptions": {
-			"ecmaVersion": 2018,
-			"sourceType": "module"
-		},
-		"rules": {
-			"prettier/prettier": [
-				"error",
-				{
-					"useTabs": true,
-					"semi": false,
-					"singleQuote": true,
-					"trailingComma": "es5"
-				}
-			],
-			"@typescript-eslint/explicit-function-return-type": "off",
-			"@typescript-eslint/no-use-before-define": [
-				"error",
-				"nofunc"
-			],
-			"@typescript-eslint/no-namespace": "off",
-			"no-null/no-null": "error"
-		}
-	},
-	"jest": {
-		"modulePaths": [
-			"<rootDir>/"
-		],
-		"transform": {
-			"^.+\\.tsx?$": "ts-jest"
-		}
-	},
-	"devDependencies": {
-		"@types/jest": "^24.0.11",
-		"@types/js-yaml": "^3.12.1",
-		"@types/json-schema": "^7.0.3",
-		"@types/lodash": "^4.14.123",
-		"@types/node": "^11.13.6",
-		"@types/node-fetch": "^2.3.3",
-		"@types/prettier": "^1.16.3",
-		"@typescript-eslint/eslint-plugin": "^1.6.0",
-		"@typescript-eslint/parser": "^1.6.0",
-		"eslint": "^5.16.0",
-		"eslint-config-prettier": "^4.1.0",
-		"eslint-plugin-no-null": "^1.0.2",
-		"eslint-plugin-prettier": "^3.0.1",
-		"husky": "^2.1.0",
-		"jest": "^24.7.1",
-		"ts-jest": "^24.0.2",
-		"ts-node": "^8.1.0",
-		"tsconfig-paths": "^3.8.0",
-		"type-fest": "^0.3.0",
-		"typescript": "^3.4.2"
-	},
-	"dependencies": {
-		"caller-path": "^2.0.0",
-		"handlebars": "^4.1.2",
-		"ink": "^2.1.1",
-		"js-yaml": "^3.13.1",
-		"lodash": "^4.17.11",
-		"node-fetch": "^2.5.0",
-		"prettier": "^1.17.0",
-		"prop-types": "^15.7.2",
-		"react": "^16.8.6",
-		"yargs": "^13.2.2"
-	}
+  "name": "typewriter",
+  "version": "7.0.0",
+  "description": "A compiler for generating strongly typed analytics clients via Segment Protocols",
+  "repository": "ssh://git@github.com/segmentio/typewriter.git",
+  "homepage": "https://github.com/segmentio/typewriter",
+  "bugs": "https://github.com/segmentio/typewriter/issues",
+  "author": "Colin King <colin.king@segment.com>",
+  "license": "MIT",
+  "main": "index.js",
+  "bin": "./build/cli.js",
+  "scripts": {
+    "dev": "ts-node -r tsconfig-paths/register ./src/cli",
+    "build": "rm -rf dist && tsc",
+    "test": "jest",
+    "lint": "eslint './src/**/*.{ts,tsx}'",
+    "precommit": "lint-staged",
+    "release": "np"
+  },
+  "engines": {
+    "node": ">=0.10.15"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.11",
+    "@types/js-yaml": "^3.12.1",
+    "@types/json-schema": "^7.0.3",
+    "@types/lodash": "^4.14.123",
+    "@types/node": "^11.13.6",
+    "@types/node-fetch": "^2.3.3",
+    "@types/prettier": "^1.16.3",
+    "@typescript-eslint/eslint-plugin": "^1.6.0",
+    "@typescript-eslint/parser": "^1.6.0",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-no-null": "^1.0.2",
+    "eslint-plugin-prettier": "^3.0.1",
+    "husky": "^2.1.0",
+    "jest": "^24.7.1",
+    "lint-staged": "^8.1.7",
+    "ts-jest": "^24.0.2",
+    "ts-node": "^8.1.0",
+    "tsconfig-paths": "^3.8.0",
+    "type-fest": "^0.3.0",
+    "typescript": "^3.4.2"
+  },
+  "dependencies": {
+    "caller-path": "^2.0.0",
+    "handlebars": "^4.1.2",
+    "ink": "^2.1.1",
+    "js-yaml": "^3.13.1",
+    "lodash": "^4.17.11",
+    "node-fetch": "^2.5.0",
+    "prettier": "^1.17.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "yargs": "^13.2.2"
+  },
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint",
+      "prettier",
+      "no-null"
+    ],
+    "extends": [
+      "plugin:@typescript-eslint/recommended",
+      "prettier/@typescript-eslint",
+      "plugin:prettier/recommended"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "module"
+    },
+    "rules": {
+      "prettier/prettier": [
+        "error",
+        {
+          "useTabs": true,
+          "semi": false,
+          "singleQuote": true,
+          "trailingComma": "es5"
+        }
+      ],
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/no-use-before-define": [
+        "error",
+        "nofunc"
+      ],
+      "@typescript-eslint/no-namespace": "off",
+      "no-null/no-null": "error"
+    }
+  },
+  "jest": {
+    "modulePaths": [
+      "<rootDir>/"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    }
+  },
+  "lint-staged": {
+    "linters": {
+      "*.ts": [
+        "eslint",
+        "git add"
+      ],
+      "*.json": [
+        "prettier --write",
+        "git add"
+      ],
+      "*.yml": [
+        "prettier --write",
+        "git add"
+      ]
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
 }

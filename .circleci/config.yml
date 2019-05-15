@@ -6,21 +6,21 @@ jobs:
       - image: circleci/node:10.15
 
     steps:
-    - checkout
+      - checkout
       # Download and cache dependencies
-    - restore_cache:
-        keys:
-        - v1-dependencies-{{ checksum "yarn.lock" }}
-        # fallback to using the latest cache if no exact match is found
-        - v1-dependencies-
-    - run: yarn install --frozen-lockfile
-    - save_cache:
-        paths:
-          - node_modules
-        key: v1-dependencies-{{ checksum "yarn.lock" }}
-    - persist_to_workspace:
-        root: .
-        paths: [.]
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run: yarn install --frozen-lockfile
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+      - persist_to_workspace:
+          root: .
+          paths: [.]
 
   build:
     docker:

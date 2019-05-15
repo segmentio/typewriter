@@ -7,54 +7,24 @@
       "type": "null"
     },
     "nullable-string": {
-      "type": [
-        "null",
-        "string"
-      ]
+      "type": ["null", "string"]
     },
     "null-union": {
-      "type": [
-        "string",
-        "boolean",
-        "null"
-      ]
+      "type": ["string", "boolean", "null"]
     },
     "simple-null-enum": {
-      "enum": [
-        null
-      ]
+      "enum": [null]
     },
     "multi-value-null-enum": {
-      "enum": [
-        true,
-        false,
-        null
-      ]
+      "enum": [true, false, null]
     },
     "nullable-string-enum": {
-      "type": [
-        "string",
-        "null"
-      ],
-      "enum": [
-        "yes",
-        "no",
-        null
-      ]
+      "type": ["string", "null"],
+      "enum": ["yes", "no", null]
     },
     "null-enum-union": {
-      "type": [
-        "string",
-        "boolean",
-        "null"
-      ],
-      "enum": [
-        true,
-        false,
-        "yes",
-        "no",
-        null
-      ]
+      "type": ["string", "boolean", "null"],
+      "enum": [true, false, "yes", "no", null]
     }
   }
 }

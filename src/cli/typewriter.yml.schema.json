@@ -2,10 +2,7 @@
   "$comment": "JSON Schema specifying what configuration options are allowed in typewriter.yml files.",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "required": [
-    "language",
-    "trackingPlans"
-  ],
+  "required": ["language", "trackingPlans"],
   "additionalProperties": false,
   "properties": {
     "path": {
@@ -16,18 +13,13 @@
     },
     "language": {
       "type": "object",
-      "required": [
-        "name"
-      ],
+      "required": ["name"],
       "additionalProperties": false,
       "properties": {
         "name": {
           "$comment": "Which language to use when generating clients.",
           "type": "string",
-          "enum": [
-            "javascript",
-            "typescript"
-          ]
+          "enum": ["javascript", "typescript"]
         }
       }
     },
@@ -36,10 +28,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": [
-          "id",
-          "workspaceSlug"
-        ],
+        "required": ["id", "workspaceSlug"],
         "additionalProperties": false,
         "properties": {
           "id": {
@@ -52,9 +41,7 @@
             "type": "object",
             "additionalProperties": {
               "type": "string",
-              "enum": [
-                "latest"
-              ]
+              "enum": ["latest"]
             }
           }
         }

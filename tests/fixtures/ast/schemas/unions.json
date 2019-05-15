@@ -4,16 +4,10 @@
   "type": "object",
   "properties": {
     "primitive-union": {
-      "type": [
-        "string",
-        "number"
-      ]
+      "type": ["string", "number"]
     },
     "primitive-or-object-union": {
-      "type": [
-        "string",
-        "object"
-      ],
+      "type": ["string", "object"],
       "properties": {
         "name": {
           "type": "string"
@@ -22,10 +16,7 @@
       }
     },
     "array-or-object-union": {
-      "type": [
-        "array",
-        "object"
-      ],
+      "type": ["array", "object"],
       "properties": {
         "name": {
           "type": "string"

@@ -12,8 +12,8 @@ language:
   name: typescript
 
 trackingPlans:
-    # App Tracking Plan
-    # https://app.segment.com/segment_prod/protocols/tracking-plans/rs_16W7KaDjpZ09dI341chHKgYJah9
+  # App Tracking Plan
+  # https://app.segment.com/segment_prod/protocols/tracking-plans/rs_16W7KaDjpZ09dI341chHKgYJah9
   - id: rs_16W7KaDjpZ09dI341chHKgYJah9
     workspaceSlug: segment_prod
     events:

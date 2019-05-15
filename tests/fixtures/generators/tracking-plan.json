@@ -39,9 +39,7 @@
           },
           "traits": {}
         },
-        "required": [
-          "properties"
-        ],
+        "required": ["properties"],
         "type": "object"
       }
     },
@@ -57,9 +55,7 @@
           },
           "traits": {}
         },
-        "required": [
-          "properties"
-        ],
+        "required": ["properties"],
         "type": "object"
       }
     },
@@ -75,9 +71,7 @@
           },
           "traits": {}
         },
-        "required": [
-          "properties"
-        ],
+        "required": ["properties"],
         "type": "object"
       }
     },
@@ -107,9 +101,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "required sub-property"
-                  ],
+                  "required": ["required sub-property"],
                   "type": "object"
                 },
                 "type": "array"
@@ -128,10 +120,7 @@
               },
               "optional nullable string": {
                 "description": "",
-                "type": [
-                  "string",
-                  "null"
-                ]
+                "type": ["string", "null"]
               },
               "optional number": {
                 "description": "Optional number property",
@@ -139,10 +128,7 @@
               },
               "optional number or string": {
                 "description": "",
-                "type": [
-                  "number",
-                  "string"
-                ]
+                "type": ["number", "string"]
               },
               "optional object": {
                 "description": "Optional object property",
@@ -159,9 +145,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "required sub-property"
-                ],
+                "required": ["required sub-property"],
                 "type": "object"
               },
               "optional object (empty)": {
@@ -196,9 +180,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "required sub-property"
-                  ],
+                  "required": ["required sub-property"],
                   "type": "object"
                 },
                 "type": "array"
@@ -219,10 +201,7 @@
               },
               "required nullable string": {
                 "description": "",
-                "type": [
-                  "string",
-                  "null"
-                ]
+                "type": ["string", "null"]
               },
               "required number": {
                 "description": "Required number property",
@@ -231,10 +210,7 @@
               },
               "required number or string": {
                 "description": "",
-                "type": [
-                  "number",
-                  "string"
-                ]
+                "type": ["number", "string"]
               },
               "required object": {
                 "description": "Required object property",
@@ -249,9 +225,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "required sub-property"
-                ],
+                "required": ["required sub-property"],
                 "type": "object"
               },
               "required object (empty)": {
@@ -287,9 +261,7 @@
           },
           "traits": {}
         },
-        "required": [
-          "properties"
-        ],
+        "required": ["properties"],
         "type": "object"
       }
     },
