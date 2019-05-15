@@ -82,7 +82,7 @@ export async function get(path = './'): Promise<Config | undefined> {
 
 	const rawConfigWithDefaults = {
 		...(rawConfig as object),
-		path: await getPath((rawConfig.path as string) || './typewriter'),
+		path: await resolve((rawConfig.path as string) || './typewriter'),
 	}
 
 	// We can safely type cast the config, now that is has been validated.
