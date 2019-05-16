@@ -15,8 +15,8 @@
     "test": "jest",
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "precommit": "lint-staged",
-    "release": "np",
-    "prerelease": "np prerelease --any-branch --tag next --no-release-draft"
+    "release": "rm -rf dist && tsc && np",
+    "prerelease": "rm -rf dist && tsc && np prerelease --any-branch --tag next --no-release-draft"
   },
   "engines": {
     "node": ">=0.10.15"
