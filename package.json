@@ -11,13 +11,12 @@
   "bin": "./dist/cli/index.js",
   "scripts": {
     "dev": "ts-node ./src/cli",
-    "prepare": "rm -rf dist && tsc",
-    "build": "rm -rf dist && tsc",
+    "build": "rm -rf dist && tsc && copyfiles -u 1 src/**/*.hbs src/**/*.json dist/",
     "test": "jest",
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "precommit": "lint-staged",
-    "release": "rm -rf dist && tsc && np",
-    "prerelease": "rm -rf dist && tsc && np prerelease --any-branch --tag next --no-release-draft"
+    "release": "yarn run build && np",
+    "prerelease": "yarn run build && np prerelease --any-branch --tag next --no-release-draft"
   },
   "engines": {
     "node": ">=0.10.15"
@@ -33,6 +32,7 @@
     "@types/prompts": "^2.4.0",
     "@typescript-eslint/eslint-plugin": "^1.6.0",
     "@typescript-eslint/parser": "^1.6.0",
+    "copyfiles": "^2.1.0",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-no-null": "^1.0.2",

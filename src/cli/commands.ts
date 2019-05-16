@@ -177,7 +177,7 @@ it to your team using a shell command by setting a tokenCommand in typewriter.ym
 				// Sort Tracking Plans by update time, to match the Tracking Plan list view.
 				.sort((a, b) => b.update_time.getTime() - a.update_time.getTime())
 				.map(tp => ({
-					title: `${tp.display_name} (${tp.rules.events.length} events)`,
+					title: tp.display_name,
 					value: tp.name,
 					selected: preSelectedTrackingPlanIDs.includes(
 						tp.name.split('/').slice(-1)[0]

@@ -16,8 +16,8 @@ namespace SegmentAPI {
 		rules: {
 			events: RuleMetadata[]
 			global: RuleMetadata
-			identify: RuleMetadata
-			group: RuleMetadata
+			identify_traits: RuleMetadata
+			group_traits: RuleMetadata
 		}
 		create_time: Date
 		update_time: Date
