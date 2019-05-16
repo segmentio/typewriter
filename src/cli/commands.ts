@@ -1,4 +1,4 @@
-import config from './config'
+import { getConfig, getDefaultPath, setConfig } from './config'
 import gen, { Language, Options } from '../generators'
 import { Config } from './config'
 import { JSONSchema7 } from 'json-schema'
@@ -7,7 +7,14 @@ import { resolve } from 'path'
 import * as fs from 'fs'
 import { promisify } from 'util'
 import * as childProcess from 'child_process'
-import { fetchTrackingPlan } from './api'
+import {
+	fetchTrackingPlan,
+	fetchWorkspaces,
+	isValidToken,
+	generateToken,
+	fetchAllTrackingPlans,
+} from './api'
+import prompts, { Answers, PromptType } from 'prompts'
 
 const mkdir = promisify(fs.mkdir)
 const writeFile = promisify(fs.writeFile)
@@ -15,34 +22,200 @@ const exists = promisify(fs.exists)
 const exec = promisify(childProcess.exec)
 
 export async function init() {
-	console.log('TODO: implement init function')
+	// Attempt to read a config, if one is available.
+	const currentConfig = await getConfig()
 
-	const cfg = await config.get()
-	console.log(cfg)
-	/*
-  // ask what language to generate
+	const languageChoices = [
+		{ title: 'JavaScript', value: 'javascript' },
+		{ title: 'TypeScript', value: 'typescript' },
+		{ title: 'iOS Objective-C', value: 'ios:objective-c', disabled: true },
+		{ title: 'Android Java', value: 'android:java', disabled: true },
+	]
 
-  // ask where the clients should be written to
-  
-  // const token = `get a token`
-    // if a token is available in the path
-      // ask if they want to use it (show the first N chars, the rest hidden)
-      // maybe fetch information on it from the API (who owns it, workspaces it has access to, etc.)
-    // if not, ask if a user wants to generate a token
-      // if so, ask for an email and password
-      // hit the API and fetch a token
-      // print out the token with some information on it
-      // store the fetched token in TYPEWRITER_TOKEN in the env
-    // if not, ask if the user wants to provide a script that will fetch the token
-      // if so, take the command and execute it to fetch a TYPEWRITER_TOKEN. If the output isn't a string or 
-      // a token isn't added to the env, notify the user that it failed.
-  
-  // Fetch the Tracking Plans from that workspace (show number of events, name, last updated?, ...)
-    // Offer a multi-select of the Tracking Plans, to indicate which to install
-  
-  // Ask whether you'd like to select events or sync all
-    // Select which events to sync: multi-select again
-    */
+	const tokenProviderChoices = [
+		{ title: 'Generate a new token', value: 'generate' },
+		{ title: 'Provide a shell command', value: 'command' },
+	]
+
+	let token = process.env.TYPEWRITER_TOKEN
+
+	// If a TYPEWRITER_TOKEN is set and is a valid Segment API token,
+	// then add it to tokenProviderChoices.
+	if (!!token && (await isValidToken({ token }))) {
+		tokenProviderChoices.unshift({
+			title: `Use TYPEWRITER_TOKEN (${await tokenToString(token)})`,
+			value: 'environment',
+		})
+	}
+
+	const response = await prompts([
+		// Set the config.language value.
+		{
+			type: 'select',
+			message: 'What language should Typewriter generate?',
+			name: 'language',
+			choices: languageChoices,
+			initial:
+				currentConfig &&
+				languageChoices.findIndex(
+					({ value }) => value === currentConfig.language.name
+				),
+		},
+
+		// Set the config.path value.
+		{
+			type: 'text',
+			message: 'What directory should Typewriter write clients into?',
+			name: 'path',
+			initial: currentConfig ? currentConfig.path : await getDefaultPath(),
+		},
+
+		// Fetch a Segment API Token
+		{
+			type: 'select',
+			message: 'How do you want to provide a Segment API Token?',
+			name: 'tokenProvider',
+			choices: tokenProviderChoices,
+		},
+		// If the user selects "environment", then we don't need to do anything else.
+		// If the user selected "generate", then hit the Segment API to generate a new
+		// API token.
+		{
+			type: (_, values) =>
+				// Note: upstream fix here: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35510
+				(((values as unknown) as Answers<'tokenProvider'>).tokenProvider ===
+				'generate'
+					? 'text'
+					: false) as PromptType,
+			message: 'What workspace slug should the token have read access to?',
+			name: 'workspaceSlug',
+		},
+		{
+			type: (_, values) =>
+				// Note: upstream fix here: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35510
+				(((values as unknown) as Answers<'tokenProvider'>).tokenProvider ===
+				'generate'
+					? 'text'
+					: false) as PromptType,
+			message: 'What is your segment.com account email?',
+			name: 'email',
+		},
+		{
+			type: (_, values) =>
+				// Note: upstream fix here: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35510
+				(((values as unknown) as Answers<'tokenProvider'>).tokenProvider ===
+				'generate'
+					? 'text'
+					: false) as PromptType,
+			message: 'What is your segment.com account password?',
+			name: 'password',
+			format: async (password, values) => {
+				token = await generateToken({
+					workspaceSlug: values.workspaceSlug,
+					email: values.email,
+					password,
+				})
+
+				console.log(`Successfully generated a new Segment API token.
+You'll need to store this token in your environment with:
+	export TYPEWRITER_TOKEN=${token}
+
+Alternatively, you can store this token in your team's secret store system and provide
+it to your team using a shell command by setting a tokenCommand in typewriter.yml.`)
+
+				return password
+			},
+		},
+		// If the user selected "command", then fetch a shell command and verify it produces an API token.
+		{
+			type: (_, values) =>
+				// Note: upstream fix here: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35510
+				(((values as unknown) as Answers<'tokenProvider'>).tokenProvider ===
+				'command'
+					? 'text'
+					: false) as PromptType,
+			message:
+				'Enter a shell command which will output an API token to stdout. For example, this may query your secret store to fetch the correct token:',
+			name: 'tokenCommand',
+			validate: async command => {
+				const token = await executeTokenCommand(command)
+
+				return token && (await isValidToken({ token }))
+					? true
+					: `Found invalid token: ${token}`
+			},
+		},
+	])
+
+	if (!token) {
+		// We'll have found a token by this point (or failed), so this won't happen.
+		throw new Error('Unable to find an API Token.')
+	}
+
+	// Now that we have a token, we can fetch their Tracking Plans.
+	const availableTrackingPlans = await fetchAllTrackingPlans({ token })
+
+	if (availableTrackingPlans.length === 0) {
+		console.error(
+			`No Tracking Plans accessible from your token (${await tokenToString(
+				token
+			)})`
+		)
+		return
+	}
+	const preSelectedTrackingPlanIDs = currentConfig
+		? currentConfig.trackingPlans.map(tp => tp.id)
+		: []
+
+	const trackingPlansResponse = await prompts([
+		{
+			type: 'multiselect',
+			message: 'Which Tracking Plans should Typewriter generate clients for?',
+			name: 'trackingPlans',
+			min: 1,
+			choices: availableTrackingPlans
+				// Sort Tracking Plans by update time, to match the Tracking Plan list view.
+				.sort((a, b) => b.update_time.getTime() - a.update_time.getTime())
+				.map(tp => ({
+					title: `${tp.display_name} (${tp.rules.events.length} events)`,
+					value: tp.name,
+					selected: preSelectedTrackingPlanIDs.includes(
+						tp.name.split('/').slice(-1)[0]
+					),
+				})),
+		},
+	])
+
+	const cfg: Config = {
+		language: response.language,
+		path: response.path,
+		trackingPlans: (trackingPlansResponse.trackingPlans as string[])
+			.map(name => {
+				return availableTrackingPlans.find(tp => tp.name === name)
+			})
+			.filter(tp => !!tp)
+			.map(tp => ({
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				name: tp!.display_name,
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				id: tp!.name.split('/').slice(-1)[0],
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				workspaceSlug: tp!.name.replace('workspaces/', '').split('/')[0],
+			})),
+		tokenCommand:
+			response.tokenProvider === 'command' ? response.tokenCommand : undefined,
+	}
+
+	await setConfig(cfg)
+}
+
+// tokenToString partially redacts a token and prints a list of accessible
+// workspaces to provide context on the token.
+async function tokenToString(token: string) {
+	const workspaces = await fetchWorkspaces({ token })
+	const redactedToken = token.substring(0, 10) + '...'
+
+	return `${redactedToken} [${workspaces.map(w => w.display_name).join(', ')}]`
 }
 
 export async function generate() {
@@ -54,7 +227,7 @@ export async function prod() {
 }
 
 async function generateClients({ isDevelopment }: { isDevelopment: boolean }) {
-	const cfg = await config.get()
+	const cfg = await getConfig()
 
 	if (!cfg) {
 		// TODO: redirect to setting up a config file
@@ -84,7 +257,7 @@ async function generateClients({ isDevelopment }: { isDevelopment: boolean }) {
 			token,
 		})
 
-		const events = trackingPlan.events.map<JSONSchema7>(e => ({
+		const events = trackingPlan.rules.events.map<JSONSchema7>(e => ({
 			...e.rules,
 			title: e.name,
 			description: e.description,
@@ -122,20 +295,28 @@ function getOptions(cfg: Config, isDevelopment: boolean): Options {
 	}
 }
 
-async function getToken(cfg: Config): Promise<string | undefined> {
+async function getToken(cfg: Config | undefined): Promise<string | undefined> {
 	if (!!process.env.TYPEWRITER_TOKEN) {
 		return process.env.TYPEWRITER_TOKEN
 	}
 
-	if (!!cfg.tokenCommand) {
-		const { stdout, stderr } = await exec(cfg.tokenCommand)
-		if (stderr.trim().length > 0) {
-			console.error(stderr)
-		} else {
-			const possibleToken = stdout.trim()
-			if (possibleToken.length > 0) {
-				return possibleToken
-			}
+	if (cfg && cfg.tokenCommand) {
+		return executeTokenCommand(cfg.tokenCommand)
+	}
+
+	return undefined
+}
+
+async function executeTokenCommand(cmd: string): Promise<string | undefined> {
+	const { stdout, stderr } = await exec(cmd).catch(err => {
+		throw new Error(`Invalid tokenCommand: ${err}`)
+	})
+	if (stderr.trim().length > 0) {
+		console.error(stderr)
+	} else {
+		const possibleToken = stdout.trim()
+		if (possibleToken.length > 0) {
+			return possibleToken
 		}
 	}
 
@@ -143,7 +324,7 @@ async function getToken(cfg: Config): Promise<string | undefined> {
 }
 
 export async function token() {
-	const cfg = await config.get()
+	const cfg = await getConfig()
 
 	if (!cfg) {
 		console.log('TODO: implement init via other commands')

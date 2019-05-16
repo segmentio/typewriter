@@ -1,10 +1,6 @@
-# Typewriter configuration for Typewriter itself 🐶
+# Segment Typewriter Configuration (https://github.com/segmentio/typewriter)
+# This is our Typewriter configuration for Typewriter itself 🐶
 # Just run `npx typewriter` to re-generate a client with the latest versions of these events.
-
-# You can supply your Segment API Token via the TYPEWRITER_TOKEN environment variable
-# or a shell command, like below, for whatever secret management tooling your team uses.
-# At Segment, We use segmentio/chamber for secret management: https://github.com/segmentio/chamber
-# Along with segmentio/aws-okta to perform SSO with Okta: https://github.com/segmentio/aws-okta
 
 tokenCommand: aws-okta exec dev-privileged -- chamber export app | jq -r .typewriter_segment_prod_token
 

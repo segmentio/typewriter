@@ -24,6 +24,7 @@ export interface Language {
 }
 
 export interface TrackingPlan {
+	name?: string
 	id: string
 	workspaceSlug: string
 	events?: {
@@ -41,12 +42,20 @@ async function getPath(path: string): Promise<string> {
 	return resolve(path, TYPEWRITER_CONFIG_NAME)
 }
 
-// get looks for, and reads, a typewriter.yml configuration file.
+// getDefaultPath returns the default path for Typewriter to write
+// clients and Tracking Plans to.
+export async function getDefaultPath(
+	path?: string | undefined
+): Promise<string> {
+	return resolve(path || './typewriter')
+}
+
+// getConfig looks for, and reads, a typewriter.yml configuration file.
 // If it does not exist, it will return undefined. If the configuration
 // if invalid, an Error will be thrown.
 // Note: path is relative to the directory where the typewriter command
 // was run.
-export async function get(path = './'): Promise<Config | undefined> {
+export async function getConfig(path = './'): Promise<Config | undefined> {
 	// Check if typewriter.yml exists
 	const configPath = await getPath(path)
 	if (!(await exists(configPath))) {
@@ -82,26 +91,21 @@ export async function get(path = './'): Promise<Config | undefined> {
 
 	const rawConfigWithDefaults = {
 		...(rawConfig as object),
-		path: await resolve((rawConfig.path as string) || './typewriter'),
+		path: await getDefaultPath(rawConfig.path as string),
 	}
 
 	// We can safely type cast the config, now that is has been validated.
 	return rawConfigWithDefaults as Config
 }
 
-// set writes a config out to a typewriter.yml file.
+// setConfig writes a config out to a typewriter.yml file.
 // Note path is relative to the directory where the typewriter command
 // was run.
-export async function set(config: Config, path = './') {
+export async function setConfig(config: Config, path = './') {
 	const file = await generateFromTemplate<Config>(
 		'cli/typewriter.yml.hbs',
 		config
 	)
 
 	await writeFile(await getPath(path), file)
-}
-
-export default {
-	get,
-	set,
 }
