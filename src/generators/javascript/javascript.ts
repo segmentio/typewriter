@@ -3,7 +3,7 @@ import { Schema, Type, getPropertiesSchema } from '../ast'
 import { camelCase, upperFirst } from 'lodash'
 import namer from './namer'
 import * as prettier from 'prettier'
-import { generateFromTemplate } from 'src/templates'
+import { generateFromTemplate } from '../../templates'
 import { transpileModule, ModuleKind, ScriptTarget } from 'typescript'
 
 // The context that will be passed to Handlebars to perform rendering.

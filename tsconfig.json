@@ -10,10 +10,7 @@
     "baseUrl": ".",
     "allowJs": false,
     "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "paths": {
-      "src": ["src/*"]
-    }
+    "resolveJsonModule": true
   },
   "include": ["src/**/*"]
 }
