@@ -1,6 +1,6 @@
 {
   "name": "typewriter",
-  "version": "7.0.0-12",
+  "version": "7.0.0-13",
   "description": "A compiler for generating strongly typed analytics clients via Segment Protocols",
   "repository": "ssh://git@github.com/segmentio/typewriter.git",
   "homepage": "https://github.com/segmentio/typewriter",
