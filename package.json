@@ -7,8 +7,8 @@
   "bugs": "https://github.com/segmentio/typewriter/issues",
   "author": "Colin King <colin.king@segment.com>",
   "license": "MIT",
-  "main": "index.js",
-  "bin": "./build/cli.js",
+  "main": "./dist/cli/index.js",
+  "bin": "./dist/cli/index.js",
   "scripts": {
     "dev": "ts-node -r tsconfig-paths/register ./src/cli",
     "build": "rm -rf dist && tsc",
