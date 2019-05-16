@@ -11,6 +11,7 @@
   "bin": "./dist/cli/index.js",
   "scripts": {
     "dev": "ts-node -r tsconfig-paths/register ./src/cli",
+    "prepare": "rm -rf dist && tsc",
     "build": "rm -rf dist && tsc",
     "test": "jest",
     "lint": "eslint './src/**/*.{ts,tsx}'",
