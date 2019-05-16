@@ -137,6 +137,7 @@ it to your team using a shell command by setting a tokenCommand in typewriter.ym
 			message:
 				'Enter a shell command which will output an API token to stdout. For example, this may query your secret store to fetch the correct token:',
 			name: 'tokenCommand',
+			initial: currentConfig && currentConfig.tokenCommand,
 			validate: async command => {
 				token = await executeTokenCommand(command)
 
@@ -211,6 +212,13 @@ it to your team using a shell command by setting a tokenCommand in typewriter.ym
 	}
 
 	await setConfig(cfg)
+
+	// Now generate a client using the newly initialized configuration.
+	console.log("Successfully initialized a new 'typewriter.yml' configuration.")
+	console.log(
+		"Running 'npx typewriter@next' to build your typewriter client..."
+	)
+	await generate()
 }
 
 // tokenToString partially redacts a token and prints a list of accessible
