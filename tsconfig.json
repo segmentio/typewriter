@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "esnext",
+    "target": "es6",
     "strict": true,
     "strictFunctionTypes": true,
     "moduleResolution": "node",
