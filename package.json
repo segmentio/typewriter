@@ -16,7 +16,7 @@
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "precommit": "lint-staged",
     "release": "np",
-    "prerelease": "np --any-branch --tag next"
+    "prerelease": "np prerelease --any-branch --tag next --no-release-draft"
   },
   "engines": {
     "node": ">=0.10.15"
