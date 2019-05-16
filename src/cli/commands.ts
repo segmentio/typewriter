@@ -14,7 +14,7 @@ import {
 	generateToken,
 	fetchAllTrackingPlans,
 } from './api'
-import prompts, { Answers, PromptType } from 'prompts'
+import * as prompts from 'prompts'
 
 const mkdir = promisify(fs.mkdir)
 const writeFile = promisify(fs.writeFile)
@@ -83,30 +83,30 @@ export async function init() {
 		{
 			type: (_, values) =>
 				// Note: upstream fix here: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35510
-				(((values as unknown) as Answers<'tokenProvider'>).tokenProvider ===
-				'generate'
+				(((values as unknown) as prompts.Answers<'tokenProvider'>)
+					.tokenProvider === 'generate'
 					? 'text'
-					: false) as PromptType,
+					: false) as prompts.PromptType,
 			message: 'What workspace slug should the token have read access to?',
 			name: 'workspaceSlug',
 		},
 		{
 			type: (_, values) =>
 				// Note: upstream fix here: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35510
-				(((values as unknown) as Answers<'tokenProvider'>).tokenProvider ===
-				'generate'
+				(((values as unknown) as prompts.Answers<'tokenProvider'>)
+					.tokenProvider === 'generate'
 					? 'text'
-					: false) as PromptType,
+					: false) as prompts.PromptType,
 			message: 'What is your segment.com account email?',
 			name: 'email',
 		},
 		{
 			type: (_, values) =>
 				// Note: upstream fix here: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35510
-				(((values as unknown) as Answers<'tokenProvider'>).tokenProvider ===
-				'generate'
-					? 'text'
-					: false) as PromptType,
+				(((values as unknown) as prompts.Answers<'tokenProvider'>)
+					.tokenProvider === 'generate'
+					? 'password'
+					: false) as prompts.PromptType,
 			message: 'What is your segment.com account password?',
 			name: 'password',
 			format: async (password, values) => {
@@ -130,10 +130,10 @@ it to your team using a shell command by setting a tokenCommand in typewriter.ym
 		{
 			type: (_, values) =>
 				// Note: upstream fix here: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35510
-				(((values as unknown) as Answers<'tokenProvider'>).tokenProvider ===
-				'command'
+				(((values as unknown) as prompts.Answers<'tokenProvider'>)
+					.tokenProvider === 'command'
 					? 'text'
-					: false) as PromptType,
+					: false) as prompts.PromptType,
 			message:
 				'Enter a shell command which will output an API token to stdout. For example, this may query your secret store to fetch the correct token:',
 			name: 'tokenCommand',

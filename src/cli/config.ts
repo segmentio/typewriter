@@ -1,9 +1,9 @@
 import * as fs from 'fs'
 import { promisify } from 'util'
 import { resolve } from 'path'
-import yaml from 'js-yaml'
+import * as yaml from 'js-yaml'
 import { generateFromTemplate } from '../templates'
-import Ajv from 'ajv'
+import * as Ajv from 'ajv'
 
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)

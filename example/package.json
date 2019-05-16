@@ -1,0 +1,31 @@
+{
+  "name": "typewriter-example",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "yarn run typewriter && next",
+    "build": "yarn run typewriter && next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@zeit/next-typescript": "1.1.0",
+    "next": "^7.0.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "request": "^2.88.0",
+    "typescript": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/next": "^7.0.1",
+    "@types/react": "^16.0.36",
+    "@types/styled-jsx": "^2.2.3",
+    "fork-ts-checker-webpack-plugin": "^0.4.3",
+    "typewriter": "segmentio/typewriter#v7.0.0"
+  },
+  "license": "MIT",
+  "babel": {
+    "presets": [
+      "next/babel",
+      "@zeit/next-typescript/babel"
+    ]
+  }
+}

@@ -1,15 +1,17 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "target": "esnext",
+    "module": "esnext",
     "moduleResolution": "node",
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "sourceMap": true,
+    "jsx": "preserve",
     "outDir": "dist",
     "baseUrl": ".",
-    "resolveJsonModule": true
-  },
-  "include": ["src/**/*"]
+    "resolveJsonModule": true,
+    "lib": ["dom", "es2015", "es2016"]
+  }
 }
