@@ -138,7 +138,7 @@ it to your team using a shell command by setting a tokenCommand in typewriter.ym
 				'Enter a shell command which will output an API token to stdout. For example, this may query your secret store to fetch the correct token:',
 			name: 'tokenCommand',
 			validate: async command => {
-				const token = await executeTokenCommand(command)
+				token = await executeTokenCommand(command)
 
 				return token && (await isValidToken({ token }))
 					? true
