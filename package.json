@@ -60,6 +60,11 @@
     "react": "^16.8.6",
     "yargs": "^13.2.2"
   },
+  "files": [
+    "package.json",
+    "src",
+    "dist"
+  ],
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
     "plugins": [
