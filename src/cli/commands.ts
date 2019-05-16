@@ -167,11 +167,11 @@ it to your team using a shell command by setting a tokenCommand in typewriter.ym
 		? currentConfig.trackingPlans.map(tp => tp.id)
 		: []
 
-	const trackingPlansResponse = await prompts([
+	const trackingPlanResponse = await prompts([
 		{
-			type: 'multiselect',
-			message: 'Which Tracking Plans should Typewriter generate clients for?',
-			name: 'trackingPlans',
+			type: 'autocomplete',
+			message: 'Which Tracking Plan should Typewriter generate clients for?',
+			name: 'trackingPlan',
 			min: 1,
 			choices: availableTrackingPlans
 				// Sort Tracking Plans by update time, to match the Tracking Plan list view.
@@ -186,22 +186,26 @@ it to your team using a shell command by setting a tokenCommand in typewriter.ym
 		},
 	])
 
+	const trackingPlanName = trackingPlanResponse.trackingPlan as string
+	const trackingPlan = availableTrackingPlans.find(
+		tp => tp.name === trackingPlanName
+	)
+	if (!trackingPlan) {
+		throw new Error('You must select a Tracking Plan')
+	}
+
 	const cfg: Config = {
 		language: response.language,
 		path: response.path,
-		trackingPlans: (trackingPlansResponse.trackingPlans as string[])
-			.map(name => {
-				return availableTrackingPlans.find(tp => tp.name === name)
-			})
-			.filter(tp => !!tp)
-			.map(tp => ({
-				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-				name: tp!.display_name,
-				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-				id: tp!.name.split('/').slice(-1)[0],
-				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-				workspaceSlug: tp!.name.replace('workspaces/', '').split('/')[0],
-			})),
+		trackingPlans: [
+			{
+				name: trackingPlan.display_name,
+				id: trackingPlan.name.split('/').slice(-1)[0],
+				workspaceSlug: trackingPlan.name
+					.replace('workspaces/', '')
+					.split('/')[0],
+			},
+		],
 		tokenCommand:
 			response.tokenProvider === 'command' ? response.tokenCommand : undefined,
 	}

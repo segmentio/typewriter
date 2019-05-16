@@ -9,7 +9,7 @@
  *
  * You can install it with: `npm install --save-dev ajv`.
  */
-import Ajv from 'ajv'
+import * as Ajv from 'ajv'
 /**
  * Helper to attach metadata on Typewriter to outbound requests.
  * This is used for attribution and debugging by the Segment team.

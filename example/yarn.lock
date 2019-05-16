@@ -5224,9 +5224,10 @@ typescript@^3.4.5:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.4.5.tgz#2d2618d10bb566572b8d7aad5180d84257d70a99"
   integrity sha512-YycBxUb49UUhdNMU5aJ7z5Ej2XGmaIBL0x34vZ82fn3hGvD+bgrMrVDpatgz2f7YxUMJxMkbWxJZeAvDxVe7Vw==
 
-typewriter@segmentio/typewriter#v7.0.0:
-  version "7.0.0-10"
-  resolved "https://codeload.github.com/segmentio/typewriter/tar.gz/e76556a62a87b5f94c420d8bcd094c28c58f3543"
+typewriter@7.0.0-11:
+  version "7.0.0-11"
+  resolved "https://registry.yarnpkg.com/typewriter/-/typewriter-7.0.0-11.tgz#0a609f6262a11ac13f224ba1762f18edf241bd35"
+  integrity sha512-M4fySb5iU7ktSvF+uBlF/qn4Bzxv5uxO+FCgW/IDGcOMTQASQx8bpUmVlGtaIJY6zD+InC8RN+51JlD6S4rw3w==
   dependencies:
     ajv "^6.10.0"
     caller-path "^2.0.0"

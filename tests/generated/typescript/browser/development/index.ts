@@ -10,7 +10,7 @@
  *
  * You can install it with: `npm install --save-dev ajv`.
  */
-import Ajv from 'ajv'
+import * as Ajv from 'ajv'
 
 declare global {
 	interface Window {
