@@ -5226,7 +5226,7 @@ typescript@^3.4.5:
 
 typewriter@segmentio/typewriter#v7.0.0:
   version "7.0.0-10"
-  resolved "https://codeload.github.com/segmentio/typewriter/tar.gz/41848519bba2c0725d531af4f1c0b9e177d88a7b"
+  resolved "https://codeload.github.com/segmentio/typewriter/tar.gz/e76556a62a87b5f94c420d8bcd094c28c58f3543"
   dependencies:
     ajv "^6.10.0"
     caller-path "^2.0.0"

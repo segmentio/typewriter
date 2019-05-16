@@ -62,9 +62,7 @@
     "yargs": "^13.2.2"
   },
   "files": [
-    "package.json",
-    "src",
-    "dist"
+    "dist/**/*"
   ],
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
