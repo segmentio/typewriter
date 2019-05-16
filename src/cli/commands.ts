@@ -235,9 +235,8 @@ async function generateClients({ isDevelopment }: { isDevelopment: boolean }) {
 	}
 
 	// Generate the output directory, if it doesn't exist.
-	const dirPath = resolve(cfg.path, '../')
-	if (!(await exists(dirPath))) {
-		await mkdir(dirPath, {
+	if (!(await exists(cfg.path))) {
+		await mkdir(cfg.path, {
 			recursive: true,
 		})
 	}
@@ -266,7 +265,7 @@ async function generateClients({ isDevelopment }: { isDevelopment: boolean }) {
 		// Generate a client and write its files out to the specified path.
 		const files = await gen(events, getOptions(cfg, isDevelopment))
 		for (var file of files) {
-			const filePath = resolve(dirPath, file.path)
+			const filePath = resolve(cfg.path, file.path)
 			await writeFile(filePath, file.contents, {
 				encoding: 'utf-8',
 			})

@@ -4,6 +4,8 @@
 
 tokenCommand: aws-okta exec dev-privileged -- chamber export app | jq -r .typewriter_segment_prod_token
 
+path: ./src/typewriter
+
 language:
   name: typescript
 

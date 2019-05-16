@@ -70,3 +70,6 @@ package-lock.json
 
 # VSCode
 .vscode
+
+# Typewriter client
+src/typewriter
