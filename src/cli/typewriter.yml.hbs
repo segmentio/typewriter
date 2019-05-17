@@ -13,10 +13,14 @@ tokenCommand: {{tokenCommand}}
 # tokenCommand: aws-okta exec dev-privileged -- chamber export app | jq -r .typewriter_segment_prod_token
 {{/if}}
 
+path: {{path}}
+
 # You can configure the options of this language's generator.
-# See: https://segment.com/docs/typewriter/{{language}}
+# See: https://segment.com/docs/typewriter/{{language.name}}
 language:
-  name: {{language}}
+  {{#each language}}
+  {{@key}}: {{this}}
+  {{/each}}
 
 trackingPlans:
   {{#each trackingPlans}}

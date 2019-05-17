@@ -7,9 +7,10 @@ tokenCommand: aws-okta exec dev-privileged -- chamber export typewriter | jq -r 
 # See: https://segment.com/docs/typewriter/typescript
 language:
   name: typescript
+  env: browser
 
 trackingPlans:
-  # Typewriter: Slothgram
+  # Tracking Plan: Typewriter: Slothgram
   # https://app.segment.com/schema-test/protocols/tracking-plans/rs_1CawusBJdQmYmspt8rWXtdb7COT
   - id: rs_1CawusBJdQmYmspt8rWXtdb7COT
     workspaceSlug: schema-test

@@ -19,10 +19,7 @@ export default class Namer {
 
 	// escapeString escapes quotes within a string so that it can safely generated.
 	public escapeString(str: string): string {
-		return str.replace(
-			new RegExp(this.opts.quoteChar, 'g'),
-			`\\${this.opts.quoteChar}`
-		)
+		return str.replace(new RegExp(this.opts.quoteChar, 'g'), `\\${this.opts.quoteChar}`)
 	}
 
 	// escapeIdentifier replaces all characters that are invalid within a language's identifier.
@@ -34,10 +31,7 @@ export default class Namer {
 		}
 
 		// Replace invalid characters within the identifier.
-		const invalidChars = new RegExp(
-			`[^${this.opts.allowedIdentifierChars}]`,
-			'g'
-		)
+		const invalidChars = new RegExp(`[^${this.opts.allowedIdentifierChars}]`, 'g')
 		id = id.replace(invalidChars, '_')
 
 		// Handle zero length identifiers.
@@ -46,9 +40,7 @@ export default class Namer {
 		}
 
 		// Handle identifiers that start with an invalid character.
-		const invalidStartingChars = new RegExp(
-			`^[^${this.opts.allowedIdentifierStartingChars}]`
-		)
+		const invalidStartingChars = new RegExp(`^[^${this.opts.allowedIdentifierStartingChars}]`)
 		if (invalidStartingChars.test(id)) {
 			id = `I${id}`
 		}

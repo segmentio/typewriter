@@ -4,23 +4,19 @@ import { resolve } from 'path'
 import * as yaml from 'js-yaml'
 import { generateFromTemplate } from '../templates'
 import * as Ajv from 'ajv'
+import { JavaScriptOptions, TypeScriptOptions } from '../generators/javascript'
 
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
 const exists = promisify(fs.exists)
 
 // A config, stored in a typewriter.yml file.
-// Note: `typewriter.yml.schema.json` must match with this interface.
+// If you update this inferface, make sure to keep `typewriter.yml.schema.json` in sync.
 export interface Config {
 	path: string
 	tokenCommand?: string
-	language: Language
+	language: JavaScriptOptions | TypeScriptOptions
 	trackingPlans: TrackingPlan[]
-}
-
-export interface Language {
-	name: string
-	// TODO: language-specific options
 }
 
 export interface TrackingPlan {
@@ -38,16 +34,9 @@ export interface TrackingPlan {
 const TYPEWRITER_CONFIG_NAME = 'typewriter.yml'
 
 async function getPath(path: string): Promise<string> {
+	path = path.replace(/typewriter\.yml$/, '')
 	// TODO: recursively move back folders until you find it, ala package.json
 	return resolve(path, TYPEWRITER_CONFIG_NAME)
-}
-
-// getDefaultPath returns the default path for Typewriter to write
-// clients and Tracking Plans to.
-export async function getDefaultPath(
-	path?: string | undefined
-): Promise<string> {
-	return resolve(path || './typewriter')
 }
 
 // getConfig looks for, and reads, a typewriter.yml configuration file.
@@ -79,9 +68,7 @@ export async function getConfig(path = './'): Promise<Config | undefined> {
 		for (var ajvError of ajv.errors) {
 			// Remove the "." prefix from the data path.
 			const dataPath = ajvError.dataPath.replace(/^\./, '')
-			error += `	- ${dataPath.length > 0 ? `${dataPath}: ` : ''}${
-				ajvError.message
-			}\n`
+			error += `	- ${dataPath.length > 0 ? `${dataPath}: ` : ''}${ajvError.message}\n`
 		}
 
 		// TODO: think of a better way to throw an error, such that we can render it better
@@ -91,7 +78,7 @@ export async function getConfig(path = './'): Promise<Config | undefined> {
 
 	const rawConfigWithDefaults = {
 		...(rawConfig as object),
-		path: await getDefaultPath(rawConfig.path as string),
+		path: (rawConfig.path as string) || './typewriter',
 	}
 
 	// We can safely type cast the config, now that is has been validated.
@@ -102,10 +89,7 @@ export async function getConfig(path = './'): Promise<Config | undefined> {
 // Note path is relative to the directory where the typewriter command
 // was run.
 export async function setConfig(config: Config, path = './') {
-	const file = await generateFromTemplate<Config>(
-		'cli/typewriter.yml.hbs',
-		config
-	)
+	const file = await generateFromTemplate<Config>('cli/typewriter.yml.hbs', config)
 
 	await writeFile(await getPath(path), file)
 }

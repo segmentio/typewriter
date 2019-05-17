@@ -1,7 +1,7 @@
 # Segment Typewriter Configuration (https://github.com/segmentio/typewriter)
 # Just run `npx typewriter@next` to re-generate a client with the latest versions of these events.
 
-tokenCommand: aws-okta exec dev-privileged -- chamber export app | jq -r .typewriter_segment_prod_token
+tokenCommand: aws-okta exec dev-privileged -- chamber export typewriter | jq -r .typewriter_segment_prod_token
 
 path: ./src/typewriter
 
@@ -9,9 +9,10 @@ path: ./src/typewriter
 # See: https://segment.com/docs/typewriter/typescript
 language:
   name: typescript
+  env: node
 
 trackingPlans:
-  # Tracking Plan: App
-  # https://app.segment.com/segment_prod/protocols/tracking-plans/rs_16W7KaDjpZ09dI341chHKgYJah9
-  - id: rs_16W7KaDjpZ09dI341chHKgYJah9
+  # Tracking Plan: Typewriter Tracking Plan
+  # https://app.segment.com/segment_prod/protocols/tracking-plans/rs_1LMmY55PRAqJrqPrGzyk2nlYuZ3
+  - id: rs_1LMmY55PRAqJrqPrGzyk2nlYuZ3
     workspaceSlug: segment_prod

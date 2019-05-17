@@ -5,11 +5,7 @@ import { JSONSchema7 } from 'json-schema'
 // It does not seek to represent all of JSON Schema, only the subset that
 // is meaningful for codegen. Full JSON Schema validation should be done
 // at run-time and should be supported by all Typewriter clients.
-export type Schema =
-	| PrimitiveTypeSchema
-	| ArrayTypeSchema
-	| ObjectTypeSchema
-	| UnionTypeSchema
+export type Schema = PrimitiveTypeSchema | ArrayTypeSchema | ObjectTypeSchema | UnionTypeSchema
 
 export type PrimitiveTypeSchema = SchemaMetadata & PrimitiveTypeFields
 export type ArrayTypeSchema = SchemaMetadata & ArrayTypeFields
@@ -130,11 +126,7 @@ export function getPropertiesSchema(event: Schema): ObjectTypeSchema {
 }
 
 // parse transforms a JSON Schema into a standardized Schema.
-export function parse(
-	raw: JSONSchema7,
-	name?: string,
-	isRequired?: boolean
-): Schema {
+export function parse(raw: JSONSchema7, name?: string, isRequired?: boolean): Schema {
 	// TODO: validate that the raw JSON Schema is a valid JSON Schema before attempting to parse it.
 
 	// Parse the relevant fields from the JSON Schema based on the type.
@@ -162,10 +154,7 @@ export function parse(
 
 // parseTypeSpecificFields extracts the relevant fields from the raw JSON Schema,
 // interpreting the schema based on the provided Type.
-function parseTypeSpecificFields(
-	raw: JSONSchema7,
-	type: Type
-): TypeSpecificFields {
+function parseTypeSpecificFields(raw: JSONSchema7, type: Type): TypeSpecificFields {
 	if (type === Type.OBJECT) {
 		const fields: ObjectTypeFields = { type, properties: [] }
 		const requiredFields = new Set(raw.required || [])
@@ -185,9 +174,7 @@ function parseTypeSpecificFields(
 			let definitions = raw.items instanceof Array ? raw.items : [raw.items]
 
 			// Convert from JSONSchema7Definition -> JSONSchema7
-			const schemas = definitions.filter(
-				def => typeof def !== 'boolean'
-			) as JSONSchema7[]
+			const schemas = definitions.filter(def => typeof def !== 'boolean') as JSONSchema7[]
 
 			if (schemas.length === 1) {
 				const schema = schemas[0]
@@ -195,9 +182,7 @@ function parseTypeSpecificFields(
 			} else if (schemas.length > 1) {
 				fields.items = {
 					type: Type.UNION,
-					types: schemas.map(schema =>
-						parseTypeSpecificFields(schema, getType(schema))
-					),
+					types: schemas.map(schema => parseTypeSpecificFields(schema, getType(schema))),
 				}
 			}
 		}
@@ -271,8 +256,7 @@ function getType(raw: JSONSchema7): Type {
 
 // isNullable returns true if `null` is a valid value for this JSON Schema.
 function isNullable(raw: JSONSchema7): boolean {
-	const typeAllowsNull =
-		getRawTypes(raw).has('null') || getType(raw) === Type.ANY
+	const typeAllowsNull = getRawTypes(raw).has('null') || getType(raw) === Type.ANY
 	// eslint-disable-next-line no-null/no-null
 	const enumAllowsNull = !raw.enum || raw.enum.includes(null)
 

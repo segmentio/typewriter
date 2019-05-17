@@ -73,3 +73,6 @@ package-lock.json
 
 # Typewriter client
 src/typewriter
+
+# Example Typewriter client
+example/typewriter

@@ -1,8 +1,7 @@
-import { getConfig, getDefaultPath, setConfig } from './config'
-import gen, { Language, Options } from '../generators'
+import { getConfig, setConfig } from './config'
+import gen, { Language } from '../generators'
 import { Config } from './config'
 import { JSONSchema7 } from 'json-schema'
-import { Environment } from '../generators/javascript'
 import { resolve } from 'path'
 import * as fs from 'fs'
 import { promisify } from 'util'
@@ -15,27 +14,42 @@ import {
 	fetchAllTrackingPlans,
 } from './api'
 import * as prompts from 'prompts'
+import { Environment, JavaScriptOptions, TypeScriptOptions } from 'src/generators/javascript'
 
 const mkdir = promisify(fs.mkdir)
 const writeFile = promisify(fs.writeFile)
 const exists = promisify(fs.exists)
 const exec = promisify(childProcess.exec)
 
-export async function init() {
+export interface Arguments {
+	config: string | undefined
+}
+
+export async function init(args: Arguments) {
 	// Attempt to read a config, if one is available.
-	const currentConfig = await getConfig()
+	const currentConfig = await getConfig(args.config)
 
 	const languageChoices = [
-		{ title: 'JavaScript', value: 'javascript' },
-		{ title: 'TypeScript', value: 'typescript' },
-		{ title: 'iOS Objective-C', value: 'ios:objective-c', disabled: true },
-		{ title: 'Android Java', value: 'android:java', disabled: true },
+		{ title: 'JavaScript (analytics.js)', value: 'javascript:browser' },
+		{ title: 'TypeScript (analytics.js)', value: 'typescript:browser' },
+		{ title: 'JavaScript (analytics-node)', value: 'javascript:node' },
+		{ title: 'TypeScript (analytics-node)', value: 'typescript:node' },
+		{ title: 'Objective-C (analytics-ios)', value: 'objective-c:analytics-ios', disabled: true },
+		{ title: 'Java (analytics-java)', value: 'android:analytics-java', disabled: true },
 	]
+	const defaultLanguage =
+		currentConfig &&
+		languageChoices.findIndex(
+			({ value }) =>
+				value.split(':')[0] === currentConfig.language.name &&
+				value.split(':')[1] === currentConfig.language.env
+		)
 
 	const tokenProviderChoices = [
 		{ title: 'Generate a new token', value: 'generate' },
 		{ title: 'Provide a shell command', value: 'command' },
 	]
+	let defaultTokenProvider = currentConfig && currentConfig.tokenCommand ? 'command' : 'generate'
 
 	let token = process.env.TYPEWRITER_TOKEN
 
@@ -46,6 +60,7 @@ export async function init() {
 			title: `Use TYPEWRITER_TOKEN (${await tokenToString(token)})`,
 			value: 'environment',
 		})
+		defaultTokenProvider = 'environment'
 	}
 
 	const response = await prompts([
@@ -55,11 +70,7 @@ export async function init() {
 			message: 'What language should Typewriter generate?',
 			name: 'language',
 			choices: languageChoices,
-			initial:
-				currentConfig &&
-				languageChoices.findIndex(
-					({ value }) => value === currentConfig.language.name
-				),
+			initial: defaultLanguage,
 		},
 
 		// Set the config.path value.
@@ -67,7 +78,7 @@ export async function init() {
 			type: 'text',
 			message: 'What directory should Typewriter write clients into?',
 			name: 'path',
-			initial: currentConfig ? currentConfig.path : await getDefaultPath(),
+			initial: currentConfig ? currentConfig.path : './typewriter',
 		},
 
 		// Fetch a Segment API Token
@@ -76,6 +87,7 @@ export async function init() {
 			message: 'How do you want to provide a Segment API Token?',
 			name: 'tokenProvider',
 			choices: tokenProviderChoices,
+			initial: tokenProviderChoices.findIndex(c => c.value === defaultTokenProvider),
 		},
 		// If the user selects "environment", then we don't need to do anything else.
 		// If the user selected "generate", then hit the Segment API to generate a new
@@ -83,8 +95,7 @@ export async function init() {
 		{
 			type: (_, values) =>
 				// Note: upstream fix here: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35510
-				(((values as unknown) as prompts.Answers<'tokenProvider'>)
-					.tokenProvider === 'generate'
+				(((values as unknown) as prompts.Answers<'tokenProvider'>).tokenProvider === 'generate'
 					? 'text'
 					: false) as prompts.PromptType,
 			message: 'What workspace slug should the token have read access to?',
@@ -93,8 +104,7 @@ export async function init() {
 		{
 			type: (_, values) =>
 				// Note: upstream fix here: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35510
-				(((values as unknown) as prompts.Answers<'tokenProvider'>)
-					.tokenProvider === 'generate'
+				(((values as unknown) as prompts.Answers<'tokenProvider'>).tokenProvider === 'generate'
 					? 'text'
 					: false) as prompts.PromptType,
 			message: 'What is your segment.com account email?',
@@ -103,8 +113,7 @@ export async function init() {
 		{
 			type: (_, values) =>
 				// Note: upstream fix here: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35510
-				(((values as unknown) as prompts.Answers<'tokenProvider'>)
-					.tokenProvider === 'generate'
+				(((values as unknown) as prompts.Answers<'tokenProvider'>).tokenProvider === 'generate'
 					? 'password'
 					: false) as prompts.PromptType,
 			message: 'What is your segment.com account password?',
@@ -130,8 +139,7 @@ it to your team using a shell command by setting a tokenCommand in typewriter.ym
 		{
 			type: (_, values) =>
 				// Note: upstream fix here: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35510
-				(((values as unknown) as prompts.Answers<'tokenProvider'>)
-					.tokenProvider === 'command'
+				(((values as unknown) as prompts.Answers<'tokenProvider'>).tokenProvider === 'command'
 					? 'text'
 					: false) as prompts.PromptType,
 			message:
@@ -141,9 +149,7 @@ it to your team using a shell command by setting a tokenCommand in typewriter.ym
 			validate: async command => {
 				token = await executeTokenCommand(command)
 
-				return token && (await isValidToken({ token }))
-					? true
-					: `Found invalid token: ${token}`
+				return token && (await isValidToken({ token })) ? true : `Found invalid token: ${token}`
 			},
 		},
 	])
@@ -157,11 +163,7 @@ it to your team using a shell command by setting a tokenCommand in typewriter.ym
 	const availableTrackingPlans = await fetchAllTrackingPlans({ token })
 
 	if (availableTrackingPlans.length === 0) {
-		console.error(
-			`No Tracking Plans accessible from your token (${await tokenToString(
-				token
-			)})`
-		)
+		console.error(`No Tracking Plans accessible from your token (${await tokenToString(token)})`)
 		return
 	}
 	const preSelectedTrackingPlanIDs = currentConfig
@@ -180,45 +182,54 @@ it to your team using a shell command by setting a tokenCommand in typewriter.ym
 				.map(tp => ({
 					title: tp.display_name,
 					value: tp.name,
-					selected: preSelectedTrackingPlanIDs.includes(
-						tp.name.split('/').slice(-1)[0]
-					),
+					selected: preSelectedTrackingPlanIDs.includes(tp.name.split('/').slice(-1)[0]),
 				})),
 		},
 	])
 
 	const trackingPlanName = trackingPlanResponse.trackingPlan as string
-	const trackingPlan = availableTrackingPlans.find(
-		tp => tp.name === trackingPlanName
-	)
+	const trackingPlan = availableTrackingPlans.find(tp => tp.name === trackingPlanName)
 	if (!trackingPlan) {
 		throw new Error('You must select a Tracking Plan')
 	}
 
+	const [languageName, env] = (response.language as string).split(':')
+
 	const cfg: Config = {
-		language: response.language,
+		language: getLanguage(languageName, env),
 		path: response.path,
 		trackingPlans: [
 			{
 				name: trackingPlan.display_name,
 				id: trackingPlan.name.split('/').slice(-1)[0],
-				workspaceSlug: trackingPlan.name
-					.replace('workspaces/', '')
-					.split('/')[0],
+				workspaceSlug: trackingPlan.name.replace('workspaces/', '').split('/')[0],
 			},
 		],
-		tokenCommand:
-			response.tokenProvider === 'command' ? response.tokenCommand : undefined,
+		tokenCommand: response.tokenProvider === 'command' ? response.tokenCommand : undefined,
 	}
 
 	await setConfig(cfg)
 
 	// Now generate a client using the newly initialized configuration.
 	console.log("Successfully initialized a new 'typewriter.yml' configuration.")
-	console.log(
-		"Running 'npx typewriter@next' to build your typewriter client..."
-	)
-	await generate()
+	console.log("Running 'npx typewriter@next' to build your typewriter client...")
+	await generate(args)
+}
+
+function getLanguage(name: string, env: string): JavaScriptOptions | TypeScriptOptions {
+	if (name === Language.JAVASCRIPT) {
+		return {
+			name,
+			env: env as Environment,
+		}
+	} else if (name === Language.TYPESCRIPT) {
+		return {
+			name,
+			env: env as Environment,
+		}
+	} else {
+		throw new Error(`Unknown language: ${name}`)
+	}
 }
 
 // tokenToString partially redacts a token and prints a list of accessible
@@ -230,25 +241,29 @@ async function tokenToString(token: string) {
 	return `${redactedToken} [${workspaces.map(w => w.display_name).join(', ')}]`
 }
 
-export async function generate() {
-	await generateClients({ isDevelopment: true })
+export async function generate(args: Arguments) {
+	await generateClients(args, { isDevelopment: true })
 }
 
-export async function prod() {
-	await generateClients({ isDevelopment: false })
+export async function prod(args: Arguments) {
+	await generateClients(args, { isDevelopment: false })
 }
 
-async function generateClients({ isDevelopment }: { isDevelopment: boolean }) {
-	const cfg = await getConfig()
+async function generateClients(args: Arguments, { isDevelopment }: { isDevelopment: boolean }) {
+	const cfg = await getConfig(args.config)
 
 	if (!cfg) {
 		// TODO: redirect to setting up a config file
 		throw new Error('Unable to find typewriter.yml. Try `typewriter init`')
 	}
 
+	// Resolve the expected path to the typewriter.yml, based on the optional --config flag.
+	const path = args.config
+		? resolve(args.config.replace(/typewriter\.yml$/, ''), cfg.path)
+		: cfg.path
 	// Generate the output directory, if it doesn't exist.
-	if (!(await exists(cfg.path))) {
-		await mkdir(cfg.path, {
+	if (!(await exists(path))) {
+		await mkdir(path, {
 			recursive: true,
 		})
 	}
@@ -275,34 +290,16 @@ async function generateClients({ isDevelopment }: { isDevelopment: boolean }) {
 		}))
 
 		// Generate a client and write its files out to the specified path.
-		const files = await gen(events, getOptions(cfg, isDevelopment))
+		const files = await gen(events, {
+			...cfg.language,
+			isDevelopment,
+		})
 		for (var file of files) {
-			const filePath = resolve(cfg.path, file.path)
+			const filePath = resolve(path, file.path)
 			await writeFile(filePath, file.contents, {
 				encoding: 'utf-8',
 			})
 		}
-	}
-}
-
-function getOptions(cfg: Config, isDevelopment: boolean): Options {
-	const sharedOptions = {
-		env: Environment.NODE,
-		isDevelopment,
-	}
-
-	if (cfg.language.name === 'typescript') {
-		return {
-			lang: Language.TYPESCRIPT,
-			...sharedOptions,
-		}
-	} else if (cfg.language.name === 'javascript') {
-		return {
-			lang: Language.JAVASCRIPT,
-			...sharedOptions,
-		}
-	} else {
-		throw new Error(`Invalid Language Name: ${cfg.language.name}`)
 	}
 }
 
@@ -334,11 +331,12 @@ async function executeTokenCommand(cmd: string): Promise<string | undefined> {
 	return undefined
 }
 
-export async function token() {
-	const cfg = await getConfig()
+export async function token(args: Arguments) {
+	const cfg = await getConfig(args.config)
 
 	if (!cfg) {
-		console.log('TODO: implement init via other commands')
+		// TODO: potentially call out to typewriter init to gracefully handle this.
+		// Otherwise, as part of the error message UX, drive the user towards running typewriter init.
 		throw new Error('Unable to find typewriter.yml. Try `typewriter init`')
 	}
 
@@ -354,5 +352,5 @@ export async function token() {
 }
 
 export async function update() {
-	console.log('TODO: implement update')
+	console.log('Unsupported: TODO(colinking) implement update')
 }

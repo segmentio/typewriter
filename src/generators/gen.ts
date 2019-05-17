@@ -4,13 +4,13 @@ import { parse, Schema } from './ast'
 import { Options as JavaScriptOptions } from './javascript'
 
 export enum Language {
-	JAVASCRIPT,
-	TYPESCRIPT,
+	JAVASCRIPT = 'javascript',
+	TYPESCRIPT = 'typescript',
 }
 
 // Options that all clients must support.
 export interface DefaultOptions {
-	lang: Language
+	name: Language
 	// Whether or not to generate a development bundle. If so, analytics payloads will
 	// be validated against the full JSON Schema before being sent to the underlying
 	// analytics instance.
@@ -32,10 +32,7 @@ export interface GenerationConfig {
 	options: Options
 }
 
-export default async function gen(
-	rawSchemas: JSONSchema7[],
-	options: Options
-): Promise<File[]> {
+export default async function gen(rawSchemas: JSONSchema7[], options: Options): Promise<File[]> {
 	const config = {
 		tracks: rawSchemas.map(s => ({
 			raw: s,
@@ -44,10 +41,7 @@ export default async function gen(
 		options,
 	}
 
-	if (
-		options.lang === Language.TYPESCRIPT ||
-		options.lang === Language.JAVASCRIPT
-	) {
+	if (options.name === Language.TYPESCRIPT || options.name === Language.JAVASCRIPT) {
 		return await javascript(config)
 	} else {
 		throw new Error('Invalid language')

@@ -57,16 +57,16 @@ export enum Environment {
 	NODE = 'node',
 }
 
-interface JavaScriptOptions {
-	lang: Language.JAVASCRIPT
+export interface JavaScriptOptions {
+	name: Language.JAVASCRIPT
 	env: Environment
 	// JavaScript transpilation settings:
 	scriptTarget?: ScriptTarget
 	moduleTarget?: ModuleKind
 }
 
-interface TypeScriptOptions {
-	lang: Language.TYPESCRIPT
+export interface TypeScriptOptions {
+	name: Language.TYPESCRIPT
 	env: Environment
 }
 
@@ -75,8 +75,7 @@ export type Options = DefaultOptions & (JavaScriptOptions | TypeScriptOptions)
 export default async function(config: GenerationConfig): Promise<File[]> {
 	const files = [
 		{
-			path:
-				config.options.lang === Language.TYPESCRIPT ? 'index.ts' : 'index.js',
+			path: config.options.name === Language.TYPESCRIPT ? 'index.ts' : 'index.js',
 			contents: await generateFromTemplate<TemplateContext>(
 				`generators/javascript/${config.options.env}.hbs`,
 				getContext(config)
@@ -92,7 +91,7 @@ function formatFile(f: File, opts: Options): File {
 
 	// If we are generating a JavaScript client, transpile the client
 	// from TypeScript into JavaScript.
-	if (opts.lang === Language.JAVASCRIPT) {
+	if (opts.name === Language.JAVASCRIPT) {
 		// If we're generating a JavaScript client, compile
 		// from TypeScript to JavaScript.
 		const { outputText } = transpileModule(f.contents, {
@@ -107,16 +106,13 @@ function formatFile(f: File, opts: Options): File {
 
 	// Apply stylistic formatting, via Prettier.
 	const formattedContents = prettier.format(contents, {
-		parser: opts.lang === Language.TYPESCRIPT ? 'typescript' : 'babel',
+		parser: opts.name === Language.TYPESCRIPT ? 'typescript' : 'babel',
 		// Overwrite a few of the standard prettier settings to match with our Typewriter configuration:
 		useTabs: true,
 		singleQuote: true,
 		semi: false,
 		trailingComma:
-			opts.lang === Language.JAVASCRIPT &&
-			opts.scriptTarget === ScriptTarget.ES3
-				? 'none'
-				: 'es5',
+			opts.name === Language.JAVASCRIPT && opts.scriptTarget === ScriptTarget.ES3 ? 'none' : 'es5',
 	})
 
 	return {
@@ -143,10 +139,7 @@ function getContext(config: GenerationConfig): TemplateContext {
 			eventName: namer.escapeString(schema.name),
 			description: schema.description,
 			type: rootType,
-			rawJSONSchema: JSON.stringify(track.raw, undefined, '\t').replace(
-				/`/g,
-				'\\`'
-			),
+			rawJSONSchema: JSON.stringify(track.raw, undefined, '\t').replace(/`/g, '\\`'),
 		})
 	}
 

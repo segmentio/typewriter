@@ -7,7 +7,7 @@ const readFile = promisify(fs.readFile)
 
 // Renders a string generated from a template using the provided context.
 // The template path is relative to the `src` directory.
-export async function generateFromTemplate<Context = Record<string, any>>(
+export async function generateFromTemplate<Context = object>(
 	templatePath: string,
 	context: Context
 ): Promise<string> {

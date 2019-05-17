@@ -87,7 +87,8 @@
           "useTabs": true,
           "semi": false,
           "singleQuote": true,
-          "trailingComma": "es5"
+          "trailingComma": "es5",
+          "printWidth": 100
         }
       ],
       "@typescript-eslint/explicit-function-return-type": "off",
@@ -100,7 +101,9 @@
     }
   },
   "eslintIgnore": [
-    "tests/generated/**/*"
+    "tests/generated/**/*",
+    "src/typewriter/**/*",
+    "example/typewriter/**/*"
   ],
   "jest": {
     "modulePaths": [

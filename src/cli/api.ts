@@ -59,10 +59,7 @@ export async function fetchTrackingPlan(options: {
 	const url = `https://platform.segmentapis.com/v1beta/workspaces/${
 		options.workspaceSlug
 	}/tracking-plans/${options.id}`
-	const response = (await apiGet(
-		url,
-		options.token
-	)) as SegmentAPI.GetTrackingPlanResponse
+	const response = (await apiGet(url, options.token)) as SegmentAPI.GetTrackingPlanResponse
 
 	// eslint-disable-next-line @typescript-eslint/camelcase
 	response.create_time = new Date(response.create_time)
@@ -81,10 +78,7 @@ export async function fetchTrackingPlans(options: {
 	const url = `https://platform.segmentapis.com/v1beta/workspaces/${
 		options.workspaceSlug
 	}/tracking-plans`
-	const response = (await apiGet(
-		url,
-		options.token
-	)) as SegmentAPI.ListTrackingPlansResponse
+	const response = (await apiGet(url, options.token)) as SegmentAPI.ListTrackingPlansResponse
 
 	// eslint-disable-next-line @typescript-eslint/camelcase
 	return response.tracking_plans.map(tp => ({
@@ -116,9 +110,7 @@ export async function fetchAllTrackingPlans(options: {
 }
 
 // fetchWorkspaces lists all workspaces found with a given Segment API token.
-export async function fetchWorkspaces(options: {
-	token: string
-}): Promise<SegmentAPI.Workspace[]> {
+export async function fetchWorkspaces(options: { token: string }): Promise<SegmentAPI.Workspace[]> {
 	const { workspaces } = (await apiGet(
 		'https://platform.segmentapis.com/v1beta/workspaces',
 		options.token
@@ -132,9 +124,7 @@ export async function fetchWorkspaces(options: {
 }
 
 // isValidToken returns true if a token is a valid Segment API token.
-export async function isValidToken(options: {
-	token: string
-}): Promise<boolean> {
+export async function isValidToken(options: { token: string }): Promise<boolean> {
 	try {
 		const workspaces = await fetchWorkspaces(options)
 		return workspaces.length > 0
@@ -148,37 +138,30 @@ export async function generateToken(options: {
 	email: string
 	password: string
 }): Promise<string> {
-	const basicAuthToken = Buffer.from(
-		`${options.email.trim()}:${options.password.trim()}`
-	).toString('base64')
+	const basicAuthToken = Buffer.from(`${options.email.trim()}:${options.password.trim()}`).toString(
+		'base64'
+	)
 
-	const { token } = (await fetch(
-		'https://platform.segmentapis.com/v1beta/access-tokens',
-		{
-			method: 'post',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Basic ${basicAuthToken}`,
-			},
-			body: JSON.stringify({
+	const { token } = (await fetch('https://platform.segmentapis.com/v1beta/access-tokens', {
+		method: 'post',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Basic ${basicAuthToken}`,
+		},
+		body: JSON.stringify({
+			// eslint-disable-next-line @typescript-eslint/camelcase
+			access_token: {
+				description: 'Automatically Generated Typewriter Token',
+				scopes: 'workspace:read',
 				// eslint-disable-next-line @typescript-eslint/camelcase
-				access_token: {
-					description: 'Automatically Generated Typewriter Token',
-					scopes: 'workspace:read',
-					// eslint-disable-next-line @typescript-eslint/camelcase
-					workspace_names: [`workspaces/${options.workspaceSlug}`],
-				},
-			}),
-		}
-	).then(res => {
+				workspace_names: [`workspaces/${options.workspaceSlug}`],
+			},
+		}),
+	}).then(res => {
 		if (res.ok) {
 			return res.json()
 		} else {
-			throw new Error(
-				`Error fetching API Token from Segment API: ${res.status} ${
-					res.statusText
-				}`
-			)
+			throw new Error(`Error fetching API Token from Segment API: ${res.status} ${res.statusText}`)
 		}
 	})) as SegmentAPI.CreateAccessTokenResponse
 
@@ -196,11 +179,7 @@ async function apiGet(url: string, token: string): Promise<object> {
 		if (res.ok) {
 			return res.json()
 		} else {
-			throw new Error(
-				`Error issuing GET to Segment API (${url}): ${res.status} ${
-					res.statusText
-				}`
-			)
+			throw new Error(`Error issuing GET to Segment API (${url}): ${res.status} ${res.statusText}`)
 		}
 	})
 }

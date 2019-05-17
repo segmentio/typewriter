@@ -13,13 +13,18 @@
     },
     "language": {
       "type": "object",
-      "required": ["name"],
+      "required": ["name", "env"],
       "additionalProperties": false,
       "properties": {
         "name": {
           "$comment": "Which language to use when generating clients.",
           "type": "string",
           "enum": ["javascript", "typescript"]
+        },
+        "env": {
+          "$comment": "Which language environment we are generating for.",
+          "type": "string",
+          "enum": ["browser", "node"]
         }
       }
     },
