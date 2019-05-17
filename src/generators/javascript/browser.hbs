@@ -93,7 +93,7 @@ export function setTypewriterOptions(options: TypewriterOptions) {
 	*/
 function matchesSchema(
 	message: Record<string, any>,
-	schema: string
+	schema: object
 ): boolean {
 	const ajv = new Ajv({ schemaId: 'auto', allErrors: true, verbose: true })
 	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
@@ -136,9 +136,7 @@ export function {{functionName}}(
 	callback?: Segment.Callback
 ): void {
 	{{#if ../isDevelopment}}
-	const schema = `
-{{rawJSONSchema}}
-	`
+	const schema = {{rawJSONSchema}}
 	const message = {
 		event: '{{eventName}}',
 		properties: props || {},

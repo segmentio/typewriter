@@ -134,7 +134,7 @@ export default class Analytics {
 	 */
 	private matchesSchema(
 		message: Segment.TrackMessage<Record<string, any>>,
-		schema: string
+		schema: object
 	): boolean {
 		const ajv = new Ajv({ schemaId: 'auto', allErrors: true, verbose: true })
 		ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
@@ -159,9 +159,7 @@ export default class Analytics {
 		callback?: Segment.Callback
 	): void {
 		{{#if ../isDevelopment}}
-		const schema = `
-{{rawJSONSchema}}
-		`
+		const schema = {{rawJSONSchema}}
 		if (!this.matchesSchema(message, schema)) {
 			return
 		}

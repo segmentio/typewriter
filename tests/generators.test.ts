@@ -2,7 +2,7 @@ import { JSONSchema7 } from 'json-schema'
 import gen, { Options } from '../src/generators/gen'
 import { Environment } from '../src/generators/javascript'
 import { Language } from '../src/generators'
-import * as trackingPlan from './fixtures/generators/tracking-plan.json'
+import * as trackingPlan from './fixtures/tracking-plan.json'
 import * as fs from 'fs'
 import { promisify } from 'util'
 import { resolve } from 'path'
@@ -31,14 +31,11 @@ describe('generators', () => {
 					const developmentString = isDevelopment ? 'development' : 'production'
 					test(`${env} - ${developmentString}`, async () => {
 						const options: Options = {
-							lang: Language.TYPESCRIPT,
+							name: Language.TYPESCRIPT,
 							isDevelopment,
 							env,
 						}
-						await generateClient(
-							`./generated/typescript/${env}/${developmentString}`,
-							options
-						)
+						await generateClient(`./generated/typescript/${env}/${developmentString}`, options)
 					})
 				})(isDevelopment, env)
 			}
@@ -52,14 +49,11 @@ describe('generators', () => {
 					const developmentString = isDevelopment ? 'development' : 'production'
 					test(`${env} - ${developmentString}`, async () => {
 						const options: Options = {
-							lang: Language.JAVASCRIPT,
+							name: Language.JAVASCRIPT,
 							isDevelopment,
 							env,
 						}
-						await generateClient(
-							`./generated/javascript/${env}/${developmentString}`,
-							options
-						)
+						await generateClient(`./generated/javascript/${env}/${developmentString}`, options)
 					})
 				})(isDevelopment, env)
 			}
