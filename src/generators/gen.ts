@@ -34,10 +34,16 @@ export interface GenerationConfig {
 
 export default async function gen(rawSchemas: JSONSchema7[], options: Options): Promise<File[]> {
 	const config = {
-		tracks: rawSchemas.map(s => ({
-			raw: s,
-			schema: parse(s),
-		})),
+		tracks: rawSchemas.map(s => {
+			const sanitizedSchema = {
+				...s,
+				$schema: 'http://json-schema.org/draft-07/schema#',
+			}
+			return {
+				raw: sanitizedSchema,
+				schema: parse(sanitizedSchema),
+			}
+		}),
 		options,
 	}
 

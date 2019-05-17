@@ -2,8 +2,8 @@
   "name": "typewriter-example",
   "version": "1.0.0",
   "scripts": {
-    "dev": "yarn run typewriter && next",
-    "build": "yarn run typewriter && next build",
+    "dev": "next",
+    "build": "next build",
     "start": "next start"
   },
   "dependencies": {

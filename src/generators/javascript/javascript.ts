@@ -10,6 +10,7 @@ import { transpileModule, ModuleKind, ScriptTarget } from 'typescript'
 // Everything in this context should be properly sanitized.
 interface TemplateContext {
 	isDevelopment: boolean
+	isBrowser: boolean
 
 	tracks: TrackCall[]
 	interfaces: TSInterface[]
@@ -73,12 +74,20 @@ export interface TypeScriptOptions {
 export type Options = DefaultOptions & (JavaScriptOptions | TypeScriptOptions)
 
 export default async function(config: GenerationConfig): Promise<File[]> {
+	const ctx = getContext(config)
 	const files = [
 		{
 			path: config.options.name === Language.TYPESCRIPT ? 'index.ts' : 'index.js',
 			contents: await generateFromTemplate<TemplateContext>(
 				`generators/javascript/${config.options.env}.hbs`,
-				getContext(config)
+				ctx
+			),
+		},
+		{
+			path: config.options.name === Language.TYPESCRIPT ? 'segment.ts' : 'segment.js',
+			contents: await generateFromTemplate<TemplateContext>(
+				'generators/javascript/segment.hbs',
+				ctx
 			),
 		},
 	]
@@ -125,6 +134,8 @@ function getContext(config: GenerationConfig): TemplateContext {
 	// Render a TemplateContext based on the set of event schemas.
 	const context: TemplateContext = {
 		isDevelopment: config.options.isDevelopment,
+		isBrowser: config.options.env === Environment.BROWSER,
+
 		tracks: [],
 		interfaces: [],
 	}

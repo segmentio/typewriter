@@ -3,6 +3,8 @@
 
 tokenCommand: aws-okta exec dev-privileged -- chamber export typewriter | jq -r .typewriter_token
 
+path: ./analytics
+
 # You can configure the options of this language's generator.
 # See: https://segment.com/docs/typewriter/typescript
 language:

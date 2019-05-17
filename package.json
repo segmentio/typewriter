@@ -103,7 +103,7 @@
   "eslintIgnore": [
     "tests/generated/**/*",
     "src/typewriter/**/*",
-    "example/typewriter/**/*"
+    "example/analytics/**/*"
   ],
   "jest": {
     "modulePaths": [
