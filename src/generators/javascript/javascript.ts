@@ -150,7 +150,7 @@ function getContext(config: GenerationConfig): TemplateContext {
 			eventName: namer.escapeString(schema.name),
 			description: schema.description,
 			type: rootType,
-			rawJSONSchema: JSON.stringify(track.raw, undefined, '\t').replace(/`/g, '\\`'),
+			rawJSONSchema: JSON.stringify(track.raw, undefined, '\t'),
 		})
 	}
 
