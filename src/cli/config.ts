@@ -13,7 +13,6 @@ const exists = promisify(fs.exists)
 // A config, stored in a typewriter.yml file.
 // If you update this inferface, make sure to keep `typewriter.yml.schema.json` in sync.
 export interface Config {
-	path: string
 	tokenCommand?: string
 	language: JavaScriptOptions | TypeScriptOptions
 	trackingPlans: TrackingPlan[]
@@ -23,6 +22,7 @@ export interface TrackingPlan {
 	name?: string
 	id: string
 	workspaceSlug: string
+	path: string
 	events?: {
 		// Note: when we support Event Versioning in the Config API,
 		// then we will support numeric values here, which will map to versions.
@@ -76,13 +76,8 @@ export async function getConfig(path = './'): Promise<Config | undefined> {
 		throw new Error(error)
 	}
 
-	const rawConfigWithDefaults = {
-		...(rawConfig as object),
-		path: (rawConfig.path as string) || './typewriter',
-	}
-
 	// We can safely type cast the config, now that is has been validated.
-	return rawConfigWithDefaults as Config
+	return rawConfig as Config
 }
 
 // setConfig writes a config out to a typewriter.yml file.

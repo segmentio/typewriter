@@ -5,12 +5,6 @@
   "required": ["language", "trackingPlans"],
   "additionalProperties": false,
   "properties": {
-    "path": {
-      "$comment": "A directory path relative to this typewriter.yml file, specifying where this language client should be output.",
-      "default": "./typewriter",
-      "type": "string",
-      "minLength": 1
-    },
     "language": {
       "type": "object",
       "required": ["name", "env"],
@@ -33,7 +27,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "workspaceSlug"],
+        "required": ["id", "workspaceSlug", "path"],
         "additionalProperties": false,
         "properties": {
           "id": {
@@ -41,6 +35,11 @@
           },
           "workspaceSlug": {
             "type": "string"
+          },
+          "path": {
+            "$comment": "A directory path relative to this typewriter.yml file, specifying where this Tracking Plan's client should be output.",
+            "type": "string",
+            "minLength": 1
           },
           "events": {
             "type": "object",

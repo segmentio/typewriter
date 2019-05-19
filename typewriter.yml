@@ -3,8 +3,6 @@
 
 tokenCommand: aws-okta exec dev-privileged -- chamber export typewriter | jq -r .typewriter_segment_prod_token
 
-path: ./src/typewriter
-
 # You can configure the options of this language's generator.
 # See: https://segment.com/docs/typewriter/typescript
 language:
@@ -16,3 +14,4 @@ trackingPlans:
   # https://app.segment.com/segment_prod/protocols/tracking-plans/rs_1LMmY55PRAqJrqPrGzyk2nlYuZ3
   - id: rs_1LMmY55PRAqJrqPrGzyk2nlYuZ3
     workspaceSlug: segment_prod
+    path: ./src/typewriter

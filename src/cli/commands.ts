@@ -76,9 +76,12 @@ export async function init(args: Arguments) {
 		// Set the config.path value.
 		{
 			type: 'text',
-			message: 'What directory should Typewriter write clients into?',
+			message: 'What directory should Typewriter write this client into?',
 			name: 'path',
-			initial: currentConfig ? currentConfig.path : './typewriter',
+			initial:
+				currentConfig && currentConfig.trackingPlans.length > 0
+					? currentConfig.trackingPlans[0].path
+					: './typewriter',
 		},
 
 		// Fetch a Segment API Token
@@ -197,12 +200,12 @@ it to your team using a shell command by setting a tokenCommand in typewriter.ym
 
 	const cfg: Config = {
 		language: getLanguage(languageName, env),
-		path: response.path,
 		trackingPlans: [
 			{
 				name: trackingPlan.display_name,
 				id: trackingPlan.name.split('/').slice(-1)[0],
 				workspaceSlug: trackingPlan.name.replace('workspaces/', '').split('/')[0],
+				path: response.path,
 			},
 		],
 		tokenCommand: response.tokenProvider === 'command' ? response.tokenCommand : undefined,
@@ -257,17 +260,6 @@ async function generateClients(args: Arguments, { isDevelopment }: { isDevelopme
 		throw new Error('Unable to find typewriter.yml. Try `typewriter init`')
 	}
 
-	// Resolve the expected path to the typewriter.yml, based on the optional --config flag.
-	const path = args.config
-		? resolve(args.config.replace(/typewriter\.yml$/, ''), cfg.path)
-		: cfg.path
-	// Generate the output directory, if it doesn't exist.
-	if (!(await exists(path))) {
-		await mkdir(path, {
-			recursive: true,
-		})
-	}
-
 	const token = await getToken(cfg)
 	if (!token) {
 		// TODO: redirect to setting up a token
@@ -288,6 +280,17 @@ async function generateClients(args: Arguments, { isDevelopment }: { isDevelopme
 			title: e.name,
 			description: e.description,
 		}))
+
+		// Resolve the path based on the optional --config flag.
+		const path = args.config
+			? resolve(args.config.replace(/typewriter\.yml$/, ''), trackingPlanConfig.path)
+			: trackingPlanConfig.path
+		// Generate the output directory, if it doesn't exist.
+		if (!(await exists(path))) {
+			await mkdir(path, {
+				recursive: true,
+			})
+		}
 
 		// Generate a client and write its files out to the specified path.
 		const files = await gen(events, {
