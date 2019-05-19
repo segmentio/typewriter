@@ -1,42 +1,24 @@
 import * as fs from 'fs'
 import { promisify } from 'util'
-import { resolve } from 'path'
+import { resolve, dirname } from 'path'
 import * as yaml from 'js-yaml'
 import { generateFromTemplate } from '../templates'
 import * as Ajv from 'ajv'
-import { JavaScriptOptions, TypeScriptOptions } from '../generators/javascript'
+import { Arguments, Config } from './types'
+import * as childProcess from 'child_process'
 
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
 const exists = promisify(fs.exists)
+const mkdir = promisify(fs.mkdir)
+const exec = promisify(childProcess.exec)
 
-// A config, stored in a typewriter.yml file.
-// If you update this inferface, make sure to keep `typewriter.yml.schema.json` in sync.
-export interface Config {
-	tokenCommand?: string
-	language: JavaScriptOptions | TypeScriptOptions
-	trackingPlans: TrackingPlan[]
-}
-
-export interface TrackingPlan {
-	name?: string
-	id: string
-	workspaceSlug: string
-	path: string
-	events?: {
-		// Note: when we support Event Versioning in the Config API,
-		// then we will support numeric values here, which will map to versions.
-		[key: string]: 'latest'
-	}
-}
-
-// Want to learn TOML? See: https://learnxinyminutes.com/docs/toml/
-const TYPEWRITER_CONFIG_NAME = 'typewriter.yml'
+export const CONFIG_NAME = 'typewriter.yml'
 
 async function getPath(path: string): Promise<string> {
 	path = path.replace(/typewriter\.yml$/, '')
 	// TODO: recursively move back folders until you find it, ala package.json
-	return resolve(path, TYPEWRITER_CONFIG_NAME)
+	return resolve(path, CONFIG_NAME)
 }
 
 // getConfig looks for, and reads, a typewriter.yml configuration file.
@@ -87,4 +69,57 @@ export async function setConfig(config: Config, path = './') {
 	const file = await generateFromTemplate<Config>('cli/typewriter.yml.hbs', config)
 
 	await writeFile(await getPath(path), file)
+}
+
+// resolveRelativePath resolves a relative path from the directory of the `typewriter.yml` config
+// file, creating any parent directories, if necessary. It supports file and directory paths.
+export async function resolveRelativePath(
+	args: Arguments,
+	type: 'directory' | 'file',
+	path: string,
+	...otherPaths: string[]
+): Promise<string> {
+	// Resolve the path based on the optional --config flag.
+	const fullPath = args.config
+		? resolve(args.config.replace(/typewriter\.yml$/, ''), path, ...otherPaths)
+		: resolve(path, ...otherPaths)
+	// If this is a file, we need to verify it's parent directory exists.
+	// If it is a directory, then we need to verify the directory itself exists.
+	const dirPath = type === 'directory' ? fullPath : dirname(fullPath)
+
+	// Generate the output directory, if it doesn't exist.
+	if (!(await exists(dirPath))) {
+		await mkdir(dirPath, {
+			recursive: true,
+		})
+	}
+
+	return fullPath
+}
+
+// getToken uses a Config to fetch a Segment API token. It will search for it in this order:
+//   1. process.env.TYPEWRITER_TOKEN
+//   2. The stdout from executing tokenCommand from the config.
+// Returns undefined if no token can be found.
+export async function getToken(cfg: Config | undefined): Promise<string | undefined> {
+	if (!!process.env.TYPEWRITER_TOKEN) {
+		return process.env.TYPEWRITER_TOKEN
+	}
+
+	if (cfg && cfg.tokenCommand) {
+		const { stdout, stderr } = await exec(cfg.tokenCommand).catch(err => {
+			throw new Error(`Invalid tokenCommand: ${err}`)
+		})
+
+		if (stderr.trim().length > 0) {
+			console.error(stderr)
+		} else {
+			const possibleToken = stdout.trim()
+			if (possibleToken.length > 0) {
+				return possibleToken
+			}
+		}
+	}
+
+	return undefined
 }

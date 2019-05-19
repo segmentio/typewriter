@@ -72,7 +72,7 @@ package-lock.json
 .vscode
 
 # Typewriter client
-src/typewriter
+src/typewriter/*.ts
 
 # Example Typewriter client
-example/analytics
+example/analytics/*.ts

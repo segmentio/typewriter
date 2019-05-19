@@ -1,0 +1,78 @@
+{
+  "create_time": "2018-11-06T02:27:23.000Z",
+  "display_name": "Typewriter: Slothgram",
+  "name": "workspaces/schema-test/tracking-plans/rs_1CawusBJdQmYmspt8rWXtdb7COT",
+  "rules": {
+    "events": [
+      {
+        "description": "This event is fired when a feed has been viewed",
+        "name": "Feed Viewed",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "properties": {
+            "context": {},
+            "properties": {
+              "properties": {
+                "profile_id": {
+                  "description": "The id of the user this feed belongs to",
+                  "type": "string"
+                }
+              },
+              "required": ["profile_id"],
+              "type": "object"
+            },
+            "traits": {}
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "This event is fired when a photo has been viewed",
+        "name": "Photo Viewed",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "properties": {
+            "context": {},
+            "properties": {
+              "properties": {
+                "photo_id": {
+                  "description": "The id of the viewed photo",
+                  "type": "string"
+                }
+              },
+              "required": ["photo_id"],
+              "type": "object"
+            },
+            "traits": {}
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "A user profile has been viewed",
+        "name": "Profile Viewed",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "properties": {
+            "context": {},
+            "properties": {
+              "properties": {
+                "profile_id": {
+                  "description": "The id of the user the profile belongs to",
+                  "type": "string"
+                }
+              },
+              "required": ["profile_id"],
+              "type": "object"
+            },
+            "traits": {}
+          },
+          "type": "object"
+        }
+      }
+    ],
+    "group_traits": [],
+    "identify_traits": []
+  },
+  "update_time": "2019-03-01T06:33:58.000Z"
+}

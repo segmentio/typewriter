@@ -1,11 +1,8 @@
-import { getConfig, setConfig } from './config'
+import { getConfig, setConfig, resolveRelativePath, getToken } from './config'
 import gen, { Language } from '../generators'
-import { Config } from './config'
 import { JSONSchema7 } from 'json-schema'
-import { resolve } from 'path'
 import * as fs from 'fs'
 import { promisify } from 'util'
-import * as childProcess from 'child_process'
 import {
 	fetchTrackingPlan,
 	fetchWorkspaces,
@@ -15,15 +12,10 @@ import {
 } from './api'
 import * as prompts from 'prompts'
 import { Environment, JavaScriptOptions, TypeScriptOptions } from 'src/generators/javascript'
+import { Arguments, Config } from './types'
+import { writeTrackingPlan, loadTrackingPlan } from './trackingplans'
 
-const mkdir = promisify(fs.mkdir)
 const writeFile = promisify(fs.writeFile)
-const exists = promisify(fs.exists)
-const exec = promisify(childProcess.exec)
-
-export interface Arguments {
-	config: string | undefined
-}
 
 export async function init(args: Arguments) {
 	// Attempt to read a config, if one is available.
@@ -149,11 +141,6 @@ it to your team using a shell command by setting a tokenCommand in typewriter.ym
 				'Enter a shell command which will output an API token to stdout. For example, this may query your secret store to fetch the correct token:',
 			name: 'tokenCommand',
 			initial: currentConfig && currentConfig.tokenCommand,
-			validate: async command => {
-				token = await executeTokenCommand(command)
-
-				return token && (await isValidToken({ token })) ? true : `Found invalid token: ${token}`
-			},
 		},
 	])
 
@@ -219,6 +206,63 @@ it to your team using a shell command by setting a tokenCommand in typewriter.ym
 	await generate(args)
 }
 
+export async function generate(args: Arguments) {
+	await generateClients(args, { isDevelopment: true })
+}
+
+export async function prod(args: Arguments) {
+	await generateClients(args, { isDevelopment: false })
+}
+
+export async function token(args: Arguments) {
+	const cfg = await getConfig(args.config)
+
+	if (!cfg) {
+		// TODO: potentially call out to typewriter init to gracefully handle this.
+		// Otherwise, as part of the error message UX, drive the user towards running typewriter init.
+		throw new Error('Unable to find typewriter.yml. Try `typewriter init`')
+	}
+
+	const token = await getToken(cfg)
+
+	if (!token) {
+		console.log(
+			'Unable to find a TYPEWRITER_TOKEN in your environment or a valid `tokenCommand` field in your `typewriter.yml`.'
+		)
+	} else {
+		console.log(token)
+	}
+}
+
+export async function update(args: Arguments) {
+	const cfg = await getConfig(args.config)
+
+	if (!cfg) {
+		throw new Error('Unable to find typewriter.yml. Try `typewriter init`')
+	}
+
+	const token = await getToken(cfg)
+	if (!token) {
+		throw new Error(
+			'Unable to find a TYPEWRITER_TOKEN in your environment or a valid `tokenCommand` field in your `typewriter.yml`.'
+		)
+	}
+
+	// TODO(colinking): support fine-grained event updates, by event name and by label.
+	// For now, we will just support updating the full tracking plan.
+	for (var config of cfg.trackingPlans) {
+		const plan = await fetchTrackingPlan({
+			id: config.id,
+			workspaceSlug: config.workspaceSlug,
+			token,
+		})
+
+		await writeTrackingPlan(args, plan, config)
+	}
+}
+
+// Command Helpers
+
 function getLanguage(name: string, env: string): JavaScriptOptions | TypeScriptOptions {
 	if (name === Language.JAVASCRIPT) {
 		return {
@@ -244,14 +288,6 @@ async function tokenToString(token: string) {
 	return `${redactedToken} [${workspaces.map(w => w.display_name).join(', ')}]`
 }
 
-export async function generate(args: Arguments) {
-	await generateClients(args, { isDevelopment: true })
-}
-
-export async function prod(args: Arguments) {
-	await generateClients(args, { isDevelopment: false })
-}
-
 async function generateClients(args: Arguments, { isDevelopment }: { isDevelopment: boolean }) {
 	const cfg = await getConfig(args.config)
 
@@ -260,37 +296,14 @@ async function generateClients(args: Arguments, { isDevelopment }: { isDevelopme
 		throw new Error('Unable to find typewriter.yml. Try `typewriter init`')
 	}
 
-	const token = await getToken(cfg)
-	if (!token) {
-		// TODO: redirect to setting up a token
-		throw new Error(
-			'Unable to find a TYPEWRITER_TOKEN in your environment or a valid `tokenCommand` field in your `typewriter.yml`.'
-		)
-	}
+	for (var config of cfg.trackingPlans) {
+		const plan = await loadTrackingPlan(args, config)
 
-	for (var trackingPlanConfig of cfg.trackingPlans) {
-		const trackingPlan = await fetchTrackingPlan({
-			id: trackingPlanConfig.id,
-			workspaceSlug: trackingPlanConfig.workspaceSlug,
-			token,
-		})
-
-		const events = trackingPlan.rules.events.map<JSONSchema7>(e => ({
+		const events = plan.rules.events.map<JSONSchema7>(e => ({
 			...e.rules,
 			title: e.name,
 			description: e.description,
 		}))
-
-		// Resolve the path based on the optional --config flag.
-		const path = args.config
-			? resolve(args.config.replace(/typewriter\.yml$/, ''), trackingPlanConfig.path)
-			: trackingPlanConfig.path
-		// Generate the output directory, if it doesn't exist.
-		if (!(await exists(path))) {
-			await mkdir(path, {
-				recursive: true,
-			})
-		}
 
 		// Generate a client and write its files out to the specified path.
 		const files = await gen(events, {
@@ -298,62 +311,10 @@ async function generateClients(args: Arguments, { isDevelopment }: { isDevelopme
 			isDevelopment,
 		})
 		for (var file of files) {
-			const filePath = resolve(path, file.path)
-			await writeFile(filePath, file.contents, {
+			const path = await resolveRelativePath(args, 'file', config.path, file.path)
+			await writeFile(path, file.contents, {
 				encoding: 'utf-8',
 			})
 		}
 	}
-}
-
-async function getToken(cfg: Config | undefined): Promise<string | undefined> {
-	if (!!process.env.TYPEWRITER_TOKEN) {
-		return process.env.TYPEWRITER_TOKEN
-	}
-
-	if (cfg && cfg.tokenCommand) {
-		return executeTokenCommand(cfg.tokenCommand)
-	}
-
-	return undefined
-}
-
-async function executeTokenCommand(cmd: string): Promise<string | undefined> {
-	const { stdout, stderr } = await exec(cmd).catch(err => {
-		throw new Error(`Invalid tokenCommand: ${err}`)
-	})
-	if (stderr.trim().length > 0) {
-		console.error(stderr)
-	} else {
-		const possibleToken = stdout.trim()
-		if (possibleToken.length > 0) {
-			return possibleToken
-		}
-	}
-
-	return undefined
-}
-
-export async function token(args: Arguments) {
-	const cfg = await getConfig(args.config)
-
-	if (!cfg) {
-		// TODO: potentially call out to typewriter init to gracefully handle this.
-		// Otherwise, as part of the error message UX, drive the user towards running typewriter init.
-		throw new Error('Unable to find typewriter.yml. Try `typewriter init`')
-	}
-
-	const token = await getToken(cfg)
-
-	if (!token) {
-		console.log(
-			'Unable to find a TYPEWRITER_TOKEN in your environment or a valid `tokenCommand` field in your `typewriter.yml`.'
-		)
-	} else {
-		console.log(token)
-	}
-}
-
-export async function update() {
-	console.log('Unsupported: TODO(colinking) implement update')
 }
