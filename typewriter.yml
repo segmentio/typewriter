@@ -14,4 +14,4 @@ trackingPlans:
   # https://app.segment.com/segment_prod/protocols/tracking-plans/rs_1LMmY55PRAqJrqPrGzyk2nlYuZ3
   - id: rs_1LMmY55PRAqJrqPrGzyk2nlYuZ3
     workspaceSlug: segment_prod
-    path: ./src/typewriter
+    path: ./src/analytics

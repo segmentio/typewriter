@@ -73,7 +73,7 @@ export async function init(args: Arguments) {
 			initial:
 				currentConfig && currentConfig.trackingPlans.length > 0
 					? currentConfig.trackingPlans[0].path
-					: './typewriter',
+					: './analytics',
 		},
 
 		// Fetch a Segment API Token
