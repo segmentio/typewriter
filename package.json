@@ -11,7 +11,7 @@
   "bin": "./dist/cli/index.js",
   "scripts": {
     "dev": "ts-node ./src/cli",
-    "build": "rm -rf dist && tsc && copyfiles -u 1 \"src/**/*.hbs\" \"src/**/*.json\" dist/",
+    "build": "rm -rf dist && tsc && copyfiles -u 1 \"src/**/*.hbs\" \"src/cli/typewriter.yml.schema.json\" dist/",
     "test": "jest",
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "precommit": "lint-staged",
