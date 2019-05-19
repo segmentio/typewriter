@@ -101,7 +101,7 @@ export async function resolveRelativePath(
 //   1. process.env.TYPEWRITER_TOKEN
 //   2. The stdout from executing tokenCommand from the config.
 // Returns undefined if no token can be found.
-export async function getToken(cfg: Config | undefined): Promise<string | undefined> {
+export async function getToken(cfg: Partial<Config> | undefined): Promise<string | undefined> {
 	if (!!process.env.TYPEWRITER_TOKEN) {
 		return process.env.TYPEWRITER_TOKEN
 	}
@@ -114,9 +114,9 @@ export async function getToken(cfg: Config | undefined): Promise<string | undefi
 		if (stderr.trim().length > 0) {
 			console.error(stderr)
 		} else {
-			const possibleToken = stdout.trim()
-			if (possibleToken.length > 0) {
-				return possibleToken
+			const token = stdout.trim()
+			if (token.length > 0) {
+				return token
 			}
 		}
 	}
