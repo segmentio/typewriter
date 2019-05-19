@@ -12,5 +12,5 @@
     "resolveJsonModule": true
   },
   "include": ["src/**/*"],
-  "exclude": ["src/typewriter/**/*"]
+  "exclude": ["src/analytics/**/*"]
 }
