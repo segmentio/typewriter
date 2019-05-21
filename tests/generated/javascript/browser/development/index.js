@@ -9,7 +9,7 @@
  *
  * You can install it with: `npm install --save-dev ajv`.
  */
-import * as Ajv from 'ajv'
+import Ajv from 'ajv'
 export const defaultValidationErrorHandler = (message, validationErrors) => {
 	const msg = JSON.stringify(
 		{
