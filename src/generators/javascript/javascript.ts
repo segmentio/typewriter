@@ -83,14 +83,19 @@ export default async function(config: GenerationConfig): Promise<File[]> {
 				ctx
 			),
 		},
-		{
-			path: config.options.name === Language.TYPESCRIPT ? 'segment.ts' : 'segment.js',
+	]
+
+	// semgent.hbs contains the TypeScript definitions for the Segment API.
+	// It becomes an empty file for JavaScript after being transpiled.
+	if (config.options.name === Language.TYPESCRIPT) {
+		files.push({
+			path: 'segment.ts',
 			contents: await generateFromTemplate<TemplateContext>(
 				'generators/javascript/segment.hbs',
 				ctx
 			),
-		},
-	]
+		})
+	}
 
 	return files.map(f => formatFile(f, config.options))
 }

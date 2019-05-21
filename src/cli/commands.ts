@@ -265,6 +265,9 @@ export async function update(args: Arguments) {
 
 		await writeTrackingPlan(args, plan, config)
 	}
+
+	console.log("Running 'npx typewriter@next' to re-build your typewriter client...")
+	await generate(args)
 }
 
 // Command Helpers
