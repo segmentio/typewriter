@@ -128,6 +128,13 @@ function withTypewriterContext(options: Segment.Options = {}): Segment.Options {
 {{#if description}}
 /**
  * {{description}}
+ {{#if interface}}
+ *
+ * @param {object} props - The analytics properties that will be sent to Segment.
+ {{#each interface.properties}}
+ * @param {{type}} {{#unless isRequired}}[{{/unless}}props.{{name}}{{#unless isRequired}}]{{/unless}} - {{description}}
+	{{/each}}
+ {{/if}}
  */
 {{/if}}
 export function {{functionName}}(

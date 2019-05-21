@@ -28,6 +28,8 @@ interface TrackCall {
 	type: string
 	// The raw JSON Schema for the event.
 	rawJSONSchema: string
+	// The interface representing the properties parameter
+	interface?: TSInterface
 }
 
 // Represents a generated interface.
@@ -154,16 +156,33 @@ function getContext(config: GenerationConfig): TemplateContext {
 			functionName: namer.escapeIdentifier(camelCase(schema.name)),
 			eventName: namer.escapeString(schema.name),
 			description: schema.description,
-			type: rootType,
+			type: rootType.type,
 			rawJSONSchema: JSON.stringify(track.raw, undefined, '\t'),
+			interface: rootType.interface
+				? {
+						...rootType.interface,
+						properties: rootType.interface.properties.map(p => ({
+							...p,
+							// TODO: move this into Handlebars with a helper.
+							type: `{${p.type}}`,
+						})),
+				  }
+				: undefined,
 		})
 	}
 
 	return context
 }
 
-function getTypeForSchema(schema: Schema, context: TemplateContext): string {
+interface GetTypeForSchemaReturn {
+	type: string
+	// Only set if the type is an object type.
+	interface?: TSInterface
+}
+
+function getTypeForSchema(schema: Schema, context: TemplateContext): GetTypeForSchemaReturn {
 	let type: string
+	let tsInterface: TSInterface | undefined = undefined
 	if (schema.type === Type.ANY) {
 		type = 'any'
 	} else if (schema.type === Type.STRING) {
@@ -186,16 +205,17 @@ function getTypeForSchema(schema: Schema, context: TemplateContext): string {
 					name: namer.escapeString(property.name),
 					description: property.description,
 					isRequired: !!property.isRequired,
-					type: getTypeForSchema(property, context),
+					type: getTypeForSchema(property, context).type,
 				})
 			}
 
 			type = namer.escapeIdentifier(upperFirst(camelCase(schema.name)))
-			context.interfaces.push({
+			tsInterface = {
 				name: type,
 				description: schema.description,
 				properties,
-			})
+			}
+			context.interfaces.push(tsInterface)
 		}
 	} else if (schema.type === Type.ARRAY) {
 		const itemsSchema = {
@@ -204,7 +224,7 @@ function getTypeForSchema(schema: Schema, context: TemplateContext): string {
 			...schema.items,
 		}
 
-		type = `${getTypeForSchema(itemsSchema, context)}[]`
+		type = `${getTypeForSchema(itemsSchema, context).type}[]`
 	} else if (schema.type === Type.UNION) {
 		const types = schema.types.map(t => {
 			const subSchema = {
@@ -213,7 +233,7 @@ function getTypeForSchema(schema: Schema, context: TemplateContext): string {
 				...t,
 			}
 
-			return getTypeForSchema(subSchema, context)
+			return getTypeForSchema(subSchema, context).type
 		})
 
 		type = types.join(' | ')
@@ -221,5 +241,8 @@ function getTypeForSchema(schema: Schema, context: TemplateContext): string {
 		throw new Error(`Invalid Schema Type: ${schema.type}`)
 	}
 
-	return schema.isNullable && schema.type !== Type.ANY ? `${type} | null` : type
+	return {
+		type: schema.isNullable && schema.type !== Type.ANY ? `${type} | null` : type,
+		interface: tsInterface,
+	}
 }

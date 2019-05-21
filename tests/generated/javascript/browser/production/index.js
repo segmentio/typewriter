@@ -24,6 +24,11 @@ function withTypewriterContext(options = {}) {
 }
 /**
  * Don't do this.
+ *
+ * @param {object} props - The analytics properties that will be sent to Segment.
+ * @param {any} [props.0000---terrible-property-name~!3] - Really, don't do this.
+ * @param {any} [props.identifierId] - Duplicate key error in Android
+ * @param {any} [props.identifier_id] - AcronymStyle bug fixed in v5.0.1
  */
 export function I42TerribleEventName3(props, options, callback) {
 	if (window.analytics) {
@@ -76,6 +81,32 @@ export function emptyEvent(props, options, callback) {
 }
 /**
  * This event contains all supported variations of properties.
+ *
+ * @param {object} props - The analytics properties that will be sent to Segment.
+ * @param {any} [props.optional any] - Optional any property
+ * @param {OptionalArray[]} [props.optional array] - Optional array property
+ * @param {any[]} [props.optional array (empty)] - Optional array (empty) property
+ * @param {boolean} [props.optional boolean] - Optional boolean property
+ * @param {number} [props.optional int] - Optional integer property
+ * @param {string | null} [props.optional nullable string] -
+ * @param {number} [props.optional number] - Optional number property
+ * @param {number | string} [props.optional number or string] -
+ * @param {OptionalObject} [props.optional object] - Optional object property
+ * @param {Record<string, any>} [props.optional object (empty)] - Optional object (empty) property
+ * @param {string} [props.optional string] - Optional string property
+ * @param {string} [props.optional string regex] - Optional string regex property
+ * @param {any} props.required any - Required any property
+ * @param {RequiredArray[]} props.required array - Required array property
+ * @param {any[]} props.required array (empty) - Required array (empty) property
+ * @param {boolean} props.required boolean - Required boolean property
+ * @param {number} props.required int - Required integer property
+ * @param {string | null} props.required nullable string -
+ * @param {number} props.required number - Required number property
+ * @param {number | string} props.required number or string -
+ * @param {RequiredObject} props.required object - Required object property
+ * @param {Record<string, any>} props.required object (empty) - Required object (empty) property
+ * @param {string} props.required string - Required string property
+ * @param {string} props.required string regex - Required string regex property
  */
 export function exampleEvent(props, options, callback) {
 	if (window.analytics) {
