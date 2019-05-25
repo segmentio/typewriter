@@ -14,6 +14,9 @@ interface TemplateContext {
 
 	tracks: TrackCall[]
 	interfaces: TSInterface[]
+
+	language: string
+	typewriterVersion: string
 }
 
 // Represents a single exposed track() call.
@@ -28,7 +31,8 @@ interface TrackCall {
 	type: string
 	// The raw JSON Schema for the event.
 	rawJSONSchema: string
-	// The interface representing the properties parameter
+	// The interface representing the properties parameter. Used only for JSDoc generation
+	// and therefore only set in JavaScript environments.
 	interface?: TSInterface
 }
 
@@ -80,10 +84,7 @@ export default async function(config: GenerationConfig): Promise<File[]> {
 	const files = [
 		{
 			path: config.options.name === Language.TYPESCRIPT ? 'index.ts' : 'index.js',
-			contents: await generateFromTemplate<TemplateContext>(
-				`generators/javascript/${config.options.env}.hbs`,
-				ctx
-			),
+			contents: await generateFromTemplate<TemplateContext>('generators/javascript/index.hbs', ctx),
 		},
 	]
 
@@ -145,6 +146,9 @@ function getContext(config: GenerationConfig): TemplateContext {
 
 		tracks: [],
 		interfaces: [],
+
+		language: config.options.name,
+		typewriterVersion: config.typewriterVersion,
 	}
 
 	for (var track of config.tracks) {
@@ -158,16 +162,17 @@ function getContext(config: GenerationConfig): TemplateContext {
 			description: schema.description,
 			type: rootType.type,
 			rawJSONSchema: JSON.stringify(track.raw, undefined, '\t'),
-			interface: rootType.interface
-				? {
-						...rootType.interface,
-						properties: rootType.interface.properties.map(p => ({
-							...p,
-							// TODO: move this into Handlebars with a helper.
-							type: `{${p.type}}`,
-						})),
-				  }
-				: undefined,
+			interface:
+				rootType.interface && config.options.name === Language.JAVASCRIPT
+					? {
+							...rootType.interface,
+							properties: rootType.interface.properties.map(p => ({
+								...p,
+								// TODO: move this into Handlebars with a helper.
+								type: `{${p.type}}`,
+							})),
+					  }
+					: undefined,
 		})
 	}
 

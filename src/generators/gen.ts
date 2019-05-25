@@ -30,6 +30,7 @@ export interface GenerationConfig {
 		schema: Schema
 	}[]
 	options: Options
+	typewriterVersion: string
 }
 
 export default async function gen(rawSchemas: JSONSchema7[], options: Options): Promise<File[]> {
@@ -39,12 +40,15 @@ export default async function gen(rawSchemas: JSONSchema7[], options: Options): 
 				...s,
 				$schema: 'http://json-schema.org/draft-07/schema#',
 			}
+
 			return {
 				raw: sanitizedSchema,
 				schema: parse(sanitizedSchema),
 			}
 		}),
 		options,
+		// TODO: fetch from package.json
+		typewriterVersion: '7.0.0',
 	}
 
 	if (options.name === Language.TYPESCRIPT || options.name === Language.JAVASCRIPT) {

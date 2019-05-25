@@ -14,7 +14,9 @@ export interface AnalyticsNode {
  * TrackMessage represents a message payload for an analytics `.track()` call.
  * See: https://segment.com/docs/spec/track/
  */
-export interface TrackMessage<PropertiesType> extends Record<string, any> {
+export interface TrackMessage<PropertiesType>
+	extends Options,
+		Record<string, any> {
 	/** The ID for this user in your database. */
 	userId: string | number
 	/** An ID to associated with the user when you don’t know who they are. */
@@ -28,16 +30,16 @@ export interface TrackMessage<PropertiesType> extends Record<string, any> {
 	 * a timestamp.
 	 */
 	timestamp?: Date
+}
+
+/** The callback exposed by analytics-node. */
+export type Callback = (err: Error) => void
+
+/** A dictionary of options. For example, enable or disable specific destinations for the call. */
+export interface Options {
 	/**
-	 * A dictionary of extra context to attach to the call.
-	 * https://segment.com/docs/spec/common/#context
-	 */
-	context?: Context
-	/**
-	 * A dictionary of destination names that the message should be sent to.
-	 * By default all destinations are enabled. 'All' is a special key that
-	 * applies when no key for a specific destination is found.
-	 * https://segment.com/docs/spec/common/#integrations
+	 * Selectivly filter destinations. By default all destinations are enabled.
+	 * https://segment.com/docs/sources/website/analytics.js/#selecting-destinations
 	 */
 	integrations?: {
 		All?: boolean
@@ -46,10 +48,12 @@ export interface TrackMessage<PropertiesType> extends Record<string, any> {
 		}
 		[key: string]: boolean | { [key: string]: string } | undefined
 	}
+	/**
+	 * A dictionary of extra context to attach to the call.
+	 * https://segment.com/docs/spec/common/#context
+	 */
+	context?: Context
 }
-
-/** The callback exposed by analytics-node. */
-export type Callback = (err: Error) => void
 
 /**
  * Context is a dictionary of extra information that provides useful context about a datapoint.

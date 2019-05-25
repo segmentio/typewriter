@@ -36,6 +36,13 @@ export interface {{name}} {
 /** Options to customize the runtime behavior of a Typewriter client. */
 export interface TypewriterOptions {
 	/**
+	 * Underlying analytics instance where analytics calls are forwarded on to.
+	 {{#if isBrowser}}
+	 * Defaults to window.analytics.
+	 {{/if}}
+	 */
+	analytics{{#if isBrowser}}?{{/if}}: {{#if isBrowser}}Segment.AnalyticsJS{{else}}Segment.AnalyticsNode{{/if}}
+	/**
 	 * Handler fired when if an event does not match its spec. Returns a boolean
 	 * indicating if the message should still be sent to Segment. This handler
 	 * does not fire in production mode, because it requires inlining the full
@@ -49,7 +56,7 @@ export interface TypewriterOptions {
 }
 
 export type ValidationErrorHandler = (
-	message: Record<string, any>,
+	message: {{#if isBrowser}}Record<string, any>{{else}}Segment.TrackMessage<Record<string, any>>{{/if}},
 	{{!-- Note: we don't want to require an import of ajv in production just for this type definition. --}}
 	validationErrors: {{#if isDevelopment}}Ajv.ErrorObject{{else}}any{{/if}}[]
 ) => boolean
@@ -75,11 +82,14 @@ export const defaultValidationErrorHandler: ValidationErrorHandler = (message, v
 let onValidationError = defaultValidationErrorHandler
 {{/if}}
 
+{{!-- We use a closure so we can lazy-resolve window.analytics in browser environments. --}}
+let analytics: () => ({{#if isBrowser}}Segment.AnalyticsJS{{else}}Segment.AnalyticsNode{{/if}} | undefined) = () => undefined
+
 /**
  * Update the run-time configuration of this Typewriter client.
- * Note that this is currently a no-op for production builds.
  */
 export function setTypewriterOptions(options: TypewriterOptions) {
+	analytics = () => options.analytics{{#if isBrowser}} || window.analytics{{/if}}
 	{{#if isDevelopment}}
 	onValidationError = options.onValidationError || onValidationError
 	{{/if}}
@@ -92,7 +102,7 @@ export function setTypewriterOptions(options: TypewriterOptions) {
 	* Returns true if the message should be sent on to Segment, and false otherwise.
 	*/
 function matchesSchema(
-	message: Record<string, any>,
+	message: {{#if isBrowser}}Record<string, any>{{else}}Segment.TrackMessage<Record<string, any>>{{/if}},
 	schema: object
 ): boolean {
 	const ajv = new Ajv({ schemaId: 'auto', allErrors: true, verbose: true })
@@ -111,18 +121,28 @@ function matchesSchema(
  * Helper to attach metadata on Typewriter to outbound requests.
  * This is used for attribution and debugging by the Segment team.
  */
-function withTypewriterContext(options: Segment.Options = {}): Segment.Options {
+function withTypewriterContext{{#unless isBrowser}}<P>{{/unless}}(message: {{#if isBrowser}}Segment.Options = {}{{else}}Segment.TrackMessage<P>{{/if}}): {{#if isBrowser}}Segment.Options{{else}}Segment.TrackMessage<P>{{/if}} {
 	return {
-		...options,
+		...message,
 		context: {
-			...(options.context || {}),
+			...(message.context || {}),
 			typewriter: {
-				language: 'ts',
-				version: '7.0.0',
+				language: '{{language}}',
+				version: '{{typewriterVersion}}',
 			},
 		},
 	}
 }
+
+{{#unless isBrowser}}
+/** Helper to insert an event name into a track call. */
+function withEventName<P>(message: Segment.TrackMessage<P>, eventName: string): Segment.TrackMessage<P> {
+  return {
+    ...message,
+    event: eventName,
+  }  
+}
+{{/unless}}
 
 {{#each tracks}}
 {{#if description}}
@@ -137,6 +157,7 @@ function withTypewriterContext(options: Segment.Options = {}): Segment.Options {
  {{/if}}
  */
 {{/if}}
+{{#if ../isBrowser}}
 export function {{functionName}}(
 	props: {{type}},
 	options?: Segment.Options,
@@ -148,14 +169,15 @@ export function {{functionName}}(
 		event: '{{eventName}}',
 		properties: props || {},
 		options,
-	}
+	}	
 	if (!matchesSchema(message, schema)) {
 		return
 	}
 	{{/if}}
 
-	if (window.analytics) {
-		window.analytics.track(
+	const a = analytics()
+	if (a) {
+		a.track(
 			'{{eventName}}',
 			props || {},
 			withTypewriterContext(options),
@@ -163,5 +185,25 @@ export function {{functionName}}(
 		)
 	}
 }
+{{else}}
+export function {{functionName}}(
+	message: Segment.TrackMessage<{{type}}>,
+	callback?: Segment.Callback
+): void {
+	{{#if ../isDevelopment}}
+	const schema = {{rawJSONSchema}}	
+	if (!matchesSchema(message, schema)) {
+		return
+	}
+	{{/if}}
 
+	const a = analytics()
+	if (a) {
+		a.track(
+			withTypewriterContext(withEventName(message, '{{eventName}}')),
+			callback
+		)
+	}
+}
+{{/if}}
 {{/each}}

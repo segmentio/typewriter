@@ -22,6 +22,9 @@ export interface AnalyticsJS {
 	) => void
 }
 
+/** The callback exposed by analytics.js. */
+export type Callback = () => void
+
 /** A dictionary of options. For example, enable or disable specific destinations for the call. */
 export interface Options {
 	/**
@@ -41,9 +44,6 @@ export interface Options {
 	 */
 	context?: Context
 }
-
-/** The callback exposed by analytics.js. */
-export type Callback = () => void
 
 /**
  * Context is a dictionary of extra information that provides useful context about a datapoint.

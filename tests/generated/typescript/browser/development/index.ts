@@ -175,6 +175,11 @@ export interface ExampleEvent {
 /** Options to customize the runtime behavior of a Typewriter client. */
 export interface TypewriterOptions {
 	/**
+	 * Underlying analytics instance where analytics calls are forwarded on to.
+	 * Defaults to window.analytics.
+	 */
+	analytics?: Segment.AnalyticsJS
+	/**
 	 * Handler fired when if an event does not match its spec. Returns a boolean
 	 * indicating if the message should still be sent to Segment. This handler
 	 * does not fire in production mode, because it requires inlining the full
@@ -220,11 +225,13 @@ export const defaultValidationErrorHandler: ValidationErrorHandler = (
 
 let onValidationError = defaultValidationErrorHandler
 
+let analytics: () => Segment.AnalyticsJS | undefined = () => undefined
+
 /**
  * Update the run-time configuration of this Typewriter client.
- * Note that this is currently a no-op for production builds.
  */
 export function setTypewriterOptions(options: TypewriterOptions) {
+	analytics = () => options.analytics || window.analytics
 	onValidationError = options.onValidationError || onValidationError
 }
 
@@ -249,13 +256,13 @@ function matchesSchema(message: Record<string, any>, schema: object): boolean {
  * Helper to attach metadata on Typewriter to outbound requests.
  * This is used for attribution and debugging by the Segment team.
  */
-function withTypewriterContext(options: Segment.Options = {}): Segment.Options {
+function withTypewriterContext(message: Segment.Options = {}): Segment.Options {
 	return {
-		...options,
+		...message,
 		context: {
-			...(options.context || {}),
+			...(message.context || {}),
 			typewriter: {
-				language: 'ts',
+				language: 'typescript',
 				version: '7.0.0',
 			},
 		},
@@ -264,11 +271,6 @@ function withTypewriterContext(options: Segment.Options = {}): Segment.Options {
 
 /**
  * Don't do this.
- *
- * @param {object} props - The analytics properties that will be sent to Segment.
- * @param {any} [props.0000---terrible-property-name~!3] - Really, don't do this.
- * @param {any} [props.identifierId] - Duplicate key error in Android
- * @param {any} [props.identifier_id] - AcronymStyle bug fixed in v5.0.1
  */
 export function I42TerribleEventName3(
 	props: I42TerribleEventName3,
@@ -309,8 +311,9 @@ export function I42TerribleEventName3(
 		return
 	}
 
-	if (window.analytics) {
-		window.analytics.track(
+	const a = analytics()
+	if (a) {
+		a.track(
 			'42_--terrible=="event\'++name~!3',
 			props || {},
 			withTypewriterContext(options),
@@ -318,7 +321,6 @@ export function I42TerribleEventName3(
 		)
 	}
 }
-
 /**
  * This is JSON Schema draft-04 event.
  */
@@ -350,8 +352,9 @@ export function draft04Event(
 		return
 	}
 
-	if (window.analytics) {
-		window.analytics.track(
+	const a = analytics()
+	if (a) {
+		a.track(
 			'Draft-04 Event',
 			props || {},
 			withTypewriterContext(options),
@@ -359,7 +362,6 @@ export function draft04Event(
 		)
 	}
 }
-
 /**
  * This is JSON Schema draft-06 event.
  */
@@ -391,8 +393,9 @@ export function draft06Event(
 		return
 	}
 
-	if (window.analytics) {
-		window.analytics.track(
+	const a = analytics()
+	if (a) {
+		a.track(
 			'Draft-06 Event',
 			props || {},
 			withTypewriterContext(options),
@@ -400,7 +403,6 @@ export function draft06Event(
 		)
 	}
 }
-
 /**
  * This is an empty event.
  */
@@ -432,8 +434,9 @@ export function emptyEvent(
 		return
 	}
 
-	if (window.analytics) {
-		window.analytics.track(
+	const a = analytics()
+	if (a) {
+		a.track(
 			'Empty Event',
 			props || {},
 			withTypewriterContext(options),
@@ -441,35 +444,8 @@ export function emptyEvent(
 		)
 	}
 }
-
 /**
  * This event contains all supported variations of properties.
- *
- * @param {object} props - The analytics properties that will be sent to Segment.
- * @param {any} [props.optional any] - Optional any property
- * @param {OptionalArray[]} [props.optional array] - Optional array property
- * @param {any[]} [props.optional array (empty)] - Optional array (empty) property
- * @param {boolean} [props.optional boolean] - Optional boolean property
- * @param {number} [props.optional int] - Optional integer property
- * @param {string | null} [props.optional nullable string] -
- * @param {number} [props.optional number] - Optional number property
- * @param {number | string} [props.optional number or string] -
- * @param {OptionalObject} [props.optional object] - Optional object property
- * @param {Record<string, any>} [props.optional object (empty)] - Optional object (empty) property
- * @param {string} [props.optional string] - Optional string property
- * @param {string} [props.optional string regex] - Optional string regex property
- * @param {any} props.required any - Required any property
- * @param {RequiredArray[]} props.required array - Required array property
- * @param {any[]} props.required array (empty) - Required array (empty) property
- * @param {boolean} props.required boolean - Required boolean property
- * @param {number} props.required int - Required integer property
- * @param {string | null} props.required nullable string -
- * @param {number} props.required number - Required number property
- * @param {number | string} props.required number or string -
- * @param {RequiredObject} props.required object - Required object property
- * @param {Record<string, any>} props.required object (empty) - Required object (empty) property
- * @param {string} props.required string - Required string property
- * @param {string} props.required string regex - Required string regex property
  */
 export function exampleEvent(
 	props: ExampleEvent,
@@ -673,8 +649,9 @@ export function exampleEvent(
 		return
 	}
 
-	if (window.analytics) {
-		window.analytics.track(
+	const a = analytics()
+	if (a) {
+		a.track(
 			'Example Event',
 			props || {},
 			withTypewriterContext(options),
@@ -682,7 +659,6 @@ export function exampleEvent(
 		)
 	}
 }
-
 /**
  * checkin != check_in bug
  */
@@ -714,16 +690,11 @@ export function checkIn(
 		return
 	}
 
-	if (window.analytics) {
-		window.analytics.track(
-			'check_in',
-			props || {},
-			withTypewriterContext(options),
-			callback
-		)
+	const a = analytics()
+	if (a) {
+		a.track('check_in', props || {}, withTypewriterContext(options), callback)
 	}
 }
-
 /**
  * checkin != check_in bug
  */
@@ -755,12 +726,8 @@ export function checkin(
 		return
 	}
 
-	if (window.analytics) {
-		window.analytics.track(
-			'checkin',
-			props || {},
-			withTypewriterContext(options),
-			callback
-		)
+	const a = analytics()
+	if (a) {
+		a.track('checkin', props || {}, withTypewriterContext(options), callback)
 	}
 }

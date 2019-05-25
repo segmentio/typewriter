@@ -31,11 +31,12 @@ export const defaultValidationErrorHandler = (message, validationErrors) => {
 	return false
 }
 let onValidationError = defaultValidationErrorHandler
+let analytics = () => undefined
 /**
  * Update the run-time configuration of this Typewriter client.
- * Note that this is currently a no-op for production builds.
  */
 export function setTypewriterOptions(options) {
+	analytics = () => options.analytics || window.analytics
 	onValidationError = options.onValidationError || onValidationError
 }
 /**
@@ -56,13 +57,13 @@ function matchesSchema(message, schema) {
  * Helper to attach metadata on Typewriter to outbound requests.
  * This is used for attribution and debugging by the Segment team.
  */
-function withTypewriterContext(options = {}) {
+function withTypewriterContext(message = {}) {
 	return {
-		...options,
+		...message,
 		context: {
-			...(options.context || {}),
+			...(message.context || {}),
 			typewriter: {
-				language: 'ts',
+				language: 'javascript',
 				version: '7.0.0',
 			},
 		},
@@ -110,8 +111,9 @@ export function I42TerribleEventName3(props, options, callback) {
 	if (!matchesSchema(message, schema)) {
 		return
 	}
-	if (window.analytics) {
-		window.analytics.track(
+	const a = analytics()
+	if (a) {
+		a.track(
 			'42_--terrible=="event\'++name~!3',
 			props || {},
 			withTypewriterContext(options),
@@ -145,8 +147,9 @@ export function draft04Event(props, options, callback) {
 	if (!matchesSchema(message, schema)) {
 		return
 	}
-	if (window.analytics) {
-		window.analytics.track(
+	const a = analytics()
+	if (a) {
+		a.track(
 			'Draft-04 Event',
 			props || {},
 			withTypewriterContext(options),
@@ -180,8 +183,9 @@ export function draft06Event(props, options, callback) {
 	if (!matchesSchema(message, schema)) {
 		return
 	}
-	if (window.analytics) {
-		window.analytics.track(
+	const a = analytics()
+	if (a) {
+		a.track(
 			'Draft-06 Event',
 			props || {},
 			withTypewriterContext(options),
@@ -215,8 +219,9 @@ export function emptyEvent(props, options, callback) {
 	if (!matchesSchema(message, schema)) {
 		return
 	}
-	if (window.analytics) {
-		window.analytics.track(
+	const a = analytics()
+	if (a) {
+		a.track(
 			'Empty Event',
 			props || {},
 			withTypewriterContext(options),
@@ -450,8 +455,9 @@ export function exampleEvent(props, options, callback) {
 	if (!matchesSchema(message, schema)) {
 		return
 	}
-	if (window.analytics) {
-		window.analytics.track(
+	const a = analytics()
+	if (a) {
+		a.track(
 			'Example Event',
 			props || {},
 			withTypewriterContext(options),
@@ -485,13 +491,9 @@ export function checkIn(props, options, callback) {
 	if (!matchesSchema(message, schema)) {
 		return
 	}
-	if (window.analytics) {
-		window.analytics.track(
-			'check_in',
-			props || {},
-			withTypewriterContext(options),
-			callback
-		)
+	const a = analytics()
+	if (a) {
+		a.track('check_in', props || {}, withTypewriterContext(options), callback)
 	}
 }
 /**
@@ -520,12 +522,8 @@ export function checkin(props, options, callback) {
 	if (!matchesSchema(message, schema)) {
 		return
 	}
-	if (window.analytics) {
-		window.analytics.track(
-			'checkin',
-			props || {},
-			withTypewriterContext(options),
-			callback
-		)
+	const a = analytics()
+	if (a) {
+		a.track('checkin', props || {}, withTypewriterContext(options), callback)
 	}
 }

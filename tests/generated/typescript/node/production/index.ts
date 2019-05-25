@@ -163,6 +163,39 @@ export interface ExampleEvent {
 	'required string regex': string
 }
 
+/** Options to customize the runtime behavior of a Typewriter client. */
+export interface TypewriterOptions {
+	/**
+	 * Underlying analytics instance where analytics calls are forwarded on to.
+	 */
+	analytics: Segment.AnalyticsNode
+	/**
+	 * Handler fired when if an event does not match its spec. Returns a boolean
+	 * indicating if the message should still be sent to Segment. This handler
+	 * does not fire in production mode, because it requires inlining the full
+	 * JSON Schema spec.
+	 *
+	 * By default, it will throw errors if NODE_ENV = "test" so that tests will fail
+	 * if a message does not match the spec. Otherwise, errors will be logged to stderr.
+	 * Also by default, invalid messages will be dropped.
+	 */
+	onValidationError?: ValidationErrorHandler
+}
+
+export type ValidationErrorHandler = (
+	message: Segment.TrackMessage<Record<string, any>>,
+	validationErrors: any[]
+) => boolean
+
+let analytics: () => Segment.AnalyticsNode | undefined = () => undefined
+
+/**
+ * Update the run-time configuration of this Typewriter client.
+ */
+export function setTypewriterOptions(options: TypewriterOptions) {
+	analytics = () => options.analytics
+}
+
 /**
  * Helper to attach metadata on Typewriter to outbound requests.
  * This is used for attribution and debugging by the Segment team.
@@ -175,7 +208,7 @@ function withTypewriterContext<P>(
 		context: {
 			...(message.context || {}),
 			typewriter: {
-				language: 'ts',
+				language: 'typescript',
 				version: '7.0.0',
 			},
 		},
@@ -193,136 +226,104 @@ function withEventName<P>(
 	}
 }
 
-export type ValidationErrorHandler = (
-	message: Segment.TrackMessage<Record<string, any>>,
-	validationErrors: any[]
-) => boolean
-
-/** Options to customize the runtime behavior of a Typewriter client. */
-export interface TypewriterOptions {
-	/**
-	 * Handler fired when if an event does not match its spec. Returns a boolean
-	 * indicating if the message should still be sent to Segment. This handler
-	 * does not fire in production mode, because it requires inlining the full
-	 * JSON Schema spec.
-	 *
-	 * By default, it will throw errors if NODE_ENV = "test" so that tests will fail
-	 * if a message does not match the spec. Otherwise, errors will be logged to stderr.
-	 * Also by default, invalid messages will be dropped.
-	 */
-	onValidationError?: ValidationErrorHandler
-}
-
 /**
- * A strongly-typed wrapper around analytics-node automatically generated based on your Tracking Plan.
+ * Don't do this.
  */
-export default class Analytics {
-	private analytics: Segment.AnalyticsNode
-
-	/**
-	 * Instantiate a wrapper around an analytics-node instance.
-	 * @param {Segment.AnalyticsNode} analytics The analytics-node library to wrap
-	 * @param {TypewriterOptions} [options] Optional configuration of the Typewriter client
-	 * @param {function} [options.onValidationError] Error handler fired when run-time validation errors
-	 *     are raised.
-	 */
-	public constructor(
-		analytics: Segment.AnalyticsNode,
-		options: TypewriterOptions = {}
-	) {
-		this.analytics = analytics || { track: () => null }
-	}
-
-	/**
-	 * Don't do this.
-	 */
-	public I42TerribleEventName3(
-		message: Segment.TrackMessage<I42TerribleEventName3>,
-		callback?: Segment.Callback
-	): void {
-		this.analytics.track(
+export function I42TerribleEventName3(
+	message: Segment.TrackMessage<I42TerribleEventName3>,
+	callback?: Segment.Callback
+): void {
+	const a = analytics()
+	if (a) {
+		a.track(
 			withTypewriterContext(
 				withEventName(message, '42_--terrible=="event\'++name~!3')
 			),
 			callback
 		)
 	}
-
-	/**
-	 * This is JSON Schema draft-04 event.
-	 */
-	public draft04Event(
-		message: Segment.TrackMessage<Record<string, any>>,
-		callback?: Segment.Callback
-	): void {
-		this.analytics.track(
+}
+/**
+ * This is JSON Schema draft-04 event.
+ */
+export function draft04Event(
+	message: Segment.TrackMessage<Record<string, any>>,
+	callback?: Segment.Callback
+): void {
+	const a = analytics()
+	if (a) {
+		a.track(
 			withTypewriterContext(withEventName(message, 'Draft-04 Event')),
 			callback
 		)
 	}
-
-	/**
-	 * This is JSON Schema draft-06 event.
-	 */
-	public draft06Event(
-		message: Segment.TrackMessage<Record<string, any>>,
-		callback?: Segment.Callback
-	): void {
-		this.analytics.track(
+}
+/**
+ * This is JSON Schema draft-06 event.
+ */
+export function draft06Event(
+	message: Segment.TrackMessage<Record<string, any>>,
+	callback?: Segment.Callback
+): void {
+	const a = analytics()
+	if (a) {
+		a.track(
 			withTypewriterContext(withEventName(message, 'Draft-06 Event')),
 			callback
 		)
 	}
-
-	/**
-	 * This is an empty event.
-	 */
-	public emptyEvent(
-		message: Segment.TrackMessage<Record<string, any>>,
-		callback?: Segment.Callback
-	): void {
-		this.analytics.track(
+}
+/**
+ * This is an empty event.
+ */
+export function emptyEvent(
+	message: Segment.TrackMessage<Record<string, any>>,
+	callback?: Segment.Callback
+): void {
+	const a = analytics()
+	if (a) {
+		a.track(
 			withTypewriterContext(withEventName(message, 'Empty Event')),
 			callback
 		)
 	}
-
-	/**
-	 * This event contains all supported variations of properties.
-	 */
-	public exampleEvent(
-		message: Segment.TrackMessage<ExampleEvent>,
-		callback?: Segment.Callback
-	): void {
-		this.analytics.track(
+}
+/**
+ * This event contains all supported variations of properties.
+ */
+export function exampleEvent(
+	message: Segment.TrackMessage<ExampleEvent>,
+	callback?: Segment.Callback
+): void {
+	const a = analytics()
+	if (a) {
+		a.track(
 			withTypewriterContext(withEventName(message, 'Example Event')),
 			callback
 		)
 	}
-
-	/**
-	 * checkin != check_in bug
-	 */
-	public checkIn(
-		message: Segment.TrackMessage<Record<string, any>>,
-		callback?: Segment.Callback
-	): void {
-		this.analytics.track(
-			withTypewriterContext(withEventName(message, 'check_in')),
-			callback
-		)
+}
+/**
+ * checkin != check_in bug
+ */
+export function checkIn(
+	message: Segment.TrackMessage<Record<string, any>>,
+	callback?: Segment.Callback
+): void {
+	const a = analytics()
+	if (a) {
+		a.track(withTypewriterContext(withEventName(message, 'check_in')), callback)
 	}
-
-	/**
-	 * checkin != check_in bug
-	 */
-	public checkin(
-		message: Segment.TrackMessage<Record<string, any>>,
-		callback?: Segment.Callback
-	): void {
-		this.analytics.track(
-			withTypewriterContext(withEventName(message, 'checkin')),
-			callback
-		)
+}
+/**
+ * checkin != check_in bug
+ */
+export function checkin(
+	message: Segment.TrackMessage<Record<string, any>>,
+	callback?: Segment.Callback
+): void {
+	const a = analytics()
+	if (a) {
+		a.track(withTypewriterContext(withEventName(message, 'checkin')), callback)
 	}
 }
