@@ -273,17 +273,6 @@ function withTypewriterContext<P>(
 	}
 }
 
-/** Helper to insert an event name into a track call. */
-function withEventName<P>(
-	message: Segment.TrackMessage<P>,
-	eventName: string
-): Segment.TrackMessage<P> {
-	return {
-		...message,
-		event: eventName,
-	}
-}
-
 /**
  * Don't do this.
  */
@@ -291,6 +280,12 @@ export function I42TerribleEventName3(
 	message: Segment.TrackMessage<I42TerribleEventName3>,
 	callback?: Segment.Callback
 ): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: '42_--terrible=="event\'++name~!3',
+	})
+
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
 		properties: {
@@ -316,18 +311,13 @@ export function I42TerribleEventName3(
 		title: '42_--terrible=="event\'++name~!3',
 		description: "Don't do this.",
 	}
-	if (!matchesSchema(message, schema)) {
+	if (!matchesSchema(msg, schema)) {
 		return
 	}
 
 	const a = analytics()
 	if (a) {
-		a.track(
-			withTypewriterContext(
-				withEventName(message, '42_--terrible=="event\'++name~!3')
-			),
-			callback
-		)
+		a.track(msg, callback)
 	}
 }
 /**
@@ -337,6 +327,12 @@ export function draft04Event(
 	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback
 ): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'Draft-04 Event',
+	})
+
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
 		properties: {
@@ -351,16 +347,13 @@ export function draft04Event(
 		title: 'Draft-04 Event',
 		description: 'This is JSON Schema draft-04 event.',
 	}
-	if (!matchesSchema(message, schema)) {
+	if (!matchesSchema(msg, schema)) {
 		return
 	}
 
 	const a = analytics()
 	if (a) {
-		a.track(
-			withTypewriterContext(withEventName(message, 'Draft-04 Event')),
-			callback
-		)
+		a.track(msg, callback)
 	}
 }
 /**
@@ -370,6 +363,12 @@ export function draft06Event(
 	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback
 ): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'Draft-06 Event',
+	})
+
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
 		properties: {
@@ -384,16 +383,13 @@ export function draft06Event(
 		title: 'Draft-06 Event',
 		description: 'This is JSON Schema draft-06 event.',
 	}
-	if (!matchesSchema(message, schema)) {
+	if (!matchesSchema(msg, schema)) {
 		return
 	}
 
 	const a = analytics()
 	if (a) {
-		a.track(
-			withTypewriterContext(withEventName(message, 'Draft-06 Event')),
-			callback
-		)
+		a.track(msg, callback)
 	}
 }
 /**
@@ -403,6 +399,12 @@ export function emptyEvent(
 	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback
 ): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'Empty Event',
+	})
+
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
 		properties: {
@@ -417,16 +419,13 @@ export function emptyEvent(
 		title: 'Empty Event',
 		description: 'This is an empty event.',
 	}
-	if (!matchesSchema(message, schema)) {
+	if (!matchesSchema(msg, schema)) {
 		return
 	}
 
 	const a = analytics()
 	if (a) {
-		a.track(
-			withTypewriterContext(withEventName(message, 'Empty Event')),
-			callback
-		)
+		a.track(msg, callback)
 	}
 }
 /**
@@ -436,6 +435,12 @@ export function exampleEvent(
 	message: Segment.TrackMessage<ExampleEvent>,
 	callback?: Segment.Callback
 ): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'Example Event',
+	})
+
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
 		properties: {
@@ -624,16 +629,13 @@ export function exampleEvent(
 		title: 'Example Event',
 		description: 'This event contains all supported variations of properties.',
 	}
-	if (!matchesSchema(message, schema)) {
+	if (!matchesSchema(msg, schema)) {
 		return
 	}
 
 	const a = analytics()
 	if (a) {
-		a.track(
-			withTypewriterContext(withEventName(message, 'Example Event')),
-			callback
-		)
+		a.track(msg, callback)
 	}
 }
 /**
@@ -643,6 +645,12 @@ export function checkIn(
 	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback
 ): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'check_in',
+	})
+
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
 		labels: {},
@@ -657,13 +665,13 @@ export function checkIn(
 		title: 'check_in',
 		description: 'checkin != check_in bug',
 	}
-	if (!matchesSchema(message, schema)) {
+	if (!matchesSchema(msg, schema)) {
 		return
 	}
 
 	const a = analytics()
 	if (a) {
-		a.track(withTypewriterContext(withEventName(message, 'check_in')), callback)
+		a.track(msg, callback)
 	}
 }
 /**
@@ -673,6 +681,12 @@ export function checkin(
 	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback
 ): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'checkin',
+	})
+
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
 		labels: {},
@@ -687,12 +701,12 @@ export function checkin(
 		title: 'checkin',
 		description: 'checkin != check_in bug',
 	}
-	if (!matchesSchema(message, schema)) {
+	if (!matchesSchema(msg, schema)) {
 		return
 	}
 
 	const a = analytics()
 	if (a) {
-		a.track(withTypewriterContext(withEventName(message, 'checkin')), callback)
+		a.track(msg, callback)
 	}
 }

@@ -69,13 +69,6 @@ function withTypewriterContext(message) {
 		},
 	}
 }
-/** Helper to insert an event name into a track call. */
-function withEventName(message, eventName) {
-	return {
-		...message,
-		event: eventName,
-	}
-}
 /**
  * Don't do this.
  *
@@ -85,6 +78,11 @@ function withEventName(message, eventName) {
  * @param {any} [props.identifier_id] - AcronymStyle bug fixed in v5.0.1
  */
 export function I42TerribleEventName3(message, callback) {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: '42_--terrible=="event\'++name~!3',
+	})
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
 		properties: {
@@ -110,23 +108,23 @@ export function I42TerribleEventName3(message, callback) {
 		title: '42_--terrible=="event\'++name~!3',
 		description: "Don't do this.",
 	}
-	if (!matchesSchema(message, schema)) {
+	if (!matchesSchema(msg, schema)) {
 		return
 	}
 	const a = analytics()
 	if (a) {
-		a.track(
-			withTypewriterContext(
-				withEventName(message, '42_--terrible=="event\'++name~!3')
-			),
-			callback
-		)
+		a.track(msg, callback)
 	}
 }
 /**
  * This is JSON Schema draft-04 event.
  */
 export function draft04Event(message, callback) {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'Draft-04 Event',
+	})
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
 		properties: {
@@ -141,21 +139,23 @@ export function draft04Event(message, callback) {
 		title: 'Draft-04 Event',
 		description: 'This is JSON Schema draft-04 event.',
 	}
-	if (!matchesSchema(message, schema)) {
+	if (!matchesSchema(msg, schema)) {
 		return
 	}
 	const a = analytics()
 	if (a) {
-		a.track(
-			withTypewriterContext(withEventName(message, 'Draft-04 Event')),
-			callback
-		)
+		a.track(msg, callback)
 	}
 }
 /**
  * This is JSON Schema draft-06 event.
  */
 export function draft06Event(message, callback) {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'Draft-06 Event',
+	})
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
 		properties: {
@@ -170,21 +170,23 @@ export function draft06Event(message, callback) {
 		title: 'Draft-06 Event',
 		description: 'This is JSON Schema draft-06 event.',
 	}
-	if (!matchesSchema(message, schema)) {
+	if (!matchesSchema(msg, schema)) {
 		return
 	}
 	const a = analytics()
 	if (a) {
-		a.track(
-			withTypewriterContext(withEventName(message, 'Draft-06 Event')),
-			callback
-		)
+		a.track(msg, callback)
 	}
 }
 /**
  * This is an empty event.
  */
 export function emptyEvent(message, callback) {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'Empty Event',
+	})
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
 		properties: {
@@ -199,15 +201,12 @@ export function emptyEvent(message, callback) {
 		title: 'Empty Event',
 		description: 'This is an empty event.',
 	}
-	if (!matchesSchema(message, schema)) {
+	if (!matchesSchema(msg, schema)) {
 		return
 	}
 	const a = analytics()
 	if (a) {
-		a.track(
-			withTypewriterContext(withEventName(message, 'Empty Event')),
-			callback
-		)
+		a.track(msg, callback)
 	}
 }
 /**
@@ -240,6 +239,11 @@ export function emptyEvent(message, callback) {
  * @param {string} props.required string regex - Required string regex property
  */
 export function exampleEvent(message, callback) {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'Example Event',
+	})
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
 		properties: {
@@ -428,21 +432,23 @@ export function exampleEvent(message, callback) {
 		title: 'Example Event',
 		description: 'This event contains all supported variations of properties.',
 	}
-	if (!matchesSchema(message, schema)) {
+	if (!matchesSchema(msg, schema)) {
 		return
 	}
 	const a = analytics()
 	if (a) {
-		a.track(
-			withTypewriterContext(withEventName(message, 'Example Event')),
-			callback
-		)
+		a.track(msg, callback)
 	}
 }
 /**
  * checkin != check_in bug
  */
 export function checkIn(message, callback) {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'check_in',
+	})
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
 		labels: {},
@@ -457,18 +463,23 @@ export function checkIn(message, callback) {
 		title: 'check_in',
 		description: 'checkin != check_in bug',
 	}
-	if (!matchesSchema(message, schema)) {
+	if (!matchesSchema(msg, schema)) {
 		return
 	}
 	const a = analytics()
 	if (a) {
-		a.track(withTypewriterContext(withEventName(message, 'check_in')), callback)
+		a.track(msg, callback)
 	}
 }
 /**
  * checkin != check_in bug
  */
 export function checkin(message, callback) {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'checkin',
+	})
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
 		labels: {},
@@ -483,11 +494,11 @@ export function checkin(message, callback) {
 		title: 'checkin',
 		description: 'checkin != check_in bug',
 	}
-	if (!matchesSchema(message, schema)) {
+	if (!matchesSchema(msg, schema)) {
 		return
 	}
 	const a = analytics()
 	if (a) {
-		a.track(withTypewriterContext(withEventName(message, 'checkin')), callback)
+		a.track(msg, callback)
 	}
 }

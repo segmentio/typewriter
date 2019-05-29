@@ -134,16 +134,6 @@ function withTypewriterContext{{#unless isBrowser}}<P>{{/unless}}(message: {{#if
 	}
 }
 
-{{#unless isBrowser}}
-/** Helper to insert an event name into a track call. */
-function withEventName<P>(message: Segment.TrackMessage<P>, eventName: string): Segment.TrackMessage<P> {
-  return {
-    ...message,
-    event: eventName,
-  }  
-}
-{{/unless}}
-
 {{#each tracks}}
 {{#if description}}
 /**
@@ -169,7 +159,7 @@ export function {{functionName}}(
 		event: '{{eventName}}',
 		properties: props || {},
 		options,
-	}	
+	}
 	if (!matchesSchema(message, schema)) {
 		return
 	}
@@ -190,19 +180,22 @@ export function {{functionName}}(
 	message: Segment.TrackMessage<{{type}}>,
 	callback?: Segment.Callback
 ): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: '{{eventName}}'
+	})
+
 	{{#if ../isDevelopment}}
 	const schema = {{rawJSONSchema}}	
-	if (!matchesSchema(message, schema)) {
+	if (!matchesSchema(msg, schema)) {
 		return
 	}
 	{{/if}}
 
 	const a = analytics()
 	if (a) {
-		a.track(
-			withTypewriterContext(withEventName(message, '{{eventName}}')),
-			callback
-		)
+		a.track(msg, callback)
 	}
 }
 {{/if}}

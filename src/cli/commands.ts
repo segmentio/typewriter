@@ -204,12 +204,15 @@ it to your team using a shell command by setting a tokenCommand in typewriter.ym
 		tokenCommand: response.tokenProvider === 'command' ? response.tokenCommand : undefined,
 	}
 
-	await setConfig(cfg)
+	await setConfig(cfg, args.config)
+
+	console.log("Successfully initialized a new 'typewriter.yml' configuration.")
 
 	// Now generate a client using the newly initialized configuration.
-	console.log("Successfully initialized a new 'typewriter.yml' configuration.")
-	console.log("Running 'npx typewriter@next' to build your typewriter client...")
-	await generate(args)
+	if (response.tokenProvider !== 'generate') {
+		console.log("Running 'npx typewriter@next' to build your typewriter client...")
+		await generate(args)
+	}
 }
 
 export async function generate(args: Arguments) {

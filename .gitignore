@@ -72,9 +72,13 @@ package-lock.json
 .vscode
 
 # Typewriter client
-src/analytics
+src/analytics/*
 !src/analytics/plan.json
 
 # Example Typewriter client
-example/analytics
+example/analytics/*
 !example/analytics/plan.json
+
+# E2E Test Typewriter clients
+tests/e2e/**/analytics/*
+!tests/e2e/**/analytics/plan.json

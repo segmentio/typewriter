@@ -24,13 +24,6 @@ function withTypewriterContext(message) {
 		},
 	}
 }
-/** Helper to insert an event name into a track call. */
-function withEventName(message, eventName) {
-	return {
-		...message,
-		event: eventName,
-	}
-}
 /**
  * Don't do this.
  *
@@ -40,50 +33,56 @@ function withEventName(message, eventName) {
  * @param {any} [props.identifier_id] - AcronymStyle bug fixed in v5.0.1
  */
 export function I42TerribleEventName3(message, callback) {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: '42_--terrible=="event\'++name~!3',
+	})
 	const a = analytics()
 	if (a) {
-		a.track(
-			withTypewriterContext(
-				withEventName(message, '42_--terrible=="event\'++name~!3')
-			),
-			callback
-		)
+		a.track(msg, callback)
 	}
 }
 /**
  * This is JSON Schema draft-04 event.
  */
 export function draft04Event(message, callback) {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'Draft-04 Event',
+	})
 	const a = analytics()
 	if (a) {
-		a.track(
-			withTypewriterContext(withEventName(message, 'Draft-04 Event')),
-			callback
-		)
+		a.track(msg, callback)
 	}
 }
 /**
  * This is JSON Schema draft-06 event.
  */
 export function draft06Event(message, callback) {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'Draft-06 Event',
+	})
 	const a = analytics()
 	if (a) {
-		a.track(
-			withTypewriterContext(withEventName(message, 'Draft-06 Event')),
-			callback
-		)
+		a.track(msg, callback)
 	}
 }
 /**
  * This is an empty event.
  */
 export function emptyEvent(message, callback) {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'Empty Event',
+	})
 	const a = analytics()
 	if (a) {
-		a.track(
-			withTypewriterContext(withEventName(message, 'Empty Event')),
-			callback
-		)
+		a.track(msg, callback)
 	}
 }
 /**
@@ -116,29 +115,41 @@ export function emptyEvent(message, callback) {
  * @param {string} props.required string regex - Required string regex property
  */
 export function exampleEvent(message, callback) {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'Example Event',
+	})
 	const a = analytics()
 	if (a) {
-		a.track(
-			withTypewriterContext(withEventName(message, 'Example Event')),
-			callback
-		)
+		a.track(msg, callback)
 	}
 }
 /**
  * checkin != check_in bug
  */
 export function checkIn(message, callback) {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'check_in',
+	})
 	const a = analytics()
 	if (a) {
-		a.track(withTypewriterContext(withEventName(message, 'check_in')), callback)
+		a.track(msg, callback)
 	}
 }
 /**
  * checkin != check_in bug
  */
 export function checkin(message, callback) {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'checkin',
+	})
 	const a = analytics()
 	if (a) {
-		a.track(withTypewriterContext(withEventName(message, 'checkin')), callback)
+		a.track(msg, callback)
 	}
 }

@@ -215,17 +215,6 @@ function withTypewriterContext<P>(
 	}
 }
 
-/** Helper to insert an event name into a track call. */
-function withEventName<P>(
-	message: Segment.TrackMessage<P>,
-	eventName: string
-): Segment.TrackMessage<P> {
-	return {
-		...message,
-		event: eventName,
-	}
-}
-
 /**
  * Don't do this.
  */
@@ -233,14 +222,15 @@ export function I42TerribleEventName3(
 	message: Segment.TrackMessage<I42TerribleEventName3>,
 	callback?: Segment.Callback
 ): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: '42_--terrible=="event\'++name~!3',
+	})
+
 	const a = analytics()
 	if (a) {
-		a.track(
-			withTypewriterContext(
-				withEventName(message, '42_--terrible=="event\'++name~!3')
-			),
-			callback
-		)
+		a.track(msg, callback)
 	}
 }
 /**
@@ -250,12 +240,15 @@ export function draft04Event(
 	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback
 ): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'Draft-04 Event',
+	})
+
 	const a = analytics()
 	if (a) {
-		a.track(
-			withTypewriterContext(withEventName(message, 'Draft-04 Event')),
-			callback
-		)
+		a.track(msg, callback)
 	}
 }
 /**
@@ -265,12 +258,15 @@ export function draft06Event(
 	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback
 ): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'Draft-06 Event',
+	})
+
 	const a = analytics()
 	if (a) {
-		a.track(
-			withTypewriterContext(withEventName(message, 'Draft-06 Event')),
-			callback
-		)
+		a.track(msg, callback)
 	}
 }
 /**
@@ -280,12 +276,15 @@ export function emptyEvent(
 	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback
 ): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'Empty Event',
+	})
+
 	const a = analytics()
 	if (a) {
-		a.track(
-			withTypewriterContext(withEventName(message, 'Empty Event')),
-			callback
-		)
+		a.track(msg, callback)
 	}
 }
 /**
@@ -295,12 +294,15 @@ export function exampleEvent(
 	message: Segment.TrackMessage<ExampleEvent>,
 	callback?: Segment.Callback
 ): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'Example Event',
+	})
+
 	const a = analytics()
 	if (a) {
-		a.track(
-			withTypewriterContext(withEventName(message, 'Example Event')),
-			callback
-		)
+		a.track(msg, callback)
 	}
 }
 /**
@@ -310,9 +312,15 @@ export function checkIn(
 	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback
 ): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'check_in',
+	})
+
 	const a = analytics()
 	if (a) {
-		a.track(withTypewriterContext(withEventName(message, 'check_in')), callback)
+		a.track(msg, callback)
 	}
 }
 /**
@@ -322,8 +330,14 @@ export function checkin(
 	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback
 ): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'checkin',
+	})
+
 	const a = analytics()
 	if (a) {
-		a.track(withTypewriterContext(withEventName(message, 'checkin')), callback)
+		a.track(msg, callback)
 	}
 }

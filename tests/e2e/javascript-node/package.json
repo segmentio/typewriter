@@ -1,0 +1,33 @@
+{
+  "name": "typewriter-e2e-javascript-node",
+  "version": "1.0.0",
+  "description": "e2e test for Typewriter JS node client",
+  "main": "index.js",
+  "repository": "https://github.com/segmentio/typewriter",
+  "author": "Colin King <colin.king@segment.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "analytics-node": "^3.3.0",
+    "jest": "^24.8.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "babel-jest": "^24.8.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2"
+  },
+  "jest": {
+    "verbose": true,
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    }
+  },
+  "babel": {
+    "plugins": [
+      "transform-es2015-modules-commonjs"
+    ]
+  }
+}

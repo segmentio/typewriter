@@ -12,7 +12,7 @@
   "scripts": {
     "dev": "ts-node ./src/cli",
     "build": "rm -rf dist && tsc && copyfiles -u 1 \"src/**/*.hbs\" \"src/cli/typewriter.yml.schema.json\" dist/",
-    "test": "jest",
+    "test": "jest && make test",
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "precommit": "lint-staged",
     "release": "yarn run build && np",
@@ -109,6 +109,10 @@
   "jest": {
     "modulePaths": [
       "<rootDir>/"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/tests/e2e/"
     ],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
