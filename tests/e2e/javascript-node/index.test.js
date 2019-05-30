@@ -1,14 +1,17 @@
 /* eslint-disable no-null/no-null */
 import { emptyEvent, eventWithAllTypes, setTypewriterOptions } from './analytics'
 import SegmentAnalytics from 'analytics-node'
+import fetch from 'node-fetch'
+import { promisify } from 'util'
 
 const SIDECAR_ADDRESS = 'http://localhost:8765'
 
-test('Validate Analytics Calls', () => {
+test('Validate Analytics Calls', async cb => {
 	// Initialize an analytics-node instance.
 	const analytics = new SegmentAnalytics('123456', {
 		host: SIDECAR_ADDRESS,
 	})
+	analytics.flush = promisify(analytics.flush)
 
 	setTypewriterOptions({
 		analytics,
@@ -41,4 +44,14 @@ test('Validate Analytics Calls', () => {
 		},
 		userId: '1234',
 	})
+
+	await analytics.flush()
+
+	const resp = await fetch(`${SIDECAR_ADDRESS}/messages`)
+	const messages = await resp.json()
+	console.log(messages)
+
+	expect(messages).toMatchSnapshot()
+
+	cb()
 })

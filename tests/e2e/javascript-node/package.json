@@ -23,7 +23,8 @@
     "verbose": true,
     "transform": {
       "^.+\\.js$": "babel-jest"
-    }
+    },
+    "testEnvironment": "node"
   },
   "babel": {
     "plugins": [
