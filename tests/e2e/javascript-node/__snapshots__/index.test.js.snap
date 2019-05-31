@@ -19,7 +19,7 @@ Array [
     "event": "Empty Event",
     "properties": Object {},
     "type": "track",
-    "userId": "1234",
+    "userId": "user-1234",
   },
   Object {
     "_metadata": Object {
@@ -60,7 +60,89 @@ Array [
       "required string regex": "FOO",
     },
     "type": "track",
-    "userId": "1234",
+    "userId": "user-1234",
+  },
+  Object {
+    "_metadata": Object {
+      "nodeVersion": "10.15.3",
+    },
+    "context": Object {
+      "library": Object {
+        "name": "analytics-node",
+        "version": "3.3.0",
+      },
+      "typewriter": Object {
+        "language": "javascript",
+        "version": "7.0.0",
+      },
+    },
+    "event": "42_--terrible==\\"event'++name~!3",
+    "properties": Object {
+      "0000---terrible-property-name~!3": "foobar",
+      "propertyNameCollision": "camelcase",
+      "property_name_collision": "snakecase",
+    },
+    "type": "track",
+    "userId": "user-1234",
+  },
+  Object {
+    "_metadata": Object {
+      "nodeVersion": "10.15.3",
+    },
+    "context": Object {
+      "library": Object {
+        "name": "analytics-node",
+        "version": "3.3.0",
+      },
+      "typewriter": Object {
+        "language": "javascript",
+        "version": "7.0.0",
+      },
+    },
+    "event": "example naming collision",
+    "properties": Object {},
+    "type": "track",
+    "userId": "user-1234",
+  },
+  Object {
+    "_metadata": Object {
+      "nodeVersion": "10.15.3",
+    },
+    "context": Object {
+      "library": Object {
+        "name": "analytics-node",
+        "version": "3.3.0",
+      },
+      "typewriter": Object {
+        "language": "javascript",
+        "version": "7.0.0",
+      },
+    },
+    "event": "example_naming_collision_2",
+    "properties": Object {},
+    "type": "track",
+    "userId": "user-1234",
+  },
+  Object {
+    "_metadata": Object {
+      "nodeVersion": "10.15.3",
+    },
+    "context": Object {
+      "library": Object {
+        "name": "analytics-node",
+        "version": "3.3.0",
+      },
+      "typewriter": Object {
+        "language": "javascript",
+        "version": "7.0.0",
+      },
+    },
+    "event": "Violation Handler Test",
+    "properties": Object {
+      "required string": "Hello World",
+    },
+    "type": "track",
+    "userId": "user-1234",
   },
 ]
 `;

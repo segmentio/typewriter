@@ -187,19 +187,19 @@ export interface TypewriterOptions {
 	 *
 	 * By default, it will throw errors if NODE_ENV = "test" so that tests will fail
 	 * if a message does not match the spec. Otherwise, errors will be logged to stderr.
-	 * Also by default, invalid messages will be dropped.
+	 * Also by default, messages that generate Violations will be dropped.
 	 */
-	onValidationError?: ValidationErrorHandler
+	onViolation?: ViolationHandler
 }
 
-export type ValidationErrorHandler = (
+export type ViolationHandler = (
 	message: Record<string, any>,
-	validationErrors: Ajv.ErrorObject[]
+	violations: Ajv.ErrorObject[]
 ) => boolean
 
-export const defaultValidationErrorHandler: ValidationErrorHandler = (
+export const defaultValidationErrorHandler: ViolationHandler = (
 	message,
-	validationErrors
+	violations
 ) => {
 	const msg = JSON.stringify(
 		{
@@ -209,7 +209,7 @@ export const defaultValidationErrorHandler: ValidationErrorHandler = (
 					message.event
 				}) using Typewriter that doesn't match the ` +
 				'Tracking Plan spec. Your analytics call will continue to fire in production.',
-			errors: validationErrors,
+			errors: violations,
 		},
 		undefined,
 		2
@@ -223,7 +223,7 @@ export const defaultValidationErrorHandler: ValidationErrorHandler = (
 	return false
 }
 
-let onValidationError = defaultValidationErrorHandler
+let onViolation = defaultValidationErrorHandler
 
 let analytics: () => Segment.AnalyticsJS | undefined = () => undefined
 
@@ -231,13 +231,15 @@ let analytics: () => Segment.AnalyticsJS | undefined = () => undefined
  * Update the run-time configuration of this Typewriter client.
  */
 export function setTypewriterOptions(options: TypewriterOptions) {
-	analytics = () => options.analytics || window.analytics
-	onValidationError = options.onValidationError || onValidationError
+	analytics = options.analytics
+		? () => options.analytics || window.analytics
+		: analytics
+	onViolation = options.onViolation || onViolation
 }
 
 /**
  * Validates a message against a JSON Schema using Ajv. If the message
- * is invalid, the `onValidationError` handler will be called.
+ * is invalid, the `onViolation` handler will be called.
  * Returns true if the message should be sent on to Segment, and false otherwise.
  */
 function matchesSchema(message: Record<string, any>, schema: object): boolean {
@@ -246,7 +248,7 @@ function matchesSchema(message: Record<string, any>, schema: object): boolean {
 	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
 
 	if (!ajv.validate(schema, message) && ajv.errors) {
-		return onValidationError(message, ajv.errors)
+		return onViolation(message, ajv.errors)
 	}
 
 	return true

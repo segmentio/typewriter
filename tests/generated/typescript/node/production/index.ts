@@ -177,14 +177,14 @@ export interface TypewriterOptions {
 	 *
 	 * By default, it will throw errors if NODE_ENV = "test" so that tests will fail
 	 * if a message does not match the spec. Otherwise, errors will be logged to stderr.
-	 * Also by default, invalid messages will be dropped.
+	 * Also by default, messages that generate Violations will be dropped.
 	 */
-	onValidationError?: ValidationErrorHandler
+	onViolation?: ViolationHandler
 }
 
-export type ValidationErrorHandler = (
+export type ViolationHandler = (
 	message: Segment.TrackMessage<Record<string, any>>,
-	validationErrors: any[]
+	violations: any[]
 ) => boolean
 
 let analytics: () => Segment.AnalyticsNode | undefined = () => undefined
@@ -193,7 +193,7 @@ let analytics: () => Segment.AnalyticsNode | undefined = () => undefined
  * Update the run-time configuration of this Typewriter client.
  */
 export function setTypewriterOptions(options: TypewriterOptions) {
-	analytics = () => options.analytics
+	analytics = options.analytics ? () => options.analytics : analytics
 }
 
 /**
@@ -215,6 +215,19 @@ function withTypewriterContext<P>(
 	}
 }
 
+const missingAnalyticsNodeError = new Error(`You must set an analytics-node instance:
+
+>	const SegmentAnalytics = require('analytics-node')
+>	const { setTypewriterOptions } = require('./analytics')
+>
+>	const analytics = new SegmentAnalytics('SEGMENT_WRITE_KEY')
+>	setTypewriterOptions({
+>		analytics: analytics,
+>	})
+
+For more information on analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/
+`)
+
 /**
  * Don't do this.
  */
@@ -231,6 +244,8 @@ export function I42TerribleEventName3(
 	const a = analytics()
 	if (a) {
 		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
@@ -249,6 +264,8 @@ export function draft04Event(
 	const a = analytics()
 	if (a) {
 		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
@@ -267,6 +284,8 @@ export function draft06Event(
 	const a = analytics()
 	if (a) {
 		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
@@ -285,6 +304,8 @@ export function emptyEvent(
 	const a = analytics()
 	if (a) {
 		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
@@ -303,6 +324,8 @@ export function exampleEvent(
 	const a = analytics()
 	if (a) {
 		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
@@ -321,6 +344,8 @@ export function checkIn(
 	const a = analytics()
 	if (a) {
 		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
@@ -339,5 +364,7 @@ export function checkin(
 	const a = analytics()
 	if (a) {
 		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }

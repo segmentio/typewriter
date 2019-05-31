@@ -6,7 +6,7 @@ let analytics = () => undefined
  * Update the run-time configuration of this Typewriter client.
  */
 export function setTypewriterOptions(options) {
-	analytics = () => options.analytics
+	analytics = options.analytics ? () => options.analytics : analytics
 }
 /**
  * Helper to attach metadata on Typewriter to outbound requests.
@@ -24,6 +24,18 @@ function withTypewriterContext(message) {
 		},
 	}
 }
+const missingAnalyticsNodeError = new Error(`You must set an analytics-node instance:
+
+>	const SegmentAnalytics = require('analytics-node')
+>	const { setTypewriterOptions } = require('./analytics')
+>
+>	const analytics = new SegmentAnalytics('SEGMENT_WRITE_KEY')
+>	setTypewriterOptions({
+>		analytics: analytics,
+>	})
+
+For more information on analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/
+`)
 /**
  * Don't do this.
  *
@@ -41,6 +53,8 @@ export function I42TerribleEventName3(message, callback) {
 	const a = analytics()
 	if (a) {
 		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
@@ -55,6 +69,8 @@ export function draft04Event(message, callback) {
 	const a = analytics()
 	if (a) {
 		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
@@ -69,6 +85,8 @@ export function draft06Event(message, callback) {
 	const a = analytics()
 	if (a) {
 		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
@@ -83,6 +101,8 @@ export function emptyEvent(message, callback) {
 	const a = analytics()
 	if (a) {
 		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
@@ -123,6 +143,8 @@ export function exampleEvent(message, callback) {
 	const a = analytics()
 	if (a) {
 		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
@@ -137,6 +159,8 @@ export function checkIn(message, callback) {
 	const a = analytics()
 	if (a) {
 		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
@@ -151,5 +175,7 @@ export function checkin(message, callback) {
 	const a = analytics()
 	if (a) {
 		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }

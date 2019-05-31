@@ -5,6 +5,39 @@
   "rules": {
     "events": [
       {
+        "description": "Don't do this.",
+        "name": "42_--terrible==\"event'++name~!3",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "properties": {
+            "context": {},
+            "properties": {
+              "properties": {
+                "0000---terrible-property-name~!3": {
+                  "description": "Really, don't do this."
+                },
+                "propertyNameCollision": {
+                  "description": "Test if clients handle properties that collide."
+                },
+                "property_name_collision": {
+                  "description": "Test if clients handle properties that collide."
+                }
+              },
+              "required": [
+                "propertyNameCollision",
+                "0000---terrible-property-name~!3",
+                "property_name_collision"
+              ],
+              "type": "object"
+            },
+            "traits": {}
+          },
+          "required": ["properties"],
+          "type": "object"
+        },
+        "version": 1
+      },
+      {
         "description": "This is an empty event.",
         "name": "Empty Event",
         "rules": {
@@ -211,10 +244,80 @@
           "type": "object"
         },
         "version": 1
+      },
+      {
+        "description": "Fired to verify Violation handlers.",
+        "name": "Violation Handler Test",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "labels": {},
+          "properties": {
+            "context": {},
+            "properties": {
+              "properties": {
+                "required string": {
+                  "description": "An example required string property.",
+                  "type": "string"
+                }
+              },
+              "required": ["required string"],
+              "type": "object"
+            },
+            "traits": {}
+          },
+          "required": ["properties"],
+          "type": "object"
+        },
+        "version": 1
+      },
+      {
+        "description": "An example event that illustrates an event name collision.",
+        "name": "example naming collision",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "labels": {},
+          "properties": {
+            "context": {},
+            "properties": {
+              "type": "object"
+            },
+            "traits": {}
+          },
+          "type": "object"
+        },
+        "version": 1
+      },
+      {
+        "description": "An example event that illustrates an event name collision (TODO: remove _2).",
+        "name": "example_naming_collision_2",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "labels": {},
+          "properties": {
+            "context": {},
+            "properties": {
+              "type": "object"
+            },
+            "traits": {}
+          },
+          "type": "object"
+        },
+        "version": 1
       }
     ],
     "group_traits": [],
+    "identify": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "properties": {
+        "context": {},
+        "properties": {},
+        "traits": {
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
     "identify_traits": []
   },
-  "update_time": "2019-05-27T21:54:40.000Z"
+  "update_time": "2019-05-31T04:50:54.000Z"
 }

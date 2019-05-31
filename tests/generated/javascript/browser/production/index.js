@@ -6,7 +6,9 @@ let analytics = () => undefined
  * Update the run-time configuration of this Typewriter client.
  */
 export function setTypewriterOptions(options) {
-	analytics = () => options.analytics || window.analytics
+	analytics = options.analytics
+		? () => options.analytics || window.analytics
+		: analytics
 }
 /**
  * Helper to attach metadata on Typewriter to outbound requests.

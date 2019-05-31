@@ -178,14 +178,14 @@ export interface TypewriterOptions {
 	 *
 	 * By default, it will throw errors if NODE_ENV = "test" so that tests will fail
 	 * if a message does not match the spec. Otherwise, errors will be logged to stderr.
-	 * Also by default, invalid messages will be dropped.
+	 * Also by default, messages that generate Violations will be dropped.
 	 */
-	onValidationError?: ValidationErrorHandler
+	onViolation?: ViolationHandler
 }
 
-export type ValidationErrorHandler = (
+export type ViolationHandler = (
 	message: Record<string, any>,
-	validationErrors: any[]
+	violations: any[]
 ) => boolean
 
 let analytics: () => Segment.AnalyticsJS | undefined = () => undefined
@@ -194,7 +194,9 @@ let analytics: () => Segment.AnalyticsJS | undefined = () => undefined
  * Update the run-time configuration of this Typewriter client.
  */
 export function setTypewriterOptions(options: TypewriterOptions) {
-	analytics = () => options.analytics || window.analytics
+	analytics = options.analytics
+		? () => options.analytics || window.analytics
+		: analytics
 }
 
 /**

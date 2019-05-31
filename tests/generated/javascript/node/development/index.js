@@ -10,7 +10,7 @@
  * You can install it with: `npm install --save-dev ajv`.
  */
 import Ajv from 'ajv'
-export const defaultValidationErrorHandler = (message, validationErrors) => {
+export const defaultValidationErrorHandler = (message, violations) => {
 	const msg = JSON.stringify(
 		{
 			type: 'Typewriter JSON Schema Validation Error',
@@ -19,7 +19,7 @@ export const defaultValidationErrorHandler = (message, validationErrors) => {
 					message.event
 				}) using Typewriter that doesn't match the ` +
 				'Tracking Plan spec. Your analytics call will continue to fire in production.',
-			errors: validationErrors,
+			errors: violations,
 		},
 		undefined,
 		2
@@ -30,18 +30,18 @@ export const defaultValidationErrorHandler = (message, validationErrors) => {
 	console.error(msg)
 	return false
 }
-let onValidationError = defaultValidationErrorHandler
+let onViolation = defaultValidationErrorHandler
 let analytics = () => undefined
 /**
  * Update the run-time configuration of this Typewriter client.
  */
 export function setTypewriterOptions(options) {
-	analytics = () => options.analytics
-	onValidationError = options.onValidationError || onValidationError
+	analytics = options.analytics ? () => options.analytics : analytics
+	onViolation = options.onViolation || onViolation
 }
 /**
  * Validates a message against a JSON Schema using Ajv. If the message
- * is invalid, the `onValidationError` handler will be called.
+ * is invalid, the `onViolation` handler will be called.
  * Returns true if the message should be sent on to Segment, and false otherwise.
  */
 function matchesSchema(message, schema) {
@@ -49,7 +49,7 @@ function matchesSchema(message, schema) {
 	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
 	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
 	if (!ajv.validate(schema, message) && ajv.errors) {
-		return onValidationError(message, ajv.errors)
+		return onViolation(message, ajv.errors)
 	}
 	return true
 }
@@ -69,6 +69,18 @@ function withTypewriterContext(message) {
 		},
 	}
 }
+const missingAnalyticsNodeError = new Error(`You must set an analytics-node instance:
+
+>	const SegmentAnalytics = require('analytics-node')
+>	const { setTypewriterOptions } = require('./analytics')
+>
+>	const analytics = new SegmentAnalytics('SEGMENT_WRITE_KEY')
+>	setTypewriterOptions({
+>		analytics: analytics,
+>	})
+
+For more information on analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/
+`)
 /**
  * Don't do this.
  *
@@ -114,6 +126,8 @@ export function I42TerribleEventName3(message, callback) {
 	const a = analytics()
 	if (a) {
 		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
@@ -145,6 +159,8 @@ export function draft04Event(message, callback) {
 	const a = analytics()
 	if (a) {
 		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
@@ -176,6 +192,8 @@ export function draft06Event(message, callback) {
 	const a = analytics()
 	if (a) {
 		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
@@ -207,6 +225,8 @@ export function emptyEvent(message, callback) {
 	const a = analytics()
 	if (a) {
 		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
@@ -438,6 +458,8 @@ export function exampleEvent(message, callback) {
 	const a = analytics()
 	if (a) {
 		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
@@ -469,6 +491,8 @@ export function checkIn(message, callback) {
 	const a = analytics()
 	if (a) {
 		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
@@ -500,5 +524,7 @@ export function checkin(message, callback) {
 	const a = analytics()
 	if (a) {
 		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
