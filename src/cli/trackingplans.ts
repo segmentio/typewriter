@@ -75,8 +75,7 @@ export async function writeTrackingPlan(
 export async function sanitizeTrackingPlan(
 	plan: SegmentAPI.TrackingPlan
 ): Promise<SegmentAPI.TrackingPlan> {
-	// In JSON Schema Draft-04, required fields must have at least one element.
+	// TODO: on JSON Schema Draft-04, required fields must have at least one element.
 	// Therefore, we strip `required: []` from your rules so this error isn't surfaced.
-	// TODO
 	return plan
 }

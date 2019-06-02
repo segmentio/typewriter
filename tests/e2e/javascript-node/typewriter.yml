@@ -3,9 +3,11 @@
 
 tokenCommand: aws-okta exec dev-privileged -- chamber export typewriter | jq -r .typewriter_token
 
-language:
-  name: javascript
-  env: node
+# You can configure the options of this client's generator:
+# See: https://segment.com/docs/typewriter/javascript
+client:
+  sdk: analytics-node
+  language: javascript
 
 trackingPlans:
   # Tracking Plan: Typewriter E2E Tracking Plan

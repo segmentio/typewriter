@@ -1,5 +1,4 @@
 import { getConfig, setConfig, resolveRelativePath, getToken } from './config'
-import gen, { Language } from '../generators'
 import { JSONSchema7 } from 'json-schema'
 import * as fs from 'fs'
 import { promisify } from 'util'
@@ -11,9 +10,11 @@ import {
 	fetchAllTrackingPlans,
 } from './api'
 import * as prompts from 'prompts'
-import { Environment, JavaScriptOptions, TypeScriptOptions } from 'src/generators/javascript'
 import { Arguments, Config } from './types'
 import { writeTrackingPlan, loadTrackingPlan } from './trackingplans'
+import { gen } from '../generators/gen'
+import { RawTrackingPlan } from '../generators/gen'
+import { Options, SDK, Language } from '../generators/options'
 
 const writeFile = promisify(fs.writeFile)
 
@@ -21,21 +22,22 @@ export async function init(args: Arguments) {
 	// Attempt to read a config, if one is available.
 	const currentConfig = await getConfig(args.config)
 
-	const languageChoices = [
-		{ title: 'JavaScript (analytics.js)', value: 'javascript:browser' },
-		{ title: 'TypeScript (analytics.js)', value: 'typescript:browser' },
-		{ title: 'JavaScript (analytics-node)', value: 'javascript:node' },
-		{ title: 'TypeScript (analytics-node)', value: 'typescript:node' },
-		{ title: 'Objective-C (analytics-ios)', value: 'objective-c:analytics-ios', disabled: true },
-		{ title: 'Java (analytics-java)', value: 'android:analytics-java', disabled: true },
+	const sdkChoices = [
+		{ title: 'analytics.js', value: 'analytics.js' },
+		{ title: 'analytics-node', value: 'analytics-node' },
+		{ title: 'analytics-ios', value: 'analytics-ios' },
+		{ title: 'analytics-android', value: 'analytics-android', disabled: true },
 	]
-	const defaultLanguage =
+	const defaultSDK =
+		currentConfig && sdkChoices.findIndex(({ value }) => value === currentConfig.client.sdk)
+
+	const javascriptLanguageChoices = [
+		{ title: 'JavaScript', value: 'javascript' },
+		{ title: 'TypeScript', value: 'typescript' },
+	]
+	const defaultJavaScriptLanguage =
 		currentConfig &&
-		languageChoices.findIndex(
-			({ value }) =>
-				value.split(':')[0] === currentConfig.language.name &&
-				value.split(':')[1] === currentConfig.language.env
-		)
+		javascriptLanguageChoices.findIndex(({ value }) => value === currentConfig.client.language)
 
 	const tokenProviderChoices = [
 		{ title: 'Generate a new token', value: 'generate' },
@@ -56,13 +58,24 @@ export async function init(args: Arguments) {
 	}
 
 	const response = await prompts([
-		// Set the config.language value.
+		// Set the config.client.sdk value.
 		{
 			type: 'select',
-			message: 'What language should Typewriter generate?',
+			message: 'What SDK should the Typewriter client use?',
+			name: 'sdk',
+			choices: sdkChoices,
+			initial: defaultSDK,
+		},
+		// Set the config.client.language value, depending on the SDK option selected.
+		// We skip the language select if there is only one language option for the selected SDK.
+		// For now, that means we'll only show it for our JavaScript clients.
+		{
+			type: (_, values) =>
+				['analytics.js', 'analytics-node'].includes(values.sdk) ? 'select' : false,
+			message: 'What language should the Typewriter client be generated in?',
 			name: 'language',
-			choices: languageChoices,
-			initial: defaultLanguage,
+			choices: javascriptLanguageChoices,
+			initial: defaultJavaScriptLanguage,
 		},
 
 		// Set the config.path value.
@@ -88,29 +101,17 @@ export async function init(args: Arguments) {
 		// If the user selected "generate", then hit the Segment API to generate a new
 		// API token.
 		{
-			type: (_, values) =>
-				// Note: upstream fix here: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35510
-				(((values as unknown) as prompts.Answers<'tokenProvider'>).tokenProvider === 'generate'
-					? 'text'
-					: false) as prompts.PromptType,
+			type: (_, values) => (values.tokenProvider === 'generate' ? 'text' : false),
 			message: 'What workspace slug should the token have read access to?',
 			name: 'workspaceSlug',
 		},
 		{
-			type: (_, values) =>
-				// Note: upstream fix here: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35510
-				(((values as unknown) as prompts.Answers<'tokenProvider'>).tokenProvider === 'generate'
-					? 'text'
-					: false) as prompts.PromptType,
+			type: (_, values) => (values.tokenProvider === 'generate' ? 'text' : false),
 			message: 'What is your segment.com account email?',
 			name: 'email',
 		},
 		{
-			type: (_, values) =>
-				// Note: upstream fix here: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35510
-				(((values as unknown) as prompts.Answers<'tokenProvider'>).tokenProvider === 'generate'
-					? 'password'
-					: false) as prompts.PromptType,
+			type: (_, values) => (values.tokenProvider === 'generate' ? 'password' : false),
 			message: 'What is your segment.com account password?',
 			name: 'password',
 			format: async (password, values) => {
@@ -132,11 +133,7 @@ it to your team using a shell command by setting a tokenCommand in typewriter.ym
 		},
 		// If the user selected "command", then fetch a shell command and verify it produces an API token.
 		{
-			type: (_, values) =>
-				// Note: upstream fix here: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35510
-				(((values as unknown) as prompts.Answers<'tokenProvider'>).tokenProvider === 'command'
-					? 'text'
-					: false) as prompts.PromptType,
+			type: (_, values) => (values.tokenProvider === 'command' ? 'text' : false),
 			message:
 				'Enter a shell command which will output an API token to stdout. For example, this may query your secret store to fetch the correct token:',
 			name: 'tokenCommand',
@@ -189,10 +186,21 @@ it to your team using a shell command by setting a tokenCommand in typewriter.ym
 		throw new Error('You must select a Tracking Plan')
 	}
 
-	const [languageName, env] = (response.language as string).split(':')
+	let language = response.language
+	// If there is only one language option, we will have skipped the language select,
+	// so we'll need to default to the sole language option for the selected SDK.
+	if (!language) {
+		if (response.sdk === SDK.IOS) {
+			language = Language.OBJECTIVE_C
+		}
+	}
 
+	const client: Options = {
+		sdk: response.sdk,
+		language,
+	}
 	const cfg: Config = {
-		language: getLanguage(languageName, env),
+		client,
 		trackingPlans: [
 			{
 				name: trackingPlan.display_name,
@@ -227,8 +235,6 @@ export async function token(args: Arguments) {
 	const cfg = await getConfig(args.config)
 
 	if (!cfg) {
-		// TODO: potentially call out to typewriter init to gracefully handle this.
-		// Otherwise, as part of the error message UX, drive the user towards running typewriter init.
 		throw new Error('Unable to find typewriter.yml. Try `typewriter init`')
 	}
 
@@ -275,22 +281,6 @@ export async function update(args: Arguments) {
 
 // Command Helpers
 
-function getLanguage(name: string, env: string): JavaScriptOptions | TypeScriptOptions {
-	if (name === Language.JAVASCRIPT) {
-		return {
-			name,
-			env: env as Environment,
-		}
-	} else if (name === Language.TYPESCRIPT) {
-		return {
-			name,
-			env: env as Environment,
-		}
-	} else {
-		throw new Error(`Unknown language: ${name}`)
-	}
-}
-
 // tokenToString partially redacts a token and prints a list of accessible
 // workspaces to provide context on the token.
 async function tokenToString(token: string) {
@@ -304,22 +294,24 @@ async function generateClients(args: Arguments, { isDevelopment }: { isDevelopme
 	const cfg = await getConfig(args.config)
 
 	if (!cfg) {
-		// TODO: redirect to setting up a config file
 		throw new Error('Unable to find typewriter.yml. Try `typewriter init`')
 	}
 
 	for (var config of cfg.trackingPlans) {
-		const plan = await loadTrackingPlan(args, config)
-
-		const events = plan.rules.events.map<JSONSchema7>(e => ({
-			...e.rules,
-			title: e.name,
-			description: e.description,
-		}))
+		const segmentTrackingPlan = await loadTrackingPlan(args, config)
+		const trackingPlan: RawTrackingPlan = {
+			trackCalls: segmentTrackingPlan.rules.events.map<JSONSchema7>(e => ({
+				...e.rules,
+				title: e.name,
+				description: e.description,
+			})),
+		}
 
 		// Generate a client and write its files out to the specified path.
-		const files = await gen(events, {
-			...cfg.language,
+		const files = await gen(trackingPlan, {
+			...cfg,
+			// TODO: fetch from package.json
+			typewriterVersion: '7.0.0',
 			isDevelopment,
 		})
 		for (var file of files) {

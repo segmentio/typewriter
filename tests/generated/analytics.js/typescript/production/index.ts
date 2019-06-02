@@ -167,8 +167,9 @@ export interface ExampleEvent {
 export interface TypewriterOptions {
 	/**
 	 * Underlying analytics instance where analytics calls are forwarded on to.
+	 * Defaults to window.analytics.
 	 */
-	analytics: Segment.AnalyticsNode
+	analytics?: Segment.AnalyticsJS
 	/**
 	 * Handler fired when if an event does not match its spec. Returns a boolean
 	 * indicating if the message should still be sent to Segment. This handler
@@ -183,188 +184,151 @@ export interface TypewriterOptions {
 }
 
 export type ViolationHandler = (
-	message: Segment.TrackMessage<Record<string, any>>,
+	message: Record<string, any>,
 	violations: any[]
 ) => boolean
 
-let analytics: () => Segment.AnalyticsNode | undefined = () => undefined
+let analytics: () => Segment.AnalyticsJS | undefined = () => undefined
 
 /**
  * Update the run-time configuration of this Typewriter client.
  */
 export function setTypewriterOptions(options: TypewriterOptions) {
-	analytics = options.analytics ? () => options.analytics : analytics
+	analytics = options.analytics
+		? () => options.analytics || window.analytics
+		: analytics
 }
 
 /**
  * Helper to attach metadata on Typewriter to outbound requests.
  * This is used for attribution and debugging by the Segment team.
  */
-function withTypewriterContext<P>(
-	message: Segment.TrackMessage<P>
-): Segment.TrackMessage<P> {
+function withTypewriterContext(message: Segment.Options = {}): Segment.Options {
 	return {
 		...message,
 		context: {
 			...(message.context || {}),
 			typewriter: {
 				language: 'typescript',
-				version: '7.0.0',
+				version: '1.0.0',
 			},
 		},
 	}
 }
 
-const missingAnalyticsNodeError = new Error(`You must set an analytics-node instance:
-
->	const SegmentAnalytics = require('analytics-node')
->	const { setTypewriterOptions } = require('./analytics')
->
->	const analytics = new SegmentAnalytics('SEGMENT_WRITE_KEY')
->	setTypewriterOptions({
->		analytics: analytics,
->	})
-
-For more information on analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/
-`)
-
 /**
  * Don't do this.
  */
 export function I42TerribleEventName3(
-	message: Segment.TrackMessage<I42TerribleEventName3>,
+	props: I42TerribleEventName3,
+	options?: Segment.Options,
 	callback?: Segment.Callback
 ): void {
-	const msg = withTypewriterContext({
-		properties: {},
-		...message,
-		event: '42_--terrible=="event\'++name~!3',
-	})
-
 	const a = analytics()
 	if (a) {
-		a.track(msg, callback)
-	} else {
-		throw missingAnalyticsNodeError
+		a.track(
+			'42_--terrible=="event\'++name~!3',
+			props || {},
+			withTypewriterContext(options),
+			callback
+		)
 	}
 }
 /**
  * This is JSON Schema draft-04 event.
  */
 export function draft04Event(
-	message: Segment.TrackMessage<Record<string, any>>,
+	props: Record<string, any>,
+	options?: Segment.Options,
 	callback?: Segment.Callback
 ): void {
-	const msg = withTypewriterContext({
-		properties: {},
-		...message,
-		event: 'Draft-04 Event',
-	})
-
 	const a = analytics()
 	if (a) {
-		a.track(msg, callback)
-	} else {
-		throw missingAnalyticsNodeError
+		a.track(
+			'Draft-04 Event',
+			props || {},
+			withTypewriterContext(options),
+			callback
+		)
 	}
 }
 /**
  * This is JSON Schema draft-06 event.
  */
 export function draft06Event(
-	message: Segment.TrackMessage<Record<string, any>>,
+	props: Record<string, any>,
+	options?: Segment.Options,
 	callback?: Segment.Callback
 ): void {
-	const msg = withTypewriterContext({
-		properties: {},
-		...message,
-		event: 'Draft-06 Event',
-	})
-
 	const a = analytics()
 	if (a) {
-		a.track(msg, callback)
-	} else {
-		throw missingAnalyticsNodeError
+		a.track(
+			'Draft-06 Event',
+			props || {},
+			withTypewriterContext(options),
+			callback
+		)
 	}
 }
 /**
  * This is an empty event.
  */
 export function emptyEvent(
-	message: Segment.TrackMessage<Record<string, any>>,
+	props: Record<string, any>,
+	options?: Segment.Options,
 	callback?: Segment.Callback
 ): void {
-	const msg = withTypewriterContext({
-		properties: {},
-		...message,
-		event: 'Empty Event',
-	})
-
 	const a = analytics()
 	if (a) {
-		a.track(msg, callback)
-	} else {
-		throw missingAnalyticsNodeError
+		a.track(
+			'Empty Event',
+			props || {},
+			withTypewriterContext(options),
+			callback
+		)
 	}
 }
 /**
  * This event contains all supported variations of properties.
  */
 export function exampleEvent(
-	message: Segment.TrackMessage<ExampleEvent>,
+	props: ExampleEvent,
+	options?: Segment.Options,
 	callback?: Segment.Callback
 ): void {
-	const msg = withTypewriterContext({
-		properties: {},
-		...message,
-		event: 'Example Event',
-	})
-
 	const a = analytics()
 	if (a) {
-		a.track(msg, callback)
-	} else {
-		throw missingAnalyticsNodeError
+		a.track(
+			'Example Event',
+			props || {},
+			withTypewriterContext(options),
+			callback
+		)
 	}
 }
 /**
  * checkin != check_in bug
  */
 export function checkIn(
-	message: Segment.TrackMessage<Record<string, any>>,
+	props: Record<string, any>,
+	options?: Segment.Options,
 	callback?: Segment.Callback
 ): void {
-	const msg = withTypewriterContext({
-		properties: {},
-		...message,
-		event: 'check_in',
-	})
-
 	const a = analytics()
 	if (a) {
-		a.track(msg, callback)
-	} else {
-		throw missingAnalyticsNodeError
+		a.track('check_in', props || {}, withTypewriterContext(options), callback)
 	}
 }
 /**
  * checkin != check_in bug
  */
 export function checkin(
-	message: Segment.TrackMessage<Record<string, any>>,
+	props: Record<string, any>,
+	options?: Segment.Options,
 	callback?: Segment.Callback
 ): void {
-	const msg = withTypewriterContext({
-		properties: {},
-		...message,
-		event: 'checkin',
-	})
-
 	const a = analytics()
 	if (a) {
-		a.track(msg, callback)
-	} else {
-		throw missingAnalyticsNodeError
+		a.track('checkin', props || {}, withTypewriterContext(options), callback)
 	}
 }

@@ -5,9 +5,9 @@ tokenCommand: aws-okta exec dev-privileged -- chamber export typewriter | jq -r 
 
 # You can configure the options of this language's generator.
 # See: https://segment.com/docs/typewriter/typescript
-language:
-  name: typescript
-  env: browser
+client:
+  sdk: analytics.js
+  language: typescript
 
 trackingPlans:
   # Tracking Plan: Typewriter: Slothgram

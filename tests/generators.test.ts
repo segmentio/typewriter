@@ -1,17 +1,16 @@
 import { JSONSchema7 } from 'json-schema'
-import gen, { Options } from '../src/generators/gen'
-import { Environment } from '../src/generators/javascript'
-import { Language } from '../src/generators'
-import * as trackingPlan from './fixtures/tracking-plan.json'
+import { gen, GenOptions, RawTrackingPlan } from '../src/generators/gen'
+import * as trackingPlanFixture from './fixtures/tracking-plan.json'
 import * as fs from 'fs'
 import { promisify } from 'util'
 import { resolve } from 'path'
+import { SDK, Language, Options } from '../src/generators/options'
 
 const mkdir = promisify(fs.mkdir)
 const writeFile = promisify(fs.writeFile)
 const exists = promisify(fs.exists)
 
-interface TrackingPlan {
+interface TrackingPlanFixture {
 	name: string
 	events: Event[]
 }
@@ -23,53 +22,61 @@ interface Event {
 }
 
 describe('generators', () => {
-	// TODO: clean up these tests.
-	describe('typescript', () => {
-		for (var isDevelopment of [true, false]) {
-			for (var env of [Environment.NODE, Environment.BROWSER]) {
-				;((isDevelopment: boolean, env: Environment) => {
-					const developmentString = isDevelopment ? 'development' : 'production'
-					test(`${env} - ${developmentString}`, async () => {
-						const options: Options = {
-							name: Language.TYPESCRIPT,
-							isDevelopment,
-							env,
-						}
-						await generateClient(`./generated/typescript/${env}/${developmentString}`, options)
-					})
-				})(isDevelopment, env)
-			}
-		}
-	})
+	const clients: Options[] = [
+		{
+			language: Language.JAVASCRIPT,
+			sdk: SDK.WEB,
+		},
+		{
+			language: Language.TYPESCRIPT,
+			sdk: SDK.WEB,
+		},
+		{
+			language: Language.JAVASCRIPT,
+			sdk: SDK.NODE,
+		},
+		{
+			language: Language.TYPESCRIPT,
+			sdk: SDK.NODE,
+		},
+		{
+			language: Language.OBJECTIVE_C,
+			sdk: SDK.IOS,
+		},
+	]
 
-	describe('javascript', () => {
+	for (var client of clients) {
 		for (var isDevelopment of [true, false]) {
-			for (var env of [Environment.BROWSER, Environment.NODE]) {
-				;((isDevelopment: boolean, env: Environment) => {
-					const developmentString = isDevelopment ? 'development' : 'production'
-					test(`${env} - ${developmentString}`, async () => {
-						const options: Options = {
-							name: Language.JAVASCRIPT,
-							isDevelopment,
-							env,
-						}
-						await generateClient(`./generated/javascript/${env}/${developmentString}`, options)
-					})
-				})(isDevelopment, env)
-			}
+			runTest({
+				client,
+				isDevelopment,
+				typewriterVersion: '1.0.0',
+			})
 		}
-	})
+	}
 })
 
-async function generateClient(path: string, opts: Options) {
-	const plan = trackingPlan as TrackingPlan
-	const jsonSchemas: JSONSchema7[] = plan.events.map(event => ({
-		...event.rules,
-		title: event.name,
-		description: event.description,
-	}))
+function runTest(options: GenOptions) {
+	const developmentString = options.isDevelopment ? 'development' : 'production'
+	test(`${options.client.language} - ${options.client.sdk} - ${developmentString}`, async () => {
+		await generateClient(
+			`./generated/${options.client.sdk}/${options.client.language}/${developmentString}`,
+			options
+		)
+	})
+}
 
-	const files = await gen(jsonSchemas, opts)
+async function generateClient(path: string, options: GenOptions) {
+	const fixture = trackingPlanFixture as TrackingPlanFixture
+	const trackingPlan: RawTrackingPlan = {
+		trackCalls: fixture.events.map(event => ({
+			...event.rules,
+			title: event.name,
+			description: event.description,
+		})),
+	}
+
+	const files = await gen(trackingPlan, options)
 
 	const dirPath = resolve(__dirname, path)
 	if (!(await exists(dirPath))) {

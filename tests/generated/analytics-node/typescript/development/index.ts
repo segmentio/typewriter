@@ -176,9 +176,8 @@ export interface ExampleEvent {
 export interface TypewriterOptions {
 	/**
 	 * Underlying analytics instance where analytics calls are forwarded on to.
-	 * Defaults to window.analytics.
 	 */
-	analytics?: Segment.AnalyticsJS
+	analytics: Segment.AnalyticsNode
 	/**
 	 * Handler fired when if an event does not match its spec. Returns a boolean
 	 * indicating if the message should still be sent to Segment. This handler
@@ -193,7 +192,7 @@ export interface TypewriterOptions {
 }
 
 export type ViolationHandler = (
-	message: Record<string, any>,
+	message: Segment.TrackMessage<Record<string, any>>,
 	violations: Ajv.ErrorObject[]
 ) => boolean
 
@@ -225,15 +224,13 @@ export const defaultValidationErrorHandler: ViolationHandler = (
 
 let onViolation = defaultValidationErrorHandler
 
-let analytics: () => Segment.AnalyticsJS | undefined = () => undefined
+let analytics: () => Segment.AnalyticsNode | undefined = () => undefined
 
 /**
  * Update the run-time configuration of this Typewriter client.
  */
 export function setTypewriterOptions(options: TypewriterOptions) {
-	analytics = options.analytics
-		? () => options.analytics || window.analytics
-		: analytics
+	analytics = options.analytics ? () => options.analytics : analytics
 	onViolation = options.onViolation || onViolation
 }
 
@@ -242,7 +239,10 @@ export function setTypewriterOptions(options: TypewriterOptions) {
  * is invalid, the `onViolation` handler will be called.
  * Returns true if the message should be sent on to Segment, and false otherwise.
  */
-function matchesSchema(message: Record<string, any>, schema: object): boolean {
+function matchesSchema(
+	message: Segment.TrackMessage<Record<string, any>>,
+	schema: object
+): boolean {
 	const ajv = new Ajv({ schemaId: 'auto', allErrors: true, verbose: true })
 	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
 	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
@@ -258,27 +258,47 @@ function matchesSchema(message: Record<string, any>, schema: object): boolean {
  * Helper to attach metadata on Typewriter to outbound requests.
  * This is used for attribution and debugging by the Segment team.
  */
-function withTypewriterContext(message: Segment.Options = {}): Segment.Options {
+function withTypewriterContext<P>(
+	message: Segment.TrackMessage<P>
+): Segment.TrackMessage<P> {
 	return {
 		...message,
 		context: {
 			...(message.context || {}),
 			typewriter: {
 				language: 'typescript',
-				version: '7.0.0',
+				version: '1.0.0',
 			},
 		},
 	}
 }
 
+const missingAnalyticsNodeError = new Error(`You must set an analytics-node instance:
+
+>	const SegmentAnalytics = require('analytics-node')
+>	const { setTypewriterOptions } = require('./analytics')
+>
+>	const analytics = new SegmentAnalytics('SEGMENT_WRITE_KEY')
+>	setTypewriterOptions({
+>		analytics: analytics,
+>	})
+
+For more information on analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/
+`)
+
 /**
  * Don't do this.
  */
 export function I42TerribleEventName3(
-	props: I42TerribleEventName3,
-	options?: Segment.Options,
+	message: Segment.TrackMessage<I42TerribleEventName3>,
 	callback?: Segment.Callback
 ): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: '42_--terrible=="event\'++name~!3',
+	})
+
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
 		properties: {
@@ -304,35 +324,32 @@ export function I42TerribleEventName3(
 		title: '42_--terrible=="event\'++name~!3',
 		description: "Don't do this.",
 	}
-	const message = {
-		event: '42_--terrible=="event\'++name~!3',
-		properties: props || {},
-		options,
-	}
-	if (!matchesSchema(message, schema)) {
+	if (!matchesSchema(msg, schema)) {
 		return
 	}
 
 	const a = analytics()
 	if (a) {
-		a.track(
-			'42_--terrible=="event\'++name~!3',
-			props || {},
-			withTypewriterContext(options),
-			callback
-		)
+		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
  * This is JSON Schema draft-04 event.
  */
 export function draft04Event(
-	props: Record<string, any>,
-	options?: Segment.Options,
+	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback
 ): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'Draft-04 Event',
+	})
+
 	const schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
+		$schema: 'http://json-schema.org/draft-04/schema#',
 		properties: {
 			context: {},
 			properties: {
@@ -345,35 +362,32 @@ export function draft04Event(
 		title: 'Draft-04 Event',
 		description: 'This is JSON Schema draft-04 event.',
 	}
-	const message = {
-		event: 'Draft-04 Event',
-		properties: props || {},
-		options,
-	}
-	if (!matchesSchema(message, schema)) {
+	if (!matchesSchema(msg, schema)) {
 		return
 	}
 
 	const a = analytics()
 	if (a) {
-		a.track(
-			'Draft-04 Event',
-			props || {},
-			withTypewriterContext(options),
-			callback
-		)
+		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
  * This is JSON Schema draft-06 event.
  */
 export function draft06Event(
-	props: Record<string, any>,
-	options?: Segment.Options,
+	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback
 ): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'Draft-06 Event',
+	})
+
 	const schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
+		$schema: 'http://json-schema.org/draft-06/schema#',
 		properties: {
 			context: {},
 			properties: {
@@ -386,33 +400,30 @@ export function draft06Event(
 		title: 'Draft-06 Event',
 		description: 'This is JSON Schema draft-06 event.',
 	}
-	const message = {
-		event: 'Draft-06 Event',
-		properties: props || {},
-		options,
-	}
-	if (!matchesSchema(message, schema)) {
+	if (!matchesSchema(msg, schema)) {
 		return
 	}
 
 	const a = analytics()
 	if (a) {
-		a.track(
-			'Draft-06 Event',
-			props || {},
-			withTypewriterContext(options),
-			callback
-		)
+		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
  * This is an empty event.
  */
 export function emptyEvent(
-	props: Record<string, any>,
-	options?: Segment.Options,
+	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback
 ): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'Empty Event',
+	})
+
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
 		properties: {
@@ -427,33 +438,30 @@ export function emptyEvent(
 		title: 'Empty Event',
 		description: 'This is an empty event.',
 	}
-	const message = {
-		event: 'Empty Event',
-		properties: props || {},
-		options,
-	}
-	if (!matchesSchema(message, schema)) {
+	if (!matchesSchema(msg, schema)) {
 		return
 	}
 
 	const a = analytics()
 	if (a) {
-		a.track(
-			'Empty Event',
-			props || {},
-			withTypewriterContext(options),
-			callback
-		)
+		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
  * This event contains all supported variations of properties.
  */
 export function exampleEvent(
-	props: ExampleEvent,
-	options?: Segment.Options,
+	message: Segment.TrackMessage<ExampleEvent>,
 	callback?: Segment.Callback
 ): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'Example Event',
+	})
+
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
 		properties: {
@@ -642,33 +650,30 @@ export function exampleEvent(
 		title: 'Example Event',
 		description: 'This event contains all supported variations of properties.',
 	}
-	const message = {
-		event: 'Example Event',
-		properties: props || {},
-		options,
-	}
-	if (!matchesSchema(message, schema)) {
+	if (!matchesSchema(msg, schema)) {
 		return
 	}
 
 	const a = analytics()
 	if (a) {
-		a.track(
-			'Example Event',
-			props || {},
-			withTypewriterContext(options),
-			callback
-		)
+		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
  * checkin != check_in bug
  */
 export function checkIn(
-	props: Record<string, any>,
-	options?: Segment.Options,
+	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback
 ): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'check_in',
+	})
+
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
 		labels: {},
@@ -683,28 +688,30 @@ export function checkIn(
 		title: 'check_in',
 		description: 'checkin != check_in bug',
 	}
-	const message = {
-		event: 'check_in',
-		properties: props || {},
-		options,
-	}
-	if (!matchesSchema(message, schema)) {
+	if (!matchesSchema(msg, schema)) {
 		return
 	}
 
 	const a = analytics()
 	if (a) {
-		a.track('check_in', props || {}, withTypewriterContext(options), callback)
+		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }
 /**
  * checkin != check_in bug
  */
 export function checkin(
-	props: Record<string, any>,
-	options?: Segment.Options,
+	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback
 ): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'checkin',
+	})
+
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
 		labels: {},
@@ -719,17 +726,14 @@ export function checkin(
 		title: 'checkin',
 		description: 'checkin != check_in bug',
 	}
-	const message = {
-		event: 'checkin',
-		properties: props || {},
-		options,
-	}
-	if (!matchesSchema(message, schema)) {
+	if (!matchesSchema(msg, schema)) {
 		return
 	}
 
 	const a = analytics()
 	if (a) {
-		a.track('checkin', props || {}, withTypewriterContext(options), callback)
+		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
 	}
 }

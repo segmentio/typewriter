@@ -64,7 +64,7 @@ function withTypewriterContext(message) {
 			...(message.context || {}),
 			typewriter: {
 				language: 'javascript',
-				version: '7.0.0',
+				version: '1.0.0',
 			},
 		},
 	}
@@ -140,7 +140,7 @@ export function draft04Event(message, callback) {
 		event: 'Draft-04 Event',
 	})
 	const schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
+		$schema: 'http://json-schema.org/draft-04/schema#',
 		properties: {
 			context: {},
 			properties: {
@@ -173,7 +173,7 @@ export function draft06Event(message, callback) {
 		event: 'Draft-06 Event',
 	})
 	const schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
+		$schema: 'http://json-schema.org/draft-06/schema#',
 		properties: {
 			context: {},
 			properties: {

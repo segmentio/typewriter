@@ -1,5 +1,5 @@
-import { JavaScriptOptions, TypeScriptOptions } from '../generators/javascript'
 import { JSONSchema7 } from 'json-schema'
+import { Options } from 'src/generators/options'
 
 export interface Arguments {
 	config: string | undefined
@@ -9,7 +9,7 @@ export interface Arguments {
 // If you update this inferface, make sure to keep `typewriter.yml.schema.json` in sync.
 export interface Config {
 	tokenCommand?: string
-	language: JavaScriptOptions | TypeScriptOptions
+	client: Options
 	trackingPlans: TrackingPlanConfig[]
 }
 

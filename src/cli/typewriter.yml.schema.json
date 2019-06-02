@@ -2,25 +2,42 @@
   "$comment": "JSON Schema specifying what configuration options are allowed in typewriter.yml files.",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "required": ["language", "trackingPlans"],
+  "required": ["client", "trackingPlans"],
   "additionalProperties": false,
   "properties": {
-    "language": {
+    "client": {
       "type": "object",
-      "required": ["name", "env"],
-      "additionalProperties": false,
+      "required": ["sdk"],
       "properties": {
-        "name": {
-          "$comment": "Which language to use when generating clients.",
+        "sdk": {
+          "$comment": "Which Segment SDK the client should be generated for.",
           "type": "string",
-          "enum": ["javascript", "typescript"]
-        },
-        "env": {
-          "$comment": "Which language environment we are generating for.",
-          "type": "string",
-          "enum": ["browser", "node"]
+          "enum": ["analytics.js", "analytics-node", "analytics-ios"]
         }
-      }
+      },
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["language"],
+          "properties": {
+            "language": {
+              "$comment": "Which language to use when generating clients.",
+              "type": "string",
+              "enum": ["javascript", "typescript"]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "language": {
+              "$comment": "Which language to use when generating clients.",
+              "type": "string",
+              "enum": ["objective-c"]
+            }
+          }
+        }
+      ]
     },
     "trackingPlans": {
       "$comment": "Which Tracking Plans to sync locally, to be used for client generation",

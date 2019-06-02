@@ -6,36 +6,26 @@ let analytics = () => undefined
  * Update the run-time configuration of this Typewriter client.
  */
 export function setTypewriterOptions(options) {
-	analytics = options.analytics ? () => options.analytics : analytics
+	analytics = options.analytics
+		? () => options.analytics || window.analytics
+		: analytics
 }
 /**
  * Helper to attach metadata on Typewriter to outbound requests.
  * This is used for attribution and debugging by the Segment team.
  */
-function withTypewriterContext(message) {
+function withTypewriterContext(message = {}) {
 	return {
 		...message,
 		context: {
 			...(message.context || {}),
 			typewriter: {
 				language: 'javascript',
-				version: '7.0.0',
+				version: '1.0.0',
 			},
 		},
 	}
 }
-const missingAnalyticsNodeError = new Error(`You must set an analytics-node instance:
-
->	const SegmentAnalytics = require('analytics-node')
->	const { setTypewriterOptions } = require('./analytics')
->
->	const analytics = new SegmentAnalytics('SEGMENT_WRITE_KEY')
->	setTypewriterOptions({
->		analytics: analytics,
->	})
-
-For more information on analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/
-`)
 /**
  * Don't do this.
  *
@@ -44,65 +34,57 @@ For more information on analytics-node, see: https://segment.com/docs/sources/se
  * @param {any} [props.identifierId] - Duplicate key error in Android
  * @param {any} [props.identifier_id] - AcronymStyle bug fixed in v5.0.1
  */
-export function I42TerribleEventName3(message, callback) {
-	const msg = withTypewriterContext({
-		properties: {},
-		...message,
-		event: '42_--terrible=="event\'++name~!3',
-	})
+export function I42TerribleEventName3(props, options, callback) {
 	const a = analytics()
 	if (a) {
-		a.track(msg, callback)
-	} else {
-		throw missingAnalyticsNodeError
+		a.track(
+			'42_--terrible=="event\'++name~!3',
+			props || {},
+			withTypewriterContext(options),
+			callback
+		)
 	}
 }
 /**
  * This is JSON Schema draft-04 event.
  */
-export function draft04Event(message, callback) {
-	const msg = withTypewriterContext({
-		properties: {},
-		...message,
-		event: 'Draft-04 Event',
-	})
+export function draft04Event(props, options, callback) {
 	const a = analytics()
 	if (a) {
-		a.track(msg, callback)
-	} else {
-		throw missingAnalyticsNodeError
+		a.track(
+			'Draft-04 Event',
+			props || {},
+			withTypewriterContext(options),
+			callback
+		)
 	}
 }
 /**
  * This is JSON Schema draft-06 event.
  */
-export function draft06Event(message, callback) {
-	const msg = withTypewriterContext({
-		properties: {},
-		...message,
-		event: 'Draft-06 Event',
-	})
+export function draft06Event(props, options, callback) {
 	const a = analytics()
 	if (a) {
-		a.track(msg, callback)
-	} else {
-		throw missingAnalyticsNodeError
+		a.track(
+			'Draft-06 Event',
+			props || {},
+			withTypewriterContext(options),
+			callback
+		)
 	}
 }
 /**
  * This is an empty event.
  */
-export function emptyEvent(message, callback) {
-	const msg = withTypewriterContext({
-		properties: {},
-		...message,
-		event: 'Empty Event',
-	})
+export function emptyEvent(props, options, callback) {
 	const a = analytics()
 	if (a) {
-		a.track(msg, callback)
-	} else {
-		throw missingAnalyticsNodeError
+		a.track(
+			'Empty Event',
+			props || {},
+			withTypewriterContext(options),
+			callback
+		)
 	}
 }
 /**
@@ -134,48 +116,32 @@ export function emptyEvent(message, callback) {
  * @param {string} props.required string - Required string property
  * @param {string} props.required string regex - Required string regex property
  */
-export function exampleEvent(message, callback) {
-	const msg = withTypewriterContext({
-		properties: {},
-		...message,
-		event: 'Example Event',
-	})
+export function exampleEvent(props, options, callback) {
 	const a = analytics()
 	if (a) {
-		a.track(msg, callback)
-	} else {
-		throw missingAnalyticsNodeError
+		a.track(
+			'Example Event',
+			props || {},
+			withTypewriterContext(options),
+			callback
+		)
 	}
 }
 /**
  * checkin != check_in bug
  */
-export function checkIn(message, callback) {
-	const msg = withTypewriterContext({
-		properties: {},
-		...message,
-		event: 'check_in',
-	})
+export function checkIn(props, options, callback) {
 	const a = analytics()
 	if (a) {
-		a.track(msg, callback)
-	} else {
-		throw missingAnalyticsNodeError
+		a.track('check_in', props || {}, withTypewriterContext(options), callback)
 	}
 }
 /**
  * checkin != check_in bug
  */
-export function checkin(message, callback) {
-	const msg = withTypewriterContext({
-		properties: {},
-		...message,
-		event: 'checkin',
-	})
+export function checkin(props, options, callback) {
 	const a = analytics()
 	if (a) {
-		a.track(msg, callback)
-	} else {
-		throw missingAnalyticsNodeError
+		a.track('checkin', props || {}, withTypewriterContext(options), callback)
 	}
 }

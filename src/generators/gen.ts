@@ -1,44 +1,43 @@
 import { JSONSchema7 } from 'json-schema'
-import javascript from './javascript'
 import { parse, Schema } from './ast'
-import { Options as JavaScriptOptions } from './javascript'
-
-export enum Language {
-	JAVASCRIPT = 'javascript',
-	TYPESCRIPT = 'typescript',
-}
-
-// Options that all clients must support.
-export interface DefaultOptions {
-	name: Language
-	// Whether or not to generate a development bundle. If so, analytics payloads will
-	// be validated against the full JSON Schema before being sent to the underlying
-	// analytics instance.
-	isDevelopment: boolean
-}
-
-export type Options = JavaScriptOptions
+import javascript from './javascript'
+import ios from './ios'
+import { Options, SDK } from './options'
 
 export interface File {
 	path: string
 	contents: string
 }
 
-export interface GenerationConfig {
-	tracks: {
+export interface RawTrackingPlan {
+	trackCalls: JSONSchema7[]
+}
+
+export interface TrackingPlan {
+	trackCalls: {
 		raw: JSONSchema7
 		schema: Schema
 	}[]
-	options: Options
-	typewriterVersion: string
 }
 
-export default async function gen(rawSchemas: JSONSchema7[], options: Options): Promise<File[]> {
-	const config = {
-		tracks: rawSchemas.map(s => {
+export interface GenOptions {
+	// Configuration options configured by the typewriter.yml config.
+	client: Options
+	// The version of the Typewriter CLI that is being used to generate clients.
+	// Used for analytics purposes by the Typewriter team.
+	typewriterVersion: string
+	// Whether or not to generate a development bundle. If so, analytics payloads will
+	// be validated against the full JSON Schema before being sent to the underlying
+	// analytics instance.
+	isDevelopment: boolean
+}
+
+export async function gen(trackingPlan: RawTrackingPlan, options: GenOptions): Promise<File[]> {
+	const parsedTrackingPlan = {
+		trackCalls: trackingPlan.trackCalls.map(s => {
 			const sanitizedSchema = {
-				...s,
 				$schema: 'http://json-schema.org/draft-07/schema#',
+				...s,
 			}
 
 			return {
@@ -46,14 +45,13 @@ export default async function gen(rawSchemas: JSONSchema7[], options: Options): 
 				schema: parse(sanitizedSchema),
 			}
 		}),
-		options,
-		// TODO: fetch from package.json
-		typewriterVersion: '7.0.0',
 	}
 
-	if (options.name === Language.TYPESCRIPT || options.name === Language.JAVASCRIPT) {
-		return await javascript(config)
+	if (options.client.sdk === SDK.WEB || options.client.sdk === SDK.NODE) {
+		return await javascript(parsedTrackingPlan, options)
+	} else if (options.client.sdk === SDK.IOS) {
+		return await ios(parsedTrackingPlan, options)
 	} else {
-		throw new Error('Invalid language')
+		throw new Error(`Invalid SDK: ${options.client.sdk}`)
 	}
 }

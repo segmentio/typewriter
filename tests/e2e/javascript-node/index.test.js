@@ -76,7 +76,6 @@ test('Validate Analytics Calls', async cb => {
 		userId,
 	})
 
-	// TODO: Test a pair of events with a naming collision.
 	exampleNamingCollision({
 		userId,
 	})

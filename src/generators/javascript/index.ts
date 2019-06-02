@@ -1,1 +1,1 @@
-export { default, Options, Environment, JavaScriptOptions, TypeScriptOptions } from './javascript'
+export { default } from './javascript'

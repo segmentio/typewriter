@@ -1,10 +1,11 @@
-import { File, DefaultOptions, Language, GenerationConfig } from '../gen'
+import { File, TrackingPlan, GenOptions } from '../gen'
 import { Schema, Type, getPropertiesSchema } from '../ast'
 import { camelCase, upperFirst } from 'lodash'
 import * as prettier from 'prettier'
 import { generateFromTemplate } from '../../templates'
 import { transpileModule, ModuleKind, ScriptTarget } from 'typescript'
 import Namer from '../namer'
+import { Language, SDK } from '../options'
 
 // See: https://mathiasbynens.be/notes/reserved-keywords#ecmascript-6
 // prettier-ignore
@@ -64,55 +65,18 @@ interface TSInterfaceProperty {
 	type: string
 }
 
-// Which JavaScript environment to generate for.
-// The browser environments will use analytics-js, window.analytics, and
-// generate analytics calls as functions.
-// The Node environment will use analytics-node, and generate class which
-// accepts an analytics object. Analytics calls will be class methods.
-export enum Environment {
-	BROWSER = 'browser',
-	NODE = 'node',
-}
-
-export interface JavaScriptOptions {
-	name: Language.JAVASCRIPT
-	env: Environment
-	// JavaScript transpilation settings:
-	scriptTarget?: ScriptTarget
-	moduleTarget?: ModuleKind
-}
-
-export interface TypeScriptOptions {
-	name: Language.TYPESCRIPT
-	env: Environment
-}
-
-export type Options = DefaultOptions & (JavaScriptOptions | TypeScriptOptions)
-
-let namer: Namer
-
-export default async function(config: GenerationConfig): Promise<File[]> {
-	namer = new Namer({
-		reservedWords,
-		quoteChar: "'",
-		// Note: we don't support the full range of allowed JS chars, instead focusing on a subset.
-		// The full regex 11k+ chars: https://mathiasbynens.be/demo/javascript-identifier-regex
-		// See: https://mathiasbynens.be/notes/javascript-identifiers-es6
-		allowedIdentifierStartingChars: 'A-Za-z_$',
-		allowedIdentifierChars: 'A-Za-z0-9_$',
-	})
-
-	const ctx = getContext(config)
+export default async function(trackingPlan: TrackingPlan, options: GenOptions): Promise<File[]> {
+	const ctx = getContext(trackingPlan, options)
 	const files = [
 		{
-			path: config.options.name === Language.TYPESCRIPT ? 'index.ts' : 'index.js',
+			path: options.client.language === Language.TYPESCRIPT ? 'index.ts' : 'index.js',
 			contents: await generateFromTemplate<TemplateContext>('generators/javascript/index.hbs', ctx),
 		},
 	]
 
 	// semgent.hbs contains the TypeScript definitions for the Segment API.
 	// It becomes an empty file for JavaScript after being transpiled.
-	if (config.options.name === Language.TYPESCRIPT) {
+	if (options.client.language === Language.TYPESCRIPT) {
 		files.push({
 			path: 'segment.ts',
 			contents: await generateFromTemplate<TemplateContext>(
@@ -122,21 +86,21 @@ export default async function(config: GenerationConfig): Promise<File[]> {
 		})
 	}
 
-	return files.map(f => formatFile(f, config.options))
+	return files.map(f => formatFile(f, options))
 }
 
-function formatFile(f: File, opts: Options): File {
+function formatFile(f: File, options: GenOptions): File {
 	let contents = f.contents
 
 	// If we are generating a JavaScript client, transpile the client
 	// from TypeScript into JavaScript.
-	if (opts.name === Language.JAVASCRIPT) {
+	if (options.client.language === Language.JAVASCRIPT) {
 		// If we're generating a JavaScript client, compile
 		// from TypeScript to JavaScript.
 		const { outputText } = transpileModule(f.contents, {
 			compilerOptions: {
-				target: opts.scriptTarget || ScriptTarget.ESNext,
-				module: opts.moduleTarget || ModuleKind.ESNext,
+				target: options.client.scriptTarget || ScriptTarget.ESNext,
+				module: options.client.moduleTarget || ModuleKind.ESNext,
 			},
 		})
 
@@ -145,13 +109,16 @@ function formatFile(f: File, opts: Options): File {
 
 	// Apply stylistic formatting, via Prettier.
 	const formattedContents = prettier.format(contents, {
-		parser: opts.name === Language.TYPESCRIPT ? 'typescript' : 'babel',
+		parser: options.client.language === Language.TYPESCRIPT ? 'typescript' : 'babel',
 		// Overwrite a few of the standard prettier settings to match with our Typewriter configuration:
 		useTabs: true,
 		singleQuote: true,
 		semi: false,
 		trailingComma:
-			opts.name === Language.JAVASCRIPT && opts.scriptTarget === ScriptTarget.ES3 ? 'none' : 'es5',
+			options.client.language === Language.JAVASCRIPT &&
+			options.client.scriptTarget === ScriptTarget.ES3
+				? 'none'
+				: 'es5',
 	})
 
 	return {
@@ -160,32 +127,41 @@ function formatFile(f: File, opts: Options): File {
 	}
 }
 
-function getContext(config: GenerationConfig): TemplateContext {
+function getContext(trackingPlan: TrackingPlan, options: GenOptions): TemplateContext {
 	// Render a TemplateContext based on the set of event schemas.
 	const context: TemplateContext = {
-		isDevelopment: config.options.isDevelopment,
-		isBrowser: config.options.env === Environment.BROWSER,
+		isDevelopment: options.isDevelopment,
+		isBrowser: options.client.sdk === SDK.WEB,
 
 		tracks: [],
 		interfaces: [],
 
-		language: config.options.name,
-		typewriterVersion: config.typewriterVersion,
+		language: options.client.language,
+		typewriterVersion: options.typewriterVersion,
 	}
 
-	for (var track of config.tracks) {
-		const { schema } = track
+	const namer = new Namer({
+		reservedWords,
+		quoteChar: "'",
+		// Note: we don't support the full range of allowed JS chars, instead focusing on a subset.
+		// The full regex 11k+ chars: https://mathiasbynens.be/demo/javascript-identifier-regex
+		// See: https://mathiasbynens.be/notes/javascript-identifiers-es6
+		allowedIdentifierStartingChars: 'A-Za-z_$',
+		allowedIdentifierChars: 'A-Za-z0-9_$',
+	})
+
+	for (var { raw, schema } of trackingPlan.trackCalls) {
 		// Recursively generate all types, into the context, for the schema.
-		const rootType = getTypeForSchema(getPropertiesSchema(schema), context)
+		const rootType = getTypeForSchema(getPropertiesSchema(schema), context, namer)
 
 		context.tracks.push({
 			functionName: namer.register(schema.name, 'function', camelCase),
 			eventName: namer.escapeString(schema.name),
 			description: schema.description,
 			type: rootType.type,
-			rawJSONSchema: JSON.stringify(track.raw, undefined, '\t'),
+			rawJSONSchema: JSON.stringify(raw, undefined, '\t'),
 			interface:
-				rootType.interface && config.options.name === Language.JAVASCRIPT
+				rootType.interface && options.client.language === Language.JAVASCRIPT
 					? {
 							...rootType.interface,
 							properties: rootType.interface.properties.map(p => ({
@@ -207,7 +183,11 @@ interface GetTypeForSchemaReturn {
 	interface?: TSInterface
 }
 
-function getTypeForSchema(schema: Schema, context: TemplateContext): GetTypeForSchemaReturn {
+function getTypeForSchema(
+	schema: Schema,
+	context: TemplateContext,
+	namer: Namer
+): GetTypeForSchemaReturn {
 	let type: string
 	let tsInterface: TSInterface | undefined = undefined
 	if (schema.type === Type.ANY) {
@@ -232,7 +212,7 @@ function getTypeForSchema(schema: Schema, context: TemplateContext): GetTypeForS
 					name: namer.escapeString(property.name),
 					description: property.description,
 					isRequired: !!property.isRequired,
-					type: getTypeForSchema(property, context).type,
+					type: getTypeForSchema(property, context, namer).type,
 				})
 			}
 
@@ -252,7 +232,7 @@ function getTypeForSchema(schema: Schema, context: TemplateContext): GetTypeForS
 			...schema.items,
 		}
 
-		type = `${getTypeForSchema(itemsSchema, context).type}[]`
+		type = `${getTypeForSchema(itemsSchema, context, namer).type}[]`
 	} else if (schema.type === Type.UNION) {
 		const types = schema.types.map(t => {
 			const subSchema = {
@@ -261,7 +241,7 @@ function getTypeForSchema(schema: Schema, context: TemplateContext): GetTypeForS
 				...t,
 			}
 
-			return getTypeForSchema(subSchema, context).type
+			return getTypeForSchema(subSchema, context, namer).type
 		})
 
 		type = types.join(' | ')
