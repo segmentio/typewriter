@@ -5,7 +5,7 @@ import {
 	eventWithAllTypes,
 	I42TerribleEventName3,
 	exampleNamingCollision,
-	exampleNamingCollision2,
+	exampleNamingCollision1,
 	violationHandlerTest,
 	setTypewriterOptions,
 } from './analytics'
@@ -80,7 +80,7 @@ test('Validate Analytics Calls', async cb => {
 	exampleNamingCollision({
 		userId,
 	})
-	exampleNamingCollision2({
+	exampleNamingCollision1({
 		userId,
 	})
 

@@ -1,0 +1,9 @@
+version: "3"
+services:
+  snapshotter:
+    # TODO: move this into a public Docker repo
+    image: "528451384384.dkr.ecr.us-west-2.amazonaws.com/snapshotter:v1"
+    healthcheck:
+      test: "curl --silent --show-error --fail localhost:8765/messages || exit 1"
+    ports:
+      - "8765:8765"

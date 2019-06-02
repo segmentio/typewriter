@@ -288,8 +288,8 @@
         "version": 1
       },
       {
-        "description": "An example event that illustrates an event name collision (TODO: remove _2).",
-        "name": "example_naming_collision_2",
+        "description": "An example event that illustrates an event name collision.",
+        "name": "example_naming_collision",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
           "labels": {},
@@ -319,5 +319,5 @@
     },
     "identify_traits": []
   },
-  "update_time": "2019-05-31T04:50:54.000Z"
+  "update_time": "2019-06-02T06:35:32.000Z"
 }

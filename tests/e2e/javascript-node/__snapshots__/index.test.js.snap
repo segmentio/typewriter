@@ -118,7 +118,7 @@ Array [
         "version": "7.0.0",
       },
     },
-    "event": "example_naming_collision_2",
+    "event": "example_naming_collision",
     "properties": Object {},
     "type": "track",
     "userId": "user-1234",

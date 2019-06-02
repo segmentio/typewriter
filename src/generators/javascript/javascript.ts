@@ -1,10 +1,20 @@
 import { File, DefaultOptions, Language, GenerationConfig } from '../gen'
 import { Schema, Type, getPropertiesSchema } from '../ast'
 import { camelCase, upperFirst } from 'lodash'
-import namer from './namer'
 import * as prettier from 'prettier'
 import { generateFromTemplate } from '../../templates'
 import { transpileModule, ModuleKind, ScriptTarget } from 'typescript'
+import Namer from '../namer'
+
+// See: https://mathiasbynens.be/notes/reserved-keywords#ecmascript-6
+// prettier-ignore
+const reservedWords = [
+	'do', 'if', 'in', 'for', 'let', 'new', 'try', 'var', 'case', 'else', 'enum', 'eval', 'null', 'this',
+	'true', 'void', 'with', 'await', 'break', 'catch', 'class', 'const', 'false', 'super', 'throw',
+	'while', 'yield', 'delete', 'export', 'import', 'public', 'return', 'static', 'switch', 'typeof',
+	'default', 'extends', 'finally', 'package', 'private', 'continue', 'debugger', 'function', 'arguments',
+	'interface', 'protected', 'implements', 'instanceof',
+]
 
 // The context that will be passed to Handlebars to perform rendering.
 // Everything in this context should be properly sanitized.
@@ -79,7 +89,19 @@ export interface TypeScriptOptions {
 
 export type Options = DefaultOptions & (JavaScriptOptions | TypeScriptOptions)
 
+let namer: Namer
+
 export default async function(config: GenerationConfig): Promise<File[]> {
+	namer = new Namer({
+		reservedWords,
+		quoteChar: "'",
+		// Note: we don't support the full range of allowed JS chars, instead focusing on a subset.
+		// The full regex 11k+ chars: https://mathiasbynens.be/demo/javascript-identifier-regex
+		// See: https://mathiasbynens.be/notes/javascript-identifiers-es6
+		allowedIdentifierStartingChars: 'A-Za-z_$',
+		allowedIdentifierChars: 'A-Za-z0-9_$',
+	})
+
 	const ctx = getContext(config)
 	const files = [
 		{
@@ -157,7 +179,7 @@ function getContext(config: GenerationConfig): TemplateContext {
 		const rootType = getTypeForSchema(getPropertiesSchema(schema), context)
 
 		context.tracks.push({
-			functionName: namer.escapeIdentifier(camelCase(schema.name)),
+			functionName: namer.register(schema.name, 'function', camelCase),
 			eventName: namer.escapeString(schema.name),
 			description: schema.description,
 			type: rootType.type,
@@ -214,7 +236,8 @@ function getTypeForSchema(schema: Schema, context: TemplateContext): GetTypeForS
 				})
 			}
 
-			type = namer.escapeIdentifier(upperFirst(camelCase(schema.name)))
+			const interfaceNamer = (name: string) => upperFirst(camelCase(name))
+			type = namer.register(schema.name, 'interface', interfaceNamer)
 			tsInterface = {
 				name: type,
 				description: schema.description,
