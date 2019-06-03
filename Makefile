@@ -13,12 +13,19 @@ test:
 	@make test-javascript-node	
 
 	@### TypeScript node
-	@# TODO
+	@make test-typescript-node
 
 test-javascript-node:
 	@echo "\n>>>	🏃 Running JavaScript Node client test suite...\n"
 	@yarn run -s dev --config=./tests/e2e/javascript-node
 	@cd tests/e2e/javascript-node && \
+		yarn && \
+		yarn run -s test
+
+test-typescript-node:
+	@echo "\n>>>	🏃 Running TypeScript Node client test suite...\n"
+	@yarn run -s dev --config=./tests/e2e/typescript-node
+	@cd tests/e2e/typescript-node && \
 		yarn && \
 		yarn run -s test
 

@@ -20,7 +20,7 @@ test('Validate Analytics Calls', async cb => {
 	const analytics = new SegmentAnalytics('123456', {
 		host: SIDECAR_ADDRESS,
 	})
-	analytics.flush = promisify(analytics.flush)
+	analytics.flush = promisify(analytics.flush) as any
 
 	const userId = 'user-1234'
 
@@ -33,7 +33,8 @@ test('Validate Analytics Calls', async cb => {
 
 	// Initialize Typewriter with an analytics-node instance.
 	setTypewriterOptions({
-		analytics,
+		// TODO: we should look into updating the type definitions for analytics-node.
+		analytics: analytics as any,
 	})
 
 	// Send an event with no properties.
@@ -98,7 +99,7 @@ test('Validate Analytics Calls', async cb => {
 
 	// Verify that a custom onViolation error handler is called on Violation.
 	setTypewriterOptions({
-		analytics,
+		analytics: analytics as any,
 		onViolation: (msg, violations) => {
 			expect(msg.event).toEqual('Violation Handler Test')
 			expect(violations).toHaveLength(1)

@@ -1,6 +1,6 @@
 import { fetchTrackingPlan } from './api'
 import { resolveRelativePath, getConfig, getToken } from './config'
-import * as sortKeys from 'sort-keys'
+import sortKeys from 'sort-keys'
 import * as fs from 'fs'
 import { promisify } from 'util'
 import { Arguments, TrackingPlanConfig, SegmentAPI } from './types'

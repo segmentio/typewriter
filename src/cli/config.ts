@@ -3,7 +3,7 @@ import { promisify } from 'util'
 import { resolve, dirname } from 'path'
 import * as yaml from 'js-yaml'
 import { generateFromTemplate } from '../templates'
-import * as Ajv from 'ajv'
+import Ajv from 'ajv'
 import { Arguments, Config } from './types'
 import * as childProcess from 'child_process'
 

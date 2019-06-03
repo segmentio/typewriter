@@ -9,7 +9,7 @@ import {
 	generateToken,
 	fetchAllTrackingPlans,
 } from './api'
-import * as prompts from 'prompts'
+import prompts from 'prompts'
 import { Arguments, Config } from './types'
 import { writeTrackingPlan, loadTrackingPlan } from './trackingplans'
 import { gen } from '../generators/gen'
