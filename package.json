@@ -39,7 +39,6 @@
   "scripts": {
     "start": "node ./dist/src/index.js",
     "test": "jest",
-    "update-snapshots": "jest -u",
     "watch": "tsc -w",
     "build": "rm -rf dist && tsc",
     "prepare": "yarn run build",
