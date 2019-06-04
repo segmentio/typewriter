@@ -1,3 +1,12 @@
+## [6.1.4](https://github.com/segmentio/typewriter/compare/6.1.3...6.1.4) (2019-06-04)
+
+
+### Bug Fixes
+
+* **iOS:** assign -> copy for numeric types ([#61](https://github.com/segmentio/typewriter/issues/61)) ([7a2ec99](https://github.com/segmentio/typewriter/commit/7a2ec99))
+
+
+
 ## [6.1.3](https://github.com/segmentio/typewriter/compare/6.1.2...6.1.3) (2019-03-06)
 
 
