@@ -9,11 +9,12 @@ import {
   Name,
   Sourcelike,
   Type,
-  ObjectType
+  ObjectType,
+  matchType
 } from 'quicktype-core'
 import { stringEscape } from 'quicktype-core/dist/support/Strings'
 import { OptionValues, StringOption } from 'quicktype-core/dist/RendererOptions'
-import { objcOptions } from 'quicktype-core/dist/language/Objective-C'
+import { objcOptions, MemoryAttribute } from 'quicktype-core/dist/language/Objective-C'
 
 import {
   getTypedTrackHandler,
@@ -564,8 +565,34 @@ class AnalyticsObjectiveCWrapperRenderer extends ObjectiveCRenderer {
     })
   }
 
+  /**
+   * Always used the boxed types, because of a potential upstream bu with nullable values
+   * in QuickType. We need to use a boxed type if we make attach the `nullable` property modifier.
+   */
   protected objcType(t: Type, _: boolean): [Sourcelike, string] {
     return super.objcType(t, true)
+  }
+
+  /**
+   * Override memoryAttribute in order to replace assign with copy for numeric types.
+   *
+   * Defer to QuickType for all other types.
+   */
+  protected memoryAttribute(t: Type, isNullable: boolean): MemoryAttribute {
+    return matchType<MemoryAttribute>(
+      t,
+      anyType => super.memoryAttribute(t, isNullable),
+      nullType => super.memoryAttribute(t, isNullable),
+      boolType => super.memoryAttribute(t, isNullable),
+      integerType => (isNullable ? 'strong' : 'copy'),
+      doubleType => (isNullable ? 'strong' : 'copy'),
+      stringType => super.memoryAttribute(t, isNullable),
+      arrayType => super.memoryAttribute(t, isNullable),
+      classType => super.memoryAttribute(t, isNullable),
+      mapType => super.memoryAttribute(t, isNullable),
+      enumType => super.memoryAttribute(t, isNullable),
+      unionType => super.memoryAttribute(t, isNullable)
+    )
   }
 }
 

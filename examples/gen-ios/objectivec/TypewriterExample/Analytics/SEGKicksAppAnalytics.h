@@ -25,22 +25,22 @@ NS_ASSUME_NONNULL_BEGIN
 /// Currency code associated with the transaction
 @property (nonatomic, nullable, copy) NSString *currency;
 /// Total discount associated with the transaction
-@property (nonatomic, nullable, assign) NSNumber *discount;
+@property (nonatomic, nullable, copy) NSNumber *discount;
 /// Order/transaction ID
 @property (nonatomic, copy) NSString *orderID;
 /// Products in the order
 @property (nonatomic, nullable, copy) NSArray<SEGProduct *> *products;
 /// Revenue associated with the transaction (excluding shipping and tax)
-@property (nonatomic, nullable, assign) NSNumber *revenue;
+@property (nonatomic, nullable, copy) NSNumber *revenue;
 /// Shipping cost associated with the transaction
-@property (nonatomic, nullable, assign) NSNumber *shipping;
+@property (nonatomic, nullable, copy) NSNumber *shipping;
 /// Total tax associated with the transaction
-@property (nonatomic, nullable, assign) NSNumber *tax;
+@property (nonatomic, nullable, copy) NSNumber *tax;
 /// Revenue with discounts and coupons added in. Note that our Google Analytics Ecommerce
 /// destination accepts total or revenue, but not both. For better flexibility and total
 /// control over tracking, we let you decide how to calculate how coupons and discounts are
 /// applied
-@property (nonatomic, nullable, assign) NSNumber *total;
+@property (nonatomic, nullable, copy) NSNumber *total;
 @end
 
 typedef void (^ SEGOrderCompletedBuilderBlock)(SEGOrderCompletedBuilder *);
@@ -55,22 +55,22 @@ typedef void (^ SEGOrderCompletedBuilderBlock)(SEGOrderCompletedBuilder *);
 /// Currency code associated with the transaction
 @property (nonatomic, nullable, copy) NSString *currency;
 /// Total discount associated with the transaction
-@property (nonatomic, nullable, assign) NSNumber *discount;
+@property (nonatomic, nullable, copy) NSNumber *discount;
 /// Order/transaction ID
 @property (nonatomic, copy) NSString *orderID;
 /// Products in the order
 @property (nonatomic, nullable, copy) NSArray<SEGProduct *> *products;
 /// Revenue associated with the transaction (excluding shipping and tax)
-@property (nonatomic, nullable, assign) NSNumber *revenue;
+@property (nonatomic, nullable, copy) NSNumber *revenue;
 /// Shipping cost associated with the transaction
-@property (nonatomic, nullable, assign) NSNumber *shipping;
+@property (nonatomic, nullable, copy) NSNumber *shipping;
 /// Total tax associated with the transaction
-@property (nonatomic, nullable, assign) NSNumber *tax;
+@property (nonatomic, nullable, copy) NSNumber *tax;
 /// Revenue with discounts and coupons added in. Note that our Google Analytics Ecommerce
 /// destination accepts total or revenue, but not both. For better flexibility and total
 /// control over tracking, we let you decide how to calculate how coupons and discounts are
 /// applied
-@property (nonatomic, nullable, assign) NSNumber *total;
+@property (nonatomic, nullable, copy) NSNumber *total;
 @end
 
 @interface SEGProduct : NSObject
@@ -85,13 +85,13 @@ typedef void (^ SEGOrderCompletedBuilderBlock)(SEGOrderCompletedBuilder *);
 /// Name of the product being viewed
 @property (nonatomic, nullable, copy) NSString *name;
 /// Position in the product list (ex. 3)
-@property (nonatomic, nullable, assign) NSNumber *position;
+@property (nonatomic, nullable, copy) NSNumber *position;
 /// Price of the product being viewed
-@property (nonatomic, nullable, assign) NSNumber *price;
+@property (nonatomic, nullable, copy) NSNumber *price;
 /// Database id of the product being viewed
 @property (nonatomic, nullable, copy) NSString *productID;
 /// Quantity of a product
-@property (nonatomic, nullable, assign) NSNumber *quantity;
+@property (nonatomic, nullable, copy) NSNumber *quantity;
 /// Sku of the product being viewed
 @property (nonatomic, nullable, copy) NSString *sku;
 /// URL of the product page
@@ -114,13 +114,13 @@ typedef void (^ SEGProductBuilderBlock)(SEGProductBuilder *);
 /// Name of the product being viewed
 @property (nonatomic, nullable, copy) NSString *name;
 /// Position in the product list (ex. 3)
-@property (nonatomic, nullable, assign) NSNumber *position;
+@property (nonatomic, nullable, copy) NSNumber *position;
 /// Price of the product being viewed
-@property (nonatomic, nullable, assign) NSNumber *price;
+@property (nonatomic, nullable, copy) NSNumber *price;
 /// Database id of the product being viewed
 @property (nonatomic, nullable, copy) NSString *productID;
 /// Quantity of a product
-@property (nonatomic, nullable, assign) NSNumber *quantity;
+@property (nonatomic, nullable, copy) NSNumber *quantity;
 /// Sku of the product being viewed
 @property (nonatomic, nullable, copy) NSString *sku;
 /// URL of the product page
