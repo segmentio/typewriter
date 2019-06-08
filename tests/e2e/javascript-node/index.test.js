@@ -10,7 +10,6 @@ import {
 	setTypewriterOptions,
 } from './analytics'
 import SegmentAnalytics from 'analytics-node'
-import fetch from 'node-fetch'
 import { promisify } from 'util'
 
 const SIDECAR_ADDRESS = 'http://localhost:8765'
@@ -124,11 +123,6 @@ test('Validate Analytics Calls', async cb => {
 	})
 
 	await analytics.flush()
-
-	const resp = await fetch(`${SIDECAR_ADDRESS}/messages`)
-	const messages = await resp.json()
-
-	expect(messages).toMatchSnapshot()
 
 	cb()
 })

@@ -21,6 +21,7 @@ test-javascript-node:
 	@cd tests/e2e/javascript-node && \
 		yarn && \
 		yarn run -s test
+	@yarn run ts-node ./tests/e2e/snapshot.ts ./tests/e2e/javascript-node
 
 test-typescript-node:
 	@echo "\n>>>	🏃 Running TypeScript Node client test suite...\n"
@@ -28,6 +29,7 @@ test-typescript-node:
 	@cd tests/e2e/typescript-node && \
 		yarn && \
 		yarn run -s test
+	@yarn run ts-node ./tests/e2e/snapshot.ts ./tests/e2e/typescript-node
 
 test-ios:
 	@echo "\n>>>	🏃 Running iOS client test suite...\n"
@@ -40,6 +42,7 @@ test-ios:
 			-sdk iphonesimulator \
 			-destination 'platform=iOS Simulator,name=iPhone Xʀ,OS=12.2' \
 			test
+	@yarn run ts-node ./tests/e2e/snapshot.ts ./tests/e2e/ios
 
 docker:
 	@docker-compose -f tests/e2e/docker-compose.yml up -d
