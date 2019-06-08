@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		432B3DA322AC7B8400EFFE2D /* SEGTypewriterAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 432B3DA222AC7B8400EFFE2D /* SEGTypewriterAnalytics.m */; };
+		432B3DA422AC7B8400EFFE2D /* SEGTypewriterAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 432B3DA222AC7B8400EFFE2D /* SEGTypewriterAnalytics.m */; };
 		4340ACDD22AB7FA8002C0D6B /* TypewriterExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4340ACDC22AB7FA8002C0D6B /* TypewriterExampleTests.m */; };
 		58DCE97D3F0B09E5B591D430 /* Pods_TypewriterExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 013162A9EB31F4335B8BDC51 /* Pods_TypewriterExample.framework */; };
 		EADEB91E1DED460A005322DA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB91D1DED460A005322DA /* main.m */; };
@@ -31,6 +33,8 @@
 /* Begin PBXFileReference section */
 		013162A9EB31F4335B8BDC51 /* Pods_TypewriterExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TypewriterExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A7E1FAABB1A8D6E1490DF66 /* Pods-TypewriterExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TypewriterExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-TypewriterExample/Pods-TypewriterExample.release.xcconfig"; sourceTree = "<group>"; };
+		432B3DA122AC7B8400EFFE2D /* SEGTypewriterAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGTypewriterAnalytics.h; sourceTree = "<group>"; };
+		432B3DA222AC7B8400EFFE2D /* SEGTypewriterAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGTypewriterAnalytics.m; sourceTree = "<group>"; };
 		4340ACDA22AB7FA8002C0D6B /* TypewriterExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TypewriterExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4340ACDC22AB7FA8002C0D6B /* TypewriterExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TypewriterExampleTests.m; sourceTree = "<group>"; };
 		4340ACDE22AB7FA8002C0D6B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -93,6 +97,8 @@
 		435B5BC021640CE0000F31B6 /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
+				432B3DA122AC7B8400EFFE2D /* SEGTypewriterAnalytics.h */,
+				432B3DA222AC7B8400EFFE2D /* SEGTypewriterAnalytics.m */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -340,6 +346,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4340ACDD22AB7FA8002C0D6B /* TypewriterExampleTests.m in Sources */,
+				432B3DA422AC7B8400EFFE2D /* SEGTypewriterAnalytics.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,6 +355,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EADEB9241DED460A005322DA /* ViewController.m in Sources */,
+				432B3DA322AC7B8400EFFE2D /* SEGTypewriterAnalytics.m in Sources */,
 				EADEB9211DED460A005322DA /* AppDelegate.m in Sources */,
 				EADEB91E1DED460A005322DA /* main.m in Sources */,
 			);

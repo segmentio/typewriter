@@ -21,13 +21,12 @@ const reservedWords = [
 // Everything in this context should be properly sanitized.
 interface TemplateContext {
 	isDevelopment: boolean
+	language: string
+	typewriterVersion: string
 	isBrowser: boolean
 
 	tracks: TrackCall[]
 	interfaces: TSInterface[]
-
-	language: string
-	typewriterVersion: string
 }
 
 // Represents a single exposed track() call.
@@ -131,13 +130,12 @@ function getContext(trackingPlan: TrackingPlan, options: GenOptions): TemplateCo
 	// Render a TemplateContext based on the set of event schemas.
 	const context: TemplateContext = {
 		isDevelopment: options.isDevelopment,
+		language: options.client.language,
+		typewriterVersion: options.typewriterVersion,
 		isBrowser: options.client.sdk === SDK.WEB,
 
 		tracks: [],
 		interfaces: [],
-
-		language: options.client.language,
-		typewriterVersion: options.typewriterVersion,
 	}
 
 	const namer = new Namer({
