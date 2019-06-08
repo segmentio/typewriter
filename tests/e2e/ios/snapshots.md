@@ -1,6 +1,6 @@
 ```json
 {
-    "anonymousId": "8D522C6D-9F29-45C6-993D-02BE16AC929D",
+    "anonymousId": "AFEC8658-E229-4A53-B87F-F40E085E04AA",
     "context": {
         "app": {
             "build": "1",
@@ -9,7 +9,7 @@
             "version": "1.0"
         },
         "device": {
-            "id": "B37B4156-5856-44F7-9EB6-5DCF6C39EC44",
+            "id": "C5884FA6-8441-470E-B5FF-026819416249",
             "manufacturer": "Apple",
             "model": "x86_64"
         },
@@ -27,8 +27,8 @@
             "version": "12.2"
         },
         "screen": {
-            "height": 896,
-            "width": 414
+            "height": 812,
+            "width": 375
         },
         "timezone": "America/Los_Angeles",
         "traits": {}
