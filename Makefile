@@ -29,6 +29,18 @@ test-typescript-node:
 		yarn && \
 		yarn run -s test
 
+test-ios:
+	@echo "\n>>>	🏃 Running iOS client test suite...\n"
+	@yarn run -s dev --config=./tests/e2e/ios
+	@cd tests/e2e/ios && \
+		pod install && \
+		xcodebuild \
+			-workspace TypewriterExample.xcworkspace \
+			-scheme TypewriterExampleTests \
+			-sdk iphonesimulator \
+			-destination 'platform=iOS Simulator,name=iPhone Xʀ,OS=12.2' \
+			test
+
 docker:
 	@docker-compose -f tests/e2e/docker-compose.yml up -d
 	@# Make sure the snapshotter is available and all messages have been cleared from any previous tests:
