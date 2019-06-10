@@ -71,3 +71,7 @@ test-ios:
 		pod install && \
 		set -o pipefail && xcodebuild test $(XC_ARGS) | xcpretty
 	@yarn run ts-node ./tests/e2e/snapshot.ts ./tests/e2e/ios
+
+.PHONY: clean
+clean:
+	@find tests/e2e/ios/TypewriterExample/Analytics/ -type f -not -name 'plan.json' -print0 | xargs -0 -I {} rm {}

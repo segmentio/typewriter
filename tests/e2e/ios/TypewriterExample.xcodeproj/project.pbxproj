@@ -10,6 +10,11 @@
 		432B3DA322AC7B8400EFFE2D /* SEGTypewriterAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 432B3DA222AC7B8400EFFE2D /* SEGTypewriterAnalytics.m */; };
 		432B3DA422AC7B8400EFFE2D /* SEGTypewriterAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 432B3DA222AC7B8400EFFE2D /* SEGTypewriterAnalytics.m */; };
 		4340ACDD22AB7FA8002C0D6B /* TypewriterExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4340ACDC22AB7FA8002C0D6B /* TypewriterExampleTests.m */; };
+		43A1E32C22ADA8FF008E0D80 /* SEGTypewriterUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A1E32B22ADA8FF008E0D80 /* SEGTypewriterUtils.m */; };
+		43A1E33622ADB981008E0D80 /* SEGOptionalObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A1E33122ADB981008E0D80 /* SEGOptionalObject.m */; };
+		43A1E33822ADB981008E0D80 /* SEGRequiredObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A1E33422ADB981008E0D80 /* SEGRequiredObject.m */; };
+		43A1E33D22ADFF90008E0D80 /* SEGOptionalArrayItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A1E33A22ADFF90008E0D80 /* SEGOptionalArrayItem.m */; };
+		43A1E33E22ADFF90008E0D80 /* SEGRequiredArrayItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A1E33C22ADFF90008E0D80 /* SEGRequiredArrayItem.m */; };
 		58DCE97D3F0B09E5B591D430 /* Pods_TypewriterExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 013162A9EB31F4335B8BDC51 /* Pods_TypewriterExample.framework */; };
 		EADEB91E1DED460A005322DA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB91D1DED460A005322DA /* main.m */; };
 		EADEB9211DED460A005322DA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB9201DED460A005322DA /* AppDelegate.m */; };
@@ -38,6 +43,16 @@
 		4340ACDA22AB7FA8002C0D6B /* TypewriterExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TypewriterExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4340ACDC22AB7FA8002C0D6B /* TypewriterExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TypewriterExampleTests.m; sourceTree = "<group>"; };
 		4340ACDE22AB7FA8002C0D6B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		43A1E32A22ADA8FF008E0D80 /* SEGTypewriterUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGTypewriterUtils.h; sourceTree = "<group>"; };
+		43A1E32B22ADA8FF008E0D80 /* SEGTypewriterUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGTypewriterUtils.m; sourceTree = "<group>"; };
+		43A1E32D22ADB981008E0D80 /* SEGOptionalObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGOptionalObject.h; sourceTree = "<group>"; };
+		43A1E32E22ADB981008E0D80 /* SEGRequiredObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGRequiredObject.h; sourceTree = "<group>"; };
+		43A1E33122ADB981008E0D80 /* SEGOptionalObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGOptionalObject.m; sourceTree = "<group>"; };
+		43A1E33422ADB981008E0D80 /* SEGRequiredObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGRequiredObject.m; sourceTree = "<group>"; };
+		43A1E33922ADFF90008E0D80 /* SEGRequiredArrayItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGRequiredArrayItem.h; sourceTree = "<group>"; };
+		43A1E33A22ADFF90008E0D80 /* SEGOptionalArrayItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGOptionalArrayItem.m; sourceTree = "<group>"; };
+		43A1E33B22ADFF90008E0D80 /* SEGOptionalArrayItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGOptionalArrayItem.h; sourceTree = "<group>"; };
+		43A1E33C22ADFF90008E0D80 /* SEGRequiredArrayItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGRequiredArrayItem.m; sourceTree = "<group>"; };
 		47C2E5ED764668C7B1DDFF73 /* Pods-TypewriterExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TypewriterExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TypewriterExample/Pods-TypewriterExample.debug.xcconfig"; sourceTree = "<group>"; };
 		554C63FE85325FBABD0BBC52 /* Pods-TypewriterExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TypewriterExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TypewriterExampleTests/Pods-TypewriterExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		80D4139D36DDCA166304F0A5 /* Pods-TypewriterExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TypewriterExampleTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TypewriterExampleTests/Pods-TypewriterExampleTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -97,6 +112,16 @@
 		435B5BC021640CE0000F31B6 /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
+				43A1E33B22ADFF90008E0D80 /* SEGOptionalArrayItem.h */,
+				43A1E33A22ADFF90008E0D80 /* SEGOptionalArrayItem.m */,
+				43A1E33922ADFF90008E0D80 /* SEGRequiredArrayItem.h */,
+				43A1E33C22ADFF90008E0D80 /* SEGRequiredArrayItem.m */,
+				43A1E32D22ADB981008E0D80 /* SEGOptionalObject.h */,
+				43A1E33122ADB981008E0D80 /* SEGOptionalObject.m */,
+				43A1E32E22ADB981008E0D80 /* SEGRequiredObject.h */,
+				43A1E33422ADB981008E0D80 /* SEGRequiredObject.m */,
+				43A1E32A22ADA8FF008E0D80 /* SEGTypewriterUtils.h */,
+				43A1E32B22ADA8FF008E0D80 /* SEGTypewriterUtils.m */,
 				432B3DA122AC7B8400EFFE2D /* SEGTypewriterAnalytics.h */,
 				432B3DA222AC7B8400EFFE2D /* SEGTypewriterAnalytics.m */,
 			);
@@ -205,7 +230,7 @@
 		EADEB9111DED460A005322DA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = Segment;
 				TargetAttributes = {
 					4340ACD922AB7FA8002C0D6B = {
@@ -223,10 +248,9 @@
 			};
 			buildConfigurationList = EADEB9141DED460A005322DA /* Build configuration list for PBXProject "TypewriterExample" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
@@ -356,8 +380,13 @@
 			files = (
 				EADEB9241DED460A005322DA /* ViewController.m in Sources */,
 				432B3DA322AC7B8400EFFE2D /* SEGTypewriterAnalytics.m in Sources */,
+				43A1E32C22ADA8FF008E0D80 /* SEGTypewriterUtils.m in Sources */,
+				43A1E33822ADB981008E0D80 /* SEGRequiredObject.m in Sources */,
+				43A1E33D22ADFF90008E0D80 /* SEGOptionalArrayItem.m in Sources */,
 				EADEB9211DED460A005322DA /* AppDelegate.m in Sources */,
 				EADEB91E1DED460A005322DA /* main.m in Sources */,
+				43A1E33E22ADFF90008E0D80 /* SEGRequiredArrayItem.m in Sources */,
+				43A1E33622ADB981008E0D80 /* SEGOptionalObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -444,6 +473,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -500,6 +530,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";

@@ -55,7 +55,9 @@
         "required object": {
             "required sub-property": "Hello World"
         },
-        "required object (empty)": {},
+        "required object (empty)": {
+            "anything": "works"
+        },
         "required string": "Hello World",
         "required string regex": "FOO"
     },
