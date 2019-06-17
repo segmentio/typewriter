@@ -118,25 +118,13 @@ export async function assertHasToken(cfg: Partial<Config> | undefined): Promise<
 
 // getToken uses a Config to fetch a Segment API token. It will search for it in this order:
 //   1. process.env.TYPEWRITER_TOKEN
-//   2. cat ~/.typewriter.yml
-//   3. The stdout from executing tokenCommand from the config.
+//   2. The stdout from executing tokenCommand from the config.
+//   3. cat ~/.typewriter.yml
 // Returns undefined if no token can be found.
 export async function getToken(cfg: Partial<Config> | undefined): Promise<string | undefined> {
 	// Attempt to read a token from the shell environment.
 	if (process.env.TYPEWRITER_TOKEN) {
 		return process.env.TYPEWRITER_TOKEN
-	}
-
-	// Attempt to read a token from the ~/.typewriter token file.
-	// Tokens are stored here during the `init` flow, if a user generates a token.
-	try {
-		const path = resolve(homedir(), '.typewriter')
-		const token = await readFile(path, 'utf-8')
-		if (token) {
-			return token
-		}
-	} catch (e) {
-		// Ignore errors if ~/.typewriter doesn't exist
 	}
 
 	// Attempt to read a token by executing the tokenCommand from the typewriter.yml config file.
@@ -153,6 +141,18 @@ export async function getToken(cfg: Partial<Config> | undefined): Promise<string
 				return token
 			}
 		}
+	}
+
+	// Attempt to read a token from the ~/.typewriter token file.
+	// Tokens are stored here during the `init` flow, if a user generates a token.
+	try {
+		const path = resolve(homedir(), '.typewriter')
+		const token = await readFile(path, 'utf-8')
+		if (token) {
+			return token
+		}
+	} catch (e) {
+		// Ignore errors if ~/.typewriter doesn't exist
 	}
 
 	return undefined

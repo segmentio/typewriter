@@ -121,7 +121,7 @@ function matchesSchema(
  * Helper to attach metadata on Typewriter to outbound requests.
  * This is used for attribution and debugging by the Segment team.
  */
-function withTypewriterContext{{#unless isBrowser}}<P>{{/unless}}(message: {{#if isBrowser}}Segment.Options = {}{{else}}Segment.TrackMessage<P>{{/if}}): {{#if isBrowser}}Segment.Options{{else}}Segment.TrackMessage<P>{{/if}} {
+function withTypewriterContext{{#unless isBrowser}}<P, T extends Segment.TrackMessage<P>>{{/unless}}(message: {{#if isBrowser}}Segment.Options = {}{{else}}T{{/if}}): {{#if isBrowser}}Segment.Options{{else}}T{{/if}} {
 	return {
 		...message,
 		context: {

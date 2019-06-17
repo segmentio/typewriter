@@ -32,8 +32,7 @@ test('Validate Analytics Calls', async cb => {
 
 	// Initialize Typewriter with an analytics-node instance.
 	setTypewriterOptions({
-		// TODO: we should look into updating the type definitions for analytics-node.
-		analytics: analytics as any,
+		analytics,
 	})
 
 	// Send an event with no properties.
@@ -100,7 +99,7 @@ test('Validate Analytics Calls', async cb => {
 
 	// Verify that a custom onViolation error handler is called on Violation.
 	setTypewriterOptions({
-		analytics: analytics as any,
+		analytics,
 		onViolation: (msg, violations) => {
 			expect(msg.event).toEqual('Violation Handler Test')
 			expect(violations).toHaveLength(1)
