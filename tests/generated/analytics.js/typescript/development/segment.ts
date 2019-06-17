@@ -36,7 +36,7 @@ export interface Options {
 		AppsFlyer?: {
 			appsFlyerId: string
 		}
-		[key: string]: boolean | { [key: string]: string } | undefined
+		[key: string]: boolean | { [key: string]: any }
 	}
 	/**
 	 * A dictionary of extra context to attach to the call.

@@ -200,9 +200,9 @@ export function setTypewriterOptions(options: TypewriterOptions) {
  * Helper to attach metadata on Typewriter to outbound requests.
  * This is used for attribution and debugging by the Segment team.
  */
-function withTypewriterContext<P>(
-	message: Segment.TrackMessage<P>
-): Segment.TrackMessage<P> {
+function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
+	message: T
+): T {
 	return {
 		...message,
 		context: {

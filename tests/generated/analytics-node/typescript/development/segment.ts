@@ -1,14 +1,4 @@
-/**
- * Type definitions for Segment's analytics-node library.
- */
-
-/** A minimal interface for Segment's analytics-node. */
-export interface AnalyticsNode {
-	track: (
-		message: TrackMessage<Record<string, any>>,
-		callback?: Callback
-	) => void
-}
+export { default as AnalyticsNode } from 'analytics-node'
 
 /**
  * TrackMessage represents a message payload for an analytics `.track()` call.
@@ -46,7 +36,7 @@ export interface Options {
 		AppsFlyer?: {
 			appsFlyerId: string
 		}
-		[key: string]: boolean | { [key: string]: string } | undefined
+		[key: string]: boolean | { [key: string]: any }
 	}
 	/**
 	 * A dictionary of extra context to attach to the call.
