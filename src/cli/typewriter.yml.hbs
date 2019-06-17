@@ -3,14 +3,6 @@
 
 {{#if tokenCommand}}
 tokenCommand: {{tokenCommand}}
-{{else}}
-# Currently, Typewriter is configured to read the token from TYPEWRITER_TOKEN in your environment.
-# Alternatively, you can supply this token using a shell command, which could use your team's secret
-# management tooling to fetch a shared Segment API token.
-# For example, at Segment, we use https://github.com/segmentio/chamber for secret management,
-# and https://github.com/segmentio/aws-okta to perform SSO with Okta.
-# Our configuration looks like this:
-# tokenCommand: aws-okta exec dev-privileged -- chamber export app | jq -r .typewriter_segment_prod_token
 {{/if}}
 
 # You can configure the options of this client's generator:

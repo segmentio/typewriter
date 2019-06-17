@@ -98,7 +98,8 @@
         "nofunc"
       ],
       "@typescript-eslint/no-namespace": "off",
-      "no-null/no-null": "error"
+      "no-null/no-null": "error",
+      "@typescript-eslint/no-non-null-assertion": "off"
     }
   },
   "eslintIgnore": [

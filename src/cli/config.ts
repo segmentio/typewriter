@@ -6,6 +6,7 @@ import { generateFromTemplate } from '../templates'
 import Ajv from 'ajv'
 import { Arguments, Config } from './types'
 import * as childProcess from 'child_process'
+import { homedir } from 'os'
 
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
@@ -19,6 +20,15 @@ async function getPath(path: string): Promise<string> {
 	path = path.replace(/typewriter\.yml$/, '')
 	// TODO: recursively move back folders until you find it, ala package.json
 	return resolve(path, CONFIG_NAME)
+}
+
+export async function assertGetConfig(path = './'): Promise<Config> {
+	const cfg = await getConfig(path)
+	if (cfg) {
+		return cfg
+	}
+
+	throw new Error('Unable to find typewriter.yml. Try `typewriter init`')
 }
 
 // getConfig looks for, and reads, a typewriter.yml configuration file.
@@ -97,15 +107,39 @@ export async function resolveRelativePath(
 	return fullPath
 }
 
+export async function assertHasToken(cfg: Partial<Config> | undefined): Promise<string> {
+	const token = await getToken(cfg)
+	if (token) {
+		return token
+	}
+
+	throw new Error(`Unable to find an API token.`)
+}
+
 // getToken uses a Config to fetch a Segment API token. It will search for it in this order:
 //   1. process.env.TYPEWRITER_TOKEN
-//   2. The stdout from executing tokenCommand from the config.
+//   2. cat ~/.typewriter.yml
+//   3. The stdout from executing tokenCommand from the config.
 // Returns undefined if no token can be found.
 export async function getToken(cfg: Partial<Config> | undefined): Promise<string | undefined> {
-	if (!!process.env.TYPEWRITER_TOKEN) {
+	// Attempt to read a token from the shell environment.
+	if (process.env.TYPEWRITER_TOKEN) {
 		return process.env.TYPEWRITER_TOKEN
 	}
 
+	// Attempt to read a token from the ~/.typewriter token file.
+	// Tokens are stored here during the `init` flow, if a user generates a token.
+	try {
+		const path = resolve(homedir(), '.typewriter')
+		const token = await readFile(path, 'utf-8')
+		if (token) {
+			return token
+		}
+	} catch (e) {
+		// Ignore errors if ~/.typewriter doesn't exist
+	}
+
+	// Attempt to read a token by executing the tokenCommand from the typewriter.yml config file.
 	if (cfg && cfg.tokenCommand) {
 		const { stdout, stderr } = await exec(cfg.tokenCommand).catch(err => {
 			throw new Error(`Invalid tokenCommand: ${err}`)
@@ -115,11 +149,17 @@ export async function getToken(cfg: Partial<Config> | undefined): Promise<string
 			console.error(stderr)
 		} else {
 			const token = stdout.trim()
-			if (token.length > 0) {
+			if (token) {
 				return token
 			}
 		}
 	}
 
 	return undefined
+}
+
+// storeToken writes a token to ~/.typewriter.
+export async function storeToken(token: string) {
+	const path = resolve(homedir(), '.typewriter')
+	return writeFile(path, token, 'utf-8')
 }

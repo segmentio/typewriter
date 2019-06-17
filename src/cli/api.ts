@@ -74,9 +74,9 @@ export async function fetchWorkspaces(options: { token: string }): Promise<Segme
 }
 
 // isValidToken returns true if a token is a valid Segment API token.
-export async function isValidToken(options: { token: string }): Promise<boolean> {
+export async function isValidToken(token: string): Promise<boolean> {
 	try {
-		const workspaces = await fetchWorkspaces(options)
+		const workspaces = await fetchWorkspaces({ token })
 		return workspaces.length > 0
 	} catch {
 		return false
