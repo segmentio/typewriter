@@ -83,7 +83,13 @@ let onViolation = defaultValidationErrorHandler
 {{/if}}
 
 {{!-- We use a closure so we can lazy-resolve window.analytics in browser environments. --}}
-let analytics: () => ({{#if isBrowser}}Segment.AnalyticsJS{{else}}Segment.AnalyticsNode{{/if}} | undefined) = () => undefined
+let analytics: () => ({{#if isBrowser}}Segment.AnalyticsJS{{else}}Segment.AnalyticsNode{{/if}} | undefined) = () => {
+	{{#if isBrowser}}
+	return window.analytics
+	{{else}}
+	throw new Error('Missing analytics-node: you must call setTypewriterOptions first.')
+	{{/if}}
+}
 
 /**
  * Update the run-time configuration of this Typewriter client.
