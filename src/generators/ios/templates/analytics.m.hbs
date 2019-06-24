@@ -21,8 +21,54 @@
 {{/if}}
 + (void){{functionSignatureWithOptions}}
 {
-    {{!-- TODO: construct properties object and use it to generate dictionary --}}
-    NSDictionary *properties = @{};
+    {{!-- Note: we avoid {{ else if .. }} below because of some kind of whitespace bug. --}}
+    {{!-- TODO: open an issue on GitHub for handlebars, with a repro --}}
+    {{!-- TODO: support converting array items into correct type --}}
+    {{!-- TODO: support objects --}}
+    {{!-- TODO: support nullable objects (passing in NSNull instead) --}}
+    NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
+    {{#each properties}}
+    {{#if isRequired}}
+    {{#if isBoolean}}
+    properties[@"{{raw}}"] = [NSNumber numberWithBool:{{name}}];
+    {{else}}
+    {{#if isInteger}}
+    properties[@"{{raw}}"] = [NSNumber numberWithInteger:{{name}}];
+    {{else}}
+    {{#if isClass}}
+    properties[@"{{raw}}"] = [{{name}} toDictionary];
+    {{else}}
+    {{#if isArray}}
+    properties[@"{{raw}}"] = [SEGTypewriterUtils toSerializableArray:{{name}}];
+    {{else}}
+    properties[@"{{raw}}"] = {{name}};
+    {{/if}}
+    {{/if}}
+    {{/if}}
+    {{/if}}
+    {{else}}
+    if ({{name}} != nil) {
+        {{#if isBoolean}}
+        properties[@"{{raw}}"] = [NSNumber numberWithBool:{{name}}];
+        {{else}}
+        {{#if isInteger}}
+        properties[@"{{raw}}"] = [NSNumber numberWithInteger:*{{name}}];
+        {{else}}
+        {{#if isClass}}
+        properties[@"{{raw}}"] = [{{name}} toDictionary];
+        {{else}}
+        {{#if isArray}}
+        properties[@"{{raw}}"] = [SEGTypewriterUtils toSerializableArray:{{name}}];
+        {{else}}
+        properties[@"{{raw}}"] = {{name}};
+        {{/if}}
+        {{/if}}
+        {{/if}}
+        {{/if}}
+    }
+    {{/if}}
+    {{/each}}
+
     {{!-- TODO: run-time JSON Schema validation --}}
     [[SEGAnalytics sharedAnalytics] track:@"{{eventName}}" properties:properties options:[SEGTypewriterUtils withTypewriterContextFields:options]];
 }

@@ -14,4 +14,52 @@
   return object;
 }
 
+-(nonnull SERIALIZABLE_DICT) toDictionary {
+  {{!-- TODO: make this a partial so it can be shared with the same usage in method calls --}}
+  NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
+  {{#each properties}}
+  {{#if isRequired}}
+  {{#if isBoolean}}
+  properties[@"{{raw}}"] = [NSNumber numberWithBool:self.{{name}}];
+  {{else}}
+  {{#if isInteger}}
+  properties[@"{{raw}}"] = [NSNumber numberWithInteger:self.{{name}}];
+  {{else}}
+  {{#if isClass}}
+  properties[@"{{raw}}"] = [self.{{name}} toDictionary];
+  {{else}}
+  {{#if isArray}}
+  properties[@"{{raw}}"] = [SEGTypewriterUtils toSerializableArray:self.{{name}}];
+  {{else}}
+  properties[@"{{raw}}"] = self.{{name}};
+  {{/if}}
+  {{/if}}
+  {{/if}}
+  {{/if}}
+  {{else}}
+  if (self.{{name}} != nil) {
+      {{#if isBoolean}}
+      properties[@"{{raw}}"] = [NSNumber numberWithBool:self.{{name}}];
+      {{else}}
+      {{#if isInteger}}
+      properties[@"{{raw}}"] = [NSNumber numberWithInteger:*self.{{name}}];
+      {{else}}
+      {{#if isClass}}
+      properties[@"{{raw}}"] = [self.{{name}} toDictionary];
+      {{else}}
+      {{#if isArray}}
+      properties[@"{{raw}}"] = [SEGTypewriterUtils toSerializableArray:self.{{name}}];
+      {{else}}
+      properties[@"{{raw}}"] = self.{{name}};
+      {{/if}}
+      {{/if}}
+      {{/if}}
+      {{/if}}
+  }
+  {{/if}}
+  {{/each}}
+
+  return properties;
+}
+
 @end

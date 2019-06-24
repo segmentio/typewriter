@@ -3,9 +3,11 @@
  */
 
 #import <Foundation/Foundation.h>
+#import <Analytics/SEGSerializableValue.h>
+#import "SEGTypewriterSerializable.h"
 {{!-- TODO: import any sub objects --}}
 
-@interface {{name}} : NSObject
+@interface {{name}} : NSObject<SEGTypewriterSerializable>
 
 {{#each properties}}
 {{#if description}}
@@ -15,5 +17,7 @@
 {{/each}}
 
 +(nonnull instancetype) {{initFunctionSignature}};
+
+-(nonnull SERIALIZABLE_DICT) toDictionary;
 
 @end

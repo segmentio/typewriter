@@ -15,6 +15,7 @@
 		43A1E33822ADB981008E0D80 /* SEGRequiredObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A1E33422ADB981008E0D80 /* SEGRequiredObject.m */; };
 		43A1E33D22ADFF90008E0D80 /* SEGOptionalArrayItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A1E33A22ADFF90008E0D80 /* SEGOptionalArrayItem.m */; };
 		43A1E33E22ADFF90008E0D80 /* SEGRequiredArrayItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A1E33C22ADFF90008E0D80 /* SEGRequiredArrayItem.m */; };
+		43AA27F822C1901600D6E8B5 /* SEGTypewriterSerializable.m in Sources */ = {isa = PBXBuildFile; fileRef = 43AA27F722C1901600D6E8B5 /* SEGTypewriterSerializable.m */; };
 		58DCE97D3F0B09E5B591D430 /* Pods_TypewriterExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 013162A9EB31F4335B8BDC51 /* Pods_TypewriterExample.framework */; };
 		EADEB91E1DED460A005322DA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB91D1DED460A005322DA /* main.m */; };
 		EADEB9211DED460A005322DA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB9201DED460A005322DA /* AppDelegate.m */; };
@@ -53,6 +54,8 @@
 		43A1E33A22ADFF90008E0D80 /* SEGOptionalArrayItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGOptionalArrayItem.m; sourceTree = "<group>"; };
 		43A1E33B22ADFF90008E0D80 /* SEGOptionalArrayItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGOptionalArrayItem.h; sourceTree = "<group>"; };
 		43A1E33C22ADFF90008E0D80 /* SEGRequiredArrayItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGRequiredArrayItem.m; sourceTree = "<group>"; };
+		43AA27F622C18F8B00D6E8B5 /* SEGTypewriterSerializable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGTypewriterSerializable.h; sourceTree = "<group>"; };
+		43AA27F722C1901600D6E8B5 /* SEGTypewriterSerializable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGTypewriterSerializable.m; sourceTree = "<group>"; };
 		47C2E5ED764668C7B1DDFF73 /* Pods-TypewriterExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TypewriterExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TypewriterExample/Pods-TypewriterExample.debug.xcconfig"; sourceTree = "<group>"; };
 		554C63FE85325FBABD0BBC52 /* Pods-TypewriterExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TypewriterExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TypewriterExampleTests/Pods-TypewriterExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		80D4139D36DDCA166304F0A5 /* Pods-TypewriterExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TypewriterExampleTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TypewriterExampleTests/Pods-TypewriterExampleTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -112,6 +115,8 @@
 		435B5BC021640CE0000F31B6 /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
+				43AA27F722C1901600D6E8B5 /* SEGTypewriterSerializable.m */,
+				43AA27F622C18F8B00D6E8B5 /* SEGTypewriterSerializable.h */,
 				43A1E33B22ADFF90008E0D80 /* SEGOptionalArrayItem.h */,
 				43A1E33A22ADFF90008E0D80 /* SEGOptionalArrayItem.m */,
 				43A1E33922ADFF90008E0D80 /* SEGRequiredArrayItem.h */,
@@ -379,6 +384,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EADEB9241DED460A005322DA /* ViewController.m in Sources */,
+				43AA27F822C1901600D6E8B5 /* SEGTypewriterSerializable.m in Sources */,
 				432B3DA322AC7B8400EFFE2D /* SEGTypewriterAnalytics.m in Sources */,
 				43A1E32C22ADA8FF008E0D80 /* SEGTypewriterUtils.m in Sources */,
 				43A1E33822ADB981008E0D80 /* SEGRequiredObject.m in Sources */,

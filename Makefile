@@ -15,7 +15,7 @@ test:
 	@make docker
 
 	@### JavaScript node
-	@make test-javascript-node	
+	@make test-javascript-node
 
 	@### TypeScript node
 	@make test-typescript-node

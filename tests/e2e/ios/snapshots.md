@@ -177,7 +177,30 @@
     },
     "event": "Event with All Types",
     "integrations": {},
-    "properties": {},
+    "properties": {
+        "required any": 123,
+        "required array": [
+            {
+                "required sub-property": "Hello World"
+            }
+        ],
+        "required array (empty)": [
+            123,
+            "Hello World"
+        ],
+        "required boolean": false,
+        "required int": 123,
+        "required number": 3.1415,
+        "required number or string": 123,
+        "required object": {
+            "required sub-property": "Hello World"
+        },
+        "required object (empty)": {
+            "test": "foo"
+        },
+        "required string": "Hello World",
+        "required string regex": "FOO"
+    },
     "type": "track"
 }
 ```

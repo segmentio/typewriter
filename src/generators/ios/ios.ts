@@ -46,6 +46,8 @@ interface TemplateTrackCall {
 	// Same as above, but for the variant with an options argument.
 	functionSignatureWithOptions: string
 	functionCallWithOptions: string
+	// All properties that can be set on this event.
+	properties: TemplateProperty[]
 }
 
 interface TemplateObject {
@@ -60,6 +62,8 @@ interface TemplateObject {
 interface TemplateProperty {
 	// The formatted name of this property. ex: "userID"
 	name: string
+	// The raw name of this property. ex: "user id"
+	raw: string
 	// The type of this property. ex: "NSNumber"
 	type: string
 	// The optional description of this property.
@@ -68,6 +72,12 @@ interface TemplateProperty {
 	modifiers: string
 	// Whether the property is required.
 	isRequired: boolean
+	// The following boolean fields are used for conditional templating, since
+	// Handlebars doesn't support performing performing comparisons inside templates.
+	isBoolean: boolean
+	isInteger: boolean
+	isClass: boolean
+	isArray: boolean
 }
 
 export default async function(trackingPlan: TrackingPlan, options: GenOptions): Promise<File[]> {
@@ -98,6 +108,13 @@ export default async function(trackingPlan: TrackingPlan, options: GenOptions): 
 			path: 'SEGTypewriterUtils.m',
 			contents: await generateFromTemplate<TemplateSharedContext>(
 				'generators/ios/templates/SEGTypewriterUtils.m.hbs',
+				ctx
+			),
+		},
+		{
+			path: 'SEGTypewriterSerializable.h',
+			contents: await generateFromTemplate<TemplateSharedContext>(
+				'generators/ios/templates/SEGTypewriterSerializable.h.hbs',
 				ctx
 			),
 		},
@@ -178,6 +195,7 @@ function getAnalyticsContext(
 				...parameters.map(p => ({ name: p.name, value: p.name })),
 				{ name: 'options', value: '@{}' },
 			]),
+			properties: parameters,
 		})
 	}
 
@@ -198,18 +216,21 @@ function getProperty(
 	namer: Namer,
 	namespace: string
 ): TemplateProperty {
-	const res = {
+	const res: TemplateProperty = {
+		type: 'id',
 		name: namer.register(schema.name, namespace, camelCase),
+		raw: schema.name,
 		description: schema.description,
 		modifiers: 'strong, nonatomic',
 		isRequired: !!schema.isRequired && !schema.isNullable,
+		isBoolean: false,
+		isInteger: false,
+		isClass: false,
+		isArray: false,
 	}
 
 	if (schema.type === Type.ANY) {
-		return {
-			...res,
-			type: 'id',
-		}
+		return res
 	} else if (schema.type === Type.STRING) {
 		return {
 			...res,
@@ -219,11 +240,13 @@ function getProperty(
 		return {
 			...res,
 			type: schema.isRequired ? 'BOOL' : 'BOOL *',
+			isBoolean: true,
 		}
 	} else if (schema.type === Type.INTEGER) {
 		return {
 			...res,
 			type: schema.isRequired ? 'NSInteger' : 'NSInteger *',
+			isInteger: true,
 		}
 	} else if (schema.type === Type.NUMBER) {
 		return {
@@ -255,6 +278,7 @@ function getProperty(
 		return {
 			...res,
 			type: `${name} *`,
+			isClass: true,
 		}
 	} else if (schema.type === Type.ARRAY) {
 		const itemsSchema: Schema = {
@@ -267,6 +291,7 @@ function getProperty(
 		return {
 			...res,
 			type: `NSArray<${item.type}> *`,
+			isArray: true,
 		}
 	} else if (schema.type === Type.UNION) {
 		// TODO: support unions
