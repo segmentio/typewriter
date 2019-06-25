@@ -45,12 +45,28 @@ jobs:
       - attach_workspace: { at: . }
       - run: yarn lint
 
-  test:
+  test-javascript-node:
     docker:
       - image: circleci/node:10.15
+      - image: segment/snapshotter:v0.0.1
     steps:
       - attach_workspace: { at: . }
-      - run: yarn test
+      - run: make test-javascript-node
+
+  test-typescript-node:
+    docker:
+      - image: circleci/node:10.15
+      - image: segment/snapshotter:v0.0.1
+    steps:
+      - attach_workspace: { at: . }
+      - run: make test-typescript-node
+
+  test-ios:
+    macos:
+      xcode: "10.2.1"
+    steps:
+      - attach_workspace: { at: . }
+      - run: make test-ios
 
 workflows:
   version: 2
@@ -64,5 +80,9 @@ workflows:
           requires: [setup]
       - lint:
           requires: [setup]
-      - test:
+      - test-javascript-node:
+          requires: [setup]
+      - test-typescript-node:
+          requires: [setup]
+      - test-ios:
           requires: [setup]
