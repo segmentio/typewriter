@@ -52,7 +52,7 @@ test-javascript-node:
 	@cd tests/e2e/javascript-node && \
 		yarn && \
 		yarn run -s test
-	@yarn run ts-node ./tests/e2e/snapshot.ts ./tests/e2e/javascript-node
+	@yarn run ts-node ./tests/e2e/suite.ts analytics-node javascript
 
 .PHONY: test-typescript-node
 test-typescript-node:
@@ -61,7 +61,7 @@ test-typescript-node:
 	@cd tests/e2e/typescript-node && \
 		yarn && \
 		yarn run -s test
-	@yarn run ts-node ./tests/e2e/snapshot.ts ./tests/e2e/typescript-node
+	@yarn run ts-node ./tests/e2e/suite.ts analytics-node typescript
 
 .PHONY: test-ios
 test-ios:
@@ -70,7 +70,7 @@ test-ios:
 	@cd tests/e2e/ios && \
 		pod install && \
 		set -o pipefail && xcodebuild test $(XC_ARGS) | xcpretty
-	@yarn run ts-node ./tests/e2e/snapshot.ts ./tests/e2e/ios
+	@yarn run ts-node ./tests/e2e/suite.ts analytics-ios objective-c
 
 .PHONY: clean
 clean:
