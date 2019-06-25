@@ -7,6 +7,8 @@ XC_ARGS := -workspace $(PROJECT).xcworkspace -scheme $(PROJECT) -destination $(D
 .PHONY: update
 update:
 	@yarn dev --config=tests/e2e/javascript-node update
+	@yarn dev --config=tests/e2e/typescript-node update
+	@yarn dev --config=tests/e2e/ios update
 
 # test: launches our end-to-end test for each client library. 
 .PHONY: test
@@ -52,7 +54,7 @@ test-javascript-node:
 	@cd tests/e2e/javascript-node && \
 		yarn && \
 		yarn run -s test
-	@yarn run ts-node ./tests/e2e/suite.ts analytics-node javascript
+	@SDK=analytics.js LANGUAGE=javascript yarn run jest ./tests/e2e/suite.test.ts
 
 .PHONY: test-typescript-node
 test-typescript-node:
@@ -61,7 +63,7 @@ test-typescript-node:
 	@cd tests/e2e/typescript-node && \
 		yarn && \
 		yarn run -s test
-	@yarn run ts-node ./tests/e2e/suite.ts analytics-node typescript
+	@SDK=analytics.js LANGUAGE=typescript yarn run jest ./tests/e2e/suite.test.ts
 
 .PHONY: test-ios
 test-ios:
@@ -70,7 +72,7 @@ test-ios:
 	@cd tests/e2e/ios && \
 		pod install && \
 		set -o pipefail && xcodebuild test $(XC_ARGS) | xcpretty
-	@yarn run ts-node ./tests/e2e/suite.ts analytics-ios objective-c
+	@SDK=analytics-ios LANGUAGE=objective-c yarn run jest ./tests/e2e/suite.test.ts
 
 .PHONY: clean
 clean:

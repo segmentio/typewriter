@@ -31,7 +31,9 @@ export const defaultValidationErrorHandler = (message, violations) => {
 	return false
 }
 let onViolation = defaultValidationErrorHandler
-let analytics = () => undefined
+let analytics = () => {
+	return window.analytics
+}
 /**
  * Update the run-time configuration of this Typewriter client.
  */

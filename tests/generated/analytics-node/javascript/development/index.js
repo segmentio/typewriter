@@ -31,7 +31,11 @@ export const defaultValidationErrorHandler = (message, violations) => {
 	return false
 }
 let onViolation = defaultValidationErrorHandler
-let analytics = () => undefined
+let analytics = () => {
+	throw new Error(
+		'Missing analytics-node: you must call setTypewriterOptions first.'
+	)
+}
 /**
  * Update the run-time configuration of this Typewriter client.
  */

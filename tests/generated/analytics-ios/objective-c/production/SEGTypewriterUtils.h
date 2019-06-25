@@ -3,9 +3,12 @@
  */
 
 #import <Analytics/SEGSerializableValue.h>
+#import "SEGTypewriterSerializable.h"
 
 @interface SEGTypewriterUtils : NSObject
 
 + (nonnull SERIALIZABLE_DICT)withTypewriterContextFields:(nullable SERIALIZABLE_DICT)options;
+
++ (nonnull NSArray<id> *)toSerializableArray:(nonnull NSArray<id> *) arr;
 
 @end

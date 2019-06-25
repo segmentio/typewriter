@@ -224,7 +224,11 @@ export const defaultValidationErrorHandler: ViolationHandler = (
 
 let onViolation = defaultValidationErrorHandler
 
-let analytics: () => Segment.AnalyticsNode | undefined = () => undefined
+let analytics: () => Segment.AnalyticsNode | undefined = () => {
+	throw new Error(
+		'Missing analytics-node: you must call setTypewriterOptions first.'
+	)
+}
 
 /**
  * Update the run-time configuration of this Typewriter client.

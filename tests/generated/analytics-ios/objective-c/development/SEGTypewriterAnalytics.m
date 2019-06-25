@@ -21,7 +21,17 @@ identifierId:(nullable id)identifierId
 identifierId1:(nullable id)identifierId1
 options:(nullable SERIALIZABLE_DICT)options
 {
-    NSDictionary *properties = @{};
+    NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
+    if (I0000TerriblePropertyName3 != nil) {
+        properties[@"0000---terrible-property-name~!3"] = I0000TerriblePropertyName3;
+    }
+    if (identifierId != nil) {
+        properties[@"identifierId"] = identifierId;
+    }
+    if (identifierId1 != nil) {
+        properties[@"identifier_id"] = identifierId1;
+    }
+
     [[SEGAnalytics sharedAnalytics] track:@"42_--terrible==\"event'++name~!3" properties:properties options:[SEGTypewriterUtils withTypewriterContextFields:options]];
 }
 
@@ -34,7 +44,8 @@ options:(nullable SERIALIZABLE_DICT)options
 /// This is JSON Schema draft-04 event.
 + (void)draft04EventWithOptions:(nullable SERIALIZABLE_DICT)options
 {
-    NSDictionary *properties = @{};
+    NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
+
     [[SEGAnalytics sharedAnalytics] track:@"Draft-04 Event" properties:properties options:[SEGTypewriterUtils withTypewriterContextFields:options]];
 }
 
@@ -47,7 +58,8 @@ options:(nullable SERIALIZABLE_DICT)options
 /// This is JSON Schema draft-06 event.
 + (void)draft06EventWithOptions:(nullable SERIALIZABLE_DICT)options
 {
-    NSDictionary *properties = @{};
+    NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
+
     [[SEGAnalytics sharedAnalytics] track:@"Draft-06 Event" properties:properties options:[SEGTypewriterUtils withTypewriterContextFields:options]];
 }
 
@@ -60,7 +72,8 @@ options:(nullable SERIALIZABLE_DICT)options
 /// This is an empty event.
 + (void)emptyEventWithOptions:(nullable SERIALIZABLE_DICT)options
 {
-    NSDictionary *properties = @{};
+    NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
+
     [[SEGAnalytics sharedAnalytics] track:@"Empty Event" properties:properties options:[SEGTypewriterUtils withTypewriterContextFields:options]];
 }
 
@@ -120,7 +133,60 @@ requiredString:(nonnull NSString *)requiredString
 requiredStringRegex:(nonnull NSString *)requiredStringRegex
 options:(nullable SERIALIZABLE_DICT)options
 {
-    NSDictionary *properties = @{};
+    NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
+    if (optionalAny != nil) {
+        properties[@"optional any"] = optionalAny;
+    }
+    if (optionalArray != nil) {
+        properties[@"optional array"] = [SEGTypewriterUtils toSerializableArray:optionalArray];
+    }
+    if (optionalArrayEmpty != nil) {
+        properties[@"optional array (empty)"] = [SEGTypewriterUtils toSerializableArray:optionalArrayEmpty];
+    }
+    if (optionalBoolean != nil) {
+        properties[@"optional boolean"] = [NSNumber numberWithBool:optionalBoolean];
+    }
+    if (optionalInt != nil) {
+        properties[@"optional int"] = [NSNumber numberWithInteger:*optionalInt];
+    }
+    if (optionalNullableString != nil) {
+        properties[@"optional nullable string"] = optionalNullableString;
+    }
+    if (optionalNumber != nil) {
+        properties[@"optional number"] = optionalNumber;
+    }
+    if (optionalNumberOrString != nil) {
+        properties[@"optional number or string"] = optionalNumberOrString;
+    }
+    if (optionalObject != nil) {
+        properties[@"optional object"] = [optionalObject toDictionary];
+    }
+    if (optionalObjectEmpty != nil) {
+        properties[@"optional object (empty)"] = optionalObjectEmpty;
+    }
+    if (optionalString != nil) {
+        properties[@"optional string"] = optionalString;
+    }
+    if (optionalStringRegex != nil) {
+        properties[@"optional string regex"] = optionalStringRegex;
+    }
+    if (requiredAny != nil) {
+        properties[@"required any"] = requiredAny;
+    }
+    properties[@"required array"] = [SEGTypewriterUtils toSerializableArray:requiredArray];
+    properties[@"required array (empty)"] = [SEGTypewriterUtils toSerializableArray:requiredArrayEmpty];
+    properties[@"required boolean"] = [NSNumber numberWithBool:requiredBoolean];
+    properties[@"required int"] = [NSNumber numberWithInteger:requiredInt];
+    if (requiredNullableString != nil) {
+        properties[@"required nullable string"] = requiredNullableString;
+    }
+    properties[@"required number"] = requiredNumber;
+    properties[@"required number or string"] = requiredNumberOrString;
+    properties[@"required object"] = [requiredObject toDictionary];
+    properties[@"required object (empty)"] = requiredObjectEmpty;
+    properties[@"required string"] = requiredString;
+    properties[@"required string regex"] = requiredStringRegex;
+
     [[SEGAnalytics sharedAnalytics] track:@"Example Event" properties:properties options:[SEGTypewriterUtils withTypewriterContextFields:options]];
 }
 
@@ -133,7 +199,8 @@ options:(nullable SERIALIZABLE_DICT)options
 /// checkin != check_in bug
 + (void)checkInWithOptions:(nullable SERIALIZABLE_DICT)options
 {
-    NSDictionary *properties = @{};
+    NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
+
     [[SEGAnalytics sharedAnalytics] track:@"check_in" properties:properties options:[SEGTypewriterUtils withTypewriterContextFields:options]];
 }
 
@@ -146,7 +213,8 @@ options:(nullable SERIALIZABLE_DICT)options
 /// checkin != check_in bug
 + (void)checkinWithOptions:(nullable SERIALIZABLE_DICT)options
 {
-    NSDictionary *properties = @{};
+    NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
+
     [[SEGAnalytics sharedAnalytics] track:@"checkin" properties:properties options:[SEGTypewriterUtils withTypewriterContextFields:options]];
 }
 

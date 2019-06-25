@@ -188,7 +188,9 @@ export type ViolationHandler = (
 	violations: any[]
 ) => boolean
 
-let analytics: () => Segment.AnalyticsJS | undefined = () => undefined
+let analytics: () => Segment.AnalyticsJS | undefined = () => {
+	return window.analytics
+}
 
 /**
  * Update the run-time configuration of this Typewriter client.
