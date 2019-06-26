@@ -54,7 +54,7 @@ test-javascript-node:
 	@cd tests/e2e/javascript-node && \
 		yarn && \
 		yarn run -s test
-	@SDK=analytics.js LANGUAGE=javascript yarn run jest ./tests/e2e/suite.test.ts
+	@SDK=analytics.js LANGUAGE=javascript IS_DEVELOPMENT=true yarn run jest ./tests/e2e/suite.test.ts
 
 .PHONY: test-typescript-node
 test-typescript-node:
@@ -63,7 +63,7 @@ test-typescript-node:
 	@cd tests/e2e/typescript-node && \
 		yarn && \
 		yarn run -s test
-	@SDK=analytics.js LANGUAGE=typescript yarn run jest ./tests/e2e/suite.test.ts
+	@SDK=analytics.js LANGUAGE=typescript IS_DEVELOPMENT=true yarn run jest ./tests/e2e/suite.test.ts
 
 .PHONY: test-ios
 test-ios:
@@ -72,7 +72,7 @@ test-ios:
 	@cd tests/e2e/ios && \
 		pod install && \
 		set -o pipefail && xcodebuild test $(XC_ARGS) | xcpretty
-	@SDK=analytics-ios LANGUAGE=objective-c yarn run jest ./tests/e2e/suite.test.ts
+	@SDK=analytics-ios LANGUAGE=objective-c IS_DEVELOPMENT=true yarn run jest ./tests/e2e/suite.test.ts
 
 .PHONY: clean
 clean:

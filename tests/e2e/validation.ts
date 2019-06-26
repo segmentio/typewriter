@@ -4,6 +4,15 @@ import { remove } from 'lodash'
 declare type Event = any
 export const events: Event[] = []
 
+declare global {
+	namespace jest {
+		interface Matchers<R> {
+			toHaveBeenReceived: (schema?: Joi.SchemaMap) => void
+			toHaveBeenReceivedMultipleTimes: (schemas?: Joi.SchemaMap[]) => void
+		}
+	}
+}
+
 function toHaveBeenReceived(
 	eventName: string,
 	schemas?: Joi.SchemaMap[]

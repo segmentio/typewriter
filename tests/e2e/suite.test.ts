@@ -6,8 +6,10 @@ import { validateSegmentEvent, events } from './validation'
 
 const SIDECAR_ADDRESS = 'http://localhost:8765'
 
-if (!process.env.SDK || !process.env.LANGUAGE) {
-	throw new Error('You must run as: SDK=<sdk> LANGUAGE=<language> jest ./suite.test.ts')
+if (!process.env.SDK || !process.env.LANGUAGE || !process.env.IS_DEVELOPMENT) {
+	throw new Error(
+		'You must run as: SDK=<sdk> LANGUAGE=<language> IS_DEVELOPMENT=<true|false> jest ./suite.test.ts'
+	)
 }
 
 const sdk: SDK = process.env.SDK as SDK
