@@ -226,6 +226,8 @@ describe(`sdk:${sdk}`, () => {
 
 			// TODO: add tests with large integers + large numbers
 
+			// TODO: add test of supplying custom context fields
+
 			afterAll(() => {
 				// If any analytics calls are still in `events`, then they were unexpected by the
 				// tests configured above. This either means that a test is missing, or there is a

@@ -22,15 +22,9 @@ identifierId1:(nullable id)identifierId1
 options:(nullable SERIALIZABLE_DICT)options
 {
     NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
-    if (I0000TerriblePropertyName3 != nil) {
-        properties[@"0000---terrible-property-name~!3"] = I0000TerriblePropertyName3;
-    }
-    if (identifierId != nil) {
-        properties[@"identifierId"] = identifierId;
-    }
-    if (identifierId1 != nil) {
-        properties[@"identifier_id"] = identifierId1;
-    }
+    properties[@"0000---terrible-property-name~!3"] = I0000TerriblePropertyName3 == nil ? [NSNull null] : I0000TerriblePropertyName3;
+    properties[@"identifierId"] = identifierId == nil ? [NSNull null] : identifierId;
+    properties[@"identifier_id"] = identifierId1 == nil ? [NSNull null] : identifierId1;
 
     [[SEGAnalytics sharedAnalytics] track:@"42_--terrible==\"event'++name~!3" properties:properties options:[SEGTypewriterUtils withTypewriterContextFields:options]];
 }
@@ -134,58 +128,46 @@ requiredStringRegex:(nonnull NSString *)requiredStringRegex
 options:(nullable SERIALIZABLE_DICT)options
 {
     NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
-    if (optionalAny != nil) {
-        properties[@"optional any"] = optionalAny;
+    properties[@"optional any"] = optionalAny == nil ? [NSNull null] : optionalAny;
+    properties[@"optional array"] = optionalArray == nil ? [NSNull null] : [SEGTypewriterUtils toSerializableArray:optionalArray];
+    properties[@"optional array (empty)"] = optionalArrayEmpty == nil ? [NSNull null] : [SEGTypewriterUtils toSerializableArray:optionalArrayEmpty];
+    properties[@"optional boolean"] = optionalBoolean == nil ? [NSNull null] : [NSNumber numberWithBool:*optionalBoolean];
+    properties[@"optional int"] = optionalInt == nil ? [NSNull null] : [NSNumber numberWithInteger:*optionalInt];
+    properties[@"optional nullable string"] = optionalNullableString == nil ? [NSNull null] : optionalNullableString;
+    properties[@"optional number"] = optionalNumber == nil ? [NSNull null] : optionalNumber;
+    properties[@"optional number or string"] = optionalNumberOrString == nil ? [NSNull null] : optionalNumberOrString;
+    properties[@"optional object"] = optionalObject == nil ? [NSNull null] : [optionalObject toDictionary];
+    properties[@"optional object (empty)"] = optionalObjectEmpty == nil ? [NSNull null] : optionalObjectEmpty;
+    properties[@"optional string"] = optionalString == nil ? [NSNull null] : optionalString;
+    properties[@"optional string regex"] = optionalStringRegex == nil ? [NSNull null] : optionalStringRegex;
+    properties[@"required any"] = requiredAny == nil ? [NSNull null] : requiredAny;
+    if (requiredArray != nil) {
+      properties[@"required array"] = [SEGTypewriterUtils toSerializableArray:requiredArray];
     }
-    if (optionalArray != nil) {
-        properties[@"optional array"] = [SEGTypewriterUtils toSerializableArray:optionalArray];
+    if (requiredArrayEmpty != nil) {
+      properties[@"required array (empty)"] = [SEGTypewriterUtils toSerializableArray:requiredArrayEmpty];
     }
-    if (optionalArrayEmpty != nil) {
-        properties[@"optional array (empty)"] = [SEGTypewriterUtils toSerializableArray:optionalArrayEmpty];
-    }
-    if (optionalBoolean != nil) {
-        properties[@"optional boolean"] = [NSNumber numberWithBool:optionalBoolean];
-    }
-    if (optionalInt != nil) {
-        properties[@"optional int"] = [NSNumber numberWithInteger:*optionalInt];
-    }
-    if (optionalNullableString != nil) {
-        properties[@"optional nullable string"] = optionalNullableString;
-    }
-    if (optionalNumber != nil) {
-        properties[@"optional number"] = optionalNumber;
-    }
-    if (optionalNumberOrString != nil) {
-        properties[@"optional number or string"] = optionalNumberOrString;
-    }
-    if (optionalObject != nil) {
-        properties[@"optional object"] = [optionalObject toDictionary];
-    }
-    if (optionalObjectEmpty != nil) {
-        properties[@"optional object (empty)"] = optionalObjectEmpty;
-    }
-    if (optionalString != nil) {
-        properties[@"optional string"] = optionalString;
-    }
-    if (optionalStringRegex != nil) {
-        properties[@"optional string regex"] = optionalStringRegex;
-    }
-    if (requiredAny != nil) {
-        properties[@"required any"] = requiredAny;
-    }
-    properties[@"required array"] = [SEGTypewriterUtils toSerializableArray:requiredArray];
-    properties[@"required array (empty)"] = [SEGTypewriterUtils toSerializableArray:requiredArrayEmpty];
     properties[@"required boolean"] = [NSNumber numberWithBool:requiredBoolean];
     properties[@"required int"] = [NSNumber numberWithInteger:requiredInt];
-    if (requiredNullableString != nil) {
-        properties[@"required nullable string"] = requiredNullableString;
+    properties[@"required nullable string"] = requiredNullableString == nil ? [NSNull null] : requiredNullableString;
+    if (requiredNumber != nil) {
+      properties[@"required number"] = requiredNumber;
     }
-    properties[@"required number"] = requiredNumber;
-    properties[@"required number or string"] = requiredNumberOrString;
-    properties[@"required object"] = [requiredObject toDictionary];
-    properties[@"required object (empty)"] = requiredObjectEmpty;
-    properties[@"required string"] = requiredString;
-    properties[@"required string regex"] = requiredStringRegex;
+    if (requiredNumberOrString != nil) {
+      properties[@"required number or string"] = requiredNumberOrString;
+    }
+    if (requiredObject != nil) {
+      properties[@"required object"] = [requiredObject toDictionary];
+    }
+    if (requiredObjectEmpty != nil) {
+      properties[@"required object (empty)"] = requiredObjectEmpty;
+    }
+    if (requiredString != nil) {
+      properties[@"required string"] = requiredString;
+    }
+    if (requiredStringRegex != nil) {
+      properties[@"required string regex"] = requiredStringRegex;
+    }
 
     [[SEGAnalytics sharedAnalytics] track:@"Example Event" properties:properties options:[SEGTypewriterUtils withTypewriterContextFields:options]];
 }

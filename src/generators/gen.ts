@@ -55,3 +55,17 @@ export async function gen(trackingPlan: RawTrackingPlan, options: GenOptions): P
 		throw new Error(`Invalid SDK: ${options.client.sdk}`)
 	}
 }
+
+export interface TemplateBaseContext {
+	isDevelopment: boolean
+	language: string
+	typewriterVersion: string
+}
+
+export function baseContext(options: GenOptions): TemplateBaseContext {
+	return {
+		isDevelopment: options.isDevelopment,
+		language: options.client.language,
+		typewriterVersion: options.typewriterVersion,
+	}
+}

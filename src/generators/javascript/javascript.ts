@@ -1,4 +1,4 @@
-import { File, TrackingPlan, GenOptions } from '../gen'
+import { File, TrackingPlan, GenOptions, TemplateBaseContext, baseContext } from '../gen'
 import { Schema, Type, getPropertiesSchema } from '../ast'
 import { camelCase, upperFirst } from 'lodash'
 import * as prettier from 'prettier'
@@ -19,10 +19,7 @@ const reservedWords = [
 
 // The context that will be passed to Handlebars to perform rendering.
 // Everything in this context should be properly sanitized.
-interface TemplateContext {
-	isDevelopment: boolean
-	language: string
-	typewriterVersion: string
+interface TemplateContext extends TemplateBaseContext {
 	isBrowser: boolean
 
 	tracks: TrackCall[]
@@ -130,9 +127,7 @@ function formatFile(f: File, options: GenOptions): File {
 function getContext(trackingPlan: TrackingPlan, options: GenOptions): TemplateContext {
 	// Render a TemplateContext based on the set of event schemas.
 	const context: TemplateContext = {
-		isDevelopment: options.isDevelopment,
-		language: options.client.language,
-		typewriterVersion: options.typewriterVersion,
+		...baseContext(options),
 		isBrowser: options.client.sdk === SDK.WEB,
 
 		tracks: [],

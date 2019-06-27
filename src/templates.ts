@@ -22,3 +22,13 @@ export async function generateFromTemplate<Context = object>(
 
 	return templater(context)
 }
+
+export async function registerStandardHelpers() {
+	// Register a helper for indenting multi-line output from other helpers.
+	Handlebars.registerHelper('indent', (indentation: string, content: string) => {
+		return content
+			.split('\n')
+			.join(`\n${indentation}`)
+			.trim()
+	})
+}

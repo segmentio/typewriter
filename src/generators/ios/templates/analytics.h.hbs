@@ -4,7 +4,7 @@
 #import <Foundation/Foundation.h>
 #import <Analytics/SEGAnalytics.h>
 #import <Analytics/SEGSerializableValue.h>
-{{#each objects}}
+{{#each classes}}
 #import "{{name}}.h"
 {{/each}}
 
@@ -15,13 +15,13 @@
 {{#if description}}
 /// {{description}}
 {{/if}}
-+ (void){{functionSignature}};
++ (void){{functionSignature functionName properties false}};
 
 {{#if description}}
 /// {{description}}
 {{!-- TODO: description of what options are --}}
 {{/if}}
-+ (void){{functionSignatureWithOptions}};
++ (void){{functionSignature functionName properties true}};
 
 {{/each}}
 @end

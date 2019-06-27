@@ -1,8 +1,9 @@
-import { File, TrackingPlan, GenOptions } from '../gen'
-import { generateFromTemplate } from '../../templates'
+import { File, TrackingPlan, GenOptions, TemplateBaseContext, baseContext } from '../gen'
+import { generateFromTemplate, registerStandardHelpers } from '../../templates'
 import Namer from '../namer'
 import { camelCase, upperFirst } from 'lodash'
 import { Schema, Type, getPropertiesSchema } from '../ast'
+import * as Handlebars from 'handlebars'
 
 // See: https://github.com/AnanthaRajuCprojects/Reserved-Key-Words-list-of-various-programming-languages/blob/master/Objective-C%20Reserved%20Words.md
 // prettier-ignore
@@ -18,20 +19,14 @@ const reservedWords = [
 	'true', 'try', 'typedef', 'typeof', 'union', 'unsigned', 'void', 'volatile', 'while', 'yes'
 ]
 
-interface TemplateSharedContext {
-	isDevelopment: boolean
-	language: string
-	typewriterVersion: string
-}
-
-interface TemplateAnalyticsContext extends TemplateSharedContext {
+interface TemplateAnalyticsContext extends TemplateBaseContext {
 	// All track calls available in this client.
 	tracks: TemplateTrackCall[]
 	// All property groups, each rendered in its own file.
-	objects: TemplateObject[]
+	classes: TemplateClass[]
 }
 
-interface TemplateObjectContext extends TemplateSharedContext, TemplateObject {}
+interface TemplateClassContext extends TemplateBaseContext, TemplateClass {}
 
 // Represents a single exposed track() call.
 interface TemplateTrackCall {
@@ -41,22 +36,17 @@ interface TemplateTrackCall {
 	eventName: string
 	// The optional function description.
 	description?: string
-	// The generated function type definition. ex: 'functionNameWithParam1:param1 param2:param2'
-	functionSignature: string
-	// Same as above, but for the variant with an options argument.
-	functionSignatureWithOptions: string
-	functionCallWithOptions: string
 	// All properties that can be set on this event.
 	properties: TemplateProperty[]
 }
 
-interface TemplateObject {
-	// The formatted name of this object. ex: SEGProduct
+interface TemplateClass {
+	// The formatted name of this class. ex: SEGProduct
 	name: string
-	// All properties that can be set on this object.
+	// All properties that can be set on this class.
 	properties: TemplateProperty[]
-	// Function signature for the initialization
-	initFunctionSignature: string
+	// Set of files that need to be imported in this file.
+	imports: string[]
 }
 
 interface TemplateProperty {
@@ -66,21 +56,27 @@ interface TemplateProperty {
 	raw: string
 	// The type of this property. ex: "NSNumber"
 	type: string
+	// The AST type of this property. ex: Type.INTEGER
+	schemaType: Type
 	// The optional description of this property.
 	description?: string
 	// Stringified property modifiers. ex: "nonatomic, copy"
 	modifiers: string
-	// Whether the property is required.
-	isRequired: boolean
-	// The following boolean fields are used for conditional templating, since
-	// Handlebars doesn't support performing performing comparisons inside templates.
-	isBoolean: boolean
-	isInteger: boolean
-	isClass: boolean
-	isArray: boolean
+	// Whether the property is nullable (nonnull vs nullable).
+	isNullable: boolean
+	// Whether the Objective-C type is a pointer (id, SERIALIZABLE_DICT, NSNumber *, ...).
+	isPointerType: boolean
+	// Note: only set if this is a class.
+	// The header file containing the interface for this class.
+	importName?: string
 }
 
 export default async function(trackingPlan: TrackingPlan, options: GenOptions): Promise<File[]> {
+	registerStandardHelpers()
+	Handlebars.registerHelper('propertiesDictionary', generatePropertiesDictionary)
+	Handlebars.registerHelper('functionCall', generateFunctionCall)
+	Handlebars.registerHelper('functionSignature', generateFunctionSignature)
+
 	const ctx = getAnalyticsContext(trackingPlan, options)
 	const files = [
 		{
@@ -99,46 +95,46 @@ export default async function(trackingPlan: TrackingPlan, options: GenOptions): 
 		},
 		{
 			path: 'SEGTypewriterUtils.h',
-			contents: await generateFromTemplate<TemplateSharedContext>(
+			contents: await generateFromTemplate<TemplateBaseContext>(
 				'generators/ios/templates/SEGTypewriterUtils.h.hbs',
 				ctx
 			),
 		},
 		{
 			path: 'SEGTypewriterUtils.m',
-			contents: await generateFromTemplate<TemplateSharedContext>(
+			contents: await generateFromTemplate<TemplateBaseContext>(
 				'generators/ios/templates/SEGTypewriterUtils.m.hbs',
 				ctx
 			),
 		},
 		{
 			path: 'SEGTypewriterSerializable.h',
-			contents: await generateFromTemplate<TemplateSharedContext>(
+			contents: await generateFromTemplate<TemplateBaseContext>(
 				'generators/ios/templates/SEGTypewriterSerializable.h.hbs',
 				ctx
 			),
 		},
 	]
 
-	for (var o of ctx.objects) {
-		const objectContext: TemplateObjectContext = {
-			...getSharedContext(options),
-			...o,
+	for (var c of ctx.classes) {
+		const classContext: TemplateClassContext = {
+			...baseContext(options),
+			...c,
 		}
 
 		files.push(
 			{
-				path: `${o.name}.h`,
-				contents: await generateFromTemplate<TemplateObjectContext>(
-					'generators/ios/templates/object.h.hbs',
-					objectContext
+				path: `${c.name}.h`,
+				contents: await generateFromTemplate<TemplateClassContext>(
+					'generators/ios/templates/class.h.hbs',
+					classContext
 				),
 			},
 			{
-				path: `${o.name}.m`,
-				contents: await generateFromTemplate<TemplateObjectContext>(
-					'generators/ios/templates/object.m.hbs',
-					objectContext
+				path: `${c.name}.m`,
+				contents: await generateFromTemplate<TemplateClassContext>(
+					'generators/ios/templates/class.m.hbs',
+					classContext
 				),
 			}
 		)
@@ -153,9 +149,9 @@ function getAnalyticsContext(
 ): TemplateAnalyticsContext {
 	// Render a TemplateAnalyticsContext based on the set of event schemas.
 	const context: TemplateAnalyticsContext = {
-		...getSharedContext(options),
+		...baseContext(options),
 		tracks: [],
-		objects: [],
+		classes: [],
 	}
 
 	const namer = new Namer({
@@ -177,37 +173,15 @@ function getAnalyticsContext(
 			parameters.push(template)
 		}
 
-		const option = {
-			name: 'options',
-			type: 'SERIALIZABLE_DICT',
-			isRequired: false,
-		}
-
-		// TODO: is there a bug with supplying custom options/context fields?
-		// We should add this as a standard test.
 		context.tracks.push({
 			functionName,
 			eventName: namer.escapeString(schema.name),
 			description: schema.description,
-			functionSignature: getFunctionSignature(functionName, parameters),
-			functionSignatureWithOptions: getFunctionSignature(functionName, [...parameters, option]),
-			functionCallWithOptions: getFunctionCall(functionName, [
-				...parameters.map(p => ({ name: p.name, value: p.name })),
-				{ name: 'options', value: '@{}' },
-			]),
 			properties: parameters,
 		})
 	}
 
 	return context
-}
-
-function getSharedContext(options: GenOptions): TemplateSharedContext {
-	return {
-		isDevelopment: options.isDevelopment,
-		language: options.client.language,
-		typewriterVersion: options.typewriterVersion,
-	}
 }
 
 function getProperty(
@@ -218,15 +192,13 @@ function getProperty(
 ): TemplateProperty {
 	const res: TemplateProperty = {
 		type: 'id',
+		schemaType: schema.type,
 		name: namer.register(schema.name, namespace, { transform: camelCase }),
 		raw: namer.escapeString(schema.name),
 		description: schema.description,
 		modifiers: 'strong, nonatomic',
-		isRequired: !!schema.isRequired && !schema.isNullable,
-		isBoolean: false,
-		isInteger: false,
-		isClass: false,
-		isArray: false,
+		isNullable: !schema.isRequired || !!schema.isNullable,
+		isPointerType: true,
 	}
 
 	if (schema.type === Type.ANY) {
@@ -240,13 +212,13 @@ function getProperty(
 		return {
 			...res,
 			type: schema.isRequired ? 'BOOL' : 'BOOL *',
-			isBoolean: true,
+			isPointerType: !schema.isRequired,
 		}
 	} else if (schema.type === Type.INTEGER) {
 		return {
 			...res,
 			type: schema.isRequired ? 'NSInteger' : 'NSInteger *',
-			isInteger: true,
+			isPointerType: !schema.isRequired,
 		}
 	} else if (schema.type === Type.NUMBER) {
 		return {
@@ -270,17 +242,17 @@ function getProperty(
 		const properties = schema.properties.map(p =>
 			getProperty(p, context, namer, `interface->${name}`)
 		)
-		const object: TemplateObject = {
+		const c: TemplateClass = {
 			name,
 			properties,
-			initFunctionSignature: getFunctionSignature('init', properties),
+			imports: properties.filter(p => !!p.importName).map(p => p.importName!),
 		}
-		context.objects.push(object)
+		context.classes.push(c)
 
 		return {
 			...res,
 			type: `${name} *`,
-			isClass: true,
+			importName: `"${name}.h"`,
 		}
 	} else if (schema.type === Type.ARRAY) {
 		const itemsSchema: Schema = {
@@ -290,10 +262,17 @@ function getProperty(
 		}
 		const item = getProperty(itemsSchema, context, namer, `${namespace}->array`)
 
+		let itemType = item.type
+		// Objective-C doesn't support NSArray's of primitives. Therefore, we
+		// map booleans and integers to NSNumbers.
+		if ([Type.BOOLEAN, Type.INTEGER].includes(item.schemaType)) {
+			itemType = 'NSNumber *'
+		}
+
 		return {
 			...res,
-			type: `NSArray<${item.type}> *`,
-			isArray: true,
+			type: `NSArray<${itemType}> *`,
+			importName: item.importName,
 		}
 	} else if (schema.type === Type.UNION) {
 		// TODO: support unions
@@ -306,43 +285,119 @@ function getProperty(
 	}
 }
 
-// TODO: can we make this a Handlebars partial somehow?
-function getFunctionSignature(
-	name: string,
-	parameters: { type: string; name: string; isRequired: boolean }[]
+// Handlebars partials
+
+function generateFunctionSignature(
+	functionName: string,
+	properties: TemplateProperty[],
+	withOptions: boolean
 ): string {
-	let functionSignature = name
+	let signature = functionName
+	const parameters: {
+		type: string
+		name: string
+		isPointerType: boolean
+		isNullable: boolean
+	}[] = [...properties]
+	if (withOptions) {
+		parameters.push({
+			name: 'options',
+			type: 'SERIALIZABLE_DICT',
+			isPointerType: true,
+			isNullable: true,
+		})
+	}
+
+	const withNullability = (property: {
+		type: string
+		isPointerType: boolean
+		isNullable: boolean
+	}) => {
+		const { isPointerType, type, isNullable } = property
+		return isPointerType ? `${isNullable ? 'nullable' : 'nonnull'} ${type}` : type
+	}
+
+	// Mutate the function name to match standard Objective-C naming standards (FooBar vs. FooBarWithSparkles:sparkles).
 	if (parameters.length > 0) {
-		functionSignature += `With${upperFirst(parameters[0].name)}:(${withNullability(
-			parameters[0]
-		)})${parameters[0].name}\n`
+		const first = parameters[0]
+		signature += `With${upperFirst(first.name)}:(${withNullability(first)})${first.name}\n`
 	}
 	for (var parameter of parameters.slice(1)) {
-		functionSignature += `${parameter.name}:(${withNullability(parameter)})${parameter.name}\n`
+		signature += `${parameter.name}:(${withNullability(parameter)})${parameter.name}\n`
 	}
 
-	return functionSignature.trim()
+	return signature.trim()
 }
 
-function withNullability(property: { type: string; isRequired: boolean }) {
-	const { type, isRequired } = property
-	// Only attach a nullability attribute if this parameter is a pointer type.
-	return /(id|SERIALIZABLE_DICT|\*)$/.test(type)
-		? `${isRequired ? 'nonnull' : 'nullable'} ${type}`
-		: type
-}
-
-// TODO: can we make this a Handlebars partial somehow?
-function getFunctionCall(name: string, parameters: { name: string; value: string }[]): string {
-	let functionCall = name
-
-	const firstParameter = parameters.shift()
-	if (firstParameter) {
-		functionCall += `With${upperFirst(firstParameter.name)}:${firstParameter.value}`
+function generateFunctionCall(
+	caller: string,
+	functionName: string,
+	properties: TemplateProperty[],
+	extraParameterName?: string,
+	extraParameterValue?: string
+): string {
+	let functionCall = functionName
+	const parameters: { name: string; value: string }[] = properties.map(p => ({
+		name: p.name,
+		value: p.name,
+	}))
+	if (extraParameterName && extraParameterValue) {
+		parameters.push({
+			name: extraParameterName,
+			value: extraParameterValue,
+		})
 	}
-	for (var { name, value } of parameters) {
+
+	if (parameters.length > 0) {
+		const { name, value } = parameters[0]
+		functionCall += `With${upperFirst(name)}:${value}`
+	}
+	for (var { name, value } of parameters.slice(1)) {
 		functionCall += ` ${name}:${value}`
 	}
 
-	return functionCall.trim()
+	return `[${caller} ${functionCall.trim()}];`
+}
+
+function generatePropertiesDictionary(properties: TemplateProperty[], prefix?: string): string {
+	let out = 'NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];\n'
+	for (let property of properties) {
+		const name = prefix && prefix.length > 0 ? `${prefix}${property.name}` : property.name
+		const serializableName =
+			property.schemaType === Type.BOOLEAN
+				? property.isPointerType
+					? `[NSNumber numberWithBool:*${name}]`
+					: `[NSNumber numberWithBool:${name}]`
+				: property.schemaType === Type.INTEGER
+				? property.isPointerType
+					? `[NSNumber numberWithInteger:*${name}]`
+					: `[NSNumber numberWithInteger:${name}]`
+				: property.schemaType === Type.OBJECT && !property.type.includes('SERIALIZABLE_DICT')
+				? `[${name} toDictionary]`
+				: property.schemaType === Type.ARRAY
+				? `[SEGTypewriterUtils toSerializableArray:${name}]`
+				: name
+
+		let setter: string
+		if (property.isPointerType) {
+			if (property.isNullable) {
+				// If the value is nil, we need to convert it from a primitive nil to NSNull (an object).
+				setter = `properties[@"${
+					property.raw
+				}"] = ${name} == nil ? [NSNull null] : ${serializableName};\n`
+			} else {
+				// If the property is not nullable, but is a pointer, then we need to guard on nil
+				// values. In that case, we don't set any value to the field.
+				setter = `if (${name} != nil) {\n  properties[@"${
+					property.raw
+				}"] = ${serializableName};\n}\n`
+			}
+		} else {
+			setter = `properties[@"${property.raw}"] = ${serializableName};\n`
+		}
+
+		out += setter
+	}
+
+	return out
 }

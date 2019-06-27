@@ -16,10 +16,10 @@ requiredSubProperty:(nonnull NSString *)requiredSubProperty {
 
 -(nonnull SERIALIZABLE_DICT) toDictionary {
   NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
-  if (self.optionalSubProperty != nil) {
-      properties[@"optional sub-property"] = self.optionalSubProperty;
+  properties[@"optional sub-property"] = self.optionalSubProperty == nil ? [NSNull null] : self.optionalSubProperty;
+  if (self.requiredSubProperty != nil) {
+    properties[@"required sub-property"] = self.requiredSubProperty;
   }
-  properties[@"required sub-property"] = self.requiredSubProperty;
 
   return properties;
 }

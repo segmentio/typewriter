@@ -5,13 +5,14 @@
 #import <Foundation/Foundation.h>
 #import <Analytics/SEGSerializableValue.h>
 #import "SEGTypewriterSerializable.h"
+#import "SEGTypewriterUtils.h"
 
 @interface SEGOptionalObject : NSObject<SEGTypewriterSerializable>
 
 /// Optional sub-property
 @property (strong, nonatomic, nullable) NSString *optionalSubProperty;
 /// Required sub-property
-@property (strong, nonatomic, nonnull) NSString *requiredSubProperty;
+@property (strong, nonatomic, nullable) NSString *requiredSubProperty;
 
 +(nonnull instancetype) initWithOptionalSubProperty:(nullable NSString *)optionalSubProperty
 requiredSubProperty:(nonnull NSString *)requiredSubProperty;
