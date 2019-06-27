@@ -187,10 +187,21 @@ export type ViolationHandler = (
 	violations: any[]
 ) => boolean
 
+const missingAnalyticsNodeError = new Error(`You must set an analytics-node instance:
+
+>	const SegmentAnalytics = require('analytics-node')
+>	const { setTypewriterOptions } = require('./analytics')
+>
+>	const analytics = new SegmentAnalytics('SEGMENT_WRITE_KEY')
+>	setTypewriterOptions({
+>		analytics: analytics,
+>	})
+
+For more information on analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/
+`)
+
 let analytics: () => Segment.AnalyticsNode | undefined = () => {
-	throw new Error(
-		'Missing analytics-node: you must call setTypewriterOptions first.'
-	)
+	throw missingAnalyticsNodeError
 }
 
 /**
@@ -218,19 +229,6 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
 		},
 	}
 }
-
-const missingAnalyticsNodeError = new Error(`You must set an analytics-node instance:
-
->	const SegmentAnalytics = require('analytics-node')
->	const { setTypewriterOptions } = require('./analytics')
->
->	const analytics = new SegmentAnalytics('SEGMENT_WRITE_KEY')
->	setTypewriterOptions({
->		analytics: analytics,
->	})
-
-For more information on analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/
-`)
 
 /**
  * Don't do this.

@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import fetch from 'node-fetch'
 import { SDK, Language } from '../../src/generators/options'
-import { validateSegmentEvent, events } from './validation'
+import { validateSegmentEvent, events, exactArray } from './validation'
 
 const SIDECAR_ADDRESS = 'http://localhost:8765'
 
@@ -41,9 +41,9 @@ describe(`sdk:${sdk}`, () => {
 			// For clients where a shared analytics instance (window.analytics, sharedAnalytics, etc)
 			// is not available, we should throw an error on an attempted analytics call if the user
 			// has not yet provided an analytics instance.
-			if (sdk == SDK.NODE)
+			if (sdk === SDK.NODE)
 				test('a missing analytics instance triggers an error', () => {
-					expect('Analytics Instance Missing').toHaveBeenReceived()
+					expect('Analytics Instance Missing Threw Error').toHaveBeenReceived()
 				})
 
 			// You can configure an event in a Tracking Plan to not have any explicitely
@@ -57,7 +57,7 @@ describe(`sdk:${sdk}`, () => {
 			test('sends an event with every supported type (required)', () => {
 				expect('Every Required Type').toHaveBeenReceived({
 					'required any': 'Rick Sanchez',
-					'required array': [137, 'C-137'],
+					'required array': exactArray([137, 'C-137']),
 					'required boolean': false,
 					'required int': 97,
 					'required number': 3.14,
@@ -114,14 +114,14 @@ describe(`sdk:${sdk}`, () => {
 				const schema = {
 					universe: {
 						name: 'Froopyland',
-						occupants: [
+						occupants: exactArray([
 							{
 								name: 'Beth Smith',
 							},
 							{
 								name: 'Thomas Lipkip',
 							},
-						],
+						]),
 					},
 				}
 				expect('Property Object Name Collision #1').toHaveBeenReceived(schema)
@@ -129,8 +129,17 @@ describe(`sdk:${sdk}`, () => {
 			})
 
 			test('sends an event with arrays of objects', () => {
-				expect('Object Arrays').toHaveBeenReceived({
-					// ...
+				expect('Simple Array Types').toHaveBeenReceived({
+					any: exactArray([137, 'C-137']),
+					boolean: exactArray([true, false]),
+					integer: exactArray([97]),
+					number: exactArray([3.14]),
+					object: exactArray([
+						{
+							name: 'Beth Smith',
+						},
+					]),
+					string: exactArray(['Alpha-Betrium']),
 				})
 			})
 
@@ -139,8 +148,8 @@ describe(`sdk:${sdk}`, () => {
 					garage: {
 						tunnel: {
 							'subterranean lab': {
-								"jerry's memories": [],
-								"morty's memories": [],
+								"jerry's memories": exactArray([]),
+								"morty's memories": exactArray([]),
 								"summer's contingency plan": 'Oh, man, it’s a scenario four.',
 							},
 						},
@@ -150,24 +159,24 @@ describe(`sdk:${sdk}`, () => {
 
 			test('sends an event with nested arrays', () => {
 				expect('Nested Arrays').toHaveBeenReceived({
-					universeCharacters: [
-						[
+					universeCharacters: exactArray([
+						exactArray([
 							{
 								name: 'Morty Smith',
 							},
 							{
 								name: 'Rick Sanchez',
 							},
-						],
-						[
+						]),
+						exactArray([
 							{
 								name: 'Cronenberg Morty',
 							},
 							{
 								name: 'Cronenberg Rick',
 							},
-						],
-					],
+						]),
+					]),
 				})
 			})
 
@@ -175,13 +184,13 @@ describe(`sdk:${sdk}`, () => {
 				test('sends an event with unions', () => {
 					expect('Union Type').toHaveBeenReceivedMultipleTimes([
 						{
-							'union type': 'C-137',
+							universe_name: 'C-137',
 						},
 						{
-							'union type': 137,
+							universe_name: 137,
 						},
 						{
-							'union type': null,
+							universe_name: null,
 						},
 					])
 				})
@@ -191,10 +200,10 @@ describe(`sdk:${sdk}`, () => {
 				// In development mode, we run full JSON Schema validation on payloads and
 				// surface any JSON Schema violations to a configurable handler.
 				test('the default violation handler is called upon a violation', () => {
-					expect('Default Violation Handler Skipped').toHaveBeenReceived()
+					expect('Default Violation Handler Called').toHaveBeenReceived()
 				})
 				test('when set, a custom violation handler is called upon a violation', () => {
-					expect('Custom Violation Handler Skipped').toHaveBeenReceived()
+					expect('Custom Violation Handler Called').toHaveBeenReceived()
 				})
 			} else {
 				test('events with violations are fired anyway in production builds', () => {
@@ -212,6 +221,10 @@ describe(`sdk:${sdk}`, () => {
 
 			// TODO: add a test that verifies that descriptions (and long descriptions?) are handled
 			// correctly in the generated output
+
+			// TODO: Test for unknown methods in dynamic languages (so just JS for now)
+
+			// TODO: add tests with large integers + large numbers
 
 			afterAll(() => {
 				// If any analytics calls are still in `events`, then they were unexpected by the

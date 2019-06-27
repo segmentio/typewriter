@@ -50,7 +50,7 @@ jobs:
       - image: circleci/node:10.15
     steps:
       - attach_workspace: { at: . }
-      - run: yarn run jest --testPathIgnorePatterns 'tests/e2e/.*'
+      - run: yarn test
 
   test-javascript-node:
     docker:

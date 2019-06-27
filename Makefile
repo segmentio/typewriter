@@ -6,13 +6,14 @@ XC_ARGS := -workspace $(PROJECT).xcworkspace -scheme $(PROJECT) -destination $(D
 # update: updates typewriter and all e2e tests to use the latest Tracking Plans.
 .PHONY: update
 update:
+	@yarn dev update
 	@yarn dev --config=tests/e2e/javascript-node update
 	@yarn dev --config=tests/e2e/typescript-node update
 	@yarn dev --config=tests/e2e/ios update
 
-# test: launches our end-to-end test for each client library. 
-.PHONY: test
-test:
+# e2e: launches our end-to-end test for each client library. 
+.PHONY: e2e
+e2e:
 	@### Boot the sidecar API to capture API requests.
 	@make docker
 
@@ -50,20 +51,34 @@ teardown:
 .PHONY: test-javascript-node
 test-javascript-node:
 	@echo "\n>>>	🏃 Running JavaScript Node client test suite...\n"
-	@yarn run -s dev --config=./tests/e2e/javascript-node
-	@cd tests/e2e/javascript-node && \
+	@yarn run -s dev --config=./tests/e2e/javascript-node && \
+		cd tests/e2e/javascript-node && \
 		yarn && \
-		yarn run -s test
-	@SDK=analytics.js LANGUAGE=javascript IS_DEVELOPMENT=true yarn run jest ./tests/e2e/suite.test.ts
+		NODE_ENV=test yarn run -s test && \
+		cd ../../.. && \
+		SDK=analytics-node LANGUAGE=javascript IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
+	@yarn run -s dev --config=./tests/e2e/javascript-node prod && \
+		cd tests/e2e/javascript-node && \
+		yarn && \
+		NODE_ENV=test yarn run -s test && \
+		cd ../../.. && \
+		SDK=analytics-node LANGUAGE=javascript IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
 
 .PHONY: test-typescript-node
 test-typescript-node:
 	@echo "\n>>>	🏃 Running TypeScript Node client test suite...\n"
-	@yarn run -s dev --config=./tests/e2e/typescript-node
-	@cd tests/e2e/typescript-node && \
+	@yarn run -s dev --config=./tests/e2e/typescript-node && \
+		cd tests/e2e/typescript-node && \
 		yarn && \
-		yarn run -s test
-	@SDK=analytics.js LANGUAGE=typescript IS_DEVELOPMENT=true yarn run jest ./tests/e2e/suite.test.ts
+		NODE_ENV=test yarn run -s test && \
+		cd ../../.. && \
+		SDK=analytics-node LANGUAGE=typescript IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
+	@yarn run -s dev --config=./tests/e2e/typescript-node prod && \
+		cd tests/e2e/typescript-node && \
+		yarn && \
+		NODE_ENV=test yarn run -s test && \
+		cd ../../.. && \
+		SDK=analytics-node LANGUAGE=typescript IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
 
 .PHONY: test-ios
 test-ios:
@@ -72,7 +87,7 @@ test-ios:
 	@cd tests/e2e/ios && \
 		pod install && \
 		set -o pipefail && xcodebuild test $(XC_ARGS) | xcpretty
-	@SDK=analytics-ios LANGUAGE=objective-c IS_DEVELOPMENT=true yarn run jest ./tests/e2e/suite.test.ts
+	@SDK=analytics-ios LANGUAGE=objective-c IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
 
 .PHONY: clean
 clean:

@@ -8,27 +8,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test": "jest"
+    "test": "node index.js"
   },
   "dependencies": {
-    "analytics-node": "^3.3.0",
-    "jest": "^24.8.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.4.5",
-    "babel-jest": "^24.8.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2"
-  },
-  "jest": {
-    "verbose": true,
-    "transform": {
-      "^.+\\.js$": "babel-jest"
-    },
-    "testEnvironment": "node"
-  },
-  "babel": {
-    "plugins": [
-      "transform-es2015-modules-commonjs"
-    ]
+    "analytics-node": "^3.3.0"
   }
 }

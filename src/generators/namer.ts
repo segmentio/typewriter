@@ -10,17 +10,34 @@ export interface Options {
 	allowedIdentifierChars: string
 }
 
-export default class Namer {
-	private opts: Options
-	// Maps (namespace, raw name) => sanitized name
-	private sanitizedNameLookup: Record<string, Record<string, string>>
-	// Maps (namespace, sanitized name) => raw name
-	private rawNameLookup: Record<string, Record<string, string>>
+export interface SanitizeOptions {
+	// A transformation that is applied before collision detection, but after registering
+	// a name to the internal registry. It's recommended to apply a transform here, rather
+	// than before calling register() since transformations are oftentimes lossy (camelcase,
+	// f.e.) -- in other words, it can lead to collisions after transformation that don't exist
+	// before.
+	transform?: (name: string) => string
+	// A set of strings that can be used as prefixes to avoid a collision, before
+	// falling back on simple numeric transforms.
+	prefixes?: string[]
+	// An opaque identifier representing whatever this name represents. If the same
+	// name + id combination has been seen before, then the same sanitized name will
+	// be returned. This might be used, for example, to re-use interfaces if the JSON
+	// Schema matches. If not specified, the same
+	id?: string
+}
 
-	public constructor(opts: Options) {
-		this.opts = opts
-		this.sanitizedNameLookup = {}
-		this.rawNameLookup = {}
+export default class Namer {
+	private options: Options
+	// Maps namespace -> Set of sanitized names
+	private lookupByName: Record<string, Set<string>>
+	// Maps (namespace, name, id) -> sanitized name
+	private lookupByID: Record<string, Record<string, Record<string, string>>>
+
+	public constructor(options: Options) {
+		this.options = options
+		this.lookupByID = {}
+		this.lookupByName = {}
 	}
 
 	/**
@@ -28,84 +45,93 @@ export default class Namer {
 	 *
 	 * An optional transform function can be supplied, which'll be applied during the sanitization process.
 	 */
-	public register(name: string, namespace: string, transform?: (name: string) => string): string {
-		// We don't currently support duplicate raw names within a given namespace.
-		// This is likely a bug in a customer's Tracking Plan (duplicate property names, duplicate event names).
-		if (this.sanitizedNameLookup[namespace] && this.sanitizedNameLookup[namespace][name]) {
-			throw new Error(`Duplicate name '${name}' within namespace '${namespace}'`)
+	public register(name: string, namespace: string, options?: SanitizeOptions): string {
+		// If an id was provided, check if we have a cached sanitized name for this id.
+		if (options && options.id) {
+			if (
+				this.lookupByID[namespace] &&
+				this.lookupByID[namespace][name] &&
+				this.lookupByID[namespace][name][options.id]
+			) {
+				return this.lookupByID[namespace][name][options.id]
+			}
 		}
 
-		const sanitizedName = this.sanitize(name, namespace, transform)
-
-		if (!this.sanitizedNameLookup[namespace]) {
-			this.sanitizedNameLookup[namespace] = {}
-		}
-		this.sanitizedNameLookup[namespace][name] = sanitizedName
-
-		if (!this.rawNameLookup[namespace]) {
-			this.rawNameLookup[namespace] = {}
-		}
-		this.rawNameLookup[namespace][sanitizedName] = name
-
-		return this.getName(name, namespace)
-	}
-
-	/**
-	 * getName returns a sanitized, collision-free name for the given (namespace, name) tuple.
-	 *
-	 * All returned names will be unique within their namespace, for all currently-registered names.
-	 * Example namespaces might be: "function", "interface", "property:<random integer>", etc.
-	 */
-	public getName(name: string, namespace: string): string {
-		if (!this.sanitizedNameLookup[namespace]) {
-			throw new Error(`Unknown namespace: '${namespace}'`)
+		if (!this.lookupByName[namespace]) {
+			this.lookupByName[namespace] = new Set()
 		}
 
-		if (!this.sanitizedNameLookup[namespace][name]) {
-			throw new Error(`Unknown name: '${name}' (from namespace='${namespace}')`)
+		// Otherwise, we need to generate a new sanitized name.
+		const sanitizedName = this.uniqueify(name, namespace, options)
+
+		// Reserve this newly generated name so that future calls will not re-reserve this name.
+		this.lookupByName[namespace].add(sanitizedName)
+		// Cache this newly generated name by the id.
+		if (options && options.id) {
+			if (!this.lookupByID[namespace]) {
+				this.lookupByID[namespace] = {}
+			}
+			if (!this.lookupByID[namespace][name]) {
+				this.lookupByID[namespace][name] = {}
+			}
+			this.lookupByID[namespace][name][options.id] = sanitizedName
 		}
 
-		return this.sanitizedNameLookup[namespace][name]
+		return sanitizedName
 	}
 
 	/**
 	 * escapeString escapes quotes within a string so that it can safely generated.
 	 */
 	public escapeString(str: string): string {
-		return str.replace(new RegExp(this.opts.quoteChar, 'g'), `\\${this.opts.quoteChar}`)
+		return str.replace(new RegExp(this.options.quoteChar, 'g'), `\\${this.options.quoteChar}`)
 	}
 
-	private sanitize(name: string, namespace: string, transform?: (name: string) => string): string {
-		if (transform) {
-			name = transform(name)
+	private uniqueify(name: string, namespace: string, options?: SanitizeOptions): string {
+		// Find a unique name by using a prefix/suffix if necessary.
+		let prefix = ''
+		let suffix = ''
+		while (this.lookupByName[namespace].has(this.sanitize(prefix + name + suffix, options))) {
+			if (options && options.prefixes && options.prefixes.length > 0) {
+				// If the user provided prefixes, first try to find a unique sanitized name with those prefixes.
+				prefix = options.prefixes.shift()! + '_'
+				suffix = ''
+			} else {
+				// Fallback on a numeric suffix.
+				prefix = ''
+				suffix = suffix === '' ? '1' : (parseInt(suffix) + 1).toString()
+			}
 		}
 
-		// Handle names that are reserved words.
-		if (this.opts.reservedWords.includes(name)) {
-			name += '_'
-		}
+		return this.sanitize(prefix + name + suffix, options)
+	}
 
-		// Replace invalid characters within the name.
-		const invalidChars = new RegExp(`[^${this.opts.allowedIdentifierChars}]`, 'g')
-		name = name.replace(invalidChars, '_')
-
+	private sanitize(name: string, options?: SanitizeOptions): string {
 		// Handle zero length names.
 		if (name.length === 0) {
 			name = 'EmptyIdentifier'
 		}
 
+		// Apply the optional user-supplied transform.
+		if (options && options.transform) {
+			name = options.transform(name)
+		}
+
+		// Handle names that are reserved words.
+		if (this.options.reservedWords.includes(name)) {
+			name += '_'
+		}
+
+		// Replace invalid characters within the name.
+		const invalidChars = new RegExp(`[^${this.options.allowedIdentifierChars}]`, 'g')
+		name = name.replace(invalidChars, '_')
+
 		// Handle names that start with an invalid character.
-		const invalidStartingChars = new RegExp(`^[^${this.opts.allowedIdentifierStartingChars}]`)
+		const invalidStartingChars = new RegExp(`^[^${this.options.allowedIdentifierStartingChars}]`)
 		if (invalidStartingChars.test(name)) {
 			name = `I${name}`
 		}
 
-		// Handle naming collisions.
-		let suffix = ''
-		while (this.rawNameLookup[namespace] && this.rawNameLookup[namespace][name + suffix]) {
-			suffix = suffix === '' ? '1' : (parseInt(suffix) + 1).toString()
-		}
-
-		return name + suffix
+		return name
 	}
 }

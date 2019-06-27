@@ -11,7 +11,7 @@ client:
 
 trackingPlans:
   # Tracking Plan: Typewriter E2E Tracking Plan
-  # https://app.segment.com/schema-test/protocols/tracking-plans/rs_1LpnSqR3KY2Le6xvKUmGYZ5Mslc
-  - id: rs_1LpnSqR3KY2Le6xvKUmGYZ5Mslc
-    workspaceSlug: schema-test
+  # https://app.segment.com/segment_prod/protocols/tracking-plans/rs_1N9oTnc5O8cv1peY65iXsSPnzGP
+  - id: rs_1N9oTnc5O8cv1peY65iXsSPnzGP
+    workspaceSlug: segment_prod
     path: ./TypewriterExample/Analytics

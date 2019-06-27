@@ -18,7 +18,8 @@
             "traits": {}
           },
           "type": "object"
-        }
+        },
+        "version": 1
       },
       {
         "description": "Fired when an error is encountered.",
@@ -34,7 +35,8 @@
             "traits": {}
           },
           "type": "object"
-        }
+        },
+        "version": 1
       }
     ],
     "group_traits": [],

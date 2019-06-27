@@ -100,6 +100,7 @@ function formatFile(f: File, options: GenOptions): File {
 			compilerOptions: {
 				target: options.client.scriptTarget || ScriptTarget.ESNext,
 				module: options.client.moduleTarget || ModuleKind.ESNext,
+				esModuleInterop: true,
 			},
 		})
 
@@ -153,7 +154,7 @@ function getContext(trackingPlan: TrackingPlan, options: GenOptions): TemplateCo
 		const rootType = getTypeForSchema(getPropertiesSchema(schema), context, namer)
 
 		context.tracks.push({
-			functionName: namer.register(schema.name, 'function', camelCase),
+			functionName: namer.register(schema.name, 'function', { transform: camelCase }),
 			eventName: namer.escapeString(schema.name),
 			description: schema.description,
 			type: rootType.type,
@@ -215,7 +216,7 @@ function getTypeForSchema(
 			}
 
 			const interfaceNamer = (name: string) => upperFirst(camelCase(name))
-			type = namer.register(schema.name, 'interface', interfaceNamer)
+			type = namer.register(schema.name, 'interface', { transform: interfaceNamer })
 			tsInterface = {
 				name: type,
 				description: schema.description,

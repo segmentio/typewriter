@@ -43,7 +43,9 @@ function toHaveBeenReceived(
 				abortEarly: false,
 				allowUnknown: true,
 			})
-			validationErrors.push(resp.error)
+			if (!!resp.error) {
+				validationErrors.push(resp.error)
+			}
 		}
 	}
 
@@ -63,6 +65,12 @@ expect.extend({
 		return toHaveBeenReceived(eventName, schemas)
 	},
 })
+
+export function exactArray<T>(arr: T[]): Joi.ArraySchema {
+	return Joi.array()
+		.ordered(arr)
+		.length(arr.length)
+}
 
 // TODO: fill out these schemas
 // Messages are expected to conform to this schema, to be considered valid Segment

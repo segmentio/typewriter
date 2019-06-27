@@ -82,12 +82,27 @@ export const defaultValidationErrorHandler: ViolationHandler = (message, violati
 let onViolation = defaultValidationErrorHandler
 {{/if}}
 
+{{#unless isBrowser}}
+const missingAnalyticsNodeError = new Error(`You must set an analytics-node instance:
+
+>	const SegmentAnalytics = require('analytics-node')
+>	const { setTypewriterOptions } = require('./analytics')
+>
+>	const analytics = new SegmentAnalytics('SEGMENT_WRITE_KEY')
+>	setTypewriterOptions({
+>		analytics: analytics,
+>	})
+
+For more information on analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/
+`)
+{{/unless}}
+
 {{!-- We use a closure so we can lazy-resolve window.analytics in browser environments. --}}
 let analytics: () => ({{#if isBrowser}}Segment.AnalyticsJS{{else}}Segment.AnalyticsNode{{/if}} | undefined) = () => {
 	{{#if isBrowser}}
 	return window.analytics
 	{{else}}
-	throw new Error('Missing analytics-node: you must call setTypewriterOptions first.')
+	throw missingAnalyticsNodeError
 	{{/if}}
 }
 
@@ -139,21 +154,6 @@ function withTypewriterContext{{#unless isBrowser}}<P, T extends Segment.TrackMe
 		},
 	}
 }
-
-{{#unless isBrowser}}
-const missingAnalyticsNodeError = new Error(`You must set an analytics-node instance:
-
->	const SegmentAnalytics = require('analytics-node')
->	const { setTypewriterOptions } = require('./analytics')
->
->	const analytics = new SegmentAnalytics('SEGMENT_WRITE_KEY')
->	setTypewriterOptions({
->		analytics: analytics,
->	})
-
-For more information on analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/
-`)
-{{/unless}}
 
 {{#each tracks}}
 {{#if description}}

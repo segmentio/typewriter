@@ -168,7 +168,7 @@ function getAnalyticsContext(
 	for (var { schema } of trackingPlan.trackCalls) {
 		const propertiesSchema = getPropertiesSchema(schema)
 
-		const functionName = namer.register(propertiesSchema.name, 'function', camelCase)
+		const functionName = namer.register(propertiesSchema.name, 'function', { transform: camelCase })
 
 		const parameters: TemplateProperty[] = []
 		const namespace = `function->${functionName}`
@@ -218,7 +218,7 @@ function getProperty(
 ): TemplateProperty {
 	const res: TemplateProperty = {
 		type: 'id',
-		name: namer.register(schema.name, namespace, camelCase),
+		name: namer.register(schema.name, namespace, { transform: camelCase }),
 		raw: schema.name,
 		description: schema.description,
 		modifiers: 'strong, nonatomic',
@@ -262,8 +262,10 @@ function getProperty(
 			}
 		}
 
-		const name = namer.register(schema.name, 'interface', (name: string) => {
-			return `SEG${upperFirst(camelCase(name))}`
+		const name = namer.register(schema.name, 'interface', {
+			transform: (name: string) => {
+				return `SEG${upperFirst(camelCase(name))}`
+			},
 		})
 		const properties = schema.properties.map(p =>
 			getProperty(p, context, namer, `interface->${name}`)

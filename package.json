@@ -12,7 +12,9 @@
   "scripts": {
     "dev": "ts-node ./src/cli",
     "build": "rm -rf dist && tsc && copyfiles -u 1 \"src/**/*.hbs\" \"src/cli/typewriter.yml.schema.json\" dist/",
-    "test": "jest --testPathIgnorePatterns 'tests/e2e/.*' && make test",
+    "test": "jest --testPathIgnorePatterns 'tests/e2e/.*'",
+    "e2e": "make e2e",
+    "update": "make update",
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "precommit": "lint-staged",
     "release": "yarn run build && np",

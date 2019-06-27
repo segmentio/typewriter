@@ -48,13 +48,66 @@ describe('Namer', () => {
 		})
 		test('handles name collisions in the same namespace', () => {
 			expect(namer.register('order-completed', 'example')).toEqual('order_completed')
-			expect(namer.register('order_completed', 'example')).toEqual('order_completed1')
+			expect(namer.register('order-completed', 'example')).toEqual('order_completed1')
+			expect(namer.register('order_completed', 'example')).toEqual('order_completed2')
 			expect(namer.register('order-completed', 'another example')).toEqual('order_completed')
 		})
 		test('handles name collisions with a transform', () => {
-			expect(namer.register('order-completed', 'example', camelCase)).toEqual('orderCompleted')
-			expect(namer.register('order_completed', 'example', camelCase)).toEqual('orderCompleted1')
+			expect(namer.register('order-completed', 'example', { transform: camelCase })).toEqual(
+				'orderCompleted'
+			)
+			expect(namer.register('order_completed', 'example', { transform: camelCase })).toEqual(
+				'orderCompleted1'
+			)
 			expect(namer.register('order=completed', 'example')).toEqual('order_completed')
+		})
+		test('handles resolving collision using prefixes', () => {
+			expect(
+				namer.register('order-completed', 'example', {
+					prefixes: ['FooBar'],
+				})
+			).toEqual('order_completed')
+			expect(
+				namer.register('order_completed', 'example', {
+					prefixes: ['FooBar'],
+				})
+			).toEqual('FooBar_order_completed')
+			expect(
+				namer.register('order completed', 'example', {
+					prefixes: ['FooBar'],
+				})
+			).toEqual('order_completed1')
+		})
+		test('handles transforming prefixes', () => {
+			expect(
+				namer.register('order-completed', 'example', {
+					prefixes: ['FooBar'],
+					transform: camelCase,
+				})
+			).toEqual('orderCompleted')
+			expect(
+				namer.register('order_completed', 'example', {
+					prefixes: ['FooBar'],
+					transform: camelCase,
+				})
+			).toEqual('fooBarOrderCompleted')
+		})
+		test('handles caching names by id', () => {
+			expect(
+				namer.register('order-completed', 'example', {
+					id: '123',
+				})
+			).toEqual('order_completed')
+			expect(
+				namer.register('order-completed', 'example', {
+					id: '123',
+				})
+			).toEqual('order_completed')
+			expect(
+				namer.register('order-completed', 'example', {
+					id: '456',
+				})
+			).toEqual('order_completed1')
 		})
 	})
 })

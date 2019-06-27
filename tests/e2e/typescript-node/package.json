@@ -8,30 +8,14 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test": "jest"
+    "test": "ts-node index.ts"
   },
   "dependencies": {
-    "analytics-node": "^3.3.0",
-    "jest": "^24.8.0"
+    "analytics-node": "^3.3.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.5",
     "@types/analytics-node": "^3.1.1",
-    "babel-jest": "^24.8.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2"
-  },
-  "jest": {
-    "modulePaths": [
-      "<rootDir>/"
-    ],
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testEnvironment": "node"
-  },
-  "babel": {
-    "plugins": [
-      "transform-es2015-modules-commonjs"
-    ]
+    "ts-node": "^8.1.0",
+    "typescript": "^3.5.2"
   }
 }
