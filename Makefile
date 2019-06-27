@@ -87,6 +87,7 @@ test-ios:
 	@cd tests/e2e/ios && \
 		pod install && \
 		set -o pipefail && xcodebuild test $(XC_ARGS) | xcpretty
+	@echo "Waiting for simulator to flush analytics events..." && sleep 10 && echo "Done"
 	@SDK=analytics-ios LANGUAGE=objective-c IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
 
 .PHONY: clean

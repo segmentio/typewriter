@@ -13,10 +13,11 @@ const reservedWords = [
 	'do', 'double', 'dynamic', 'else', 'end', 'enum', 'extern', 'false', 'finally', 'float',
 	'for', 'goto', 'hash', 'id', 'if', 'imp', 'implementation', 'in', 'init', 'inline',
 	'inout', 'int', 'interface', 'long', 'mutableCopy', 'new', 'nil', 'no', 'nonatomic',
-	'null', 'oneway', 'options', 'out', 'private', 'property', 'protected', 'protocol', 'public',
-	'register', 'restrict', 'retain', 'return', 'sel', 'selector', 'self', 'short', 'signed',
-	'sizeof', 'static', 'struct', 'super', 'superclass', 'switch', 'synthesize', 'throw',
-	'true', 'try', 'typedef', 'typeof', 'union', 'unsigned', 'void', 'volatile', 'while', 'yes'
+	'null', 'nullable', 'nonnull', 'oneway', 'options', 'out', 'private', 'property', 'protected',
+	'protocol', 'public', 'register', 'restrict', 'retain', 'return', 'sel', 'selector', 'self',
+	'short', 'signed', 'sizeof', 'static', 'struct', 'super', 'superclass', 'switch', 'synthesize',
+	'throw', 'true', 'try', 'typedef', 'typeof', 'union', 'unsigned', 'void', 'volatile', 'while',
+	'yes'
 ]
 
 interface TemplateAnalyticsContext extends TemplateBaseContext {
@@ -62,8 +63,10 @@ interface TemplateProperty {
 	description?: string
 	// Stringified property modifiers. ex: "nonatomic, copy"
 	modifiers: string
-	// Whether the property is nullable (nonnull vs nullable).
-	isNullable: boolean
+	// Whether the property is nullable (nonnull vs nullable modifier).
+	isVariableNullable: boolean
+	// Whether null is a valid value for this property when sent to Segment.
+	isPayloadFieldNullable: boolean
 	// Whether the Objective-C type is a pointer (id, SERIALIZABLE_DICT, NSNumber *, ...).
 	isPointerType: boolean
 	// Note: only set if this is a class.
@@ -197,7 +200,8 @@ function getProperty(
 		raw: namer.escapeString(schema.name),
 		description: schema.description,
 		modifiers: 'strong, nonatomic',
-		isNullable: !schema.isRequired || !!schema.isNullable,
+		isVariableNullable: !schema.isRequired || !!schema.isNullable,
+		isPayloadFieldNullable: !!schema.isNullable,
 		isPointerType: true,
 	}
 
@@ -211,14 +215,14 @@ function getProperty(
 	} else if (schema.type === Type.BOOLEAN) {
 		return {
 			...res,
-			type: schema.isRequired ? 'BOOL' : 'BOOL *',
-			isPointerType: !schema.isRequired,
+			type: res.isVariableNullable ? 'BOOL *' : 'BOOL',
+			isPointerType: res.isVariableNullable,
 		}
 	} else if (schema.type === Type.INTEGER) {
 		return {
 			...res,
-			type: schema.isRequired ? 'NSInteger' : 'NSInteger *',
-			isPointerType: !schema.isRequired,
+			type: res.isVariableNullable ? 'NSInteger *' : 'NSInteger',
+			isPointerType: res.isVariableNullable,
 		}
 	} else if (schema.type === Type.NUMBER) {
 		return {
@@ -297,24 +301,24 @@ function generateFunctionSignature(
 		type: string
 		name: string
 		isPointerType: boolean
-		isNullable: boolean
+		isVariableNullable: boolean
 	}[] = [...properties]
 	if (withOptions) {
 		parameters.push({
 			name: 'options',
 			type: 'SERIALIZABLE_DICT',
 			isPointerType: true,
-			isNullable: true,
+			isVariableNullable: true,
 		})
 	}
 
 	const withNullability = (property: {
 		type: string
 		isPointerType: boolean
-		isNullable: boolean
+		isVariableNullable: boolean
 	}) => {
-		const { isPointerType, type, isNullable } = property
-		return isPointerType ? `${isNullable ? 'nullable' : 'nonnull'} ${type}` : type
+		const { isPointerType, type, isVariableNullable } = property
+		return isPointerType ? `${isVariableNullable ? 'nullable' : 'nonnull'} ${type}` : type
 	}
 
 	// Mutate the function name to match standard Objective-C naming standards (FooBar vs. FooBarWithSparkles:sparkles).
@@ -380,7 +384,7 @@ function generatePropertiesDictionary(properties: TemplateProperty[], prefix?: s
 
 		let setter: string
 		if (property.isPointerType) {
-			if (property.isNullable) {
+			if (property.isPayloadFieldNullable) {
 				// If the value is nil, we need to convert it from a primitive nil to NSNull (an object).
 				setter = `properties[@"${
 					property.raw
@@ -388,6 +392,7 @@ function generatePropertiesDictionary(properties: TemplateProperty[], prefix?: s
 			} else {
 				// If the property is not nullable, but is a pointer, then we need to guard on nil
 				// values. In that case, we don't set any value to the field.
+				// TODO: do we need these guards if we've already set a field as nonnull? TBD
 				setter = `if (${name} != nil) {\n  properties[@"${
 					property.raw
 				}"] = ${serializableName};\n}\n`

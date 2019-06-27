@@ -196,24 +196,26 @@ describe(`sdk:${sdk}`, () => {
 				})
 			}
 
-			if (isDevelopment) {
-				// In development mode, we run full JSON Schema validation on payloads and
-				// surface any JSON Schema violations to a configurable handler.
-				test('the default violation handler is called upon a violation', () => {
-					expect('Default Violation Handler Called').toHaveBeenReceived()
-				})
-				test('when set, a custom violation handler is called upon a violation', () => {
-					expect('Custom Violation Handler Called').toHaveBeenReceived()
-				})
-			} else {
-				test('events with violations are fired anyway in production builds', () => {
-					expect('Default Violation Handler').toHaveBeenReceived({
-						'regex property': 'Not a Real Morty',
+			if (sdk !== SDK.IOS) {
+				if (isDevelopment) {
+					// In development mode, we run full JSON Schema validation on payloads and
+					// surface any JSON Schema violations to a configurable handler.
+					test('the default violation handler is called upon a violation', () => {
+						expect('Default Violation Handler Called').toHaveBeenReceived()
 					})
-					expect('Custom Violation Handler').toHaveBeenReceived({
-						'regex property': 'Not a Real Morty',
+					test('when set, a custom violation handler is called upon a violation', () => {
+						expect('Custom Violation Handler Called').toHaveBeenReceived()
 					})
-				})
+				} else {
+					test('events with violations are fired anyway in production builds', () => {
+						expect('Default Violation Handler').toHaveBeenReceived({
+							'regex property': 'Not a Real Morty',
+						})
+						expect('Custom Violation Handler').toHaveBeenReceived({
+							'regex property': 'Not a Real Morty',
+						})
+					})
+				}
 			}
 
 			// TODO: can we add tests to validate the behavior of the default violation handler
