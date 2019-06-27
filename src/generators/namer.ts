@@ -81,10 +81,12 @@ export default class Namer {
 	}
 
 	/**
-	 * escapeString escapes quotes within a string so that it can safely generated.
+	 * escapeString escapes quotes (and escapes) within a string so that it can safely generated.
 	 */
 	public escapeString(str: string): string {
-		return str.replace(new RegExp(this.options.quoteChar, 'g'), `\\${this.options.quoteChar}`)
+		return str
+			.replace(/\\/g, '\\\\')
+			.replace(new RegExp(this.options.quoteChar, 'g'), `\\` + this.options.quoteChar)
 	}
 
 	private uniqueify(name: string, namespace: string, options?: SanitizeOptions): string {

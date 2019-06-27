@@ -219,7 +219,7 @@ function getProperty(
 	const res: TemplateProperty = {
 		type: 'id',
 		name: namer.register(schema.name, namespace, { transform: camelCase }),
-		raw: schema.name,
+		raw: namer.escapeString(schema.name),
 		description: schema.description,
 		modifiers: 'strong, nonatomic',
 		isRequired: !!schema.isRequired && !schema.isNullable,
