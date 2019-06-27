@@ -89,7 +89,7 @@ describe(`sdk:${sdk}`, () => {
 			})
 
 			test('sends an event with an event name that requires sanitization', () => {
-				expect('42_--terrible=="event\'++name~!3').toHaveBeenReceived()
+				expect('42_--terrible==\\"event\'++name~!3').toHaveBeenReceived()
 			})
 
 			test('sends an event with a property name that requires sanitization', () => {
