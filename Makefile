@@ -80,12 +80,20 @@ test-typescript-node:
 		cd ../../.. && \
 		SDK=analytics-node LANGUAGE=typescript IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
 
+# We split up test-ios in order for CI to cache the setup step.
 .PHONY: test-ios
-test-ios:
+test-ios: setup-ios-tests run-ios-tests
+
+.PHONY: setup-ios-tests
+setup-ios-tests:
+	@cd tests/e2e/ios && \
+		pod install
+
+.PHONY: run-ios-tests
+run-ios-tests:
 	@echo "\n>>>	🏃 Running iOS client test suite...\n"
 	@yarn run -s dev --config=./tests/e2e/ios
 	@cd tests/e2e/ios && \
-		pod install && \
 		set -o pipefail && xcodebuild test $(XC_ARGS) | xcpretty
 	@echo "Waiting for simulator to flush analytics events..." && sleep 10 && echo "Done"
 	@SDK=analytics-ios LANGUAGE=objective-c IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts

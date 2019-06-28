@@ -73,7 +73,16 @@ jobs:
       xcode: "10.2.1"
     steps:
       - attach_workspace: { at: . }
-      - run: make test-ios
+      - run: xcrun simctl list
+      - run:
+          name: Install build dependencies
+          command: |
+            sudo gem install xcpretty
+            sudo gem install cocoapods -v $(var=$(tail -1 tests/e2e/ios/Podfile.lock); echo ${var##COCOAPODS:})
+      - run:
+          name: Fetch Cocoapods specs
+          command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+      - run: make run-ios-tests
 
 workflows:
   version: 2
