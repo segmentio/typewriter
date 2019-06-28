@@ -22,7 +22,7 @@
     [SEGAnalytics debug:YES];
     SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"1z5lR0MY95gEknwdn8F5G32poHJ9Riny"];
     configuration.trackApplicationLifecycleEvents = NO;
-    configuration.flushAt = 1;
+    configuration.flushAt = 999;
     
     // Customize the requestFactory to point at our sidecar container, which snapshots all analytics calls.
     configuration.requestFactory = ^(NSURL *url) {

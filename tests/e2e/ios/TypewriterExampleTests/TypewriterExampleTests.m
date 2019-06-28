@@ -19,16 +19,7 @@
 
 NSString *const SIDECAR_ADDRESS = @"http://localhost:8765";
 
-NSInteger flushCount = 0;
-// Note: make sure to update this count whenever adding new analytics calls below.
-NSInteger const expectedFlushCount = 14;
-
 - (void)testExample {
-    // Listen for successful flush notifications, so that we can wait until all events have flushed before finishing the test.
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageSent:) name:SEGSegmentDidSendRequestNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageFlushed:) name:SEGSegmentRequestDidSucceedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageFailedToFlush:) name:SEGSegmentRequestDidFailNotification object:nil];
-
     [SEGTypewriterAnalytics emptyEvent];
     
     [SEGTypewriterAnalytics everyRequiredTypeWithRequiredAny:@"Rick Sanchez" requiredArray:@[@137, @"C-137"] requiredBoolean:false requiredInt:97 requiredNumber:@3.14 requiredObject:@{} requiredString:@"Alpha-Betrium" requiredStringWithRegex:@"Lawyer Morty"];
@@ -80,51 +71,24 @@ NSInteger const expectedFlushCount = 14;
                                                                      ]
                                                                  ]];
     
-    // Note: flushing is an async operation in analytics-ios. Therefore, we use notifications (see above) to
+    // Note: flushing is an async operation in analytics-ios. Therefore, we use notifications to
     // identify when all events have finished flushing.
+    __block BOOL finish = false;
+    [[NSNotificationCenter defaultCenter] addObserverForName:SEGSegmentRequestDidSucceedNotification object:nil queue:nil usingBlock:^(NSNotification *notification) {
+        NSLog(@"Typewriter: SEGSegmentRequestDidSucceedNotification notification fired");
+        finish = true;
+    }];
+    // We also want to catch failures, so that our test suite will still finish.
+    [[NSNotificationCenter defaultCenter] addObserverForName:SEGSegmentRequestDidFailNotification object:nil queue:nil usingBlock:^(NSNotification *notification) {
+        NSLog(@"Typewriter: SEGSegmentRequestDidFailNotification notification fired");
+        finish = true;
+    }];
+    
     [[SEGAnalytics sharedAnalytics] flush];
     
-//    while (flushCount < expectedFlushCount) {
-    NSLog(@"%d of %d events flushed so far, waiting...", (int) flushCount, (int) expectedFlushCount);
-    [NSThread sleepForTimeInterval:5.0f];
-//    }
-
-    NSLog(@"Flushed all events");
-}
-
-- (void)messageSent:(nonnull NSNotification *)notification
-{
-    NSDictionary *info = notification.userInfo;
-    NSLog(@"Segment: message sent");
-    for(NSString *key in [info allKeys]) {
-        NSLog(@"%@",[info objectForKey:key]);
+    while(!finish) {
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
     }
-    
-    NSArray *obj = notification.object;
-    NSLog(@"%@", obj);
-}
-
-- (void)messageFlushed:(nonnull NSNotification *)notification
-{
-//    NSObject *integration = notification.object;
-    NSDictionary *info = notification.userInfo;
-    NSLog(@"Segment: message flushed");
-    for(NSString *key in [info allKeys]) {
-        NSLog(@"%@",[info objectForKey:key]);
-    }
-    flushCount += 1;
-    
-    NSArray *obj = notification.object;
-    NSLog(@"%@", obj);
-}
-
-- (void)messageFailedToFlush:(nonnull NSNotification *)notification
-{
-    //    NSObject *integration = notification.object;
-    NSLog(@"Segment: message failed to flushed");
-    
-    NSArray *obj = notification.object;
-    NSLog(@"%@", obj);
 }
 
 @end
