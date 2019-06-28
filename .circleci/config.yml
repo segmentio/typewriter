@@ -75,6 +75,7 @@ jobs:
       - attach_workspace: { at: . }
       - run: xcrun simctl list
       - run:
+          # TODO(colinking): open source segmentio/snapshotter so we can access it here.
           name: Start the Snapshotter
           command: |
             git checkout git@github.com:segmentio/snapshotter.git
