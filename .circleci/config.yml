@@ -75,6 +75,9 @@ jobs:
       - attach_workspace: { at: . }
       - run: xcrun simctl list
       - run:
+          name: Start the Snapshotter
+          command: docker run -p 8765:8765 -itd segment/snapshotter:latest
+      - run:
           name: Install build dependencies
           command: |
             sudo gem install xcpretty
