@@ -82,7 +82,7 @@ jobs:
       - run:
           name: Fetch Cocoapods specs
           command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
-      - run: make run-ios-tests
+      - run: make test-ios
 
 workflows:
   version: 2
