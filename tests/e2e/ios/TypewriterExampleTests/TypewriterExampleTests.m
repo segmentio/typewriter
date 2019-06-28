@@ -17,8 +17,6 @@
 
 @implementation TypewriterExampleTests
 
-NSString *const SIDECAR_ADDRESS = @"http://localhost:8765";
-
 - (void)testExample {
     [SEGTypewriterAnalytics emptyEvent];
     
@@ -26,7 +24,6 @@ NSString *const SIDECAR_ADDRESS = @"http://localhost:8765";
     
     [SEGTypewriterAnalytics everyOptionalTypeWithOptionalAny:nil optionalArray:nil optionalBoolean:nil optionalInt:nil optionalNumber:nil optionalObject:nil optionalString:nil optionalStringWithRegex:nil];
     
-    // TODO: pretty sure this is wrong...
     [SEGTypewriterAnalytics everyNullableRequiredTypeWithRequiredAny:nil requiredArray:nil requiredBoolean:nil requiredInt:nil requiredNumber:nil requiredObject:nil requiredString:nil requiredStringWithRegex:nil];
     
     [SEGTypewriterAnalytics everyNullableOptionalTypeWithOptionalAny:nil optionalArray:nil optionalBoolean:nil optionalInt:nil optionalNumber:nil optionalObject:nil optionalString:nil optionalStringWithRegex:nil];
@@ -73,20 +70,20 @@ NSString *const SIDECAR_ADDRESS = @"http://localhost:8765";
     
     // Note: flushing is an async operation in analytics-ios. Therefore, we use notifications to
     // identify when all events have finished flushing.
-    __block BOOL finish = false;
+    __block BOOL finishedFlushing = false;
     [[NSNotificationCenter defaultCenter] addObserverForName:SEGSegmentRequestDidSucceedNotification object:nil queue:nil usingBlock:^(NSNotification *notification) {
         NSLog(@"Typewriter: SEGSegmentRequestDidSucceedNotification notification fired");
-        finish = true;
+        finishedFlushing = true;
     }];
     // We also want to catch failures, so that our test suite will still finish.
     [[NSNotificationCenter defaultCenter] addObserverForName:SEGSegmentRequestDidFailNotification object:nil queue:nil usingBlock:^(NSNotification *notification) {
         NSLog(@"Typewriter: SEGSegmentRequestDidFailNotification notification fired");
-        finish = true;
+        finishedFlushing = true;
     }];
     
     [[SEGAnalytics sharedAnalytics] flush];
     
-    while(!finish) {
+    while(!finishedFlushing) {
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
     }
 }
