@@ -2,7 +2,7 @@ import { File, TrackingPlan, GenOptions, TemplateBaseContext, baseContext } from
 import { Schema, Type, getPropertiesSchema } from '../ast'
 import { camelCase, upperFirst } from 'lodash'
 import * as prettier from 'prettier'
-import { generateFromTemplate } from '../../templates'
+import { generateFromTemplate, registerStandardHelpers } from '../../templates'
 import { transpileModule, ModuleKind, ScriptTarget } from 'typescript'
 import Namer from '../namer'
 import { Language, SDK } from '../options'
@@ -62,6 +62,8 @@ interface TSInterfaceProperty {
 }
 
 export default async function(trackingPlan: TrackingPlan, options: GenOptions): Promise<File[]> {
+	registerStandardHelpers()
+
 	const ctx = getContext(trackingPlan, options)
 	const files = [
 		{

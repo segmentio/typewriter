@@ -76,7 +76,7 @@ export async function getConfig(path = './'): Promise<Config | undefined> {
 // Note path is relative to the directory where the typewriter command
 // was run.
 export async function setConfig(config: Config, path = './') {
-	const file = await generateFromTemplate<Config>('cli/typewriter.yml.hbs', config)
+	const file = await generateFromTemplate<Config>('cli/typewriter.yml.hbs', config, false)
 
 	await writeFile(await getPath(path), file)
 }
