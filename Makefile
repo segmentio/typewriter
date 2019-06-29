@@ -7,6 +7,7 @@ XC_ARGS := -workspace $(PROJECT).xcworkspace -scheme $(PROJECT) -destination $(D
 .PHONY: update
 update:
 	@yarn dev update
+	@yarn dev --config=example update
 	@yarn dev --config=tests/e2e/javascript-node update
 	@yarn dev --config=tests/e2e/typescript-node update
 	@yarn dev --config=tests/e2e/ios update
@@ -16,6 +17,9 @@ update:
 e2e:
 	@### Boot the sidecar API to capture API requests.
 	@make docker
+
+	@### Example App
+	@make build-example
 
 	@### JavaScript node
 	@make test-javascript-node
@@ -51,6 +55,13 @@ clear-snapshotter:
 .PHONY: teardown
 teardown:
 	@docker-compose -f tests/e2e/docker-compose.yml down
+
+.PHONY: build-example
+build-example:
+	@yarn run -s dev --config=./example && \
+		cd example && \
+		yarn && \
+		yarn build
 
 .PHONY: test-javascript-node
 test-javascript-node:
@@ -94,6 +105,7 @@ test-ios: setup-ios-tests run-ios-tests
 
 .PHONY: setup-ios-tests
 setup-ios-tests:
+	@# TODO: verify that xcodebuild and xcpretty are available
 	@cd tests/e2e/ios && \
 		pod install
 

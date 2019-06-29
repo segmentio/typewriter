@@ -52,6 +52,13 @@ jobs:
       - attach_workspace: { at: . }
       - run: yarn test
 
+  build-example:
+    docker:
+      - image: circleci/node:10.15
+    steps:
+      - attach_workspace: { at: . }
+      - run: make build-example
+
   test-javascript-node:
     docker:
       - image: circleci/node:10.15
@@ -103,6 +110,8 @@ workflows:
           context: snyk
           requires: [setup]
       - lint:
+          requires: [setup]
+      - build-example:
           requires: [setup]
       - test-unit-tests:
           requires: [setup]

@@ -42,6 +42,7 @@
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-no-null": "^1.0.2",
     "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-react": "^7.14.2",
     "husky": "^2.1.0",
     "jest": "^24.7.1",
     "lint-staged": "^8.1.7",
@@ -81,11 +82,17 @@
     "extends": [
       "plugin:@typescript-eslint/recommended",
       "prettier/@typescript-eslint",
-      "plugin:prettier/recommended"
+      "plugin:prettier/recommended",
+      "plugin:react/recommended"
     ],
     "parserOptions": {
       "ecmaVersion": 2018,
       "sourceType": "module"
+    },
+    "settings": {
+      "react": {
+        "version": "16.8.6"
+      }
     },
     "rules": {
       "prettier/prettier": [

@@ -1,17 +1,17 @@
 # Segment Typewriter Configuration (https://github.com/segmentio/typewriter)
 # Just run `npx typewriter@next` to re-generate a client with the latest versions of these events.
 
-tokenCommand: aws-okta exec dev-privileged -- chamber export typewriter | jq -r .typewriter_token
+tokenCommand: aws-okta exec dev-privileged -- chamber export automated-testing-demo | jq -r .typewriter_token
 
-# You can configure the options of this language's generator.
+# You can configure the options of this client's generator.
 # See: https://segment.com/docs/typewriter/typescript
 client:
   sdk: analytics.js
   language: typescript
 
 trackingPlans:
-  # Tracking Plan: Typewriter: Slothgram
-  # https://app.segment.com/schema-test/protocols/tracking-plans/rs_1CawusBJdQmYmspt8rWXtdb7COT
-  - id: rs_1CawusBJdQmYmspt8rWXtdb7COT
-    workspaceSlug: schema-test
+  # Tracking Plan: Demo Tracking Plan
+  # https://app.segment.com/automated-testing-demo/protocols/tracking-plans/rs_1LTIHwkhXakMLs70qUd2hfSGd4D
+  - id: rs_1LTIHwkhXakMLs70qUd2hfSGd4D
+    workspaceSlug: automated-testing-demo
     path: ./analytics

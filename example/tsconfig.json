@@ -1,5 +1,4 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
@@ -8,10 +7,11 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "sourceMap": true,
-    "jsx": "preserve",
     "outDir": "dist",
     "baseUrl": ".",
     "resolveJsonModule": true,
-    "lib": ["dom", "es2015", "es2016"]
+    "esModuleInterop": true,
+    "jsx": "react",
+    "lib": ["dom", "es2018"]
   }
 }
