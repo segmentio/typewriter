@@ -93,12 +93,72 @@ function formatFile(f: File, options: GenOptions): File {
 	// If we are generating a JavaScript client, transpile the client
 	// from TypeScript into JavaScript.
 	if (options.client.language === Language.JAVASCRIPT) {
-		// If we're generating a JavaScript client, compile
-		// from TypeScript to JavaScript.
+		// If we're generating a JavaScript client, compile from TypeScript to JavaScript.
+		// But first, map the module/script targets to TypeScript's compiler enums.
+		let target = ScriptTarget.ESNext
+		let moduleTarget = ModuleKind.ESNext
+		if (options.client.scriptTarget) {
+			switch (options.client.scriptTarget) {
+				case 'ES3':
+					target = ScriptTarget.ES3
+					break
+				case 'ES5':
+					target = ScriptTarget.ES5
+					break
+				case 'ES2015':
+					target = ScriptTarget.ES2015
+					break
+				case 'ES2016':
+					target = ScriptTarget.ES2016
+					break
+				case 'ES2017':
+					target = ScriptTarget.ES2017
+					break
+				case 'ES2018':
+					target = ScriptTarget.ES2018
+					break
+				case 'ES2019':
+					target = ScriptTarget.ES2019
+					break
+				case 'ESNext':
+					target = ScriptTarget.ESNext
+					break
+				case 'Latest':
+					target = ScriptTarget.Latest
+					break
+				default:
+					throw new Error(`Invalid scriptTarget: '${options.client.scriptTarget}'`)
+			}
+		}
+		if (options.client.moduleTarget) {
+			switch (options.client.moduleTarget) {
+				case 'CommonJS':
+					moduleTarget = ModuleKind.CommonJS
+					break
+				case 'AMD':
+					moduleTarget = ModuleKind.AMD
+					break
+				case 'UMD':
+					moduleTarget = ModuleKind.UMD
+					break
+				case 'System':
+					moduleTarget = ModuleKind.System
+					break
+				case 'ES2015':
+					moduleTarget = ModuleKind.ES2015
+					break
+				case 'ESNext':
+					moduleTarget = ModuleKind.ESNext
+					break
+				default:
+					throw new Error(`Invalid moduleTarget: '${options.client.moduleTarget}'`)
+			}
+		}
+
 		const { outputText } = transpileModule(f.contents, {
 			compilerOptions: {
-				target: options.client.scriptTarget || ScriptTarget.ESNext,
-				module: options.client.moduleTarget || ModuleKind.ESNext,
+				target,
+				module: moduleTarget,
 				esModuleInterop: true,
 			},
 		})
@@ -114,8 +174,7 @@ function formatFile(f: File, options: GenOptions): File {
 		singleQuote: true,
 		semi: false,
 		trailingComma:
-			options.client.language === Language.JAVASCRIPT &&
-			options.client.scriptTarget === ScriptTarget.ES3
+			options.client.language === Language.JAVASCRIPT && options.client.scriptTarget === 'ES3'
 				? 'none'
 				: 'es5',
 	})

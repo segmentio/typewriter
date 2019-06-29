@@ -23,7 +23,37 @@
             "language": {
               "$comment": "Which language to use when generating clients.",
               "type": "string",
-              "enum": ["javascript", "typescript"]
+              "enum": ["javascript"]
+            },
+            "scriptTarget": {
+              "$comment": "Which ECMAScript version to transpile the generated client to.",
+              "type": "string",
+              "enum": [
+                "ES3",
+                "ES5",
+                "ES2015",
+                "ES2016",
+                "ES2017",
+                "ES2018",
+                "ES2019",
+                "ESNext",
+                "Latest"
+              ]
+            },
+            "moduleKind": {
+              "$comment": "Which kind of modules to use in the generated client.",
+              "type": "string",
+              "enum": ["CommonJS", "AMD", "UMD", "System", "ES2015", "ESNext"]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "language": {
+              "$comment": "Which language to use when generating clients.",
+              "type": "string",
+              "enum": ["typescript"]
             }
           }
         },

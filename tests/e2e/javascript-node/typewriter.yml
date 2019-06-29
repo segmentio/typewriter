@@ -8,8 +8,8 @@ tokenCommand: aws-okta exec dev-privileged -- chamber export typewriter | jq -r 
 client:
   sdk: analytics-node
   language: javascript
-  moduleTarget: es5
-  scriptTarget: es5
+  moduleTarget: CommonJS
+  scriptTarget: ES5
 
 trackingPlans:
   # Tracking Plan: Typewriter E2E Tracking Plan

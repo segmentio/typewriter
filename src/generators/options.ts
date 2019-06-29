@@ -1,5 +1,3 @@
-import { ScriptTarget, ModuleKind } from 'typescript'
-
 // Which Segment SDK to generate for.
 export enum SDK {
 	WEB = 'analytics.js',
@@ -18,8 +16,17 @@ export interface JavaScriptOptions {
 	sdk: SDK.WEB | SDK.NODE
 	language: Language.JAVASCRIPT
 	// JavaScript transpilation settings:
-	scriptTarget?: ScriptTarget
-	moduleTarget?: ModuleKind
+	scriptTarget?:
+		| 'ES3'
+		| 'ES5'
+		| 'ES2015'
+		| 'ES2016'
+		| 'ES2017'
+		| 'ES2018'
+		| 'ES2019'
+		| 'ESNext'
+		| 'Latest'
+	moduleTarget?: 'CommonJS' | 'AMD' | 'UMD' | 'System' | 'ES2015' | 'ESNext'
 }
 
 export interface TypeScriptOptions {

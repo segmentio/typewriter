@@ -11,6 +11,9 @@ update:
 	@yarn dev --config=tests/e2e/javascript-node update
 	@yarn dev --config=tests/e2e/typescript-node update
 	@yarn dev --config=tests/e2e/ios update
+	@# Changes to the Tracking Plan JSON files will need to be run through our
+	@# linter again to reduce git deltas.
+	@git add -A && yarn precommit
 
 # e2e: launches our end-to-end test for each client library. 
 .PHONY: e2e
