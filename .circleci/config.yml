@@ -75,6 +75,14 @@ jobs:
       - attach_workspace: { at: . }
       - run: make test-typescript-node
 
+  test-web-typescript:
+    docker:
+      - image: circleci/node:10.15
+      - image: segment/snapshotter:v0.0.1
+    steps:
+      - attach_workspace: { at: . }
+      - run: make test-web-typescript
+
   test-ios:
     macos:
       xcode: "10.2.1"
@@ -118,6 +126,8 @@ workflows:
       - test-javascript-node:
           requires: [setup]
       - test-typescript-node:
+          requires: [setup]
+      - test-web-typescript:
           requires: [setup]
       - test-ios:
           requires: [setup]

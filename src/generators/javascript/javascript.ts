@@ -38,6 +38,9 @@ interface TrackCall {
 	type: string
 	// The raw JSON Schema for the event.
 	rawJSONSchema: string
+	// The properties field is only optional in analytics.js environments where
+	// no properties are required.
+	isPropertiesOptional: boolean
 	// The interface representing the properties parameter. Used only for JSDoc generation
 	// and therefore only set in JavaScript environments.
 	interface?: TSInterface
@@ -207,7 +210,10 @@ function getContext(trackingPlan: TrackingPlan, options: GenOptions): TemplateCo
 
 	for (var { raw, schema } of trackingPlan.trackCalls) {
 		// Recursively generate all types, into the context, for the schema.
-		const rootType = getTypeForSchema(getPropertiesSchema(schema), context, namer)
+		const properties = getPropertiesSchema(schema)
+		const rootType = getTypeForSchema(properties, context, namer)
+
+		const hasRequiredRootProperties = properties.properties.some(p => !!p.isRequired)
 
 		context.tracks.push({
 			functionName: namer.register(schema.name, 'function', { transform: camelCase }),
@@ -215,6 +221,7 @@ function getContext(trackingPlan: TrackingPlan, options: GenOptions): TemplateCo
 			description: schema.description,
 			type: rootType.type,
 			rawJSONSchema: JSON.stringify(raw, undefined, '\t'),
+			isPropertiesOptional: options.client.sdk === SDK.WEB && !hasRequiredRootProperties,
 			interface:
 				rootType.interface && options.client.language === Language.JAVASCRIPT
 					? {

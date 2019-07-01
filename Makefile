@@ -10,6 +10,7 @@ update:
 	@yarn dev --config=example update
 	@yarn dev --config=tests/e2e/javascript-node update
 	@yarn dev --config=tests/e2e/typescript-node update
+	@yarn dev --config=tests/e2e/web-typescript update
 	@yarn dev --config=tests/e2e/ios update
 	@# Changes to the Tracking Plan JSON files will need to be run through our
 	@# linter again to reduce git deltas.
@@ -29,6 +30,9 @@ e2e:
 
 	@### TypeScript node
 	@make test-typescript-node
+
+	@### TypeScript web
+	@make test-web-typescript
 
 	@### JavaScript browser
 	@# TODO
@@ -98,9 +102,29 @@ test-typescript-node:
 		yarn run -s dev --config=./tests/e2e/typescript-node prod && \
 		cd tests/e2e/typescript-node && \
 		yarn && \
-		NODE_ENV=test yarn run -s test && \
+		yarn run -s test && \
 		cd ../../.. && \
 		SDK=analytics-node LANGUAGE=typescript IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
+
+.PHONY: test-web-typescript
+test-web-typescript:
+	@echo "\n>>>	🏃 Running TypeScript analytics.js client test suite...\n"
+	@make clear-snapshotter && \
+		yarn run -s dev --config=./tests/e2e/web-typescript && \
+		cd tests/e2e/web-typescript && \
+		yarn && \
+		yarn run -s build && \
+		NODE_ENV=test yarn run -s test && \
+		cd ../../.. && \
+		SDK=analytics.js LANGUAGE=typescript IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
+	@make clear-snapshotter && \
+		yarn run -s dev --config=./tests/e2e/web-typescript prod && \
+		cd tests/e2e/web-typescript && \
+		yarn && \
+		yarn run -s build && \
+		yarn run -s test && \
+		cd ../../.. && \
+		SDK=analytics.js LANGUAGE=typescript IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
 
 # We split up test-ios in order for CI to cache the setup step.
 .PHONY: test-ios

@@ -71,6 +71,7 @@ export const defaultValidationErrorHandler: ViolationHandler = (message, violati
 		errors: violations,
 	}, undefined, 2)
 
+	{{!-- TODO: does NODE_ENV make sense in analytics.js? Is there a different "default" behavior we should use? --}}
 	if (process.env.NODE_ENV === 'test') {
 		throw new Error(msg)
 	}
@@ -170,7 +171,7 @@ function withTypewriterContext{{#unless isBrowser}}<P, T extends Segment.TrackMe
 {{/if}}
 {{#if ../isBrowser}}
 export function {{functionName}}(
-	props: {{type}},
+	props{{#if isPropertiesOptional}}?{{/if}}: {{type}},
 	options?: Segment.Options,
 	callback?: Segment.Callback
 ): void {

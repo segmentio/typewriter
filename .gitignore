@@ -82,3 +82,11 @@ example/analytics/*
 # E2E Test Typewriter clients
 tests/e2e/**/analytics/*
 !tests/e2e/**/analytics/plan.json
+
+# Cypress auto-generates these folders on every run.
+# We don't use them, so we don't need them in git.
+tests/e2e/**/cypress/fixtures/**
+tests/e2e/**/cypress/plugins/**
+tests/e2e/**/cypress/support/**
+tests/e2e/**/cypress/videos/**
+
