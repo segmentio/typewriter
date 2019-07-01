@@ -77,7 +77,7 @@ jobs:
 
   test-web-typescript:
     docker:
-      - image: circleci/node:10.15
+      - image: cypress/browsers:chrome69
       - image: segment/snapshotter:v0.0.1
     steps:
       - attach_workspace: { at: . }
