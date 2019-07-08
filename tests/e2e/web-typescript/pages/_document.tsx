@@ -7,8 +7,9 @@ export default class SSRDoc extends Document {
 		// Generate and inject the Segment analytics.js snippet.
 		const snippetFn = process.env.NODE_ENV === 'production' ? snippet.min : snippet.max
 
-		// We redirect the CDN request for analytics.js through the sidecar
-		// (https://github.com/segmentio/snippet/blob/564a594e5284ae6469bb4e864cabde66ce7f0c1b/template/snippet.js#L67),
+		// For testing purposes, we redirect the CDN request for analytics.js
+		// through the sidecar:
+		// https://github.com/segmentio/snippet/blob/564a594e5284ae6469bb4e864cabde66ce7f0c1b/template/snippet.js#L67
 		// where the sidecar will mutate the analytics.js script to forward
 		// requests to the sidecar (by replacing https://api.segment.io links
 		// with http://localhost:8765). This avoids the need to configure SSL
