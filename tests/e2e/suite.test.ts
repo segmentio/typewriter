@@ -16,6 +16,49 @@ const sdk: SDK = process.env.SDK as SDK
 const language: Language = process.env.LANGUAGE as Language
 const isDevelopment: boolean = process.env.IS_DEVELOPMENT === 'true'
 
+// Some clients don't support the full standard test suite, for various reasons.
+// We document those reasons below and skip the associated tests in the suite.
+const allFeatures = {
+	SUPPORTS_DEFAULT_ANALYTICS_INSTANCE: true,
+	SUPPORTS_UNIONS: true,
+	SUPPORTS_RUNTIME_VALIDATION: true,
+	DEFAULT_VIOLATION_HANDLER_THROWS_DURING_TESTS: true,
+}
+const perClientFeatures: Record<SDK, Partial<Record<Language, Partial<typeof allFeatures>>>> = {
+	[SDK.WEB]: {
+		// In analytics.js, we can't throw because there is no standard means
+		// of determining if we are currently running tests.
+		[Language.JAVASCRIPT]: {
+			DEFAULT_VIOLATION_HANDLER_THROWS_DURING_TESTS: false,
+		},
+		[Language.TYPESCRIPT]: {
+			DEFAULT_VIOLATION_HANDLER_THROWS_DURING_TESTS: false,
+		},
+	},
+	[SDK.NODE]: {
+		// The analytics-node SDK requires users to initialize an instance
+		// before making any calls, unlike analytics.js/-android/-ios.
+		[Language.JAVASCRIPT]: {
+			SUPPORTS_DEFAULT_ANALYTICS_INSTANCE: false,
+		},
+		[Language.TYPESCRIPT]: {
+			SUPPORTS_DEFAULT_ANALYTICS_INSTANCE: false,
+		},
+	},
+	[SDK.IOS]: {
+		// We have not yet added support for unions or run-time validation to the iOS client.
+		[Language.OBJECTIVE_C]: {
+			SUPPORTS_UNIONS: false,
+			SUPPORTS_RUNTIME_VALIDATION: false,
+			DEFAULT_VIOLATION_HANDLER_THROWS_DURING_TESTS: false,
+		},
+	},
+}
+const features = {
+	...allFeatures,
+	...perClientFeatures[sdk][language],
+}
+
 describe(`sdk:${sdk}`, () => {
 	describe(`language:${language}`, () => {
 		describe(`env:${isDevelopment ? 'development' : 'production'}`, () => {
@@ -41,7 +84,7 @@ describe(`sdk:${sdk}`, () => {
 			// For clients where a shared analytics instance (window.analytics, sharedAnalytics, etc)
 			// is not available, we should throw an error on an attempted analytics call if the user
 			// has not yet provided an analytics instance.
-			if (sdk === SDK.NODE)
+			if (!features.SUPPORTS_DEFAULT_ANALYTICS_INSTANCE)
 				test('a missing analytics instance triggers an error', () => {
 					expect('Analytics Instance Missing Threw Error').toHaveBeenReceived()
 				})
@@ -180,7 +223,7 @@ describe(`sdk:${sdk}`, () => {
 				})
 			})
 
-			if (sdk !== SDK.IOS) {
+			if (features.SUPPORTS_UNIONS) {
 				test('sends an event with unions', () => {
 					expect('Union Type').toHaveBeenReceivedMultipleTimes([
 						{
@@ -196,13 +239,14 @@ describe(`sdk:${sdk}`, () => {
 				})
 			}
 
-			if (sdk !== SDK.IOS) {
+			if (features.SUPPORTS_RUNTIME_VALIDATION) {
 				// In development mode, we run full JSON Schema validation on payloads and
 				// surface any JSON Schema violations to a configurable handler.
 				if (isDevelopment) {
-					// In analytics.js, we don't throw in development mode, because there is
-					// no standard means of determining if we are running tests.
-					if (sdk !== SDK.WEB) {
+					// TODO: if the default violation handler does not throw, then we can't
+					// detect if it was fired. Maybe look into validating the log output?
+					// Probably too much work.
+					if (features.DEFAULT_VIOLATION_HANDLER_THROWS_DURING_TESTS) {
 						test('the default violation handler is called upon a violation', () => {
 							expect('Default Violation Handler Called').toHaveBeenReceived()
 						})
@@ -223,10 +267,10 @@ describe(`sdk:${sdk}`, () => {
 			}
 
 			// TODO: can we add tests to validate the behavior of the default violation handler
-			// in test mode (NODE_ENV!=test)?
+			// outside of test mode (NODE_ENV!=test)?
 
 			// TODO: add a test that verifies that descriptions (and long descriptions?) are handled
-			// correctly in the generated output
+			// correctly in the generated output. Possibly we should just use snapshot testing?
 
 			// TODO: Test for unknown methods in dynamic languages (so just JS for now)
 
