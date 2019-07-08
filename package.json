@@ -18,7 +18,9 @@
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "precommit": "lint-staged",
     "release": "yarn run build && np",
-    "prerelease": "yarn run build && np prerelease --any-branch --tag next --no-release-draft"
+    "prerelease": "yarn run build && np prerelease --any-branch --tag next --no-release-draft",
+    "snyk-protect": "snyk protect",
+    "prepare": "yarn run snyk-protect"
   },
   "engines": {
     "node": ">=0.10.15"
@@ -67,7 +69,8 @@
     "react": "^16.8.6",
     "sort-keys": "^3.0.0",
     "typescript": "^3.4.5",
-    "yargs": "^13.2.2"
+    "yargs": "^13.2.2",
+    "snyk": "^1.105.0"
   },
   "files": [
     "dist/**/*"
@@ -151,5 +154,6 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
-  }
+  },
+  "snyk": true
 }
