@@ -197,12 +197,16 @@ describe(`sdk:${sdk}`, () => {
 			}
 
 			if (sdk !== SDK.IOS) {
+				// In development mode, we run full JSON Schema validation on payloads and
+				// surface any JSON Schema violations to a configurable handler.
 				if (isDevelopment) {
-					// In development mode, we run full JSON Schema validation on payloads and
-					// surface any JSON Schema violations to a configurable handler.
-					test('the default violation handler is called upon a violation', () => {
-						expect('Default Violation Handler Called').toHaveBeenReceived()
-					})
+					// In analytics.js, we don't throw in development mode, because there is
+					// no standard means of determining if we are running tests.
+					if (sdk !== SDK.WEB) {
+						test('the default violation handler is called upon a violation', () => {
+							expect('Default Violation Handler Called').toHaveBeenReceived()
+						})
+					}
 					test('when set, a custom violation handler is called upon a violation', () => {
 						expect('Custom Violation Handler Called').toHaveBeenReceived()
 					})

@@ -71,10 +71,11 @@ export const defaultValidationErrorHandler: ViolationHandler = (message, violati
 		errors: violations,
 	}, undefined, 2)
 
-	{{!-- TODO: does NODE_ENV make sense in analytics.js? Is there a different "default" behavior we should use? --}}
+	{{#unless isBrowser}}
 	if (process.env.NODE_ENV === 'test') {
 		throw new Error(msg)
 	}
+	{{/unless}}
 	console.error(msg)
 
 	return false

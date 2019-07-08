@@ -20,13 +20,10 @@ import {
 	propertyObjectNameCollision2,
 	simpleArrayTypes,
 	unionType,
-	defaultViolationHandlerCalled,
 	customViolationHandler,
 	customViolationHandlerCalled,
 	propertySanitized,
 } from '../analytics'
-
-// const SIDECAR_ADDRESS = 'localhost:8443/v1'
 
 export default class HomePage extends React.Component {
 	public componentDidMount() {
@@ -174,25 +171,11 @@ export default class HomePage extends React.Component {
 			universe_name: null,
 		})
 
-		try {
-			// This will trigger the Violation handler, iff running in development mode
-			// because the regex will not match.
-			defaultViolationHandler({
-				'regex property': 'Not a Real Morty',
-			})
-		} catch (error) {
-			// Validate that the default handler was called.
-			if (
-				!(error instanceof Error) ||
-				!JSON.parse(error.toString()).description.startsWith(
-					'You made an analytics call (Violation Handler Test)'
-				)
-			) {
-				throw error
-			}
-
-			defaultViolationHandlerCalled()
-		}
+		// This will trigger the default Violation handler, because the regex will not match.
+		// In analytics.js, this just logs instead of throwing.
+		defaultViolationHandler({
+			'regex property': 'Not a Real Morty',
+		})
 
 		// Register a custom onViolation handler.
 		setTypewriterOptions({
