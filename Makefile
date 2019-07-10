@@ -1,7 +1,6 @@
-SDK ?= "iphonesimulator"
 DESTINATION ?= "platform=iOS Simulator,name=iPhone X"
-PROJECT := TypewriterExample
-XC_ARGS := -workspace $(PROJECT).xcworkspace -scheme $(PROJECT) -destination $(DESTINATION)
+XC_OBJECTIVE_C_ARGS := -workspace TypewriterExample.xcworkspace -scheme TypewriterExample -destination $(DESTINATION)
+XC_SWIFT_ARGS := -workspace TypewriterSwiftExample.xcworkspace -scheme TypewriterSwiftExample -destination $(DESTINATION)
 
 # update: updates typewriter and all e2e tests to use the latest Tracking Plans.
 .PHONY: update
@@ -138,14 +137,38 @@ setup-ios-tests:
 
 .PHONY: run-ios-tests
 run-ios-tests:
-	@echo "\n>>>	🏃 Running iOS client test suite...\n"
+	@echo "\n>>>	🏃 Running iOS Objective-C client test suite...\n"
 	@make clear-snapshotter && \
 		yarn run -s dev --config=./tests/e2e/ios && \
 		cd tests/e2e/ios && \
-		set -o pipefail && xcodebuild test $(XC_ARGS) | xcpretty && \
+		set -o pipefail && xcodebuild test $(XC_OBJECTIVE_C_ARGS) | xcpretty && \
 		SDK=analytics-ios LANGUAGE=objective-c IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
 	@make clear-snapshotter && \
 		yarn run -s dev --config=./tests/e2e/ios prod && \
 		cd tests/e2e/ios && \
-		set -o pipefail && xcodebuild test $(XC_ARGS) | xcpretty && \
+		set -o pipefail && xcodebuild test $(XC_OBJECTIVE_C_ARGS) | xcpretty && \
 		SDK=analytics-ios LANGUAGE=objective-c IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
+
+# We split up test-ios in order for CI to cache the setup step.
+.PHONY: test-ios-swift
+test-ios-swift: setup-ios-swift-tests run-ios-swift-tests
+
+.PHONY: setup-ios-swift-tests
+setup-ios-swift-tests:
+	@# TODO: verify that xcodebuild and xcpretty are available
+	@cd tests/e2e/ios-swift && \
+		pod install
+
+.PHONY: run-ios-swift-tests
+run-ios-swift-tests:
+	@echo "\n>>>	🏃 Running iOS Swift client test suite...\n"
+	@make clear-snapshotter && \
+		yarn run -s dev --config=./tests/e2e/ios-swift && \
+		cd tests/e2e/ios-swift && \
+		set -o pipefail && xcodebuild test $(XC_SWIFT_ARGS) | xcpretty && \
+		SDK=analytics-ios LANGUAGE=swift IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
+	@make clear-snapshotter && \
+		yarn run -s dev --config=./tests/e2e/ios-swift prod && \
+		cd tests/e2e/ios-swift && \
+		set -o pipefail && xcodebuild test $(XC_SWIFT_ARGS) | xcpretty && \
+		SDK=analytics-ios LANGUAGE=swift IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts

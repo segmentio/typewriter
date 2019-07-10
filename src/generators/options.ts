@@ -10,6 +10,7 @@ export enum Language {
 	JAVASCRIPT = 'javascript',
 	TYPESCRIPT = 'typescript',
 	OBJECTIVE_C = 'objective-c',
+	SWIFT = 'swift',
 }
 
 export interface JavaScriptOptions {
@@ -39,4 +40,9 @@ export interface ObjectiveCOptions {
 	language: Language.OBJECTIVE_C
 }
 
-export type Options = JavaScriptOptions | TypeScriptOptions | ObjectiveCOptions
+export interface SwiftOptions {
+	sdk: SDK.IOS
+	language: Language.SWIFT
+}
+
+export type Options = JavaScriptOptions | TypeScriptOptions | ObjectiveCOptions | SwiftOptions

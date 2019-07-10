@@ -1,0 +1,15 @@
+# Segment Typewriter Configuration (https://github.com/segmentio/typewriter)
+# Just run `npx typewriter@next` to re-generate a client with the latest versions of these events.
+
+# You can find more documentation on configuring this client in the Segment docs.
+# See: https://segment.com/docs/typewriter/swift
+client:
+  sdk: analytics-ios
+  language: swift
+
+trackingPlans:
+  # Tracking Plan: Typewriter E2E Testing Tracking Plan
+  # https://app.segment.com/segment_prod/protocols/tracking-plans/rs_1N9oTnc5O8cv1peY65iXsSPnzGP
+  - id: rs_1N9oTnc5O8cv1peY65iXsSPnzGP
+    workspaceSlug: segment_prod
+    path: ./TypewriterSwiftExample/Analytics

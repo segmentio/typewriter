@@ -53,17 +53,7 @@
             "language": {
               "$comment": "Which language to use when generating clients.",
               "type": "string",
-              "enum": ["typescript"]
-            }
-          }
-        },
-        {
-          "type": "object",
-          "properties": {
-            "language": {
-              "$comment": "Which language to use when generating clients.",
-              "type": "string",
-              "enum": ["objective-c"]
+              "enum": ["typescript", "objective-c", "swift"]
             }
           }
         }

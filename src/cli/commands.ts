@@ -67,44 +67,35 @@ export async function init(args: Arguments) {
 	}
 
 	// Set the config.client.language value, depending on the SDK option selected.
-	// We skip the language select if there is only one language option for the selected SDK.
-	// For now, that means we'll only show it for our JavaScript clients.
-	let language = undefined
-	if (['analytics.js', 'analytics-node'].includes(sdk)) {
-		const javascriptLanguageChoices = [
+	const languageChoices = []
+	let defaultChoice = undefined
+	if (sdk === SDK.WEB || sdk === SDK.NODE) {
+		languageChoices.push(
 			{ title: 'JavaScript', value: 'javascript' },
-			{ title: 'TypeScript', value: 'typescript' },
-		]
-		const defaultJavaScriptLanguage =
-			currentConfig &&
-			javascriptLanguageChoices.findIndex(({ value }) => value === currentConfig.client.language)
-
-		const response = await prompts(
-			{
-				type: 'select',
-				message: 'What language should the Typewriter client be generated in?',
-				name: 'language',
-				choices: javascriptLanguageChoices,
-				initial: defaultJavaScriptLanguage,
-			},
-			promptOptions
+			{ title: 'TypeScript', value: 'typescript' }
 		)
-		if (hasExited) {
-			return
-		}
-		language = response.language
+	} else if (sdk === SDK.IOS) {
+		languageChoices.push(
+			{ title: 'Swift', value: 'swift' },
+			{ title: 'Objective-C', value: 'objective-c' }
+		)
 	}
+	defaultChoice =
+		currentConfig &&
+		languageChoices.findIndex(({ value }) => value === currentConfig.client.language)
 
-	// If there is only one language option, we will have skipped the language select,
-	// so we'll need to default to the sole language option for the selected SDK.
-	if (!language) {
-		if (sdk === SDK.IOS) {
-			language = Language.OBJECTIVE_C
-		} else {
-			// Unreachable, unless we add support for new SDKs but forget to update
-			// the language select.
-			throw new Error('No language selected.')
-		}
+	const { language } = await prompts(
+		{
+			type: 'select',
+			message: 'What language should the Typewriter client be generated in?',
+			name: 'language',
+			choices: languageChoices,
+			initial: defaultChoice,
+		},
+		promptOptions
+	)
+	if (hasExited) {
+		return
 	}
 
 	// Request a path to write this Tracking Plan's client into.

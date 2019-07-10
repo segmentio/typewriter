@@ -1,0 +1,11 @@
+target 'TypewriterSwiftExample' do
+  use_frameworks!
+
+  pod "Analytics", "3.6.9"
+  platform :ios, "12.2"
+
+  target 'TypewriterSwiftExampleTests' do
+    inherit! :search_paths
+  end
+
+end
