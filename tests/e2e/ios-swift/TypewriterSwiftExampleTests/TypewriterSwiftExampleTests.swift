@@ -13,14 +13,14 @@ class TypewriterSwiftExampleTests: XCTestCase {
     func testExample() {
         SEGTypewriterAnalytics.emptyEvent()
         
-        SEGTypewriterAnalytics.everyRequiredType(withRequiredArray: [137, "C-137"], requiredBoolean: false, requiredInt: 97, requiredNumber: 3.14, requiredObject: [:], requiredString: "Alpha-Betrium", requiredStringWithRegex: "Lawyer Morty", requiredAny: "Rick Sanchez")
+        SEGTypewriterAnalytics.everyRequiredType(withRequiredAny: "Rick Sanchez", requiredArray: [137, "C-137"], requiredBoolean: false, requiredInt: 97, requiredNumber: 3.14, requiredObject: [:], requiredString: "Alpha-Betrium", requiredStringWithRegex:  "Lawyer Morty")
         
-        SEGTypewriterAnalytics.everyOptionalType(withOptionalInt: nil, optionalNumber: nil, optionalObject: nil, optionalString: nil, optionalStringWithRegex: nil, optionalAny: nil, optionalArray: nil, optionalBoolean: nil)
+        SEGTypewriterAnalytics.everyOptionalType(withOptionalAny: nil, optionalArray: nil, optionalBoolean: nil, optionalInt: nil, optionalNumber: nil, optionalObject: nil, optionalString: nil, optionalStringWithRegex: nil)
         
         // The bridging process borked the "required string with regex" field below.
-        SEGTypewriterAnalytics.everyNullableRequiredTypeWithRequiredString(withRegex: nil, requiredAny: nil, requiredArray: nil, requiredBoolean: nil, requiredInt: nil, requiredNumber: nil, requiredObject: nil, requiredString: nil)
+        SEGTypewriterAnalytics.everyNullableRequiredType(withRequiredAny: nil, requiredArray: nil, requiredBoolean: nil, requiredInt: nil, requiredNumber: nil, requiredObject: nil, requiredString: nil, requiredStringWithRegex: nil)
         
-        SEGTypewriterAnalytics.everyNullableOptionalType(withOptionalString: nil, optionalStringWithRegex: nil, optionalAny: nil, optionalArray: nil, optionalBoolean: nil, optionalInt: nil, optionalNumber: nil, optionalObject: nil)
+        SEGTypewriterAnalytics.everyNullableOptionalType(withOptionalAny: nil, optionalArray: nil, optionalBoolean: nil, optionalInt: nil, optionalNumber: nil, optionalObject: nil, optionalString: nil, optionalStringWithRegex: nil)
         
         SEGTypewriterAnalytics.i42TerribleEventName3()
         
@@ -42,7 +42,7 @@ class TypewriterSwiftExampleTests: XCTestCase {
             SEGOccupantsItem1.initWithName("Thomas Lipkip"),
         ]))
         
-        SEGTypewriterAnalytics.simpleArrayTypes(withNumber: [3.14], object: [SEGObjectItem.initWithName("Beth Smith")], string: ["Alpha-Betrium"], any: [137, "C-137"], boolean: [true, false], integer: [3.14], nullable_: nil)
+        SEGTypewriterAnalytics.simpleArrayTypes(withAny: [127, "C-137"], boolean: [true, false], integer: [3.14], nullable_: nil, number: [3.14], object: [SEGObjectItem.initWithName("Beth Smith")], string: ["Alpha-Betrium"])
         
         SEGTypewriterAnalytics.nestedObjects(with: SEGGarage.initWith(SEGTunnel.initWith(SEGSubterraneanLab.initWithJerrysMemories([], mortysMemories: [], summersContingencyPlan: "Oh, man, it's a scenario four."))))
         

@@ -14,6 +14,9 @@
 		430293E722D5A7640029A05D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 430293E522D5A7640029A05D /* LaunchScreen.storyboard */; };
 		430293F222D5A7650029A05D /* TypewriterSwiftExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430293F122D5A7650029A05D /* TypewriterSwiftExampleTests.swift */; };
 		439E4F7C22D63E4E00AD0B8E /* Analytics in Resources */ = {isa = PBXBuildFile; fileRef = 439E4F7B22D63E4E00AD0B8E /* Analytics */; };
+		43A2B2EC22E2A83600CE1BDA /* Analytics in Resources */ = {isa = PBXBuildFile; fileRef = 439E4F7B22D63E4E00AD0B8E /* Analytics */; };
+		57F6B112497BAF790349772B /* Pods_TypewriterSwiftExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20800A0272E9E354FFED335A /* Pods_TypewriterSwiftExampleTests.framework */; };
+		61F35AA1863F08EAD82D5344 /* Pods_TypewriterSwiftExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C36E1C93CB6886F486D05D24 /* Pods_TypewriterSwiftExample.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		20800A0272E9E354FFED335A /* Pods_TypewriterSwiftExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TypewriterSwiftExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3728722EE149734B0B5D3C14 /* Pods-TypewriterSwiftExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TypewriterSwiftExample.debug.xcconfig"; path = "Target Support Files/Pods-TypewriterSwiftExample/Pods-TypewriterSwiftExample.debug.xcconfig"; sourceTree = "<group>"; };
 		430293D922D5A7640029A05D /* TypewriterSwiftExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TypewriterSwiftExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		430293DC22D5A7640029A05D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -42,6 +46,7 @@
 		43AAA3E622D64138001E9C1B /* TypewriterSwiftExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TypewriterSwiftExample-Bridging-Header.h"; sourceTree = "<group>"; };
 		A697B27DCCCD1525F67DD71B /* Pods-TypewriterSwiftExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TypewriterSwiftExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-TypewriterSwiftExampleTests/Pods-TypewriterSwiftExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		AC0E8B7316FF43D5AECE5F3B /* Pods-TypewriterSwiftExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TypewriterSwiftExampleTests.release.xcconfig"; path = "Target Support Files/Pods-TypewriterSwiftExampleTests/Pods-TypewriterSwiftExampleTests.release.xcconfig"; sourceTree = "<group>"; };
+		C36E1C93CB6886F486D05D24 /* Pods_TypewriterSwiftExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TypewriterSwiftExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE8EA274336B1B50F6F0053F /* Pods-TypewriterSwiftExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TypewriterSwiftExample.release.xcconfig"; path = "Target Support Files/Pods-TypewriterSwiftExample/Pods-TypewriterSwiftExample.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -50,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61F35AA1863F08EAD82D5344 /* Pods_TypewriterSwiftExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57F6B112497BAF790349772B /* Pods_TypewriterSwiftExampleTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,6 +77,7 @@
 				430293F022D5A7650029A05D /* TypewriterSwiftExampleTests */,
 				430293DA22D5A7640029A05D /* Products */,
 				53CE29137994347DB8178B9C /* Pods */,
+				945ACBE18E5A012DF4A7F918 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -115,6 +123,15 @@
 				AC0E8B7316FF43D5AECE5F3B /* Pods-TypewriterSwiftExampleTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		945ACBE18E5A012DF4A7F918 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C36E1C93CB6886F486D05D24 /* Pods_TypewriterSwiftExample.framework */,
+				20800A0272E9E354FFED335A /* Pods_TypewriterSwiftExampleTests.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,6 +229,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43A2B2EC22E2A83600CE1BDA /* Analytics in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,7 +508,7 @@
 			baseConfigurationReference = A697B27DCCCD1525F67DD71B /* Pods-TypewriterSwiftExampleTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TypewriterSwiftExample.app/TypewriterSwiftExample";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 33QFCS9J52;
 				INFOPLIST_FILE = TypewriterSwiftExampleTests/Info.plist;
@@ -501,6 +519,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.segment.TypewriterSwiftExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PROJECT_NAME)/TypewriterSwiftExample-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TypewriterSwiftExample.app/TypewriterSwiftExample";
@@ -512,7 +531,7 @@
 			baseConfigurationReference = AC0E8B7316FF43D5AECE5F3B /* Pods-TypewriterSwiftExampleTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TypewriterSwiftExample.app/TypewriterSwiftExample";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 33QFCS9J52;
 				INFOPLIST_FILE = TypewriterSwiftExampleTests/Info.plist;
@@ -523,6 +542,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.segment.TypewriterSwiftExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PROJECT_NAME)/TypewriterSwiftExample-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TypewriterSwiftExample.app/TypewriterSwiftExample";
