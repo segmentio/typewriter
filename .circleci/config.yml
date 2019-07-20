@@ -105,7 +105,6 @@ jobs:
             yarn
             yarn dev &
             cd ..
-            ls
             sleep 5
             make test-ios
 

@@ -83,41 +83,6 @@ export async function isValidToken(token: string): Promise<boolean> {
 	}
 }
 
-export async function generateToken(options: {
-	workspaceSlug: string
-	email: string
-	password: string
-}): Promise<string> {
-	const basicAuthToken = Buffer.from(`${options.email.trim()}:${options.password.trim()}`).toString(
-		'base64'
-	)
-
-	const { token } = (await fetch('https://platform.segmentapis.com/v1beta/access-tokens', {
-		method: 'post',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Basic ${basicAuthToken}`,
-		},
-		body: JSON.stringify({
-			// eslint-disable-next-line @typescript-eslint/camelcase
-			access_token: {
-				description: 'Automatically Generated Typewriter Token',
-				scopes: 'workspace:read',
-				// eslint-disable-next-line @typescript-eslint/camelcase
-				workspace_names: [`workspaces/${options.workspaceSlug}`],
-			},
-		}),
-	}).then(res => {
-		if (res.ok) {
-			return res.json()
-		} else {
-			throw new Error(`Error fetching API Token from Segment API: ${res.status} ${res.statusText}`)
-		}
-	})) as SegmentAPI.CreateAccessTokenResponse
-
-	return token
-}
-
 async function apiGet(url: string, token: string): Promise<object> {
 	return fetch(url, {
 		method: 'get',

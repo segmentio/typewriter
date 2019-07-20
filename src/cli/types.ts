@@ -64,13 +64,4 @@ export namespace SegmentAPI {
 		id: string
 		create_time: Date
 	}
-
-	export interface CreateAccessTokenResponse {
-		name: string
-		description: string
-		scopes: string
-		create_time: Date
-		token: string
-		workspace_names: string[]
-	}
 }

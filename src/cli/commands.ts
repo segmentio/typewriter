@@ -10,13 +10,7 @@ import {
 import { JSONSchema7 } from 'json-schema'
 import * as fs from 'fs'
 import { promisify } from 'util'
-import {
-	fetchTrackingPlan,
-	fetchWorkspaces,
-	isValidToken,
-	generateToken,
-	fetchAllTrackingPlans,
-} from './api'
+import { fetchTrackingPlan, fetchWorkspaces, isValidToken, fetchAllTrackingPlans } from './api'
 import prompts from 'prompts'
 import { Arguments, Config } from './types'
 import { writeTrackingPlan, loadTrackingPlan } from './trackingplans'
@@ -118,74 +112,20 @@ export async function init(args: Arguments) {
 	// Fetch a Segment API Token, of one isn't already available.
 	let token = await getToken(currentConfig)
 	if (!token) {
-		const { tokenProvider } = await prompts(
+		// Let a user paste in a copied token.
+		const { providedToken } = await prompts(
 			{
-				type: 'select',
-				message: 'How do you want to provide a Segment API Token?',
-				name: 'tokenProvider',
-				choices: [
-					{ title: 'Generate a new token', value: 'generate' },
-					{ title: 'Enter a token', value: 'type' },
-				],
+				type: 'password',
+				message: 'Enter a Segment API Token:',
+				name: 'providedToken',
+				min: 1,
 			},
 			promptOptions
 		)
 		if (hasExited) {
 			return
 		}
-
-		if (tokenProvider === 'type') {
-			// Let a user paste in a copied token.
-			const { providedToken } = await prompts(
-				{
-					type: 'password',
-					message: 'Enter a Segment API Token:',
-					name: 'providedToken',
-					min: 1,
-				},
-				promptOptions
-			)
-			if (hasExited) {
-				return
-			}
-
-			token = providedToken
-		} else if (tokenProvider === 'generate') {
-			// We'll generate a new Segment API token using the Tokens API.
-			// To do that, we'll need the user's credentials and a specific
-			// workspace to scope the token to.
-			const { workspaceSlug, email, password } = await prompts(
-				[
-					{
-						type: 'text',
-						message: 'What workspace slug should the token have read access to?',
-						name: 'workspaceSlug',
-					},
-					{
-						type: 'text',
-						message: 'What is your segment.com account email?',
-						name: 'email',
-					},
-					{
-						type: 'password',
-						message: 'What is your segment.com account password?',
-						name: 'password',
-					},
-				],
-				promptOptions
-			)
-			if (hasExited) {
-				return
-			}
-
-			token = await generateToken({
-				workspaceSlug: workspaceSlug,
-				email: email,
-				password,
-			})
-
-			console.log('Successfully generated a new Segment API token.')
-		}
+		token = providedToken
 
 		// Cache this token for future commands.
 		if (token) {
