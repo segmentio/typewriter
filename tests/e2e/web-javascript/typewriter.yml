@@ -1,0 +1,17 @@
+# Segment Typewriter Configuration (https://github.com/segmentio/typewriter)
+# Just run `npx typewriter@next` to re-generate a client with the latest versions of these events.
+
+tokenCommand: aws-okta exec dev-privileged -- chamber export typewriter | jq -r .typewriter_token
+
+# You can configure the options of this client's generator.
+# See: https://segment.com/docs/typewriter/javascript
+client:
+  sdk: analytics.js
+  language: javascript
+
+trackingPlans:
+  # Tracking Plan: Typewriter E2E Tracking Plan
+  # https://app.segment.com/segment_prod/protocols/tracking-plans/rs_1N9oTnc5O8cv1peY65iXsSPnzGP
+  - id: rs_1N9oTnc5O8cv1peY65iXsSPnzGP
+    workspaceSlug: segment_prod
+    path: ./analytics
