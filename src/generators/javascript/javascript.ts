@@ -41,6 +41,8 @@ interface TrackCall {
 	// The properties field is only optional in analytics.js environments where
 	// no properties are required.
 	isPropertiesOptional: boolean
+	// Whether or not this track call has either a) a description or b) JSDoc.
+	hasDocumentation: boolean
 	// The interface representing the properties parameter. Used only for JSDoc generation
 	// and therefore only set in JavaScript environments.
 	interface?: TSInterface
@@ -222,6 +224,8 @@ function getContext(trackingPlan: TrackingPlan, options: GenOptions): TemplateCo
 			type: rootType.type,
 			rawJSONSchema: JSON.stringify(raw, undefined, '\t'),
 			isPropertiesOptional: options.client.sdk === SDK.WEB && !hasRequiredRootProperties,
+			// We only generate JSDoc for JavaScript clients, however we always include a description if set.
+			hasDocumentation: !!schema.description || options.client.language === Language.JAVASCRIPT,
 			interface:
 				rootType.interface && options.client.language === Language.JAVASCRIPT
 					? {

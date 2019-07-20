@@ -158,11 +158,12 @@ function withTypewriterContext{{#unless isBrowser}}<P, T extends Segment.TrackMe
 }
 
 {{#each tracks}}
-{{#if description}}
+{{#if hasDocumentation}}
 /**
+ {{#if description}}
  * {{description}}
+ {{/if}}
  {{#if interface}}
- *
  * @param {object} props - The analytics properties that will be sent to Segment.
  {{#each interface.properties}}
  * @param {{type}} {{#unless isRequired}}[{{/unless}}props.{{name}}{{#unless isRequired}}]{{/unless}} - {{description}}
