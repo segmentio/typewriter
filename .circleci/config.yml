@@ -90,14 +90,6 @@ jobs:
       - attach_workspace: { at: . }
       - run: xcrun simctl list
       - run:
-          # TODO(colinking): open source segmentio/snapshotter so we can access it here.
-          name: Start the Snapshotter
-          command: |
-            git checkout git@github.com:segmentio/snapshotter.git
-            cd snapshotter
-            yarn
-            yarn dev
-      - run:
           name: Install build dependencies
           command: |
             sudo gem install xcpretty
@@ -105,7 +97,17 @@ jobs:
       - run:
           name: Fetch Cocoapods specs
           command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
-      - run: make test-ios
+      - run:
+          name: Run iOS Objective C Tests
+          command: |
+            git clone https://github.com/segmentio/mock.git
+            cd mock
+            yarn
+            yarn dev &
+            cd ..
+            ls
+            sleep 5
+            make test-ios
 
 workflows:
   version: 2
