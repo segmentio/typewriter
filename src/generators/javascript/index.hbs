@@ -14,7 +14,6 @@
 import Ajv from 'ajv'
 {{/if}}
 import * as Segment from './segment'
-/// <reference path="@types/segment-analytics/index.d.ts" />
 
 {{#each objects}}
 {{#if description}}
@@ -34,28 +33,6 @@ export interface {{name}} {
 }
 {{/each}}
 
-/** Options to customize the runtime behavior of a Typewriter client. */
-export interface TypewriterOptions {
-	/**
-	 * Underlying analytics instance where analytics calls are forwarded on to.
-	 {{#if isBrowser}}
-	 * Defaults to window.analytics.
-	 {{/if}}
-	 */
-	analytics{{#if isBrowser}}?{{/if}}: {{#if isBrowser}}SegmentAnalytics.AnalyticsJS{{else}}Segment.AnalyticsNode{{/if}}
-	/**
-	 * Handler fired when if an event does not match its spec. Returns a boolean
-	 * indicating if the message should still be sent to Segment. This handler
-	 * does not fire in production mode, because it requires inlining the full
-	 * JSON Schema spec.
-	 *
-	 * By default, it will throw errors if NODE_ENV = "test" so that tests will fail
-	 * if a message does not match the spec. Otherwise, errors will be logged to stderr.
-	 * Also by default, messages that generate Violations will be dropped.
-	 */
-	onViolation?: ViolationHandler
-}
-
 export type ViolationHandler = (
 	message: {{#if isBrowser}}Record<string, any>{{else}}Segment.TrackMessage<Record<string, any>>{{/if}},
 	{{!-- Swap the type definitions here so we don't want depend on ajv in production just for this type definition. --}}
@@ -63,6 +40,17 @@ export type ViolationHandler = (
 ) => boolean
 
 {{#if isDevelopment}}
+{{#if needsJSDoc}}
+/**
+ * The default handler that is fired if none is supplied with setTypewriterOptions.
+ {{#if isBrowser}}
+ * This handler will log a warning message to the console.
+ {{else}}
+ * If NODE_ENV="test", this handler will throw an error. Otherwise, it will log
+ * a warning message to the console.
+ {{/if}}
+ */
+{{/if}}
 export const defaultValidationErrorHandler: ViolationHandler = (message, violations) => {
 	const msg = JSON.stringify({
 		type: 'Typewriter JSON Schema Validation Error',
@@ -77,7 +65,7 @@ export const defaultValidationErrorHandler: ViolationHandler = (message, violati
 		throw new Error(msg)
 	}
 	{{/unless}}
-	console.error(msg)
+	console.warn(msg)
 
 	return false
 }
@@ -109,8 +97,47 @@ let analytics: () => ({{#if isBrowser}}SegmentAnalytics.AnalyticsJS{{else}}Segme
 	{{/if}}
 }
 
+/** Options to customize the runtime behavior of a Typewriter client. */
+export interface TypewriterOptions {
+	/**
+	 * Underlying analytics instance where analytics calls are forwarded on to.
+	 {{#if isBrowser}}
+	 * Defaults to window.analytics.
+	 {{/if}}
+	 */
+	analytics{{#if isBrowser}}?{{/if}}: {{#if isBrowser}}SegmentAnalytics.AnalyticsJS{{else}}Segment.AnalyticsNode{{/if}}
+	/**
+	 * Handler fired when if an event does not match its spec. Returns a boolean
+	 * indicating if the message should still be sent to Segment. This handler
+	 * does not fire in production mode, because it requires inlining the full
+	 * JSON Schema spec for each event in your Tracking Plan.
+	 *
+	 * By default, it will throw errors if NODE_ENV = "test" so that tests will fail
+	 * if a message does not match the spec. Otherwise, errors will be logged to stderr.
+	 * Also by default, messages that generate Violations will be dropped.
+	 */
+	onViolation?: ViolationHandler
+}
+
 /**
- * Update the run-time configuration of this Typewriter client.
+ * Updates the run-time configuration of this Typewriter client.
+ {{#unless isBrowser}}
+ * This function must be called with a configured analytics-node instance before firing
+ * any analytics calls, or else a `missingAnalyticsNodeError` error will be thrown.
+ {{/unless}}
+ {{#if needsJSDoc}}
+ *
+ * @param {TypewriterOptions} options - the options to upsert
+ *
+ * @typedef {Object} TypewriterOptions
+ * @property {{#if isBrowser}}{Segment.AnalyticsJS}{{else}}{Segment.AnalyticsNode}{{/if}} {{#if isBrowser}}[analytics]{{else}}analytics{{/if}} - Underlying analytics instance where analytics
+ * 		calls are forwarded on to.{{#if isBrowser}} Defaults to window.analytics.{{/if}}
+ * @property {Function} [onViolation] - Handler fired when if an event does not match its spec. Returns a boolean indicating
+ * 		if the message should still be sent to Segment. This handler does not fire in production mode, because it requires
+ * 		inlining the full JSON Schema spec for each event in your Tracking Plan. By default, it will throw errors if NODE_ENV
+ * 		= "test" so that tests will fail if a message does not match the spec. Otherwise, errors will be logged to stderr.
+ * 		Also by default, messages that generate Violations will be dropped.
+ {{/if}}
  */
 export function setTypewriterOptions(options: TypewriterOptions) {
 	analytics = options.analytics ? () => options.analytics{{#if isBrowser}} || window.analytics{{/if}} : analytics
@@ -158,21 +185,54 @@ function withTypewriterContext{{#unless isBrowser}}<P, T extends Segment.TrackMe
 	}
 }
 
+{{#if needsJSDoc}}
+{{#unless isBrowser}}
+/**
+ * A message payload for an analytics-node `.track()` call.
+ * See: https://segment.com/docs/spec/track/
+ *
+ * @typedef TrackMessage<PropertiesType>
+ * @property {string | number} userId - The ID for this user in your database.
+ * @property {string | number} [anonymousId] - An ID to associated with the user when you don’t know who they are.
+ * @property {PropertiesType} [properties] - A dictionary of properties for the event.
+ * @property {Date} [timestamp] - A Javascript date object representing when the track took place. If the track
+ * 		just happened, leave it out and we’ll use the server’s time. If you’re importing data from the past make
+ * 		sure you to send a timestamp.
+ * @template PropertiesType
+ */
+ {{/unless}}
+{{#each objects}}
+/**
+ {{#if description}}
+ * {{description}}
+ {{/if}}
+ * @typedef {{name}}
+ {{#each properties}}
+  {{!-- Note: this uses whitespace control to "escape" the outer curly braces. --}}
+	{{!-- Note: The backticks enable JSDoc to parse names with spaces (without resorting to square brackets). --}}
+ * @property { {{~type~}} } {{#if isRequired}}`{{name}}`{{else}}[{{name}}]{{/if}} - {{description}}
+ {{/each}}
+ */
+{{/each}}
+{{/if}}
+
 {{#each tracks}}
-{{#if hasDocumentation}}
+{{#if ../isBrowser}}
 /**
  {{#if functionDescription}}
  * {{functionDescription}}
+ {{else}}
+ * Fires a '{{rawEventName}}' track call.
  {{/if}}
- {{#if interface}}
- * @param {object} props - The analytics properties that will be sent to Segment.
- {{#each interface.properties}}
- * @param {{type}} {{#unless isRequired}}[{{/unless}}props.{{name}}{{#unless isRequired}}]{{/unless}} - {{description}}
-	{{/each}}
+ {{#if ../needsJSDoc}}
+ *
+ {{!-- Note: this uses whitespace control to "escape" the outer curly braces. --}}
+ * @param { {{~propertiesType~}} } {{#if isPropertiesOptional}}[props]{{else}}props{{/if}} - The analytics properties that will be sent to Segment.
+ * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  {{/if}}
  */
-{{/if}}
-{{#if ../isBrowser}}
 export function {{functionName}}(
 	props{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
 	options?: Segment.Options,
@@ -201,6 +261,20 @@ export function {{functionName}}(
 	}
 }
 {{else}}
+/**
+ {{#if functionDescription}}
+ * {{functionDescription}}
+ {{else}}
+ * Fires a '{{rawEventName}}' track call.
+ {{/if}}
+ {{#if ../needsJSDoc}}
+ *
+ {{!-- Note: this uses whitespace control to "escape" the outer curly braces. --}}
+ * @param {TrackMessage<{{propertiesType}}>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
+ {{/if}}
+ */
 export function {{functionName}}(
 	message: Segment.TrackMessage<{{propertiesType}}>,
 	callback?: Segment.Callback

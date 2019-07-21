@@ -11,6 +11,7 @@ import { toTarget, toModule } from './targets'
 
 interface JavaScriptRootContext {
 	isBrowser: boolean
+	needsJSDoc: boolean
 }
 
 // Represents a single exposed track() call.
@@ -20,8 +21,6 @@ interface JavaScriptTrackCallContext {
 	// The properties field is only optional in analytics.js environments where
 	// no properties are required.
 	isPropertiesOptional: boolean
-	// Whether or not this track call has either a) a description or b) JSDoc.
-	hasDocumentation: boolean
 }
 
 interface JavaScriptPropertyContext {
@@ -54,6 +53,7 @@ export const javascript: Generator<
 	},
 	setup: async options => ({
 		isBrowser: options.client.sdk === SDK.WEB,
+		needsJSDoc: options.client.language === Language.JAVASCRIPT,
 	}),
 	generatePrimitive: async (_, schema) => {
 		let type = 'any'
@@ -99,13 +99,10 @@ export const javascript: Generator<
 		conditionallyNullable(schema, {
 			type: types.map(t => t.type).join(' | '),
 		}),
-	generateTrackCall: async (client, schema, propertiesObject) => ({
+	generateTrackCall: async (client, _, propertiesObject) => ({
 		propertiesType: propertiesObject.type,
 		// The properties object in a.js can be omitted if no properties are required.
-		isPropertiesOptional: client.options.client.sdk === SDK.WEB && !schema.isRequired,
-		// We only generate JSDoc for JavaScript clients, however we always include a description if set.
-		hasDocumentation:
-			!!schema.description || client.options.client.language === Language.JAVASCRIPT,
+		isPropertiesOptional: client.options.client.sdk === SDK.WEB && !propertiesObject.isRequired,
 	}),
 	generateRoot: async (client, context) => {
 		// index.hbs contains all JavaScript client logic.

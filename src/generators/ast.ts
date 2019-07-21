@@ -118,6 +118,8 @@ export function getPropertiesSchema(event: Schema): ObjectTypeSchema {
 		type: Type.OBJECT,
 		properties: [],
 		...(properties || {}),
+		isRequired: properties ? !!properties.isRequired : false,
+		isNullable: false,
 		// Use the event's name and description when generating an interface
 		// to represent these properties.
 		name: event.name,

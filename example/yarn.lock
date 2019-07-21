@@ -856,6 +856,11 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
+"@types/segment-analytics@^0.0.31":
+  version "0.0.31"
+  resolved "https://registry.yarnpkg.com/@types/segment-analytics/-/segment-analytics-0.0.31.tgz#1f2936afe4f33e2ffb4e9d9c922b99567ffd524b"
+  integrity sha512-R6/78NeRPuIZTa2epCfLySnGN4HL2KSIUGQzty0RLujFHspfShJsQ3XkNKtFs7D5V+vNBAl7+UDyArGtkjuH0A==
+
 "@types/styled-jsx@^2.2.3":
   version "2.2.8"
   resolved "https://registry.yarnpkg.com/@types/styled-jsx/-/styled-jsx-2.2.8.tgz#b50d13d8a3c34036282d65194554cf186bab7234"

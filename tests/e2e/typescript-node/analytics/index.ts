@@ -12,7 +12,6 @@
  */
 import Ajv from 'ajv'
 import * as Segment from './segment'
-/// <reference path="@types/segment-analytics/index.d.ts" />
 
 export interface CustomViolationHandler {
 	'regex property': string
@@ -243,25 +242,6 @@ export interface UnionType {
 	universe_name: string | number | null
 }
 
-/** Options to customize the runtime behavior of a Typewriter client. */
-export interface TypewriterOptions {
-	/**
-	 * Underlying analytics instance where analytics calls are forwarded on to.
-	 */
-	analytics: Segment.AnalyticsNode
-	/**
-	 * Handler fired when if an event does not match its spec. Returns a boolean
-	 * indicating if the message should still be sent to Segment. This handler
-	 * does not fire in production mode, because it requires inlining the full
-	 * JSON Schema spec.
-	 *
-	 * By default, it will throw errors if NODE_ENV = "test" so that tests will fail
-	 * if a message does not match the spec. Otherwise, errors will be logged to stderr.
-	 * Also by default, messages that generate Violations will be dropped.
-	 */
-	onViolation?: ViolationHandler
-}
-
 export type ViolationHandler = (
 	message: Segment.TrackMessage<Record<string, any>>,
 	violations: Ajv.ErrorObject[]
@@ -288,7 +268,7 @@ export const defaultValidationErrorHandler: ViolationHandler = (
 	if (process.env.NODE_ENV === 'test') {
 		throw new Error(msg)
 	}
-	console.error(msg)
+	console.warn(msg)
 
 	return false
 }
@@ -312,8 +292,29 @@ let analytics: () => Segment.AnalyticsNode | undefined = () => {
 	throw missingAnalyticsNodeError
 }
 
+/** Options to customize the runtime behavior of a Typewriter client. */
+export interface TypewriterOptions {
+	/**
+	 * Underlying analytics instance where analytics calls are forwarded on to.
+	 */
+	analytics: Segment.AnalyticsNode
+	/**
+	 * Handler fired when if an event does not match its spec. Returns a boolean
+	 * indicating if the message should still be sent to Segment. This handler
+	 * does not fire in production mode, because it requires inlining the full
+	 * JSON Schema spec for each event in your Tracking Plan.
+	 *
+	 * By default, it will throw errors if NODE_ENV = "test" so that tests will fail
+	 * if a message does not match the spec. Otherwise, errors will be logged to stderr.
+	 * Also by default, messages that generate Violations will be dropped.
+	 */
+	onViolation?: ViolationHandler
+}
+
 /**
- * Update the run-time configuration of this Typewriter client.
+ * Updates the run-time configuration of this Typewriter client.
+ * This function must be called with a configured analytics-node instance before firing
+ * any analytics calls, or else a `missingAnalyticsNodeError` error will be thrown.
  */
 export function setTypewriterOptions(options: TypewriterOptions) {
 	analytics = options.analytics ? () => options.analytics : analytics
@@ -359,6 +360,9 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
 	}
 }
 
+/**
+ * Fires a '42_--terrible==\\"event\'++name~!3' track call.
+ */
 export function I42TerribleEventName3(
 	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback
@@ -395,6 +399,9 @@ export function I42TerribleEventName3(
 		throw missingAnalyticsNodeError
 	}
 }
+/**
+ * Fires a 'Analytics Instance Missing' track call.
+ */
 export function analyticsInstanceMissing(
 	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback
@@ -431,6 +438,9 @@ export function analyticsInstanceMissing(
 		throw missingAnalyticsNodeError
 	}
 }
+/**
+ * Fires a 'Analytics Instance Missing Threw Error' track call.
+ */
 export function analyticsInstanceMissingThrewError(
 	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback
@@ -467,6 +477,9 @@ export function analyticsInstanceMissingThrewError(
 		throw missingAnalyticsNodeError
 	}
 }
+/**
+ * Fires a 'Custom Violation Handler' track call.
+ */
 export function customViolationHandler(
 	message: Segment.TrackMessage<CustomViolationHandler>,
 	callback?: Segment.Callback
@@ -512,6 +525,9 @@ export function customViolationHandler(
 		throw missingAnalyticsNodeError
 	}
 }
+/**
+ * Fires a 'Custom Violation Handler Called' track call.
+ */
 export function customViolationHandlerCalled(
 	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback
@@ -548,6 +564,9 @@ export function customViolationHandlerCalled(
 		throw missingAnalyticsNodeError
 	}
 }
+/**
+ * Fires a 'Default Violation Handler' track call.
+ */
 export function defaultViolationHandler(
 	message: Segment.TrackMessage<DefaultViolationHandler>,
 	callback?: Segment.Callback
@@ -593,6 +612,9 @@ export function defaultViolationHandler(
 		throw missingAnalyticsNodeError
 	}
 }
+/**
+ * Fires a 'Default Violation Handler Called' track call.
+ */
 export function defaultViolationHandlerCalled(
 	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback
@@ -629,6 +651,9 @@ export function defaultViolationHandlerCalled(
 		throw missingAnalyticsNodeError
 	}
 }
+/**
+ * Fires a 'Empty Event' track call.
+ */
 export function emptyEvent(
 	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback
@@ -665,6 +690,9 @@ export function emptyEvent(
 		throw missingAnalyticsNodeError
 	}
 }
+/**
+ * Fires a 'Event Collided' track call.
+ */
 export function eventCollided(
 	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback
@@ -701,6 +729,9 @@ export function eventCollided(
 		throw missingAnalyticsNodeError
 	}
 }
+/**
+ * Fires a 'Every Nullable Optional Type' track call.
+ */
 export function everyNullableOptionalType(
 	message: Segment.TrackMessage<EveryNullableOptionalType>,
 	callback?: Segment.Callback
@@ -770,6 +801,9 @@ export function everyNullableOptionalType(
 		throw missingAnalyticsNodeError
 	}
 }
+/**
+ * Fires a 'Every Nullable Required Type' track call.
+ */
 export function everyNullableRequiredType(
 	message: Segment.TrackMessage<EveryNullableRequiredType>,
 	callback?: Segment.Callback
@@ -850,6 +884,9 @@ export function everyNullableRequiredType(
 		throw missingAnalyticsNodeError
 	}
 }
+/**
+ * Fires a 'Every Optional Type' track call.
+ */
 export function everyOptionalType(
 	message: Segment.TrackMessage<EveryOptionalType>,
 	callback?: Segment.Callback
@@ -920,6 +957,9 @@ export function everyOptionalType(
 		throw missingAnalyticsNodeError
 	}
 }
+/**
+ * Fires a 'Every Required Type' track call.
+ */
 export function everyRequiredType(
 	message: Segment.TrackMessage<EveryRequiredType>,
 	callback?: Segment.Callback
@@ -1001,6 +1041,9 @@ export function everyRequiredType(
 		throw missingAnalyticsNodeError
 	}
 }
+/**
+ * Fires a 'Nested Arrays' track call.
+ */
 export function nestedArrays(
 	message: Segment.TrackMessage<NestedArrays>,
 	callback?: Segment.Callback
@@ -1060,6 +1103,9 @@ export function nestedArrays(
 		throw missingAnalyticsNodeError
 	}
 }
+/**
+ * Fires a 'Nested Objects' track call.
+ */
 export function nestedObjects(
 	message: Segment.TrackMessage<NestedObjects>,
 	callback?: Segment.Callback
@@ -1133,6 +1179,9 @@ export function nestedObjects(
 		throw missingAnalyticsNodeError
 	}
 }
+/**
+ * Fires a 'Properties Collided' track call.
+ */
 export function propertiesCollided(
 	message: Segment.TrackMessage<PropertiesCollided>,
 	callback?: Segment.Callback
@@ -1181,6 +1230,9 @@ export function propertiesCollided(
 		throw missingAnalyticsNodeError
 	}
 }
+/**
+ * Fires a 'Property Object Name Collision #1' track call.
+ */
 export function propertyObjectNameCollision1(
 	message: Segment.TrackMessage<PropertyObjectNameCollision1>,
 	callback?: Segment.Callback
@@ -1245,6 +1297,9 @@ export function propertyObjectNameCollision1(
 		throw missingAnalyticsNodeError
 	}
 }
+/**
+ * Fires a 'Property Object Name Collision #2' track call.
+ */
 export function propertyObjectNameCollision2(
 	message: Segment.TrackMessage<PropertyObjectNameCollision2>,
 	callback?: Segment.Callback
@@ -1309,6 +1364,9 @@ export function propertyObjectNameCollision2(
 		throw missingAnalyticsNodeError
 	}
 }
+/**
+ * Fires a 'Property Sanitized' track call.
+ */
 export function propertySanitized(
 	message: Segment.TrackMessage<PropertySanitized>,
 	callback?: Segment.Callback
@@ -1353,6 +1411,9 @@ export function propertySanitized(
 		throw missingAnalyticsNodeError
 	}
 }
+/**
+ * Fires a 'Simple Array Types' track call.
+ */
 export function simpleArrayTypes(
 	message: Segment.TrackMessage<SimpleArrayTypes>,
 	callback?: Segment.Callback
@@ -1453,6 +1514,9 @@ export function simpleArrayTypes(
 		throw missingAnalyticsNodeError
 	}
 }
+/**
+ * Fires a 'Union Type' track call.
+ */
 export function unionType(
 	message: Segment.TrackMessage<UnionType>,
 	callback?: Segment.Callback
@@ -1497,6 +1561,9 @@ export function unionType(
 		throw missingAnalyticsNodeError
 	}
 }
+/**
+ * Fires a 'event_collided' track call.
+ */
 export function eventCollided1(
 	message: Segment.TrackMessage<Record<string, any>>,
 	callback?: Segment.Callback

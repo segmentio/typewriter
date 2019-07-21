@@ -32,6 +32,11 @@ Object.defineProperty(exports, '__esModule', { value: true })
  * You can install it with: `npm install --save-dev ajv`.
  */
 var ajv_1 = __importDefault(require('ajv'))
+/**
+ * The default handler that is fired if none is supplied with setTypewriterOptions.
+ * If NODE_ENV="test", this handler will throw an error. Otherwise, it will log
+ * a warning message to the console.
+ */
 exports.defaultValidationErrorHandler = function(message, violations) {
 	var msg = JSON.stringify(
 		{
@@ -49,7 +54,7 @@ exports.defaultValidationErrorHandler = function(message, violations) {
 	if (process.env.NODE_ENV === 'test') {
 		throw new Error(msg)
 	}
-	console.error(msg)
+	console.warn(msg)
 	return false
 }
 var onViolation = exports.defaultValidationErrorHandler
@@ -60,7 +65,20 @@ var analytics = function() {
 	throw missingAnalyticsNodeError
 }
 /**
- * Update the run-time configuration of this Typewriter client.
+ * Updates the run-time configuration of this Typewriter client.
+ * This function must be called with a configured analytics-node instance before firing
+ * any analytics calls, or else a `missingAnalyticsNodeError` error will be thrown.
+ *
+ * @param {TypewriterOptions} options - the options to upsert
+ *
+ * @typedef {Object} TypewriterOptions
+ * @property {Segment.AnalyticsNode} analytics - Underlying analytics instance where analytics
+ * 		calls are forwarded on to.
+ * @property {Function} [onViolation] - Handler fired when if an event does not match its spec. Returns a boolean indicating
+ * 		if the message should still be sent to Segment. This handler does not fire in production mode, because it requires
+ * 		inlining the full JSON Schema spec for each event in your Tracking Plan. By default, it will throw errors if NODE_ENV
+ * 		= "test" so that tests will fail if a message does not match the spec. Otherwise, errors will be logged to stderr.
+ * 		Also by default, messages that generate Violations will be dropped.
  */
 function setTypewriterOptions(options) {
 	analytics = options.analytics
@@ -104,6 +122,155 @@ function withTypewriterContext(message) {
 	})
 }
 /**
+ * A message payload for an analytics-node `.track()` call.
+ * See: https://segment.com/docs/spec/track/
+ *
+ * @typedef TrackMessage<PropertiesType>
+ * @property {string | number} userId - The ID for this user in your database.
+ * @property {string | number} [anonymousId] - An ID to associated with the user when you don’t know who they are.
+ * @property {PropertiesType} [properties] - A dictionary of properties for the event.
+ * @property {Date} [timestamp] - A Javascript date object representing when the track took place. If the track
+ * 		just happened, leave it out and we’ll use the server’s time. If you’re importing data from the past make
+ * 		sure you to send a timestamp.
+ * @template PropertiesType
+ */
+/**
+ * @typedef CustomViolationHandler
+ * @property {string} `regex property` -
+ */
+/**
+ * @typedef DefaultViolationHandler
+ * @property {string} `regex property` -
+ */
+/**
+ * @typedef EveryNullableOptionalType
+ * @property {any | null} [optional any] - Optional any property
+ * @property {any[] | null} [optional array] - Optional array property
+ * @property {boolean | null} [optional boolean] - Optional boolean property
+ * @property {number | null} [optional int] - Optional integer property
+ * @property {number | null} [optional number] - Optional number property
+ * @property {Record<string, any> | null} [optional object] - Optional object property
+ * @property {string | null} [optional string] - Optional string property
+ * @property {string | null} [optional string with regex] - Optional string property with a regex conditional
+ */
+/**
+ * @typedef EveryNullableRequiredType
+ * @property {any | null} `required any` - Required any property
+ * @property {any[] | null} `required array` - Required array property
+ * @property {boolean | null} `required boolean` - Required boolean property
+ * @property {number | null} `required int` - Required integer property
+ * @property {number | null} `required number` - Required number property
+ * @property {Record<string, any> | null} `required object` - Required object property
+ * @property {string | null} `required string` - Required string property
+ * @property {string | null} `required string with regex` - Required string property with a regex conditional
+ */
+/**
+ * @typedef EveryOptionalType
+ * @property {any | null} [optional any] - Optional any property
+ * @property {any[]} [optional array] - Optional array property
+ * @property {boolean} [optional boolean] - Optional boolean property
+ * @property {number} [optional int] - Optional integer property
+ * @property {number} [optional number] - Optional number property
+ * @property {Record<string, any>} [optional object] - Optional object property
+ * @property {string} [optional string] - Optional string property
+ * @property {string} [optional string with regex] - Optional string property with a regex conditional
+ */
+/**
+ * @typedef EveryRequiredType
+ * @property {any | null} `required any` - Required any property
+ * @property {any[]} `required array` - Required array property
+ * @property {boolean} `required boolean` - Required boolean property
+ * @property {number} `required int` - Required integer property
+ * @property {number} `required number` - Required number property
+ * @property {Record<string, any>} `required object` - Required object property
+ * @property {string} `required string` - Required string property
+ * @property {string} `required string with regex` - Required string property with a regex conditional
+ */
+/**
+ * @typedef UniverseCharacters
+ * @property {string} `name` - The character's name.
+ */
+/**
+ * @typedef NestedArrays
+ * @property {UniverseCharacters[][]} `universeCharacters` - All known characters from each universe.
+ */
+/**
+ * @typedef SubterraneanLab
+ * @property {any[]} [jerry\'s memories] -
+ * @property {any[]} [morty\'s memories] -
+ * @property {string} [summer\'s contingency plan] -
+ */
+/**
+ * @typedef Tunnel
+ * @property {SubterraneanLab} `subterranean lab` -
+ */
+/**
+ * @typedef Garage
+ * @property {Tunnel} `tunnel` -
+ */
+/**
+ * @typedef NestedObjects
+ * @property {Garage} `garage` -
+ */
+/**
+ * @typedef PropertiesCollided
+ * @property {string} `Property Collided` -
+ * @property {string} `property_collided` -
+ */
+/**
+ * @typedef Occupants
+ * @property {string} `name` - The name of this occupant.
+ */
+/**
+ * @typedef Universe
+ * @property {string} `name` - The common name of this universe.
+ * @property {Occupants[]} `occupants` - The most important occupants in this universe.
+ */
+/**
+ * @typedef PropertyObjectNameCollision1
+ * @property {Universe} [universe] -
+ */
+/**
+ * @typedef Occupants1
+ * @property {string} `name` - The name of this occupant.
+ */
+/**
+ * @typedef Universe1
+ * @property {string} `name` - The common name of this universe.
+ * @property {Occupants1[]} `occupants` - The most important occupants in this universe.
+ */
+/**
+ * @typedef PropertyObjectNameCollision2
+ * @property {Universe1} [universe] -
+ */
+/**
+ * @typedef PropertySanitized
+ * @property {string} `0000---terrible-property-name~!3` -
+ */
+/**
+ * @typedef Object
+ * @property {string} [name] -
+ */
+/**
+ * @typedef SimpleArrayTypes
+ * @property {any[]} [any] -
+ * @property {boolean[]} [boolean] -
+ * @property {number[]} [integer] -
+ * @property {string[]} [nullable] -
+ * @property {number[]} [number] -
+ * @property {Object[]} [object] -
+ * @property {string[]} [string] -
+ */
+/**
+ * @typedef UnionType
+ * @property {string | number | null} `universe_name` -
+ */
+/**
+ * Fires a '42_--terrible==\\"event\'++name~!3' track call.
+ *
+ * @param {TrackMessage<Record<string, any>>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 function I42TerribleEventName3(message, callback) {
 	var msg = withTypewriterContext(
@@ -138,6 +305,11 @@ function I42TerribleEventName3(message, callback) {
 }
 exports.I42TerribleEventName3 = I42TerribleEventName3
 /**
+ * Fires a 'Analytics Instance Missing' track call.
+ *
+ * @param {TrackMessage<Record<string, any>>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 function analyticsInstanceMissing(message, callback) {
 	var msg = withTypewriterContext(
@@ -172,6 +344,11 @@ function analyticsInstanceMissing(message, callback) {
 }
 exports.analyticsInstanceMissing = analyticsInstanceMissing
 /**
+ * Fires a 'Analytics Instance Missing Threw Error' track call.
+ *
+ * @param {TrackMessage<Record<string, any>>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 function analyticsInstanceMissingThrewError(message, callback) {
 	var msg = withTypewriterContext(
@@ -206,6 +383,11 @@ function analyticsInstanceMissingThrewError(message, callback) {
 }
 exports.analyticsInstanceMissingThrewError = analyticsInstanceMissingThrewError
 /**
+ * Fires a 'Custom Violation Handler' track call.
+ *
+ * @param {TrackMessage<CustomViolationHandler>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 function customViolationHandler(message, callback) {
 	var msg = withTypewriterContext(
@@ -247,6 +429,11 @@ function customViolationHandler(message, callback) {
 }
 exports.customViolationHandler = customViolationHandler
 /**
+ * Fires a 'Custom Violation Handler Called' track call.
+ *
+ * @param {TrackMessage<Record<string, any>>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 function customViolationHandlerCalled(message, callback) {
 	var msg = withTypewriterContext(
@@ -281,6 +468,11 @@ function customViolationHandlerCalled(message, callback) {
 }
 exports.customViolationHandlerCalled = customViolationHandlerCalled
 /**
+ * Fires a 'Default Violation Handler' track call.
+ *
+ * @param {TrackMessage<DefaultViolationHandler>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 function defaultViolationHandler(message, callback) {
 	var msg = withTypewriterContext(
@@ -324,6 +516,11 @@ function defaultViolationHandler(message, callback) {
 }
 exports.defaultViolationHandler = defaultViolationHandler
 /**
+ * Fires a 'Default Violation Handler Called' track call.
+ *
+ * @param {TrackMessage<Record<string, any>>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 function defaultViolationHandlerCalled(message, callback) {
 	var msg = withTypewriterContext(
@@ -358,6 +555,11 @@ function defaultViolationHandlerCalled(message, callback) {
 }
 exports.defaultViolationHandlerCalled = defaultViolationHandlerCalled
 /**
+ * Fires a 'Empty Event' track call.
+ *
+ * @param {TrackMessage<Record<string, any>>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 function emptyEvent(message, callback) {
 	var msg = withTypewriterContext(
@@ -390,6 +592,11 @@ function emptyEvent(message, callback) {
 }
 exports.emptyEvent = emptyEvent
 /**
+ * Fires a 'Event Collided' track call.
+ *
+ * @param {TrackMessage<Record<string, any>>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 function eventCollided(message, callback) {
 	var msg = withTypewriterContext(
@@ -422,6 +629,11 @@ function eventCollided(message, callback) {
 }
 exports.eventCollided = eventCollided
 /**
+ * Fires a 'Every Nullable Optional Type' track call.
+ *
+ * @param {TrackMessage<EveryNullableOptionalType>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 function everyNullableOptionalType(message, callback) {
 	var msg = withTypewriterContext(
@@ -489,6 +701,11 @@ function everyNullableOptionalType(message, callback) {
 }
 exports.everyNullableOptionalType = everyNullableOptionalType
 /**
+ * Fires a 'Every Nullable Required Type' track call.
+ *
+ * @param {TrackMessage<EveryNullableRequiredType>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 function everyNullableRequiredType(message, callback) {
 	var msg = withTypewriterContext(
@@ -567,6 +784,11 @@ function everyNullableRequiredType(message, callback) {
 }
 exports.everyNullableRequiredType = everyNullableRequiredType
 /**
+ * Fires a 'Every Optional Type' track call.
+ *
+ * @param {TrackMessage<EveryOptionalType>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 function everyOptionalType(message, callback) {
 	var msg = withTypewriterContext(
@@ -633,6 +855,11 @@ function everyOptionalType(message, callback) {
 }
 exports.everyOptionalType = everyOptionalType
 /**
+ * Fires a 'Every Required Type' track call.
+ *
+ * @param {TrackMessage<EveryRequiredType>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 function everyRequiredType(message, callback) {
 	var msg = withTypewriterContext(
@@ -710,6 +937,11 @@ function everyRequiredType(message, callback) {
 }
 exports.everyRequiredType = everyRequiredType
 /**
+ * Fires a 'Nested Arrays' track call.
+ *
+ * @param {TrackMessage<NestedArrays>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 function nestedArrays(message, callback) {
 	var msg = withTypewriterContext(
@@ -765,6 +997,11 @@ function nestedArrays(message, callback) {
 }
 exports.nestedArrays = nestedArrays
 /**
+ * Fires a 'Nested Objects' track call.
+ *
+ * @param {TrackMessage<NestedObjects>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 function nestedObjects(message, callback) {
 	var msg = withTypewriterContext(
@@ -834,6 +1071,11 @@ function nestedObjects(message, callback) {
 }
 exports.nestedObjects = nestedObjects
 /**
+ * Fires a 'Properties Collided' track call.
+ *
+ * @param {TrackMessage<PropertiesCollided>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 function propertiesCollided(message, callback) {
 	var msg = withTypewriterContext(
@@ -878,6 +1120,11 @@ function propertiesCollided(message, callback) {
 }
 exports.propertiesCollided = propertiesCollided
 /**
+ * Fires a 'Property Object Name Collision #1' track call.
+ *
+ * @param {TrackMessage<PropertyObjectNameCollision1>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 function propertyObjectNameCollision1(message, callback) {
 	var msg = withTypewriterContext(
@@ -940,6 +1187,11 @@ function propertyObjectNameCollision1(message, callback) {
 }
 exports.propertyObjectNameCollision1 = propertyObjectNameCollision1
 /**
+ * Fires a 'Property Object Name Collision #2' track call.
+ *
+ * @param {TrackMessage<PropertyObjectNameCollision2>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 function propertyObjectNameCollision2(message, callback) {
 	var msg = withTypewriterContext(
@@ -1002,6 +1254,11 @@ function propertyObjectNameCollision2(message, callback) {
 }
 exports.propertyObjectNameCollision2 = propertyObjectNameCollision2
 /**
+ * Fires a 'Property Sanitized' track call.
+ *
+ * @param {TrackMessage<PropertySanitized>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 function propertySanitized(message, callback) {
 	var msg = withTypewriterContext(
@@ -1042,6 +1299,11 @@ function propertySanitized(message, callback) {
 }
 exports.propertySanitized = propertySanitized
 /**
+ * Fires a 'Simple Array Types' track call.
+ *
+ * @param {TrackMessage<SimpleArrayTypes>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 function simpleArrayTypes(message, callback) {
 	var msg = withTypewriterContext(
@@ -1138,6 +1400,11 @@ function simpleArrayTypes(message, callback) {
 }
 exports.simpleArrayTypes = simpleArrayTypes
 /**
+ * Fires a 'Union Type' track call.
+ *
+ * @param {TrackMessage<UnionType>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 function unionType(message, callback) {
 	var msg = withTypewriterContext(
@@ -1178,6 +1445,11 @@ function unionType(message, callback) {
 }
 exports.unionType = unionType
 /**
+ * Fires a 'event_collided' track call.
+ *
+ * @param {TrackMessage<Record<string, any>>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 function eventCollided1(message, callback) {
 	var msg = withTypewriterContext(
