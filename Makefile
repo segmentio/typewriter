@@ -5,14 +5,14 @@ XC_SWIFT_ARGS := -workspace TypewriterSwiftExample.xcworkspace -scheme Typewrite
 # update: updates typewriter and all e2e tests to use the latest Tracking Plans.
 .PHONY: update
 update:
-	@yarn dev update
-	@yarn dev --config=example update
-	@yarn dev --config=tests/e2e/javascript-node update
-	@yarn dev --config=tests/e2e/typescript-node update
-	@yarn dev --config=tests/e2e/web-javascript update
-	@yarn dev --config=tests/e2e/web-typescript update
-	@yarn dev --config=tests/e2e/ios update
-	@yarn dev --config=tests/e2e/ios-swift update
+	@yarn dev
+	@yarn dev --config=example
+	@yarn dev --config=tests/e2e/javascript-node
+	@yarn dev --config=tests/e2e/typescript-node
+	@yarn dev --config=tests/e2e/web-javascript
+	@yarn dev --config=tests/e2e/web-typescript
+	@yarn dev --config=tests/e2e/ios
+	@yarn dev --config=tests/e2e/ios-swift
 	@# Changes to the Tracking Plan JSON files will need to be run through our
 	@# linter again to reduce git deltas.
 	@git add -A && yarn precommit
@@ -72,14 +72,14 @@ build-example:
 test-javascript-node:
 	@echo "\n>>>	🏃 Running JavaScript Node client test suite...\n"
 	@make clear-snapshotter && \
-		yarn run -s dev --config=./tests/e2e/javascript-node && \
+		yarn run -s dev build --config=./tests/e2e/javascript-node && \
 		cd tests/e2e/javascript-node && \
 		yarn && \
 		NODE_ENV=test yarn run -s test && \
 		cd ../../.. && \
 		SDK=analytics-node LANGUAGE=javascript IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
 	@make clear-snapshotter && \
-		yarn run -s dev --config=./tests/e2e/javascript-node prod && \
+		yarn run -s dev prod --config=./tests/e2e/javascript-node && \
 		cd tests/e2e/javascript-node && \
 		yarn && \
 		NODE_ENV=test yarn run -s test && \
@@ -90,14 +90,14 @@ test-javascript-node:
 test-typescript-node:
 	@echo "\n>>>	🏃 Running TypeScript Node client test suite...\n"
 	@make clear-snapshotter && \
-		yarn run -s dev --config=./tests/e2e/typescript-node && \
+		yarn run -s dev build --config=./tests/e2e/typescript-node && \
 		cd tests/e2e/typescript-node && \
 		yarn && \
 		NODE_ENV=test yarn run -s test && \
 		cd ../../.. && \
 		SDK=analytics-node LANGUAGE=typescript IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
 	@make clear-snapshotter && \
-		yarn run -s dev --config=./tests/e2e/typescript-node prod && \
+		yarn run -s dev prod --config=./tests/e2e/typescript-node && \
 		cd tests/e2e/typescript-node && \
 		yarn && \
 		yarn run -s test && \
@@ -108,7 +108,7 @@ test-typescript-node:
 test-web-javascript:
 	@echo "\n>>>	🏃 Running JavaScript analytics.js client test suite...\n"
 	@make clear-snapshotter && \
-		yarn run -s dev --config=./tests/e2e/web-javascript && \
+		yarn run -s dev build --config=./tests/e2e/web-javascript && \
 		cd tests/e2e/web-javascript && \
 		yarn && \
 		yarn run -s build && \
@@ -116,7 +116,7 @@ test-web-javascript:
 		cd ../../.. && \
 		SDK=analytics.js LANGUAGE=javascript IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
 	@make clear-snapshotter && \
-		yarn run -s dev --config=./tests/e2e/web-javascript prod && \
+		yarn run -s dev prod --config=./tests/e2e/web-javascript && \
 		cd tests/e2e/web-javascript && \
 		yarn && \
 		yarn run -s build && \
@@ -128,7 +128,7 @@ test-web-javascript:
 test-web-typescript:
 	@echo "\n>>>	🏃 Running TypeScript analytics.js client test suite...\n"
 	@make clear-snapshotter && \
-		yarn run -s dev --config=./tests/e2e/web-typescript && \
+		yarn run -s dev build --config=./tests/e2e/web-typescript && \
 		cd tests/e2e/web-typescript && \
 		yarn && \
 		yarn run -s build && \
@@ -136,7 +136,7 @@ test-web-typescript:
 		cd ../../.. && \
 		SDK=analytics.js LANGUAGE=typescript IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
 	@make clear-snapshotter && \
-		yarn run -s dev --config=./tests/e2e/web-typescript prod && \
+		yarn run -s dev prod --config=./tests/e2e/web-typescript && \
 		cd tests/e2e/web-typescript && \
 		yarn && \
 		yarn run -s build && \
@@ -158,12 +158,12 @@ setup-ios-tests:
 run-ios-tests:
 	@echo "\n>>>	🏃 Running iOS Objective-C client test suite...\n"
 	@make clear-snapshotter && \
-		yarn run -s dev --config=./tests/e2e/ios && \
+		yarn run -s dev build --config=./tests/e2e/ios && \
 		cd tests/e2e/ios && \
 		set -o pipefail && xcodebuild test $(XC_OBJECTIVE_C_ARGS) | xcpretty && \
 		SDK=analytics-ios LANGUAGE=objective-c IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
 	@make clear-snapshotter && \
-		yarn run -s dev --config=./tests/e2e/ios prod && \
+		yarn run -s dev prod --config=./tests/e2e/ios && \
 		cd tests/e2e/ios && \
 		set -o pipefail && xcodebuild test $(XC_OBJECTIVE_C_ARGS) | xcpretty && \
 		SDK=analytics-ios LANGUAGE=objective-c IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
@@ -182,12 +182,12 @@ setup-ios-swift-tests:
 run-ios-swift-tests:
 	@echo "\n>>>	🏃 Running iOS Swift client test suite...\n"
 	@make clear-snapshotter && \
-		yarn run -s dev --config=./tests/e2e/ios-swift && \
+		yarn run -s dev build --config=./tests/e2e/ios-swift && \
 		cd tests/e2e/ios-swift && \
 		set -o pipefail && xcodebuild test $(XC_SWIFT_ARGS) | xcpretty && \
 		SDK=analytics-ios LANGUAGE=swift IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
 	@make clear-snapshotter && \
-		yarn run -s dev --config=./tests/e2e/ios-swift prod && \
+		yarn run -s dev prod --config=./tests/e2e/ios-swift && \
 		cd tests/e2e/ios-swift && \
 		set -o pipefail && xcodebuild test $(XC_SWIFT_ARGS) | xcpretty && \
 		SDK=analytics-ios LANGUAGE=swift IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts

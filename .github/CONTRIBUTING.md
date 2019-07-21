@@ -20,7 +20,7 @@ Have an idea for improving Typewriter? [Submit an issue first](https://github.co
 # Install dependencies
 $ yarn
 # Test your Typewriter installation by regenerating Typewriter's typewriter client.
-$ yarn dev
+$ yarn dev build
 ```
 
 ### Running Tests

@@ -200,10 +200,10 @@ export async function init(args: Arguments) {
 
 	// Now generate a client using the newly initialized configuration.
 	console.log("Running 'npx typewriter@next' to build a typewriter client...")
-	await generate(args)
+	await build(args)
 }
 
-export async function generate(args: Arguments) {
+export async function build(args: Arguments) {
 	await generateClients(args, { isDevelopment: true })
 }
 
@@ -235,7 +235,7 @@ export async function update(args: Arguments) {
 	}
 
 	console.log("Running 'npx typewriter@next' to re-build your typewriter client...")
-	await generate(args)
+	await build(args)
 }
 
 // Command Helpers
