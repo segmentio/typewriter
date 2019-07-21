@@ -1,6 +1,6 @@
 import { File, TrackingPlan, GenOptions, TemplateBaseContext, baseContext } from '../gen'
 import { generateFromTemplate, registerStandardHelpers } from '../../templates'
-import Namer from '../namer'
+import { Namer } from '../namer'
 import { camelCase, upperFirst } from 'lodash'
 import { Schema, Type, getPropertiesSchema } from '../ast'
 import * as Handlebars from 'handlebars'

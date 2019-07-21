@@ -15,7 +15,7 @@ import Ajv from 'ajv'
 {{/if}}
 import * as Segment from './segment'
 
-{{#each interfaces}}
+{{#each objects}}
 {{#if description}}
 /**
  * {{description}}
@@ -160,8 +160,8 @@ function withTypewriterContext{{#unless isBrowser}}<P, T extends Segment.TrackMe
 {{#each tracks}}
 {{#if hasDocumentation}}
 /**
- {{#if description}}
- * {{description}}
+ {{#if functionDescription}}
+ * {{functionDescription}}
  {{/if}}
  {{#if interface}}
  * @param {object} props - The analytics properties that will be sent to Segment.
@@ -173,14 +173,14 @@ function withTypewriterContext{{#unless isBrowser}}<P, T extends Segment.TrackMe
 {{/if}}
 {{#if ../isBrowser}}
 export function {{functionName}}(
-	props{{#if isPropertiesOptional}}?{{/if}}: {{type}},
+	props{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
 	options?: Segment.Options,
 	callback?: Segment.Callback
 ): void {
 	{{#if ../isDevelopment}}
 	const schema = {{rawJSONSchema}}
 	const message = {
-		event: '{{eventName}}',
+		event: '{{rawEventName}}',
 		properties: props || {},
 		options,
 	}
@@ -192,7 +192,7 @@ export function {{functionName}}(
 	const a = analytics()
 	if (a) {
 		a.track(
-			'{{eventName}}',
+			'{{rawEventName}}',
 			props || {},
 			withTypewriterContext(options),
 			callback
@@ -201,13 +201,13 @@ export function {{functionName}}(
 }
 {{else}}
 export function {{functionName}}(
-	message: Segment.TrackMessage<{{type}}>,
+	message: Segment.TrackMessage<{{propertiesType}}>,
 	callback?: Segment.Callback
 ): void {
 	const msg = withTypewriterContext({
 		properties: {},
 		...message,
-		event: '{{eventName}}'
+		event: '{{rawEventName}}'
 	})
 
 	{{#if ../isDevelopment}}

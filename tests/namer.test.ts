@@ -1,4 +1,4 @@
-import Namer from '../src/generators/namer'
+import { Namer } from '../src/generators/namer'
 import { camelCase } from 'lodash'
 
 describe('Namer', () => {

@@ -12,6 +12,7 @@
   "scripts": {
     "dev": "ts-node ./src/cli",
     "build": "rm -rf dist && tsc && copyfiles -u 1 \"src/**/*.hbs\" \"src/cli/typewriter.yml.schema.json\" dist/",
+    "build-example": "make build-example",
     "test": "jest --testPathIgnorePatterns 'tests/e2e/.*'",
     "e2e": "make e2e",
     "update": "make update",

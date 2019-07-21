@@ -27,7 +27,7 @@ export interface SanitizeOptions {
 	id?: string
 }
 
-export default class Namer {
+export class Namer {
 	private options: Options
 	// Maps namespace -> Set of sanitized names
 	private lookupByName: Record<string, Set<string>>
