@@ -14,6 +14,7 @@
 import Ajv from 'ajv'
 {{/if}}
 import * as Segment from './segment'
+/// <reference path="@types/segment-analytics/index.d.ts" />
 
 {{#each objects}}
 {{#if description}}
@@ -41,7 +42,7 @@ export interface TypewriterOptions {
 	 * Defaults to window.analytics.
 	 {{/if}}
 	 */
-	analytics{{#if isBrowser}}?{{/if}}: {{#if isBrowser}}Segment.AnalyticsJS{{else}}Segment.AnalyticsNode{{/if}}
+	analytics{{#if isBrowser}}?{{/if}}: {{#if isBrowser}}SegmentAnalytics.AnalyticsJS{{else}}Segment.AnalyticsNode{{/if}}
 	/**
 	 * Handler fired when if an event does not match its spec. Returns a boolean
 	 * indicating if the message should still be sent to Segment. This handler
@@ -100,7 +101,7 @@ For more information on analytics-node, see: https://segment.com/docs/sources/se
 {{/unless}}
 
 {{!-- We use a closure so we can lazy-resolve window.analytics in browser environments. --}}
-let analytics: () => ({{#if isBrowser}}Segment.AnalyticsJS{{else}}Segment.AnalyticsNode{{/if}} | undefined) = () => {
+let analytics: () => ({{#if isBrowser}}SegmentAnalytics.AnalyticsJS{{else}}Segment.AnalyticsNode{{/if}} | undefined) = () => {
 	{{#if isBrowser}}
 	return window.analytics
 	{{else}}

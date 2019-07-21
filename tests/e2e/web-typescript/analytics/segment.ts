@@ -6,21 +6,12 @@
 /**
  * The analytics.js snippet should be available via window.analytics.
  * You can install it by following instructions at: https://segment.com/docs/sources/website/analytics.js/quickstart/
+ * Make sure to also include the TypeScript declarations with: `npm install --dev @types/segment-analytics`
  */
 declare global {
 	interface Window {
-		analytics?: AnalyticsJS
+		analytics?: SegmentAnalytics.AnalyticsJS
 	}
-}
-
-/** A minimal interface for Segment's analytics.js. */
-export interface AnalyticsJS {
-	track: (
-		event: string,
-		properties?: Record<string, any>,
-		options?: Options,
-		callback?: Callback
-	) => void
 }
 
 /** The callback exposed by analytics.js. */

@@ -23,6 +23,7 @@
     "request": "^2.88.0"
   },
   "devDependencies": {
+    "@types/segment-analytics": "^0.0.31",
     "cypress": "^3.3.2",
     "jest": "^24.8.0",
     "start-server-and-test": "^1.9.1"

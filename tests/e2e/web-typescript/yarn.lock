@@ -1163,6 +1163,11 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
+"@types/segment-analytics@^0.0.31":
+  version "0.0.31"
+  resolved "https://registry.yarnpkg.com/@types/segment-analytics/-/segment-analytics-0.0.31.tgz#1f2936afe4f33e2ffb4e9d9c922b99567ffd524b"
+  integrity sha512-R6/78NeRPuIZTa2epCfLySnGN4HL2KSIUGQzty0RLujFHspfShJsQ3XkNKtFs7D5V+vNBAl7+UDyArGtkjuH0A==
+
 "@types/serve-static@*":
   version "1.13.2"
   resolved "https://registry.yarnpkg.com/@types/serve-static/-/serve-static-1.13.2.tgz#f5ac4d7a6420a99a6a45af4719f4dcd8cd907a48"
