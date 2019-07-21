@@ -120,7 +120,7 @@
     }
   },
   "eslintIgnore": [
-    "tests/generated/**/*",
+    "tests/e2e/**/analytics/*",
     "src/analytics/**/*",
     "example/analytics/**/*"
   ],
