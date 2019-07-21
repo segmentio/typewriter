@@ -76,7 +76,6 @@ export function exactArray<T>(arr: T[]): Joi.ArraySchema {
 // payloads.
 const baseSegmentPayloadSchema = Joi.object().keys({
 	properties: Joi.object(),
-	userId: 'user-1234',
 	event: Joi.string(),
 	context: Joi.object().keys({
 		library: Joi.object().keys({

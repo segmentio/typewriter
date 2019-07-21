@@ -63,7 +63,7 @@ teardown:
 
 .PHONY: build-example
 build-example:
-	@yarn run -s dev --config=./example && \
+	@yarn run -s dev build --config=./example && \
 		cd example && \
 		yarn && \
 		yarn build
