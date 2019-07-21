@@ -17,47 +17,7 @@ var __assign =
 			}
 		return __assign.apply(this, arguments)
 	}
-var __importDefault =
-	(this && this.__importDefault) ||
-	function(mod) {
-		return mod && mod.__esModule ? mod : { default: mod }
-	}
 Object.defineProperty(exports, '__esModule', { value: true })
-/**
- * Ajv is a peer dependency for development builds. It's used to apply run-time validation
- * to message payloads before passing them on to the underlying analytics instance.
- *
- * Note that the production bundle does not depend on Ajv.
- *
- * You can install it with: `npm install --save-dev ajv`.
- */
-var ajv_1 = __importDefault(require('ajv'))
-/**
- * The default handler that is fired if none is supplied with setTypewriterOptions.
- * If NODE_ENV="test", this handler will throw an error. Otherwise, it will log
- * a warning message to the console.
- */
-exports.defaultValidationErrorHandler = function(message, violations) {
-	var msg = JSON.stringify(
-		{
-			type: 'Typewriter JSON Schema Validation Error',
-			description:
-				'You made an analytics call (' +
-				message.event +
-				") using Typewriter that doesn't match the " +
-				'Tracking Plan spec. Your analytics call will continue to fire in production.',
-			errors: violations,
-		},
-		undefined,
-		2
-	)
-	if (process.env.NODE_ENV === 'test') {
-		throw new Error(msg)
-	}
-	console.warn(msg)
-	return false
-}
-var onViolation = exports.defaultValidationErrorHandler
 var missingAnalyticsNodeError = new Error(
 	"You must set an analytics-node instance:\n\n>\tconst SegmentAnalytics = require('analytics-node')\n>\tconst { setTypewriterOptions } = require('./analytics')\n>\n>\tconst analytics = new SegmentAnalytics('SEGMENT_WRITE_KEY')\n>\tsetTypewriterOptions({\n>\t\tanalytics: analytics,\n>\t})\n\nFor more information on analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/\n"
 )
@@ -78,7 +38,6 @@ var analytics = function() {
  * 		if the message should still be sent to Segment. This handler does not fire in production mode, because it requires
  * 		inlining the full JSON Schema spec for each event in your Tracking Plan. By default, it will throw errors if NODE_ENV
  * 		= "test" so that tests will fail if a message does not match the spec. Otherwise, errors will be logged to stderr.
- * 		Also by default, messages that generate Violations will be dropped.
  */
 function setTypewriterOptions(options) {
 	analytics = options.analytics
@@ -86,27 +45,8 @@ function setTypewriterOptions(options) {
 				return options.analytics
 		  }
 		: analytics
-	onViolation = options.onViolation || onViolation
 }
 exports.setTypewriterOptions = setTypewriterOptions
-/**
- * Validates a message against a JSON Schema using Ajv. If the message
- * is invalid, the `onViolation` handler will be called.
- * Returns true if the message should be sent on to Segment, and false otherwise.
- */
-function matchesSchema(message, schema) {
-	var ajv = new ajv_1.default({
-		schemaId: 'auto',
-		allErrors: true,
-		verbose: true,
-	})
-	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
-	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
-	if (!ajv.validate(schema, message) && ajv.errors) {
-		return onViolation(message, ajv.errors)
-	}
-	return true
-}
 /**
  * Helper to attach metadata on Typewriter to outbound requests.
  * This is used for attribution and debugging by the Segment team.
@@ -278,24 +218,6 @@ function I42TerribleEventName3(message, callback) {
 			event: '42_--terrible==\\"event\'++name~!3',
 		})
 	)
-	var schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
-		labels: {},
-		properties: {
-			context: {},
-			properties: {
-				type: 'object',
-			},
-			traits: {
-				type: 'object',
-			},
-		},
-		type: 'object',
-		title: '42_--terrible==\\"event\'++name~!3',
-	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -317,24 +239,6 @@ function analyticsInstanceMissing(message, callback) {
 			event: 'Analytics Instance Missing',
 		})
 	)
-	var schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
-		labels: {},
-		properties: {
-			context: {},
-			properties: {
-				type: 'object',
-			},
-			traits: {
-				type: 'object',
-			},
-		},
-		type: 'object',
-		title: 'Analytics Instance Missing',
-	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -356,24 +260,6 @@ function analyticsInstanceMissingThrewError(message, callback) {
 			event: 'Analytics Instance Missing Threw Error',
 		})
 	)
-	var schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
-		labels: {},
-		properties: {
-			context: {},
-			properties: {
-				type: 'object',
-			},
-			traits: {
-				type: 'object',
-			},
-		},
-		type: 'object',
-		title: 'Analytics Instance Missing Threw Error',
-	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -393,33 +279,6 @@ function customViolationHandler(message, callback) {
 	var msg = withTypewriterContext(
 		__assign({ properties: {} }, message, { event: 'Custom Violation Handler' })
 	)
-	var schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
-		labels: {},
-		properties: {
-			context: {},
-			properties: {
-				properties: {
-					'regex property': {
-						description: '',
-						pattern: 'Lawyer Morty|Evil Morty',
-						type: 'string',
-					},
-				},
-				required: ['regex property'],
-				type: 'object',
-			},
-			traits: {
-				type: 'object',
-			},
-		},
-		required: ['properties'],
-		type: 'object',
-		title: 'Custom Violation Handler',
-	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -441,24 +300,6 @@ function customViolationHandlerCalled(message, callback) {
 			event: 'Custom Violation Handler Called',
 		})
 	)
-	var schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
-		labels: {},
-		properties: {
-			context: {},
-			properties: {
-				type: 'object',
-			},
-			traits: {
-				type: 'object',
-			},
-		},
-		type: 'object',
-		title: 'Custom Violation Handler Called',
-	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -480,33 +321,6 @@ function defaultViolationHandler(message, callback) {
 			event: 'Default Violation Handler',
 		})
 	)
-	var schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
-		labels: {},
-		properties: {
-			context: {},
-			properties: {
-				properties: {
-					'regex property': {
-						description: '',
-						pattern: 'Lawyer Morty|Evil Morty',
-						type: 'string',
-					},
-				},
-				required: ['regex property'],
-				type: 'object',
-			},
-			traits: {
-				type: 'object',
-			},
-		},
-		required: ['properties'],
-		type: 'object',
-		title: 'Default Violation Handler',
-	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -528,24 +342,6 @@ function defaultViolationHandlerCalled(message, callback) {
 			event: 'Default Violation Handler Called',
 		})
 	)
-	var schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
-		labels: {},
-		properties: {
-			context: {},
-			properties: {
-				type: 'object',
-			},
-			traits: {
-				type: 'object',
-			},
-		},
-		type: 'object',
-		title: 'Default Violation Handler Called',
-	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -565,24 +361,6 @@ function emptyEvent(message, callback) {
 	var msg = withTypewriterContext(
 		__assign({ properties: {} }, message, { event: 'Empty Event' })
 	)
-	var schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
-		labels: {},
-		properties: {
-			context: {},
-			properties: {
-				type: 'object',
-			},
-			traits: {
-				type: 'object',
-			},
-		},
-		type: 'object',
-		title: 'Empty Event',
-	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -602,24 +380,6 @@ function eventCollided(message, callback) {
 	var msg = withTypewriterContext(
 		__assign({ properties: {} }, message, { event: 'Event Collided' })
 	)
-	var schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
-		labels: {},
-		properties: {
-			context: {},
-			properties: {
-				type: 'object',
-			},
-			traits: {
-				type: 'object',
-			},
-		},
-		type: 'object',
-		title: 'Event Collided',
-	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -641,57 +401,6 @@ function everyNullableOptionalType(message, callback) {
 			event: 'Every Nullable Optional Type',
 		})
 	)
-	var schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
-		properties: {
-			context: {},
-			properties: {
-				properties: {
-					'optional any': {
-						description: 'Optional any property',
-					},
-					'optional array': {
-						description: 'Optional array property',
-						type: ['array', 'null'],
-					},
-					'optional boolean': {
-						description: 'Optional boolean property',
-						type: ['boolean', 'null'],
-					},
-					'optional int': {
-						description: 'Optional integer property',
-						type: ['integer', 'null'],
-					},
-					'optional number': {
-						description: 'Optional number property',
-						type: ['number', 'null'],
-					},
-					'optional object': {
-						description: 'Optional object property',
-						properties: {},
-						required: [],
-						type: ['object', 'null'],
-					},
-					'optional string': {
-						description: 'Optional string property',
-						type: ['string', 'null'],
-					},
-					'optional string with regex': {
-						description: 'Optional string property with a regex conditional',
-						pattern: 'Evil Morty|Lawyer Morty',
-						type: ['string', 'null'],
-					},
-				},
-				type: 'object',
-			},
-			traits: {},
-		},
-		type: 'object',
-		title: 'Every Nullable Optional Type',
-	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -713,68 +422,6 @@ function everyNullableRequiredType(message, callback) {
 			event: 'Every Nullable Required Type',
 		})
 	)
-	var schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
-		properties: {
-			context: {},
-			properties: {
-				properties: {
-					'required any': {
-						description: 'Required any property',
-					},
-					'required array': {
-						description: 'Required array property',
-						type: ['array', 'null'],
-					},
-					'required boolean': {
-						description: 'Required boolean property',
-						type: ['boolean', 'null'],
-					},
-					'required int': {
-						description: 'Required integer property',
-						type: ['integer', 'null'],
-					},
-					'required number': {
-						description: 'Required number property',
-						type: ['number', 'null'],
-					},
-					'required object': {
-						description: 'Required object property',
-						properties: {},
-						required: [],
-						type: ['object', 'null'],
-					},
-					'required string': {
-						description: 'Required string property',
-						type: ['string', 'null'],
-					},
-					'required string with regex': {
-						description: 'Required string property with a regex conditional',
-						pattern: 'Evil Morty|Lawyer Morty',
-						type: ['string', 'null'],
-					},
-				},
-				required: [
-					'required any',
-					'required array',
-					'required boolean',
-					'required int',
-					'required number',
-					'required object',
-					'required string',
-					'required string with regex',
-				],
-				type: 'object',
-			},
-			traits: {},
-		},
-		required: ['properties'],
-		type: 'object',
-		title: 'Every Nullable Required Type',
-	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -794,58 +441,6 @@ function everyOptionalType(message, callback) {
 	var msg = withTypewriterContext(
 		__assign({ properties: {} }, message, { event: 'Every Optional Type' })
 	)
-	var schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
-		properties: {
-			context: {},
-			properties: {
-				properties: {
-					'optional any': {
-						description: 'Optional any property',
-					},
-					'optional array': {
-						description: 'Optional array property',
-						type: 'array',
-					},
-					'optional boolean': {
-						description: 'Optional boolean property',
-						type: 'boolean',
-					},
-					'optional int': {
-						description: 'Optional integer property',
-						type: 'integer',
-					},
-					'optional number': {
-						description: 'Optional number property',
-						type: 'number',
-					},
-					'optional object': {
-						description: 'Optional object property',
-						key: 'optional object',
-						properties: {},
-						required: [],
-						type: 'object',
-					},
-					'optional string': {
-						description: 'Optional string property',
-						type: 'string',
-					},
-					'optional string with regex': {
-						description: 'Optional string property with a regex conditional',
-						pattern: 'Evil Morty|Lawyer Morty',
-						type: 'string',
-					},
-				},
-				type: 'object',
-			},
-			traits: {},
-		},
-		type: 'object',
-		title: 'Every Optional Type',
-	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -865,69 +460,6 @@ function everyRequiredType(message, callback) {
 	var msg = withTypewriterContext(
 		__assign({ properties: {} }, message, { event: 'Every Required Type' })
 	)
-	var schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
-		properties: {
-			context: {},
-			properties: {
-				properties: {
-					'required any': {
-						description: 'Required any property',
-					},
-					'required array': {
-						description: 'Required array property',
-						type: 'array',
-					},
-					'required boolean': {
-						description: 'Required boolean property',
-						type: 'boolean',
-					},
-					'required int': {
-						description: 'Required integer property',
-						type: 'integer',
-					},
-					'required number': {
-						description: 'Required number property',
-						type: 'number',
-					},
-					'required object': {
-						description: 'Required object property',
-						key: 'required object',
-						properties: {},
-						required: [],
-						type: 'object',
-					},
-					'required string': {
-						description: 'Required string property',
-						type: 'string',
-					},
-					'required string with regex': {
-						description: 'Required string property with a regex conditional',
-						pattern: 'Evil Morty|Lawyer Morty',
-						type: 'string',
-					},
-				},
-				required: [
-					'required any',
-					'required array',
-					'required boolean',
-					'required int',
-					'required number',
-					'required object',
-					'required string',
-					'required string with regex',
-				],
-				type: 'object',
-			},
-			traits: {},
-		},
-		required: ['properties'],
-		type: 'object',
-		title: 'Every Required Type',
-	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -947,47 +479,6 @@ function nestedArrays(message, callback) {
 	var msg = withTypewriterContext(
 		__assign({ properties: {} }, message, { event: 'Nested Arrays' })
 	)
-	var schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
-		labels: {},
-		properties: {
-			context: {},
-			properties: {
-				properties: {
-					universeCharacters: {
-						description: 'All known characters from each universe.',
-						items: {
-							description: '',
-							items: {
-								description: '',
-								properties: {
-									name: {
-										description: "The character's name.",
-										type: 'string',
-									},
-								},
-								required: ['name'],
-								type: 'object',
-							},
-							type: 'array',
-						},
-						type: 'array',
-					},
-				},
-				required: ['universeCharacters'],
-				type: 'object',
-			},
-			traits: {
-				type: 'object',
-			},
-		},
-		required: ['properties'],
-		type: 'object',
-		title: 'Nested Arrays',
-	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -1007,61 +498,6 @@ function nestedObjects(message, callback) {
 	var msg = withTypewriterContext(
 		__assign({ properties: {} }, message, { event: 'Nested Objects' })
 	)
-	var schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
-		labels: {},
-		properties: {
-			context: {},
-			properties: {
-				properties: {
-					garage: {
-						description: '',
-						properties: {
-							tunnel: {
-								description: '',
-								properties: {
-									'subterranean lab': {
-										description: '',
-										properties: {
-											"jerry's memories": {
-												description: '',
-												type: 'array',
-											},
-											"morty's memories": {
-												description: '',
-												type: 'array',
-											},
-											"summer's contingency plan": {
-												description: '',
-												type: 'string',
-											},
-										},
-										required: [],
-										type: 'object',
-									},
-								},
-								required: ['subterranean lab'],
-								type: 'object',
-							},
-						},
-						required: ['tunnel'],
-						type: 'object',
-					},
-				},
-				required: ['garage'],
-				type: 'object',
-			},
-			traits: {
-				type: 'object',
-			},
-		},
-		required: ['properties'],
-		type: 'object',
-		title: 'Nested Objects',
-	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -1081,36 +517,6 @@ function propertiesCollided(message, callback) {
 	var msg = withTypewriterContext(
 		__assign({ properties: {} }, message, { event: 'Properties Collided' })
 	)
-	var schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
-		labels: {},
-		properties: {
-			context: {},
-			properties: {
-				properties: {
-					'Property Collided': {
-						description: '',
-						type: 'string',
-					},
-					property_collided: {
-						description: '',
-						type: 'string',
-					},
-				},
-				required: ['property_collided', 'Property Collided'],
-				type: 'object',
-			},
-			traits: {
-				type: 'object',
-			},
-		},
-		required: ['properties'],
-		type: 'object',
-		title: 'Properties Collided',
-	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -1132,52 +538,6 @@ function propertyObjectNameCollision1(message, callback) {
 			event: 'Property Object Name Collision #1',
 		})
 	)
-	var schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
-		labels: {},
-		properties: {
-			context: {},
-			properties: {
-				properties: {
-					universe: {
-						description: '',
-						properties: {
-							name: {
-								description: 'The common name of this universe.',
-								type: 'string',
-							},
-							occupants: {
-								description: 'The most important occupants in this universe.',
-								items: {
-									description: '',
-									properties: {
-										name: {
-											description: 'The name of this occupant.',
-											type: 'string',
-										},
-									},
-									required: ['name'],
-									type: 'object',
-								},
-								type: 'array',
-							},
-						},
-						required: ['name', 'occupants'],
-						type: 'object',
-					},
-				},
-				type: 'object',
-			},
-			traits: {
-				type: 'object',
-			},
-		},
-		type: 'object',
-		title: 'Property Object Name Collision #1',
-	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -1199,52 +559,6 @@ function propertyObjectNameCollision2(message, callback) {
 			event: 'Property Object Name Collision #2',
 		})
 	)
-	var schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
-		labels: {},
-		properties: {
-			context: {},
-			properties: {
-				properties: {
-					universe: {
-						description: '',
-						properties: {
-							name: {
-								description: 'The common name of this universe.',
-								type: 'string',
-							},
-							occupants: {
-								description: 'The most important occupants in this universe.',
-								items: {
-									description: '',
-									properties: {
-										name: {
-											description: 'The name of this occupant.',
-											type: 'string',
-										},
-									},
-									required: ['name'],
-									type: 'object',
-								},
-								type: 'array',
-							},
-						},
-						required: ['name', 'occupants'],
-						type: 'object',
-					},
-				},
-				type: 'object',
-			},
-			traits: {
-				type: 'object',
-			},
-		},
-		type: 'object',
-		title: 'Property Object Name Collision #2',
-	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -1264,32 +578,6 @@ function propertySanitized(message, callback) {
 	var msg = withTypewriterContext(
 		__assign({ properties: {} }, message, { event: 'Property Sanitized' })
 	)
-	var schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
-		labels: {},
-		properties: {
-			context: {},
-			properties: {
-				properties: {
-					'0000---terrible-property-name~!3': {
-						description: '',
-						type: 'string',
-					},
-				},
-				required: ['0000---terrible-property-name~!3'],
-				type: 'object',
-			},
-			traits: {
-				type: 'object',
-			},
-		},
-		required: ['properties'],
-		type: 'object',
-		title: 'Property Sanitized',
-	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -1309,88 +597,6 @@ function simpleArrayTypes(message, callback) {
 	var msg = withTypewriterContext(
 		__assign({ properties: {} }, message, { event: 'Simple Array Types' })
 	)
-	var schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
-		labels: {},
-		properties: {
-			context: {},
-			properties: {
-				properties: {
-					any: {
-						description: '',
-						items: {
-							description: '',
-						},
-						type: 'array',
-					},
-					boolean: {
-						description: '',
-						items: {
-							description: '',
-							type: 'boolean',
-						},
-						type: 'array',
-					},
-					integer: {
-						description: '',
-						items: {
-							description: '',
-							type: 'integer',
-						},
-						type: 'array',
-					},
-					nullable: {
-						description: '',
-						items: {
-							description: '',
-							type: ['string', 'null'],
-						},
-						type: 'array',
-					},
-					number: {
-						description: '',
-						items: {
-							description: '',
-							type: 'number',
-						},
-						type: 'array',
-					},
-					object: {
-						description: '',
-						items: {
-							description: '',
-							properties: {
-								name: {
-									description: '',
-									type: 'string',
-								},
-							},
-							required: [],
-							type: 'object',
-						},
-						type: 'array',
-					},
-					string: {
-						description: '',
-						items: {
-							description: '',
-							type: 'string',
-						},
-						type: 'array',
-					},
-				},
-				type: 'object',
-			},
-			traits: {
-				type: 'object',
-			},
-		},
-		type: 'object',
-		title: 'Simple Array Types',
-	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -1410,32 +616,6 @@ function unionType(message, callback) {
 	var msg = withTypewriterContext(
 		__assign({ properties: {} }, message, { event: 'Union Type' })
 	)
-	var schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
-		labels: {},
-		properties: {
-			context: {},
-			properties: {
-				properties: {
-					universe_name: {
-						description: '',
-						type: ['string', 'null', 'integer'],
-					},
-				},
-				required: ['universe_name'],
-				type: 'object',
-			},
-			traits: {
-				type: 'object',
-			},
-		},
-		required: ['properties'],
-		type: 'object',
-		title: 'Union Type',
-	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -1455,24 +635,6 @@ function eventCollided1(message, callback) {
 	var msg = withTypewriterContext(
 		__assign({ properties: {} }, message, { event: 'event_collided' })
 	)
-	var schema = {
-		$schema: 'http://json-schema.org/draft-07/schema#',
-		labels: {},
-		properties: {
-			context: {},
-			properties: {
-				type: 'object',
-			},
-			traits: {
-				type: 'object',
-			},
-		},
-		type: 'object',
-		title: 'event_collided',
-	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)

@@ -29,7 +29,6 @@ export const defaultValidationErrorHandler = (message, violations) => {
 		2
 	)
 	console.warn(msg)
-	return false
 }
 let onViolation = defaultValidationErrorHandler
 let analytics = () => {
@@ -47,7 +46,6 @@ let analytics = () => {
  * 		if the message should still be sent to Segment. This handler does not fire in production mode, because it requires
  * 		inlining the full JSON Schema spec for each event in your Tracking Plan. By default, it will throw errors if NODE_ENV
  * 		= "test" so that tests will fail if a message does not match the spec. Otherwise, errors will be logged to stderr.
- * 		Also by default, messages that generate Violations will be dropped.
  */
 export function setTypewriterOptions(options) {
 	analytics = options.analytics
@@ -58,14 +56,15 @@ export function setTypewriterOptions(options) {
 /**
  * Validates a message against a JSON Schema using Ajv. If the message
  * is invalid, the `onViolation` handler will be called.
- * Returns true if the message should be sent on to Segment, and false otherwise.
+ * Returns a boolean indicating if the message should be sent on to Segment.
  */
 function matchesSchema(message, schema) {
 	const ajv = new Ajv({ schemaId: 'auto', allErrors: true, verbose: true })
 	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
 	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
 	if (!ajv.validate(schema, message) && ajv.errors) {
-		return onViolation(message, ajv.errors)
+		onViolation(message, ajv.errors)
+		return false
 	}
 	return true
 }

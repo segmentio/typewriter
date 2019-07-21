@@ -245,7 +245,7 @@ export interface UnionType {
 export type ViolationHandler = (
 	message: Record<string, any>,
 	violations: Ajv.ErrorObject[]
-) => boolean
+) => void
 
 export const defaultValidationErrorHandler: ViolationHandler = (
 	message,
@@ -266,8 +266,6 @@ export const defaultValidationErrorHandler: ViolationHandler = (
 	)
 
 	console.warn(msg)
-
-	return false
 }
 
 let onViolation = defaultValidationErrorHandler
@@ -291,7 +289,6 @@ export interface TypewriterOptions {
 	 *
 	 * By default, it will throw errors if NODE_ENV = "test" so that tests will fail
 	 * if a message does not match the spec. Otherwise, errors will be logged to stderr.
-	 * Also by default, messages that generate Violations will be dropped.
 	 */
 	onViolation?: ViolationHandler
 }
@@ -309,7 +306,7 @@ export function setTypewriterOptions(options: TypewriterOptions) {
 /**
  * Validates a message against a JSON Schema using Ajv. If the message
  * is invalid, the `onViolation` handler will be called.
- * Returns true if the message should be sent on to Segment, and false otherwise.
+ * Returns a boolean indicating if the message should be sent on to Segment.
  */
 function matchesSchema(message: Record<string, any>, schema: object): boolean {
 	const ajv = new Ajv({ schemaId: 'auto', allErrors: true, verbose: true })
@@ -317,7 +314,8 @@ function matchesSchema(message: Record<string, any>, schema: object): boolean {
 	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
 
 	if (!ajv.validate(schema, message) && ajv.errors) {
-		return onViolation(message, ajv.errors)
+		onViolation(message, ajv.errors)
+		return false
 	}
 
 	return true
