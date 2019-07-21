@@ -66,6 +66,9 @@ describe(`sdk:${sdk}`, () => {
 			beforeAll(async () => {
 				const resp = await fetch(`${SIDECAR_ADDRESS}/messages`)
 				events.push(...(await resp.json()))
+				if (process.env.CI) {
+					console.log(JSON.stringify(events, undefined, 4))
+				}
 			})
 
 			test('at least one event was received', () => {
