@@ -21,8 +21,7 @@ export const defaultValidationErrorHandler = (message, violations) => {
 			description:
 				`You made an analytics call (${
 					message.event
-				}) using Typewriter that doesn't match the ` +
-				'Tracking Plan spec. Your analytics call will continue to fire in production.',
+				}) using Typewriter that doesn't match the ` + 'Tracking Plan spec.',
 			errors: violations,
 		},
 		undefined,
@@ -56,17 +55,14 @@ export function setTypewriterOptions(options) {
 /**
  * Validates a message against a JSON Schema using Ajv. If the message
  * is invalid, the `onViolation` handler will be called.
- * Returns a boolean indicating if the message should be sent on to Segment.
  */
-function matchesSchema(message, schema) {
+function validateAgainstSchema(message, schema) {
 	const ajv = new Ajv({ schemaId: 'auto', allErrors: true, verbose: true })
 	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
 	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
 	if (!ajv.validate(schema, message) && ajv.errors) {
 		onViolation(message, ajv.errors)
-		return false
 	}
-	return true
 }
 /**
  * Helper to attach metadata on Typewriter to outbound requests.
@@ -244,9 +240,7 @@ export function I42TerribleEventName3(props, options, callback) {
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	const a = analytics()
 	if (a) {
 		a.track(
@@ -286,9 +280,7 @@ export function analyticsInstanceMissing(props, options, callback) {
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	const a = analytics()
 	if (a) {
 		a.track(
@@ -328,9 +320,7 @@ export function analyticsInstanceMissingThrewError(props, options, callback) {
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	const a = analytics()
 	if (a) {
 		a.track(
@@ -379,9 +369,7 @@ export function customViolationHandler(props, options, callback) {
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	const a = analytics()
 	if (a) {
 		a.track(
@@ -421,9 +409,7 @@ export function customViolationHandlerCalled(props, options, callback) {
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	const a = analytics()
 	if (a) {
 		a.track(
@@ -472,9 +458,7 @@ export function defaultViolationHandler(props, options, callback) {
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	const a = analytics()
 	if (a) {
 		a.track(
@@ -514,9 +498,7 @@ export function defaultViolationHandlerCalled(props, options, callback) {
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	const a = analytics()
 	if (a) {
 		a.track(
@@ -556,9 +538,7 @@ export function emptyEvent(props, options, callback) {
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	const a = analytics()
 	if (a) {
 		a.track(
@@ -598,9 +578,7 @@ export function eventCollided(props, options, callback) {
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	const a = analytics()
 	if (a) {
 		a.track(
@@ -673,9 +651,7 @@ export function everyNullableOptionalType(props, options, callback) {
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	const a = analytics()
 	if (a) {
 		a.track(
@@ -759,9 +735,7 @@ export function everyNullableRequiredType(props, options, callback) {
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	const a = analytics()
 	if (a) {
 		a.track(
@@ -835,9 +809,7 @@ export function everyOptionalType(props, options, callback) {
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	const a = analytics()
 	if (a) {
 		a.track(
@@ -922,9 +894,7 @@ export function everyRequiredType(props, options, callback) {
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	const a = analytics()
 	if (a) {
 		a.track(
@@ -987,9 +957,7 @@ export function nestedArrays(props, options, callback) {
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	const a = analytics()
 	if (a) {
 		a.track(
@@ -1066,9 +1034,7 @@ export function nestedObjects(props, options, callback) {
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	const a = analytics()
 	if (a) {
 		a.track(
@@ -1120,9 +1086,7 @@ export function propertiesCollided(props, options, callback) {
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	const a = analytics()
 	if (a) {
 		a.track(
@@ -1190,9 +1154,7 @@ export function propertyObjectNameCollision1(props, options, callback) {
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	const a = analytics()
 	if (a) {
 		a.track(
@@ -1260,9 +1222,7 @@ export function propertyObjectNameCollision2(props, options, callback) {
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	const a = analytics()
 	if (a) {
 		a.track(
@@ -1310,9 +1270,7 @@ export function propertySanitized(props, options, callback) {
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	const a = analytics()
 	if (a) {
 		a.track(
@@ -1416,9 +1374,7 @@ export function simpleArrayTypes(props, options, callback) {
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	const a = analytics()
 	if (a) {
 		a.track(
@@ -1466,9 +1422,7 @@ export function unionType(props, options, callback) {
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	const a = analytics()
 	if (a) {
 		a.track('Union Type', props || {}, withTypewriterContext(options), callback)
@@ -1503,9 +1457,7 @@ export function eventCollided1(props, options, callback) {
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	const a = analytics()
 	if (a) {
 		a.track(

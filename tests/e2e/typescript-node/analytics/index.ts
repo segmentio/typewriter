@@ -257,8 +257,7 @@ export const defaultValidationErrorHandler: ViolationHandler = (
 			description:
 				`You made an analytics call (${
 					message.event
-				}) using Typewriter that doesn't match the ` +
-				'Tracking Plan spec. Your analytics call will continue to fire in production.',
+				}) using Typewriter that doesn't match the ` + 'Tracking Plan spec.',
 			errors: violations,
 		},
 		undefined,
@@ -321,22 +320,18 @@ export function setTypewriterOptions(options: TypewriterOptions) {
 /**
  * Validates a message against a JSON Schema using Ajv. If the message
  * is invalid, the `onViolation` handler will be called.
- * Returns a boolean indicating if the message should be sent on to Segment.
  */
-function matchesSchema(
+function validateAgainstSchema(
 	message: Segment.TrackMessage<Record<string, any>>,
 	schema: object
-): boolean {
+) {
 	const ajv = new Ajv({ schemaId: 'auto', allErrors: true, verbose: true })
 	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
 	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
 
 	if (!ajv.validate(schema, message) && ajv.errors) {
 		onViolation(message, ajv.errors)
-		return false
 	}
-
-	return true
 }
 
 /**
@@ -386,9 +381,7 @@ export function I42TerribleEventName3(
 		type: 'object',
 		title: '42_--terrible==\\"event\'++name~!3',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 
 	const a = analytics()
 	if (a) {
@@ -425,9 +418,7 @@ export function analyticsInstanceMissing(
 		type: 'object',
 		title: 'Analytics Instance Missing',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 
 	const a = analytics()
 	if (a) {
@@ -464,9 +455,7 @@ export function analyticsInstanceMissingThrewError(
 		type: 'object',
 		title: 'Analytics Instance Missing Threw Error',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 
 	const a = analytics()
 	if (a) {
@@ -512,9 +501,7 @@ export function customViolationHandler(
 		type: 'object',
 		title: 'Custom Violation Handler',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 
 	const a = analytics()
 	if (a) {
@@ -551,9 +538,7 @@ export function customViolationHandlerCalled(
 		type: 'object',
 		title: 'Custom Violation Handler Called',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 
 	const a = analytics()
 	if (a) {
@@ -599,9 +584,7 @@ export function defaultViolationHandler(
 		type: 'object',
 		title: 'Default Violation Handler',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 
 	const a = analytics()
 	if (a) {
@@ -638,9 +621,7 @@ export function defaultViolationHandlerCalled(
 		type: 'object',
 		title: 'Default Violation Handler Called',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 
 	const a = analytics()
 	if (a) {
@@ -677,9 +658,7 @@ export function emptyEvent(
 		type: 'object',
 		title: 'Empty Event',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 
 	const a = analytics()
 	if (a) {
@@ -716,9 +695,7 @@ export function eventCollided(
 		type: 'object',
 		title: 'Event Collided',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 
 	const a = analytics()
 	if (a) {
@@ -788,9 +765,7 @@ export function everyNullableOptionalType(
 		type: 'object',
 		title: 'Every Nullable Optional Type',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 
 	const a = analytics()
 	if (a) {
@@ -871,9 +846,7 @@ export function everyNullableRequiredType(
 		type: 'object',
 		title: 'Every Nullable Required Type',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 
 	const a = analytics()
 	if (a) {
@@ -944,9 +917,7 @@ export function everyOptionalType(
 		type: 'object',
 		title: 'Every Optional Type',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 
 	const a = analytics()
 	if (a) {
@@ -1028,9 +999,7 @@ export function everyRequiredType(
 		type: 'object',
 		title: 'Every Required Type',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 
 	const a = analytics()
 	if (a) {
@@ -1090,9 +1059,7 @@ export function nestedArrays(
 		type: 'object',
 		title: 'Nested Arrays',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 
 	const a = analytics()
 	if (a) {
@@ -1166,9 +1133,7 @@ export function nestedObjects(
 		type: 'object',
 		title: 'Nested Objects',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 
 	const a = analytics()
 	if (a) {
@@ -1217,9 +1182,7 @@ export function propertiesCollided(
 		type: 'object',
 		title: 'Properties Collided',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 
 	const a = analytics()
 	if (a) {
@@ -1284,9 +1247,7 @@ export function propertyObjectNameCollision1(
 		type: 'object',
 		title: 'Property Object Name Collision #1',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 
 	const a = analytics()
 	if (a) {
@@ -1351,9 +1312,7 @@ export function propertyObjectNameCollision2(
 		type: 'object',
 		title: 'Property Object Name Collision #2',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 
 	const a = analytics()
 	if (a) {
@@ -1398,9 +1357,7 @@ export function propertySanitized(
 		type: 'object',
 		title: 'Property Sanitized',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 
 	const a = analytics()
 	if (a) {
@@ -1501,9 +1458,7 @@ export function simpleArrayTypes(
 		type: 'object',
 		title: 'Simple Array Types',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 
 	const a = analytics()
 	if (a) {
@@ -1548,9 +1503,7 @@ export function unionType(
 		type: 'object',
 		title: 'Union Type',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 
 	const a = analytics()
 	if (a) {
@@ -1587,9 +1540,7 @@ export function eventCollided1(
 		type: 'object',
 		title: 'event_collided',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 
 	const a = analytics()
 	if (a) {

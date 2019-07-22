@@ -2,6 +2,9 @@ import { JSONSchema7 } from 'json-schema'
 import { Options } from 'src/generators/options'
 
 export interface Arguments {
+	/** Any commands passed in to a yargs CLI. */
+	_: string[]
+	/** An optional path to a typewriter.yml (or directory with a typewriter.yml). **/
 	config: string | undefined
 }
 

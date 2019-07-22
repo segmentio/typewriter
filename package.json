@@ -10,7 +10,7 @@
   "main": "./dist/cli/index.js",
   "bin": "./dist/cli/index.js",
   "scripts": {
-    "dev": "ts-node ./src/cli",
+    "dev": "IS_DEVELOPMENT=true ts-node ./src/cli",
     "build": "rm -rf dist && tsc && copyfiles -u 1 \"src/**/*.hbs\" \"src/cli/typewriter.yml.schema.json\" dist/",
     "build-example": "make build-example",
     "test": "jest --testPathIgnorePatterns 'tests/e2e/.*'",

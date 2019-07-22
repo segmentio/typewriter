@@ -56,7 +56,7 @@ export const defaultValidationErrorHandler: ViolationHandler = (message, violati
 		type: 'Typewriter JSON Schema Validation Error',
 		description:
 			`You made an analytics call (${message.event}) using Typewriter that doesn't match the ` +
-			'Tracking Plan spec. Your analytics call will continue to fire in production.',
+			'Tracking Plan spec.',
 		errors: violations,
 	}, undefined, 2)
 
@@ -146,22 +146,18 @@ export function setTypewriterOptions(options: TypewriterOptions) {
 /**
 	* Validates a message against a JSON Schema using Ajv. If the message
 	* is invalid, the `onViolation` handler will be called.
-	* Returns a boolean indicating if the message should be sent on to Segment.
 	*/
-function matchesSchema(
+function validateAgainstSchema(
 	message: {{#if isBrowser}}Record<string, any>{{else}}Segment.TrackMessage<Record<string, any>>{{/if}},
 	schema: object
-): boolean {
+) {
 	const ajv = new Ajv({ schemaId: 'auto', allErrors: true, verbose: true })
 	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
 	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
 
 	if (!ajv.validate(schema, message) && ajv.errors) {
 		onViolation(message, ajv.errors)
-		return false
 	}
-
-	return true
 }
 {{/if}}
 
@@ -189,7 +185,7 @@ function withTypewriterContext{{#unless isBrowser}}<P, T extends Segment.TrackMe
  * See: https://segment.com/docs/spec/track/
  *
  * @typedef TrackMessage<PropertiesType>
- * @property {string | number} userId - The ID for this user in your database.
+ * @property {string | number} [userId] - The ID for this user in your database.
  * @property {string | number} [anonymousId] - An ID to associated with the user when you don’t know who they are.
  * @property {PropertiesType} [properties] - A dictionary of properties for the event.
  * @property {Date} [timestamp] - A Javascript date object representing when the track took place. If the track
@@ -242,9 +238,7 @@ export function {{functionName}}(
 		properties: props || {},
 		options,
 	}
-	if (!matchesSchema(message, schema)) {
-		return
-	}
+	validateAgainstSchema(message, schema)
 	{{/if}}
 
 	const a = analytics()
@@ -284,9 +278,7 @@ export function {{functionName}}(
 
 	{{#if ../isDevelopment}}
 	const schema = {{rawJSONSchema}}	
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	{{/if}}
 
 	const a = analytics()

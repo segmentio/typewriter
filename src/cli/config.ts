@@ -22,8 +22,7 @@ async function getPath(path: string): Promise<string> {
 	return resolve(path, CONFIG_NAME)
 }
 
-export async function assertGetConfig(path = './'): Promise<Config> {
-	const cfg = await getConfig(path)
+export function assertConfig(cfg: Config | undefined) {
 	if (cfg) {
 		return cfg
 	}

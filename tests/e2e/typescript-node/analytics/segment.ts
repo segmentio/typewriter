@@ -11,7 +11,7 @@ export interface TrackMessage<PropertiesType>
 	extends Options,
 		Record<string, any> {
 	/** The ID for this user in your database. */
-	userId: string | number
+	userId?: string | number
 	/** An ID to associated with the user when you don’t know who they are. */
 	anonymousId?: string | number
 	/** A dictionary of properties for the event. */

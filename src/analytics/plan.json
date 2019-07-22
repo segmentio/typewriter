@@ -13,10 +13,61 @@
           "properties": {
             "context": {},
             "properties": {
+              "properties": {
+                "client": {
+                  "description": "Metadata about the client that typewriter is generating.",
+                  "properties": {
+                    "language": {
+                      "description": "",
+                      "type": "string"
+                    },
+                    "sdk": {
+                      "description": "",
+                      "type": "string"
+                    }
+                  },
+                  "required": [],
+                  "type": "object"
+                },
+                "command": {
+                  "description": "The command name that was started.",
+                  "type": "string"
+                },
+                "duration": {
+                  "description": "The time taken to execute this command, in ms.",
+                  "type": "integer"
+                },
+                "is_ci": {
+                  "description": "Whether or not typewriter is currently running in a CI environment or not.",
+                  "type": "boolean"
+                },
+                "token_method": {
+                  "description": "Where the API token was fetched from.",
+                  "pattern": "tokenCommand|env|file",
+                  "type": "string"
+                },
+                "tracking_plan": {
+                  "description": "Metadata about the Tracking Plan that typewriter was fired on.",
+                  "properties": {
+                    "id": {
+                      "description": "",
+                      "type": "string"
+                    },
+                    "workspace_slug": {
+                      "description": "",
+                      "type": "string"
+                    }
+                  },
+                  "required": [],
+                  "type": "object"
+                }
+              },
+              "required": ["command", "duration"],
               "type": "object"
             },
             "traits": {}
           },
+          "required": ["properties"],
           "type": "object"
         },
         "version": 1
@@ -30,10 +81,61 @@
           "properties": {
             "context": {},
             "properties": {
+              "properties": {
+                "client": {
+                  "description": "Metadata about the client that typewriter is generating.",
+                  "properties": {
+                    "language": {
+                      "description": "",
+                      "type": "string"
+                    },
+                    "sdk": {
+                      "description": "",
+                      "type": "string"
+                    }
+                  },
+                  "required": [],
+                  "type": "object"
+                },
+                "error": {
+                  "description": "The full error itself.",
+                  "type": "object"
+                },
+                "error_string": {
+                  "description": "The minimal error string itself.",
+                  "type": "string"
+                },
+                "is_ci": {
+                  "description": "Whether or not typewriter is currently running in a CI environment or not.",
+                  "type": "boolean"
+                },
+                "token_method": {
+                  "description": "Where the API token was fetched from.",
+                  "pattern": "tokenCommand|env|file",
+                  "type": "string"
+                },
+                "tracking_plan": {
+                  "description": "Metadata about the Tracking Plan that typewriter was fired on.",
+                  "properties": {
+                    "id": {
+                      "description": "",
+                      "type": "string"
+                    },
+                    "workspace_slug": {
+                      "description": "",
+                      "type": "string"
+                    }
+                  },
+                  "required": [],
+                  "type": "object"
+                }
+              },
+              "required": ["error", "error_string"],
               "type": "object"
             },
             "traits": {}
           },
+          "required": ["properties"],
           "type": "object"
         },
         "version": 1
@@ -42,5 +144,5 @@
     "group_traits": [],
     "identify_traits": []
   },
-  "update_time": "2019-05-17T15:21:07.000Z"
+  "update_time": "2019-07-22T00:38:20.000Z"
 }

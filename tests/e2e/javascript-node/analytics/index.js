@@ -45,7 +45,7 @@ exports.defaultValidationErrorHandler = function(message, violations) {
 				'You made an analytics call (' +
 				message.event +
 				") using Typewriter that doesn't match the " +
-				'Tracking Plan spec. Your analytics call will continue to fire in production.',
+				'Tracking Plan spec.',
 			errors: violations,
 		},
 		undefined,
@@ -90,9 +90,8 @@ exports.setTypewriterOptions = setTypewriterOptions
 /**
  * Validates a message against a JSON Schema using Ajv. If the message
  * is invalid, the `onViolation` handler will be called.
- * Returns a boolean indicating if the message should be sent on to Segment.
  */
-function matchesSchema(message, schema) {
+function validateAgainstSchema(message, schema) {
 	var ajv = new ajv_1.default({
 		schemaId: 'auto',
 		allErrors: true,
@@ -102,9 +101,7 @@ function matchesSchema(message, schema) {
 	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
 	if (!ajv.validate(schema, message) && ajv.errors) {
 		onViolation(message, ajv.errors)
-		return false
 	}
-	return true
 }
 /**
  * Helper to attach metadata on Typewriter to outbound requests.
@@ -125,7 +122,7 @@ function withTypewriterContext(message) {
  * See: https://segment.com/docs/spec/track/
  *
  * @typedef TrackMessage<PropertiesType>
- * @property {string | number} userId - The ID for this user in your database.
+ * @property {string | number} [userId] - The ID for this user in your database.
  * @property {string | number} [anonymousId] - An ID to associated with the user when you don’t know who they are.
  * @property {PropertiesType} [properties] - A dictionary of properties for the event.
  * @property {Date} [timestamp] - A Javascript date object representing when the track took place. If the track
@@ -292,9 +289,7 @@ function I42TerribleEventName3(message, callback) {
 		type: 'object',
 		title: '42_--terrible==\\"event\'++name~!3',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -331,9 +326,7 @@ function analyticsInstanceMissing(message, callback) {
 		type: 'object',
 		title: 'Analytics Instance Missing',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -370,9 +363,7 @@ function analyticsInstanceMissingThrewError(message, callback) {
 		type: 'object',
 		title: 'Analytics Instance Missing Threw Error',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -416,9 +407,7 @@ function customViolationHandler(message, callback) {
 		type: 'object',
 		title: 'Custom Violation Handler',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -455,9 +444,7 @@ function customViolationHandlerCalled(message, callback) {
 		type: 'object',
 		title: 'Custom Violation Handler Called',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -503,9 +490,7 @@ function defaultViolationHandler(message, callback) {
 		type: 'object',
 		title: 'Default Violation Handler',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -542,9 +527,7 @@ function defaultViolationHandlerCalled(message, callback) {
 		type: 'object',
 		title: 'Default Violation Handler Called',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -579,9 +562,7 @@ function emptyEvent(message, callback) {
 		type: 'object',
 		title: 'Empty Event',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -616,9 +597,7 @@ function eventCollided(message, callback) {
 		type: 'object',
 		title: 'Event Collided',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -688,9 +667,7 @@ function everyNullableOptionalType(message, callback) {
 		type: 'object',
 		title: 'Every Nullable Optional Type',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -771,9 +748,7 @@ function everyNullableRequiredType(message, callback) {
 		type: 'object',
 		title: 'Every Nullable Required Type',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -842,9 +817,7 @@ function everyOptionalType(message, callback) {
 		type: 'object',
 		title: 'Every Optional Type',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -924,9 +897,7 @@ function everyRequiredType(message, callback) {
 		type: 'object',
 		title: 'Every Required Type',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -984,9 +955,7 @@ function nestedArrays(message, callback) {
 		type: 'object',
 		title: 'Nested Arrays',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -1058,9 +1027,7 @@ function nestedObjects(message, callback) {
 		type: 'object',
 		title: 'Nested Objects',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -1107,9 +1074,7 @@ function propertiesCollided(message, callback) {
 		type: 'object',
 		title: 'Properties Collided',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -1174,9 +1139,7 @@ function propertyObjectNameCollision1(message, callback) {
 		type: 'object',
 		title: 'Property Object Name Collision #1',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -1241,9 +1204,7 @@ function propertyObjectNameCollision2(message, callback) {
 		type: 'object',
 		title: 'Property Object Name Collision #2',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -1286,9 +1247,7 @@ function propertySanitized(message, callback) {
 		type: 'object',
 		title: 'Property Sanitized',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -1387,9 +1346,7 @@ function simpleArrayTypes(message, callback) {
 		type: 'object',
 		title: 'Simple Array Types',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -1432,9 +1389,7 @@ function unionType(message, callback) {
 		type: 'object',
 		title: 'Union Type',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
@@ -1469,9 +1424,7 @@ function eventCollided1(message, callback) {
 		type: 'object',
 		title: 'event_collided',
 	}
-	if (!matchesSchema(msg, schema)) {
-		return
-	}
+	validateAgainstSchema(msg, schema)
 	var a = analytics()
 	if (a) {
 		a.track(msg, callback)
