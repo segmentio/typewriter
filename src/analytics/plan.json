@@ -74,7 +74,7 @@
       },
       {
         "description": "Fired when an error is encountered.",
-        "name": "Error",
+        "name": "Error Fired",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
           "labels": {},
@@ -96,6 +96,10 @@
                   },
                   "required": [],
                   "type": "object"
+                },
+                "command": {
+                  "description": "The command name that was started.",
+                  "type": "string"
                 },
                 "error": {
                   "description": "The full error itself.",
@@ -128,9 +132,13 @@
                   },
                   "required": [],
                   "type": "object"
+                },
+                "unexpected": {
+                  "description": "Whether or not this error was an expected (and therefore, properly handled) error.",
+                  "type": "boolean"
                 }
               },
-              "required": ["error", "error_string"],
+              "required": ["error", "error_string", "unexpected"],
               "type": "object"
             },
             "traits": {}
@@ -144,5 +152,5 @@
     "group_traits": [],
     "identify_traits": []
   },
-  "update_time": "2019-07-22T00:38:20.000Z"
+  "update_time": "2019-07-22T05:12:58.000Z"
 }

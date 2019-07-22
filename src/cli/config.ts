@@ -121,9 +121,30 @@ export async function assertHasToken(cfg: Partial<Config> | undefined): Promise<
 //   3. cat ~/.typewriter.yml
 // Returns undefined if no token can be found.
 export async function getToken(cfg: Partial<Config> | undefined): Promise<string | undefined> {
+	const { token } = await getTokenWithReason(cfg)
+	return token
+}
+
+// Only resolve tokens (specifically, tokenCommands) once per CLI invocation.
+let tokenCache: { token: string | undefined; reason: string | undefined } = {
+	token: undefined,
+	reason: undefined,
+}
+export async function getTokenWithReason(
+	cfg: Partial<Config> | undefined
+): Promise<typeof tokenCache> {
+	// Check the cache first.
+	if (tokenCache.token) {
+		return tokenCache
+	}
+
 	// Attempt to read a token from the shell environment.
 	if (process.env.TYPEWRITER_TOKEN) {
-		return process.env.TYPEWRITER_TOKEN
+		tokenCache = {
+			token: process.env.TYPEWRITER_TOKEN,
+			reason: 'env',
+		}
+		return tokenCache
 	}
 
 	// Attempt to read a token by executing the tokenCommand from the typewriter.yml config file.
@@ -137,7 +158,11 @@ export async function getToken(cfg: Partial<Config> | undefined): Promise<string
 		} else {
 			const token = stdout.trim()
 			if (token) {
-				return token
+				tokenCache = {
+					token,
+					reason: 'tokenCommand',
+				}
+				return tokenCache
 			}
 		}
 	}
@@ -148,13 +173,20 @@ export async function getToken(cfg: Partial<Config> | undefined): Promise<string
 		const path = resolve(homedir(), '.typewriter')
 		const token = await readFile(path, 'utf-8')
 		if (token) {
-			return token
+			tokenCache = {
+				token,
+				reason: 'file',
+			}
+			return tokenCache
 		}
 	} catch (e) {
 		// Ignore errors if ~/.typewriter doesn't exist
 	}
 
-	return undefined
+	return {
+		token: undefined,
+		reason: undefined,
+	}
 }
 
 // storeToken writes a token to ~/.typewriter.
