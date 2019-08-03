@@ -204,14 +204,19 @@ export async function update(args: Arguments, cfg: Config | undefined) {
 
 	// TODO(colinking): support fine-grained event updates, by event name and by label.
 	// For now, we will just support updating the full tracking plan.
-	for (var config of cfg.trackingPlans) {
-		const plan = await fetchTrackingPlan({
-			id: config.id,
-			workspaceSlug: config.workspaceSlug,
-			token,
-		})
+	try {
+		for (var config of cfg.trackingPlans) {
+			const plan = await fetchTrackingPlan({
+				id: config.id,
+				workspaceSlug: config.workspaceSlug,
+				token,
+			})
 
-		await writeTrackingPlan(args, plan, config)
+			await writeTrackingPlan(args, plan, config)
+		}
+	} catch (err) {
+		// TODO: more reliable network connection detection
+		console.warn('Skipping update: no network connection')
 	}
 
 	console.log("Running 'npx typewriter@next' to re-build your typewriter client...")
