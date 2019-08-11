@@ -6625,10 +6625,10 @@ typescript@^3.4.5:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.4.5.tgz#2d2618d10bb566572b8d7aad5180d84257d70a99"
   integrity sha512-YycBxUb49UUhdNMU5aJ7z5Ej2XGmaIBL0x34vZ82fn3hGvD+bgrMrVDpatgz2f7YxUMJxMkbWxJZeAvDxVe7Vw==
 
-typewriter@^7.0.0-27:
-  version "7.0.0-27"
-  resolved "https://registry.yarnpkg.com/typewriter/-/typewriter-7.0.0-27.tgz#5827a90df8ea6d9663c36d4f7cf6e226a5594b86"
-  integrity sha512-J1O9fLXxF+b1YqA3f0rDvwhujGCpqfZFYG9DcOjHIRHrMHByKmJ2BkBk+cTF2zzXB5VRcU11mZ8frVRwuAyq7w==
+typewriter@^7.0.0-30:
+  version "7.0.0-30"
+  resolved "https://registry.yarnpkg.com/typewriter/-/typewriter-7.0.0-30.tgz#4be1cd00395e3db221cbe9b6d24794dd68a242c6"
+  integrity sha512-HM8pffaZ44OrdKEYoIdhe9KKbH0ebXJKxlztV3aiikwqsWBbsDJXtgfc9PSoS/A0N1D+cL5TQuO4ZXBI5dE9xw==
   dependencies:
     ajv "^6.10.0"
     analytics-node "^3.3.0"

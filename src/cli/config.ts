@@ -22,14 +22,6 @@ async function getPath(path: string): Promise<string> {
 	return resolve(path, CONFIG_NAME)
 }
 
-export function assertConfig(cfg: Config | undefined) {
-	if (cfg) {
-		return cfg
-	}
-
-	throw new Error('Unable to find typewriter.yml. Try `typewriter init`')
-}
-
 // getConfig looks for, and reads, a typewriter.yml configuration file.
 // If it does not exist, it will return undefined. If the configuration
 // if invalid, an Error will be thrown.
