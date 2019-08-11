@@ -255,9 +255,8 @@ export const defaultValidationErrorHandler: ViolationHandler = (
 		{
 			type: 'Typewriter JSON Schema Validation Error',
 			description:
-				`You made an analytics call (${
-					message.event
-				}) using Typewriter that doesn't match the ` + 'Tracking Plan spec.',
+				`You made an analytics call (${message.event}) using Typewriter that doesn't match the ` +
+				'Tracking Plan spec.',
 			errors: violations,
 		},
 		undefined,
@@ -354,7 +353,7 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
 }
 
 /**
- * Fires a '42_--terrible==\\"event\'++name~!3' track call.
+ * Validates that clients properly sanitize event names.
  */
 export function I42TerribleEventName3(
 	message: Segment.TrackMessage<Record<string, any>>,
@@ -380,6 +379,7 @@ export function I42TerribleEventName3(
 		},
 		type: 'object',
 		title: '42_--terrible==\\"event\'++name~!3',
+		description: 'Validates that clients properly sanitize event names.',
 	}
 	validateAgainstSchema(msg, schema)
 
@@ -391,7 +391,7 @@ export function I42TerribleEventName3(
 	}
 }
 /**
- * Fires a 'Analytics Instance Missing' track call.
+ * Fired before an analytics instance has been set, which should throw an error.
  */
 export function analyticsInstanceMissing(
 	message: Segment.TrackMessage<Record<string, any>>,
@@ -417,6 +417,8 @@ export function analyticsInstanceMissing(
 		},
 		type: 'object',
 		title: 'Analytics Instance Missing',
+		description:
+			'Fired before an analytics instance has been set, which should throw an error.',
 	}
 	validateAgainstSchema(msg, schema)
 
@@ -428,7 +430,7 @@ export function analyticsInstanceMissing(
 	}
 }
 /**
- * Fires a 'Analytics Instance Missing Threw Error' track call.
+ * Fired after a client throws an "Analytics Instance Missing" error to mark the test as successful.
  */
 export function analyticsInstanceMissingThrewError(
 	message: Segment.TrackMessage<Record<string, any>>,
@@ -454,6 +456,8 @@ export function analyticsInstanceMissingThrewError(
 		},
 		type: 'object',
 		title: 'Analytics Instance Missing Threw Error',
+		description:
+			'Fired after a client throws an "Analytics Instance Missing" error to mark the test as successful.',
 	}
 	validateAgainstSchema(msg, schema)
 
@@ -1513,6 +1517,44 @@ export function unionType(
 	}
 }
 /**
+ * Fired if a client correctly handled an unknown method call.
+ */
+export function unknownEventHandlerCalled(
+	message: Segment.TrackMessage<Record<string, any>>,
+	callback?: Segment.Callback
+): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'Unknown Event Handler Called',
+	})
+
+	const schema = {
+		$schema: 'http://json-schema.org/draft-07/schema#',
+		labels: {},
+		properties: {
+			context: {},
+			properties: {
+				type: 'object',
+			},
+			traits: {
+				type: 'object',
+			},
+		},
+		type: 'object',
+		title: 'Unknown Event Handler Called',
+		description: 'Fired if a client correctly handled an unknown method call.',
+	}
+	validateAgainstSchema(msg, schema)
+
+	const a = analytics()
+	if (a) {
+		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
+	}
+}
+/**
  * Fires a 'event_collided' track call.
  */
 export function eventCollided1(
@@ -1549,3 +1591,58 @@ export function eventCollided1(
 		throw missingAnalyticsNodeError
 	}
 }
+
+const clientAPI = {
+	setTypewriterOptions,
+	I42TerribleEventName3,
+	analyticsInstanceMissing,
+	analyticsInstanceMissingThrewError,
+	customViolationHandler,
+	customViolationHandlerCalled,
+	defaultViolationHandler,
+	defaultViolationHandlerCalled,
+	emptyEvent,
+	eventCollided,
+	everyNullableOptionalType,
+	everyNullableRequiredType,
+	everyOptionalType,
+	everyRequiredType,
+	nestedArrays,
+	nestedObjects,
+	propertiesCollided,
+	propertyObjectNameCollision1,
+	propertyObjectNameCollision2,
+	propertySanitized,
+	simpleArrayTypes,
+	unionType,
+	unknownEventHandlerCalled,
+	eventCollided1,
+}
+
+export default new Proxy<typeof clientAPI>(clientAPI, {
+	get(target, method) {
+		if (typeof method === 'string' && target.hasOwnProperty(method)) {
+			return target[method as keyof typeof clientAPI]
+		}
+
+		return () => {
+			console.warn(`⚠️  You made an analytics call (${String(
+				method
+			)}) that can't be found. Either:
+    a) Re-generate your typewriter client: \`npm run typewriter\`
+    b) Add it to your Tracking Plan: https://app.segment.com/TODO/tracking-plans/TODO`)
+			const a = analytics()
+			if (a) {
+				a.track(
+					withTypewriterContext({
+						event: 'Unknown Analytics Call Fired',
+						properties: {
+							method,
+						},
+						userId: 'typewriter',
+					})
+				)
+			}
+		}
+	},
+})

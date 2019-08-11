@@ -103,9 +103,8 @@ export const defaultValidationErrorHandler: ViolationHandler = (
 		{
 			type: 'Typewriter JSON Schema Validation Error',
 			description:
-				`You made an analytics call (${
-					message.event
-				}) using Typewriter that doesn't match the ` + 'Tracking Plan spec.',
+				`You made an analytics call (${message.event}) using Typewriter that doesn't match the ` +
+				'Tracking Plan spec.',
 			errors: violations,
 		},
 		undefined,
@@ -390,3 +389,37 @@ export function errorFired(
 		throw missingAnalyticsNodeError
 	}
 }
+
+const clientAPI = {
+	setTypewriterOptions,
+	commandRun,
+	errorFired,
+}
+
+export default new Proxy<typeof clientAPI>(clientAPI, {
+	get(target, method) {
+		if (typeof method === 'string' && target.hasOwnProperty(method)) {
+			return target[method as keyof typeof clientAPI]
+		}
+
+		return () => {
+			console.warn(`⚠️  You made an analytics call (${String(
+				method
+			)}) that can't be found. Either:
+    a) Re-generate your typewriter client: \`npm run typewriter\`
+    b) Add it to your Tracking Plan: https://app.segment.com/TODO/tracking-plans/TODO`)
+			const a = analytics()
+			if (a) {
+				a.track(
+					withTypewriterContext({
+						event: 'Unknown Analytics Call Fired',
+						properties: {
+							method,
+						},
+						userId: 'typewriter',
+					})
+				)
+			}
+		}
+	},
+})

@@ -1,6 +1,6 @@
 /* eslint-disable no-null/no-null */
 /* eslint-disable @typescript-eslint/camelcase */
-import {
+import typewriter, {
 	analyticsInstanceMissing,
 	setTypewriterOptions,
 	emptyEvent,
@@ -294,6 +294,21 @@ async function run() {
 			userId,
 		})
 	}
+
+	// In JS files within a TS project, the compiler won't have any type information.
+	// Mock this with `as any` to validate JS Proxy behavior for our TS client when
+	// used in JS files.
+	const typewriterWithoutTypes = typewriter as any
+	// There is no generated function for `aMissingAnalyticsCall`, but the JS Proxy should
+	// handle this and avoid a crash.
+	typewriterWithoutTypes.aMissingAnalyticsCall({
+		userId,
+	})
+	// If this program doesn't crash, this event will be fired to tell the e2e suite that
+	// proxy-behavior works.
+	typewriter.unknownEventHandlerCalled({
+		userId,
+	})
 
 	await analytics.flush()
 }

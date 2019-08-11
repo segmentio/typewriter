@@ -18,21 +18,30 @@ const isDevelopment: boolean = process.env.IS_DEVELOPMENT === 'true'
 
 // Some clients don't support the full standard test suite, for various reasons.
 // We document those reasons below and skip the associated tests in the suite.
+// Below are the default feature toggles, and are overridden with perClientFeatures.
 const allFeatures = {
 	SUPPORTS_DEFAULT_ANALYTICS_INSTANCE: true,
 	SUPPORTS_UNIONS: true,
 	SUPPORTS_RUNTIME_VALIDATION: true,
-	DEFAULT_VIOLATION_HANDLER_THROWS_DURING_TESTS: true,
+	SUPPORTS_DETECTING_TEST_ENVIRONMENT: false,
+	// Staticly typed languages (Java, Objective-C, etc.) will fail at compile-time if
+	// a generated function is called, but does not exist. However, dynamically typed
+	// languages like JavaScript can't do this, so this feature tests that the generated
+	// client supports proxying methods to fail quietly if a generated method does not
+	// exist.
+	SUPPORTS_PROXYING_UNKNOWN_METHODS: false,
 }
 const perClientFeatures: Record<SDK, Partial<Record<Language, Partial<typeof allFeatures>>>> = {
 	[SDK.WEB]: {
 		// In analytics.js, we can't throw because there is no standard means
 		// of determining if we are currently running tests.
 		[Language.JAVASCRIPT]: {
-			DEFAULT_VIOLATION_HANDLER_THROWS_DURING_TESTS: false,
+			// A JS Proxy is used to support catching unknown methods.
+			SUPPORTS_PROXYING_UNKNOWN_METHODS: true,
 		},
 		[Language.TYPESCRIPT]: {
-			DEFAULT_VIOLATION_HANDLER_THROWS_DURING_TESTS: false,
+			// A JS Proxy is used to support catching unknown methods.
+			SUPPORTS_PROXYING_UNKNOWN_METHODS: true,
 		},
 	},
 	[SDK.NODE]: {
@@ -40,9 +49,17 @@ const perClientFeatures: Record<SDK, Partial<Record<Language, Partial<typeof all
 		// before making any calls, unlike analytics.js/-android/-ios.
 		[Language.JAVASCRIPT]: {
 			SUPPORTS_DEFAULT_ANALYTICS_INSTANCE: false,
+			// We can detect if we are running tests via `NODE_ENV="test"`.
+			SUPPORTS_DETECTING_TEST_ENVIRONMENT: true,
+			// A JS Proxy is used to support catching unknown methods.
+			SUPPORTS_PROXYING_UNKNOWN_METHODS: true,
 		},
 		[Language.TYPESCRIPT]: {
 			SUPPORTS_DEFAULT_ANALYTICS_INSTANCE: false,
+			// We can detect if we are running tests via `NODE_ENV="test"`.
+			SUPPORTS_DETECTING_TEST_ENVIRONMENT: true,
+			// A JS Proxy is used to support catching unknown methods.
+			SUPPORTS_PROXYING_UNKNOWN_METHODS: true,
 		},
 	},
 	[SDK.IOS]: {
@@ -50,7 +67,6 @@ const perClientFeatures: Record<SDK, Partial<Record<Language, Partial<typeof all
 		[Language.OBJECTIVE_C]: {
 			SUPPORTS_UNIONS: false,
 			SUPPORTS_RUNTIME_VALIDATION: false,
-			DEFAULT_VIOLATION_HANDLER_THROWS_DURING_TESTS: false,
 		},
 	},
 }
@@ -249,7 +265,7 @@ describe(`sdk:${sdk}`, () => {
 					// TODO: if the default violation handler does not throw, then we can't
 					// detect if it was fired. Maybe look into validating the log output?
 					// Probably too much work.
-					if (features.DEFAULT_VIOLATION_HANDLER_THROWS_DURING_TESTS) {
+					if (features.SUPPORTS_DETECTING_TEST_ENVIRONMENT) {
 						test('the default violation handler is called upon a violation', () => {
 							expect('Default Violation Handler Called').toHaveBeenReceived()
 						})
@@ -269,13 +285,14 @@ describe(`sdk:${sdk}`, () => {
 				}
 			}
 
+			if (features.SUPPORTS_PROXYING_UNKNOWN_METHODS) {
+				test('calls to unknown methods fail quietly', () => {
+					expect('Unknown Event Handler Called').toHaveBeenReceived()
+				})
+			}
+
 			// TODO: can we add tests to validate the behavior of the default violation handler
 			// outside of test mode (NODE_ENV!=test)?
-
-			// TODO: add a test that verifies that descriptions (and long descriptions?) are handled
-			// correctly in the generated output. Possibly we should just use snapshot testing?
-
-			// TODO: Test for unknown methods in dynamic languages (so just JS for now)
 
 			// TODO: add tests with large integers + large numbers
 

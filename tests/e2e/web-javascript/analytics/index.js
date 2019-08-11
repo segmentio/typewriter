@@ -19,9 +19,8 @@ export const defaultValidationErrorHandler = (message, violations) => {
 		{
 			type: 'Typewriter JSON Schema Validation Error',
 			description:
-				`You made an analytics call (${
-					message.event
-				}) using Typewriter that doesn't match the ` + 'Tracking Plan spec.',
+				`You made an analytics call (${message.event}) using Typewriter that doesn't match the ` +
+				'Tracking Plan spec.',
 			errors: violations,
 		},
 		undefined,
@@ -212,7 +211,7 @@ function withTypewriterContext(message = {}) {
  * @property {string | number | null} `universe_name` -
  */
 /**
- * Fires a '42_--terrible==\\"event\'++name~!3' track call.
+ * Validates that clients properly sanitize event names.
  *
  * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -234,6 +233,7 @@ export function I42TerribleEventName3(props, options, callback) {
 		},
 		type: 'object',
 		title: '42_--terrible==\\"event\'++name~!3',
+		description: 'Validates that clients properly sanitize event names.',
 	}
 	const message = {
 		event: '42_--terrible==\\"event\'++name~!3',
@@ -252,7 +252,7 @@ export function I42TerribleEventName3(props, options, callback) {
 	}
 }
 /**
- * Fires a 'Analytics Instance Missing' track call.
+ * Fired before an analytics instance has been set, which should throw an error.
  *
  * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -274,6 +274,8 @@ export function analyticsInstanceMissing(props, options, callback) {
 		},
 		type: 'object',
 		title: 'Analytics Instance Missing',
+		description:
+			'Fired before an analytics instance has been set, which should throw an error.',
 	}
 	const message = {
 		event: 'Analytics Instance Missing',
@@ -292,7 +294,7 @@ export function analyticsInstanceMissing(props, options, callback) {
 	}
 }
 /**
- * Fires a 'Analytics Instance Missing Threw Error' track call.
+ * Fired after a client throws an "Analytics Instance Missing" error to mark the test as successful.
  *
  * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -314,6 +316,8 @@ export function analyticsInstanceMissingThrewError(props, options, callback) {
 		},
 		type: 'object',
 		title: 'Analytics Instance Missing Threw Error',
+		description:
+			'Fired after a client throws an "Analytics Instance Missing" error to mark the test as successful.',
 	}
 	const message = {
 		event: 'Analytics Instance Missing Threw Error',
@@ -1429,6 +1433,47 @@ export function unionType(props, options, callback) {
 	}
 }
 /**
+ * Fired if a client correctly handled an unknown method call.
+ *
+ * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
+ * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
+ */
+export function unknownEventHandlerCalled(props, options, callback) {
+	const schema = {
+		$schema: 'http://json-schema.org/draft-07/schema#',
+		labels: {},
+		properties: {
+			context: {},
+			properties: {
+				type: 'object',
+			},
+			traits: {
+				type: 'object',
+			},
+		},
+		type: 'object',
+		title: 'Unknown Event Handler Called',
+		description: 'Fired if a client correctly handled an unknown method call.',
+	}
+	const message = {
+		event: 'Unknown Event Handler Called',
+		properties: props || {},
+		options,
+	}
+	validateAgainstSchema(message, schema)
+	const a = analytics()
+	if (a) {
+		a.track(
+			'Unknown Event Handler Called',
+			props || {},
+			withTypewriterContext(options),
+			callback
+		)
+	}
+}
+/**
  * Fires a 'event_collided' track call.
  *
  * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
@@ -1468,3 +1513,49 @@ export function eventCollided1(props, options, callback) {
 		)
 	}
 }
+const clientAPI = {
+	setTypewriterOptions,
+	I42TerribleEventName3,
+	analyticsInstanceMissing,
+	analyticsInstanceMissingThrewError,
+	customViolationHandler,
+	customViolationHandlerCalled,
+	defaultViolationHandler,
+	defaultViolationHandlerCalled,
+	emptyEvent,
+	eventCollided,
+	everyNullableOptionalType,
+	everyNullableRequiredType,
+	everyOptionalType,
+	everyRequiredType,
+	nestedArrays,
+	nestedObjects,
+	propertiesCollided,
+	propertyObjectNameCollision1,
+	propertyObjectNameCollision2,
+	propertySanitized,
+	simpleArrayTypes,
+	unionType,
+	unknownEventHandlerCalled,
+	eventCollided1,
+}
+export default new Proxy(clientAPI, {
+	get(target, method) {
+		if (typeof method === 'string' && target.hasOwnProperty(method)) {
+			return target[method]
+		}
+		return () => {
+			console.warn(`⚠️  You made an analytics call (${String(
+				method
+			)}) that can't be found. Either:
+    a) Re-generate your typewriter client: \`npm run typewriter\`
+    b) Add it to your Tracking Plan: https://app.segment.com/TODO/tracking-plans/TODO`)
+			const a = analytics()
+			if (a) {
+				a.track('Unknown Analytics Call Fired', {
+					method,
+				})
+			}
+		}
+	},
+})

@@ -12,6 +12,7 @@ import { toTarget, toModule } from './targets'
 interface JavaScriptRootContext {
 	isBrowser: boolean
 	needsJSDoc: boolean
+	useProxy: boolean
 }
 
 // Represents a single exposed track() call.
@@ -64,6 +65,7 @@ export const javascript: Generator<
 	setup: async options => ({
 		isBrowser: options.client.sdk === SDK.WEB,
 		needsJSDoc: options.client.language === Language.JAVASCRIPT,
+		useProxy: true,
 	}),
 	generatePrimitive: async (client, schema) => {
 		let type = 'any'

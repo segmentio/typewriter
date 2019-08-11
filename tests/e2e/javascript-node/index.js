@@ -26,6 +26,7 @@ const {
 	analyticsInstanceMissingThrewError,
 	propertySanitized,
 } = require('./analytics')
+const typewriter = require('./analytics').default
 const SegmentAnalytics = require('analytics-node')
 const { promisify } = require('util')
 
@@ -295,6 +296,17 @@ async function run() {
 			userId,
 		})
 	}
+
+	// There is no generated function for `aMissingAnalyticsCall`, but the JS Proxy should
+	// handle this and avoid a crash.
+	typewriter.aMissingAnalyticsCall({
+		userId,
+	})
+	// If this program doesn't crash, this event will be fired to tell the e2e suite that
+	// proxy-behavior works.
+	typewriter.unknownEventHandlerCalled({
+		userId,
+	})
 
 	await analytics.flush()
 }

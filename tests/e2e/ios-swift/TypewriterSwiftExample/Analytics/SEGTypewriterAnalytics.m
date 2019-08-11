@@ -448,6 +448,18 @@ options:(nullable SERIALIZABLE_DICT)options
     [[SEGAnalytics sharedAnalytics] track:@"Union Type" properties:properties options:[SEGTypewriterUtils withTypewriterContextFields:options]];
 }
 
++ (void)unknownEventHandlerCalled
+{
+    [SEGTypewriterAnalytics unknownEventHandlerCalledWithOptions:@{}];
+}
+
++ (void)unknownEventHandlerCalledWithOptions:(nullable SERIALIZABLE_DICT)options
+{
+    NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
+
+    [[SEGAnalytics sharedAnalytics] track:@"Unknown Event Handler Called" properties:properties options:[SEGTypewriterUtils withTypewriterContextFields:options]];
+}
+
 + (void)eventCollided1
 {
     [SEGTypewriterAnalytics eventCollided1WithOptions:@{}];

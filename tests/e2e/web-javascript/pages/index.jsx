@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import * as React from 'react'
 
-import {
+import typewriter, {
 	setTypewriterOptions,
 	emptyEvent,
 	everyRequiredType,
@@ -202,5 +202,16 @@ export default class HomePage extends React.Component {
 
 			customViolationHandlerCalled()
 		}
+
+		// There is no generated function for `aMissingAnalyticsCall`, but the JS Proxy should
+		// handle this and avoid a crash.
+		typewriter.aMissingAnalyticsCall({
+			userId,
+		})
+		// If this program doesn't crash, this event will be fired to tell the e2e suite that
+		// proxy-behavior works.
+		typewriter.unknownEventHandlerCalled({
+			userId,
+		})
 	}
 }

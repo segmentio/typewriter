@@ -290,3 +290,42 @@ export function {{functionName}}(
 }
 {{/if}}
 {{/each}}
+
+{{#if useProxy}}
+const clientAPI = {
+	setTypewriterOptions,
+	{{#each tracks}}
+	{{functionName}},
+	{{/each}}
+}
+
+export default new Proxy<typeof clientAPI>(clientAPI, {
+	get(target, method) {
+		if (typeof method === 'string' && target.hasOwnProperty(method)) {
+			return target[method as keyof typeof clientAPI]
+		}
+
+		return () => {
+			console.warn(`⚠️  You made an analytics call (${String(method)}) that can't be found. Either:
+    a) Re-generate your typewriter client: \`npm run typewriter\`
+    b) Add it to your Tracking Plan: https://app.segment.com/TODO/tracking-plans/TODO`)
+			const a = analytics()
+			if (a) {
+				{{#if isBrowser}}
+				a.track('Unknown Analytics Call Fired', {
+					method,
+				})
+				{{else}}
+				a.track(withTypewriterContext({
+					event: 'Unknown Analytics Call Fired',
+					properties: {
+						method,
+					},
+					userId: 'typewriter'
+				}))
+				{{/if}}
+			}
+		}
+	}
+})
+{{/if}}
