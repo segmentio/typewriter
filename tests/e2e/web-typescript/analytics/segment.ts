@@ -22,11 +22,7 @@ export interface Options {
 	 * https://segment.com/docs/sources/website/analytics.js/#selecting-destinations
 	 */
 	integrations?: {
-		All?: boolean
-		AppsFlyer?: {
-			appsFlyerId: string
-		}
-		[key: string]: boolean | { [key: string]: any } | undefined
+		[key: string]: boolean | { [key: string]: any }
 	}
 	/**
 	 * A dictionary of extra context to attach to the call.

@@ -10,7 +10,7 @@
 
 @interface SEGGarage : NSObject<SEGTypewriterSerializable>
 
-@property (strong, nonatomic, nullable) SEGTunnel *tunnel;
+@property (strong, nonatomic, nonnull) SEGTunnel *tunnel;
 
 +(nonnull instancetype) initWithTunnel:(nonnull SEGTunnel *)tunnel;
 

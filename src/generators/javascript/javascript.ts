@@ -16,6 +16,8 @@ interface JavaScriptRootContext {
 
 // Represents a single exposed track() call.
 interface JavaScriptTrackCallContext {
+	// The formatted function name, ex: "orderCompleted".
+	functionName: string
 	// The type of the analytics properties object.
 	propertiesType: string
 	// The properties field is only optional in analytics.js environments where
@@ -23,14 +25,22 @@ interface JavaScriptTrackCallContext {
 	isPropertiesOptional: boolean
 }
 
+interface JavaScriptObjectContext {
+	// The formatted name for this object, ex: "Planet"
+	name: string
+}
+
 interface JavaScriptPropertyContext {
+	// The formatted name for this property, ex: "numAvocados".
+	name: string
+	// The type of this property. ex: "number".
 	type: string
 }
 
 export const javascript: Generator<
 	JavaScriptRootContext,
 	JavaScriptTrackCallContext,
-	{},
+	JavaScriptObjectContext,
 	JavaScriptPropertyContext
 > = {
 	generatePropertiesObject: true,
@@ -55,7 +65,7 @@ export const javascript: Generator<
 		isBrowser: options.client.sdk === SDK.WEB,
 		needsJSDoc: options.client.language === Language.JAVASCRIPT,
 	}),
-	generatePrimitive: async (_, schema) => {
+	generatePrimitive: async (client, schema) => {
 		let type = 'any'
 		if (schema.type === Type.STRING) {
 			type = 'string'
@@ -66,11 +76,13 @@ export const javascript: Generator<
 		}
 
 		return conditionallyNullable(schema, {
+			name: client.namer.escapeString(schema.name),
 			type,
 		})
 	},
-	generateArray: async (_, schema, items) =>
+	generateArray: async (client, schema, items) =>
 		conditionallyNullable(schema, {
+			name: client.namer.escapeString(schema.name),
 			type: `${items.type}[]`,
 		}),
 	generateObject: async (client, schema, properties) => {
@@ -78,28 +90,34 @@ export const javascript: Generator<
 			// If no properties are set, replace this object with a untyped map to allow any properties.
 			return [
 				conditionallyNullable(schema, {
+					name: client.namer.escapeString(schema.name),
 					type: 'Record<string, any>',
 				}),
 				undefined,
 			]
 		} else {
 			// Otherwise generate an interface to represent this object.
-			// TODO: this return is confusing
+			const interfaceName = client.namer.register(schema.name, 'interface', {
+				transform: (name: string) => upperFirst(camelCase(name)),
+			})
 			return [
 				conditionallyNullable(schema, {
-					type: client.namer.register(schema.name, 'interface', {
-						transform: (name: string) => upperFirst(camelCase(name)),
-					}),
+					name: client.namer.escapeString(schema.name),
+					type: interfaceName,
 				}),
-				{},
+				{
+					name: interfaceName,
+				},
 			]
 		}
 	},
-	generateUnion: async (_, schema, types) =>
+	generateUnion: async (client, schema, types) =>
 		conditionallyNullable(schema, {
+			name: client.namer.escapeString(schema.name),
 			type: types.map(t => t.type).join(' | '),
 		}),
-	generateTrackCall: async (client, _, propertiesObject) => ({
+	generateTrackCall: async (client, schema, propertiesObject) => ({
+		functionName: client.namer.register(schema.name, 'function->track', { transform: camelCase }),
 		propertiesType: propertiesObject.type,
 		// The properties object in a.js can be omitted if no properties are required.
 		isPropertiesOptional: client.options.client.sdk === SDK.WEB && !propertiesObject.isRequired,

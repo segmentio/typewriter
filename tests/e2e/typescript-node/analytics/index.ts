@@ -155,7 +155,7 @@ export interface EveryRequiredType {
 	 */
 	'required string with regex': string
 }
-export interface UniverseCharacters {
+export interface UniverseCharactersItemItem {
 	/**
 	 * The character's name.
 	 */
@@ -165,7 +165,7 @@ export interface NestedArrays {
 	/**
 	 * All known characters from each universe.
 	 */
-	universeCharacters: UniverseCharacters[][]
+	universeCharacters: UniverseCharactersItemItem[][]
 }
 export interface SubterraneanLab {
 	"jerry's memories"?: any[]
@@ -185,7 +185,7 @@ export interface PropertiesCollided {
 	'Property Collided': string
 	property_collided: string
 }
-export interface Occupants {
+export interface OccupantsItem {
 	/**
 	 * The name of this occupant.
 	 */
@@ -199,12 +199,12 @@ export interface Universe {
 	/**
 	 * The most important occupants in this universe.
 	 */
-	occupants: Occupants[]
+	occupants: OccupantsItem[]
 }
 export interface PropertyObjectNameCollision1 {
 	universe?: Universe
 }
-export interface Occupants1 {
+export interface OccupantsItem1 {
 	/**
 	 * The name of this occupant.
 	 */
@@ -218,7 +218,7 @@ export interface Universe1 {
 	/**
 	 * The most important occupants in this universe.
 	 */
-	occupants: Occupants1[]
+	occupants: OccupantsItem1[]
 }
 export interface PropertyObjectNameCollision2 {
 	universe?: Universe1
@@ -226,7 +226,7 @@ export interface PropertyObjectNameCollision2 {
 export interface PropertySanitized {
 	'0000---terrible-property-name~!3': string
 }
-export interface Object {
+export interface ObjectItem {
 	name?: string
 }
 export interface SimpleArrayTypes {
@@ -235,7 +235,7 @@ export interface SimpleArrayTypes {
 	integer?: number[]
 	nullable?: string[]
 	number?: number[]
-	object?: Object[]
+	object?: ObjectItem[]
 	string?: string[]
 }
 export interface UnionType {

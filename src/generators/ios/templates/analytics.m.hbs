@@ -24,7 +24,7 @@
     {{indent "    " (propertiesDictionary properties)}}
 
     {{!-- TODO: run-time JSON Schema validation --}}
-    [[SEGAnalytics sharedAnalytics] track:@"{{eventName}}" properties:properties options:[SEGTypewriterUtils withTypewriterContextFields:options]];
+    [[SEGAnalytics sharedAnalytics] track:@"{{rawEventName}}" properties:properties options:[SEGTypewriterUtils withTypewriterContextFields:options]];
 }
 
 {{/each}}

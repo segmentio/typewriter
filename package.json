@@ -11,7 +11,7 @@
   "bin": "./dist/cli/index.js",
   "scripts": {
     "dev": "IS_DEVELOPMENT=true ts-node ./src/cli",
-    "build": "rm -rf dist && tsc && copyfiles -u 1 \"src/**/*.hbs\" \"src/cli/typewriter.yml.schema.json\" dist/",
+    "build": "rm -rf dist && yarn dev build && tsc && copyfiles -u 1 \"src/**/*.hbs\" \"src/cli/typewriter.yml.schema.json\" dist/",
     "build-example": "make build-example",
     "test": "jest --testPathIgnorePatterns 'tests/e2e/.*'",
     "e2e": "make e2e",
@@ -117,7 +117,8 @@
       ],
       "@typescript-eslint/no-namespace": "off",
       "no-null/no-null": "error",
-      "@typescript-eslint/no-non-null-assertion": "off"
+      "@typescript-eslint/no-non-null-assertion": "off",
+      "@typescript-eslint/interface-name-prefix": "off"
     }
   },
   "eslintIgnore": [

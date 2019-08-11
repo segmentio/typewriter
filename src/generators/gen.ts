@@ -1,11 +1,10 @@
 import { JSONSchema7 } from 'json-schema'
 import { parse, Schema, getPropertiesSchema, Type } from './ast'
 import { javascript } from './javascript'
-import ios from './ios'
+import { ios } from './ios'
 import { Options, SDK } from './options'
 import { registerStandardHelpers, generateFromTemplate } from '../templates'
 import { Namer, Options as NamerOptions } from './namer'
-import { camelCase } from 'lodash'
 
 export interface File {
 	path: string
@@ -23,39 +22,38 @@ export interface TrackingPlan {
 	}[]
 }
 
-interface BaseRootContext<T extends object, O extends object, P extends ExpectedPropertyContext> {
+export interface BaseRootContext<T extends object, O extends object, P extends object> {
 	isDevelopment: boolean
 	language: string
 	typewriterVersion: string
-	tracks: (T & BaseTrackCallContext)[]
+	tracks: (T & BaseTrackCallContext<P>)[]
 	objects: (O & BaseObjectContext<P>)[]
 }
 
-interface BaseTrackCallContext {
-	// The formatted function name.
-	functionName: string
+export interface BaseTrackCallContext<P extends object> {
 	// The optional function description.
 	functionDescription?: string
 	// The raw JSON Schema for this event.
 	rawJSONSchema: string
 	// The raw version of the name of this track call (the name sent to Segment).
 	rawEventName: string
+	// The property parameters on this track call. Included if generatePropertiesObject=false.
+	properties?: (P & BasePropertyContext)[]
 }
 
-interface BaseObjectContext<P extends ExpectedPropertyContext> {
-	name: string
+export interface BaseObjectContext<P extends object> {
 	description?: string
 	properties: (P & BasePropertyContext)[]
 }
 
-interface BasePropertyContext {
-	name: string
+export interface BasePropertyContext {
+	// The raw name of this property. ex: "user id"
+	rawName: string
+	// The AST type of this property. ex: Type.INTEGER
+	schemaType: Type
+	// The optional description of this property.
 	description?: string
 	isRequired: boolean
-}
-
-interface ExpectedPropertyContext {
-	type: string
 }
 
 export interface GeneratorClient {
@@ -67,30 +65,40 @@ export interface GeneratorClient {
 		context: T
 	) => Promise<void>
 }
-
+/*
+ * Adding a new language to Typewriter involves implementing the interface below. The logic to traverse a
+ * JSON Schema and apply this generator is in `runGenerator` below.
+ *
+ * Depending on what is idiomatic for each language, you may prefer for function calls to receive a single
+ * object containing all analytics properties, or you may prefer to enumerate all top-level properties
+ * as parameters to each function. You can toggle this behavior with `generatePropertiesObject`.
+ */
 export declare type Generator<
 	R extends object,
 	T extends object,
 	O extends object,
-	P extends ExpectedPropertyContext
+	P extends object
 > = {
 	namer: NamerOptions
 	setup: (options: GenOptions) => Promise<R>
-	generatePrimitive: (client: GeneratorClient, schema: Schema) => Promise<P>
+	generatePrimitive: (client: GeneratorClient, schema: Schema, parentPath: string) => Promise<P>
 	generateArray: (
 		client: GeneratorClient,
 		schema: Schema,
-		items: P & BasePropertyContext
+		items: P & BasePropertyContext,
+		parentPath: string
 	) => Promise<P>
 	generateObject: (
 		client: GeneratorClient,
 		schema: Schema,
-		properties: (P & BasePropertyContext)[]
+		properties: (P & BasePropertyContext)[],
+		parentPath: string
 	) => Promise<[P, O | undefined]>
 	generateUnion: (
 		client: GeneratorClient,
 		schema: Schema,
-		types: (P & BasePropertyContext)[]
+		types: (P & BasePropertyContext)[],
+		parentPath: string
 	) => Promise<P>
 	generateRoot: (client: GeneratorClient, context: R & BaseRootContext<T, O, P>) => Promise<void>
 	formatFile?: (client: GeneratorClient, file: File) => File
@@ -142,18 +150,13 @@ export async function gen(trackingPlan: RawTrackingPlan, options: GenOptions): P
 	if (options.client.sdk === SDK.WEB || options.client.sdk === SDK.NODE) {
 		return await runGenerator(javascript, parsedTrackingPlan, options)
 	} else if (options.client.sdk === SDK.IOS) {
-		return await ios(parsedTrackingPlan, options)
+		return await runGenerator(ios, parsedTrackingPlan, options)
 	} else {
 		throw new Error(`Invalid SDK: ${options.client.sdk}`)
 	}
 }
 
-async function runGenerator<
-	R extends object,
-	T extends object,
-	O extends object,
-	P extends ExpectedPropertyContext
->(
+async function runGenerator<R extends object, T extends object, O extends object, P extends object>(
 	generator: Generator<R, T, O, P>,
 	trackingPlan: TrackingPlan,
 	options: GenOptions
@@ -192,41 +195,61 @@ async function runGenerator<
 		generateFile,
 	}
 
-	// Generator logic.
-	const traverseSchema = async (schema: Schema): Promise<P & BasePropertyContext> => {
+	// Core generator logic. This logic involves traversing over the underlying JSON Schema
+	// and calling out to the supplied generator with each "node" in the JSON Schema that,
+	// based on its AST type. Each iteration of this loop generates a "property" which
+	// represents the type for a given schema. This property contains metadata such as the
+	// type name (string, FooBarInterface, etc.), descriptions, etc. that are used in
+	// templates.
+	const traverseSchema = async (
+		schema: Schema,
+		parentPath: string
+	): Promise<P & BasePropertyContext> => {
+		const path = `${parentPath}->${schema.name}`
 		const base = {
-			name: client.namer.escapeString(schema.name),
+			rawName: client.namer.escapeString(schema.name),
+			schemaType: schema.type,
 			description: schema.description,
 			isRequired: !!schema.isRequired,
 		}
 
 		let p: P
 		if ([Type.ANY, Type.STRING, Type.BOOLEAN, Type.INTEGER, Type.NUMBER].includes(schema.type)) {
-			p = await generator.generatePrimitive(client, schema)
+			// Primitives are any type that doesn't require generating a "subtype".
+			p = await generator.generatePrimitive(client, schema, parentPath)
 		} else if (schema.type === Type.OBJECT) {
+			// For objects, we need to recursively generate each property first.
 			const properties: (P & BasePropertyContext)[] = []
 			for (const property of schema.properties) {
-				properties.push(await traverseSchema(property))
+				properties.push(await traverseSchema(property, path))
 			}
 
+			// TODO: determine if there's a simpler way to generate objects that doesn't require
+			// returning two fields. We do this now because objects have extra metadata. Possibly
+			// we could consider including an optional `properties` field in the property type?
+			// Maybe instead of a ObjectContext, an ObjectPropertyContext? Required on the return.
+			// Hmm, need some way to convey if it should generate an object or not (undefined object).
 			let o: O | undefined
-			;[p, o] = await generator.generateObject(client, schema, properties)
+			;[p, o] = await generator.generateObject(client, schema, properties, parentPath)
 			if (o) {
 				context.objects.push({
-					name: p.type,
 					properties,
 					...o,
 				})
 			}
 		} else if (schema.type === Type.ARRAY) {
+			// Arrays are another special case, because we need to generate a type to represent
+			// the items allowed in this array.
 			const itemsSchema: Schema = {
-				name: schema.name,
+				name: schema.name + ' Item',
 				description: schema.description,
 				...schema.items,
 			}
-			const items = await traverseSchema(itemsSchema)
-			p = await generator.generateArray(client, schema, items)
+			const items = await traverseSchema(itemsSchema, path)
+			p = await generator.generateArray(client, schema, items, parentPath)
 		} else if (schema.type === Type.UNION) {
+			// For unions, we generate a property type to represent each of the possible types
+			// then use that list of possible property types to generate a union.
 			const types = await Promise.all(
 				schema.types.map(async t => {
 					const subSchema = {
@@ -235,10 +258,10 @@ async function runGenerator<
 						...t,
 					}
 
-					return await traverseSchema(subSchema)
+					return await traverseSchema(subSchema, path)
 				})
 			)
-			p = await generator.generateUnion(client, schema, types)
+			p = await generator.generateUnion(client, schema, types, parentPath)
 		} else {
 			throw new Error(`Invalid Schema Type: ${schema.type}`)
 		}
@@ -251,21 +274,22 @@ async function runGenerator<
 
 	// Generate Track Calls.
 	for (const { raw, schema } of trackingPlan.trackCalls) {
-		// TODO: allow generating multiple track calls at a time (for overloading)
 		let t: T
 		if (generator.generatePropertiesObject) {
-			const p = await traverseSchema(getPropertiesSchema(schema))
+			const p = await traverseSchema(getPropertiesSchema(schema), '')
 			t = await generator.generateTrackCall(client, schema, p)
 		} else {
 			const properties: (P & BasePropertyContext)[] = []
 			for (const property of getPropertiesSchema(schema).properties) {
-				properties.push(await traverseSchema(property))
+				properties.push(await traverseSchema(property, schema.name))
 			}
-			t = await generator.generateTrackCall(client, schema, properties)
+			t = {
+				...(await generator.generateTrackCall(client, schema, properties)),
+				properties,
+			}
 		}
 
 		context.tracks.push({
-			functionName: client.namer.register(schema.name, 'function', { transform: camelCase }),
 			functionDescription: schema.description,
 			rawJSONSchema: JSON.stringify(raw, undefined, '\t'),
 			rawEventName: client.namer.escapeString(schema.name),

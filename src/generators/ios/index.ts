@@ -1,1 +1,1 @@
-export { default } from './ios'
+export { ios } from './ios'

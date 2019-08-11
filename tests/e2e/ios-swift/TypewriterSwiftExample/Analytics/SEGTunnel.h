@@ -10,7 +10,7 @@
 
 @interface SEGTunnel : NSObject<SEGTypewriterSerializable>
 
-@property (strong, nonatomic, nullable) SEGSubterraneanLab *subterraneanLab;
+@property (strong, nonatomic, nonnull) SEGSubterraneanLab *subterraneanLab;
 
 +(nonnull instancetype) initWithSubterraneanLab:(nonnull SEGSubterraneanLab *)subterraneanLab;
 

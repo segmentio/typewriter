@@ -11,9 +11,9 @@
 @interface SEGUniverse : NSObject<SEGTypewriterSerializable>
 
 /// The common name of this universe.
-@property (strong, nonatomic, nullable) NSString *name;
+@property (strong, nonatomic, nonnull) NSString *name;
 /// The most important occupants in this universe.
-@property (strong, nonatomic, nullable) NSArray<SEGOccupantsItem *> *occupants;
+@property (strong, nonatomic, nonnull) NSArray<SEGOccupantsItem *> *occupants;
 
 +(nonnull instancetype) initWithName:(nonnull NSString *)name
 occupants:(nonnull NSArray<SEGOccupantsItem *> *)occupants;

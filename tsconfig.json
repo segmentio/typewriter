@@ -12,6 +12,5 @@
     "resolveJsonModule": true,
     "esModuleInterop": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["src/analytics/**/*"]
+  "include": ["src/**/*"]
 }

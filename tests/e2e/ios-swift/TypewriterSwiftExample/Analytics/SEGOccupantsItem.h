@@ -10,7 +10,7 @@
 @interface SEGOccupantsItem : NSObject<SEGTypewriterSerializable>
 
 /// The name of this occupant.
-@property (strong, nonatomic, nullable) NSString *name;
+@property (strong, nonatomic, nonnull) NSString *name;
 
 +(nonnull instancetype) initWithName:(nonnull NSString *)name;
 

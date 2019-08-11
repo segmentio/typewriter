@@ -183,12 +183,12 @@ function withTypewriterContext(message) {
  * @property {string} `required string with regex` - Required string property with a regex conditional
  */
 /**
- * @typedef UniverseCharacters
+ * @typedef UniverseCharactersItemItem
  * @property {string} `name` - The character's name.
  */
 /**
  * @typedef NestedArrays
- * @property {UniverseCharacters[][]} `universeCharacters` - All known characters from each universe.
+ * @property {UniverseCharactersItemItem[][]} `universeCharacters` - All known characters from each universe.
  */
 /**
  * @typedef SubterraneanLab
@@ -214,26 +214,26 @@ function withTypewriterContext(message) {
  * @property {string} `property_collided` -
  */
 /**
- * @typedef Occupants
+ * @typedef OccupantsItem
  * @property {string} `name` - The name of this occupant.
  */
 /**
  * @typedef Universe
  * @property {string} `name` - The common name of this universe.
- * @property {Occupants[]} `occupants` - The most important occupants in this universe.
+ * @property {OccupantsItem[]} `occupants` - The most important occupants in this universe.
  */
 /**
  * @typedef PropertyObjectNameCollision1
  * @property {Universe} [universe] -
  */
 /**
- * @typedef Occupants1
+ * @typedef OccupantsItem1
  * @property {string} `name` - The name of this occupant.
  */
 /**
  * @typedef Universe1
  * @property {string} `name` - The common name of this universe.
- * @property {Occupants1[]} `occupants` - The most important occupants in this universe.
+ * @property {OccupantsItem1[]} `occupants` - The most important occupants in this universe.
  */
 /**
  * @typedef PropertyObjectNameCollision2
@@ -244,7 +244,7 @@ function withTypewriterContext(message) {
  * @property {string} `0000---terrible-property-name~!3` -
  */
 /**
- * @typedef Object
+ * @typedef ObjectItem
  * @property {string} [name] -
  */
 /**
@@ -254,7 +254,7 @@ function withTypewriterContext(message) {
  * @property {number[]} [integer] -
  * @property {string[]} [nullable] -
  * @property {number[]} [number] -
- * @property {Object[]} [object] -
+ * @property {ObjectItem[]} [object] -
  * @property {string[]} [string] -
  */
 /**

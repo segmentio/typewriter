@@ -1,67 +1,24 @@
-import { File, TrackingPlan, GenOptions, TemplateBaseContext, baseContext } from '../gen'
-import { generateFromTemplate, registerStandardHelpers } from '../../templates'
-import { Namer } from '../namer'
 import { camelCase, upperFirst } from 'lodash'
-import { Schema, Type, getPropertiesSchema } from '../ast'
+import { Type, Schema } from '../ast'
 import * as Handlebars from 'handlebars'
+import { Generator, BasePropertyContext, GeneratorClient } from '../gen'
 
-// See: https://github.com/AnanthaRajuCprojects/Reserved-Key-Words-list-of-various-programming-languages/blob/master/Objective-C%20Reserved%20Words.md
-// prettier-ignore
-const reservedWords = [
-	'asm', 'atomic', 'auto', 'bool', 'break', 'bycopy', 'byref', 'case', 'catch', 'char',
-	'class', 'const', 'continue', 'copy', 'debugDescription', 'default', 'description',
-	'do', 'double', 'dynamic', 'else', 'end', 'enum', 'extern', 'false', 'finally', 'float',
-	'for', 'goto', 'hash', 'id', 'if', 'imp', 'implementation', 'in', 'init', 'inline',
-	'inout', 'int', 'interface', 'long', 'mutableCopy', 'new', 'nil', 'no', 'nonatomic',
-	'null', 'nullable', 'nonnull', 'oneway', 'options', 'out', 'private', 'property', 'protected',
-	'protocol', 'public', 'register', 'restrict', 'retain', 'return', 'sel', 'selector', 'self',
-	'short', 'signed', 'sizeof', 'static', 'struct', 'super', 'superclass', 'switch', 'synthesize',
-	'throw', 'true', 'try', 'typedef', 'typeof', 'union', 'unsigned', 'void', 'volatile', 'while',
-	'yes'
-]
+// These contexts are what will be passed to Handlebars to perform rendering.
+// Everything in these contexts should be properly sanitized.
 
-interface TemplateAnalyticsContext extends TemplateBaseContext {
-	// All track calls available in this client.
-	tracks: TemplateTrackCall[]
-	// All property groups, each rendered in its own file.
-	classes: TemplateClass[]
-}
-
-interface TemplateClassContext extends TemplateBaseContext, TemplateClass {}
-
-// Represents a single exposed track() call.
-interface TemplateTrackCall {
-	// The formatted function name.
-	functionName: string
-	// The raw name of the event being tracked.
-	eventName: string
-	// The optional function description.
-	description?: string
-	// All properties that can be set on this event.
-	properties: TemplateProperty[]
-}
-
-interface TemplateClass {
-	// The formatted name of this class. ex: SEGProduct
+interface IOSObjectContext {
+	// The formatted name for this object, ex: "numAvocados
 	name: string
-	// All properties that can be set on this class.
-	properties: TemplateProperty[]
 	// Set of files that need to be imported in this file.
 	imports: string[]
 }
 
-interface TemplateProperty {
-	// The formatted name of this property. ex: "userID"
+interface IOSPropertyContext {
+	// The formatted name for this property, ex: "numAvocados".
 	name: string
-	// The raw name of this property. ex: "user id"
-	raw: string
-	// The type of this property. ex: "NSNumber"
+	// The type of this property. ex: "NSNumber".
 	type: string
-	// The AST type of this property. ex: Type.INTEGER
-	schemaType: Type
-	// The optional description of this property.
-	description?: string
-	// Stringified property modifiers. ex: "nonatomic, copy"
+	// Stringified property modifiers. ex: "nonatomic, copy".
 	modifiers: string
 	// Whether the property is nullable (nonnull vs nullable modifier).
 	isVariableNullable: boolean
@@ -74,218 +31,148 @@ interface TemplateProperty {
 	importName?: string
 }
 
-export default async function(trackingPlan: TrackingPlan, options: GenOptions): Promise<File[]> {
-	registerStandardHelpers()
-	Handlebars.registerHelper('propertiesDictionary', generatePropertiesDictionary)
-	Handlebars.registerHelper('functionCall', generateFunctionCall)
-	Handlebars.registerHelper('functionSignature', generateFunctionSignature)
-
-	const ctx = getAnalyticsContext(trackingPlan, options)
-	const files = [
-		{
-			path: 'SEGTypewriterAnalytics.h',
-			contents: await generateFromTemplate<TemplateAnalyticsContext>(
-				'generators/ios/templates/analytics.h.hbs',
-				ctx
-			),
-		},
-		{
-			path: 'SEGTypewriterAnalytics.m',
-			contents: await generateFromTemplate<TemplateAnalyticsContext>(
-				'generators/ios/templates/analytics.m.hbs',
-				ctx
-			),
-		},
-		{
-			path: 'SEGTypewriterUtils.h',
-			contents: await generateFromTemplate<TemplateBaseContext>(
-				'generators/ios/templates/SEGTypewriterUtils.h.hbs',
-				ctx
-			),
-		},
-		{
-			path: 'SEGTypewriterUtils.m',
-			contents: await generateFromTemplate<TemplateBaseContext>(
-				'generators/ios/templates/SEGTypewriterUtils.m.hbs',
-				ctx
-			),
-		},
-		{
-			path: 'SEGTypewriterSerializable.h',
-			contents: await generateFromTemplate<TemplateBaseContext>(
-				'generators/ios/templates/SEGTypewriterSerializable.h.hbs',
-				ctx
-			),
-		},
-	]
-
-	for (var c of ctx.classes) {
-		const classContext: TemplateClassContext = {
-			...baseContext(options),
-			...c,
-		}
-
-		files.push(
-			{
-				path: `${c.name}.h`,
-				contents: await generateFromTemplate<TemplateClassContext>(
-					'generators/ios/templates/class.h.hbs',
-					classContext
-				),
-			},
-			{
-				path: `${c.name}.m`,
-				contents: await generateFromTemplate<TemplateClassContext>(
-					'generators/ios/templates/class.m.hbs',
-					classContext
-				),
-			}
-		)
-	}
-
-	return files
+interface IOSTrackCallContext {
+	// The formatted function name, ex: "orderCompleted".
+	functionName: string
 }
 
-function getAnalyticsContext(
-	trackingPlan: TrackingPlan,
-	options: GenOptions
-): TemplateAnalyticsContext {
-	// Render a TemplateAnalyticsContext based on the set of event schemas.
-	const context: TemplateAnalyticsContext = {
-		...baseContext(options),
-		tracks: [],
-		classes: [],
-	}
-
-	const namer = new Namer({
-		reservedWords,
+export const ios: Generator<{}, IOSTrackCallContext, IOSObjectContext, IOSPropertyContext> = {
+	generatePropertiesObject: false,
+	namer: {
+		// See: https://github.com/AnanthaRajuCprojects/Reserved-Key-Words-list-of-various-programming-languages/blob/master/Objective-C%20Reserved%20Words.md
+		// prettier-ignore
+		reservedWords: [
+			'asm', 'atomic', 'auto', 'bool', 'break', 'bycopy', 'byref', 'case', 'catch', 'char',
+			'class', 'const', 'continue', 'copy', 'debugDescription', 'default', 'description',
+			'do', 'double', 'dynamic', 'else', 'end', 'enum', 'extern', 'false', 'finally', 'float',
+			'for', 'goto', 'hash', 'id', 'if', 'imp', 'implementation', 'in', 'init', 'inline',
+			'inout', 'int', 'interface', 'long', 'mutableCopy', 'new', 'nil', 'no', 'nonatomic',
+			'null', 'nullable', 'nonnull', 'oneway', 'options', 'out', 'private', 'property', 'protected',
+			'protocol', 'public', 'register', 'restrict', 'retain', 'return', 'sel', 'selector', 'self',
+			'short', 'signed', 'sizeof', 'static', 'struct', 'super', 'superclass', 'switch', 'synthesize',
+			'throw', 'true', 'try', 'typedef', 'typeof', 'union', 'unsigned', 'void', 'volatile', 'while',
+			'yes'
+		],
 		quoteChar: '"',
 		allowedIdentifierStartingChars: 'A-Za-z_$',
 		allowedIdentifierChars: 'A-Za-z0-9_$',
-	})
+	},
+	setup: async () => {
+		Handlebars.registerHelper('propertiesDictionary', generatePropertiesDictionary)
+		Handlebars.registerHelper('functionCall', generateFunctionCall)
+		Handlebars.registerHelper('functionSignature', generateFunctionSignature)
+		return {}
+	},
+	generatePrimitive: async (client, schema, parentPath) => {
+		const p = defaultPropertyContext(client, schema, 'id', parentPath)
 
-	for (var { schema } of trackingPlan.trackCalls) {
-		const propertiesSchema = getPropertiesSchema(schema)
-
-		const functionName = namer.register(propertiesSchema.name, 'function', { transform: camelCase })
-
-		const parameters: TemplateProperty[] = []
-		const namespace = `function->${functionName}`
-		for (var rootProperty of propertiesSchema.properties) {
-			const template = getProperty(rootProperty, context, namer, namespace)
-			parameters.push(template)
+		if (schema.type === Type.STRING) {
+			p.type = 'NSString *'
+		} else if (schema.type === Type.BOOLEAN) {
+			p.type = p.isVariableNullable ? 'BOOL *' : 'BOOL'
+			p.isPointerType = p.isVariableNullable
+		} else if (schema.type === Type.INTEGER) {
+			p.type = p.isVariableNullable ? 'NSInteger *' : 'NSInteger'
+			p.isPointerType = p.isVariableNullable
+		} else if (schema.type === Type.NUMBER) {
+			p.type = 'NSNumber *'
 		}
 
-		context.tracks.push({
-			functionName,
-			eventName: namer.escapeString(schema.name),
-			description: schema.description,
-			properties: parameters,
-		})
-	}
+		return p
+	},
+	generateArray: async (client, schema, items, parentPath) => {
+		// Objective-C doesn't support NSArray's of primitives. Therefore, we
+		// map booleans and integers to NSNumbers.
+		let itemsType = [Type.BOOLEAN, Type.INTEGER].includes(items.schemaType)
+			? 'NSNumber *'
+			: items.type
 
-	return context
+		return {
+			...defaultPropertyContext(client, schema, `NSArray<${itemsType}> *`, parentPath),
+			importName: items.importName,
+		}
+	},
+	generateObject: async (client, schema, properties, parentPath) => {
+		const p = defaultPropertyContext(client, schema, 'SERIALIZABLE_DICT', parentPath)
+		let obj: IOSObjectContext | undefined = undefined
+
+		if (properties.length > 0) {
+			// If at least one property is set, generate a class that only allows the explicitely
+			// allowed properties.
+			const className = client.namer.register(schema.name, 'class', {
+				transform: (name: string) => {
+					return `SEG${upperFirst(camelCase(name))}`
+				},
+			})
+			p.type = `${className} *`
+			p.importName = `"${className}.h"`
+			obj = {
+				name: className,
+				imports: properties.filter(p => !!p.importName).map(p => p.importName!),
+			}
+		}
+
+		return [p, obj]
+	},
+	generateUnion: async (client, schema, _, parentPath) => {
+		// TODO: support unions in iOS
+		return defaultPropertyContext(client, schema, 'id', parentPath)
+	},
+	generateTrackCall: async (client, schema) => ({
+		functionName: client.namer.register(schema.name, 'function->track', { transform: camelCase }),
+	}),
+	generateRoot: async (client, context) => {
+		await Promise.all([
+			client.generateFile(
+				'SEGTypewriterAnalytics.h',
+				'generators/ios/templates/analytics.h.hbs',
+				context
+			),
+			client.generateFile(
+				'SEGTypewriterAnalytics.m',
+				'generators/ios/templates/analytics.m.hbs',
+				context
+			),
+			client.generateFile(
+				'SEGTypewriterUtils.h',
+				'generators/ios/templates/SEGTypewriterUtils.h.hbs',
+				context
+			),
+			client.generateFile(
+				'SEGTypewriterUtils.m',
+				'generators/ios/templates/SEGTypewriterUtils.m.hbs',
+				context
+			),
+			client.generateFile(
+				'SEGTypewriterSerializable.h',
+				'generators/ios/templates/SEGTypewriterSerializable.h.hbs',
+				context
+			),
+			...context.objects.map(o =>
+				client.generateFile(`${o.name}.h`, 'generators/ios/templates/class.h.hbs', o)
+			),
+			...context.objects.map(o =>
+				client.generateFile(`${o.name}.m`, 'generators/ios/templates/class.m.hbs', o)
+			),
+		])
+	},
 }
 
-function getProperty(
+function defaultPropertyContext(
+	client: GeneratorClient,
 	schema: Schema,
-	context: TemplateAnalyticsContext,
-	namer: Namer,
+	type: string,
 	namespace: string
-): TemplateProperty {
-	const res: TemplateProperty = {
-		type: 'id',
-		schemaType: schema.type,
-		name: namer.register(schema.name, namespace, { transform: camelCase }),
-		raw: namer.escapeString(schema.name),
-		description: schema.description,
+): IOSPropertyContext {
+	return {
+		name: client.namer.register(schema.name, namespace, {
+			transform: camelCase,
+		}),
+		type,
 		modifiers: 'strong, nonatomic',
 		isVariableNullable: !schema.isRequired || !!schema.isNullable,
 		isPayloadFieldNullable: !!schema.isNullable,
 		isPointerType: true,
-	}
-
-	if (schema.type === Type.ANY) {
-		return res
-	} else if (schema.type === Type.STRING) {
-		return {
-			...res,
-			type: 'NSString *',
-		}
-	} else if (schema.type === Type.BOOLEAN) {
-		return {
-			...res,
-			type: res.isVariableNullable ? 'BOOL *' : 'BOOL',
-			isPointerType: res.isVariableNullable,
-		}
-	} else if (schema.type === Type.INTEGER) {
-		return {
-			...res,
-			type: res.isVariableNullable ? 'NSInteger *' : 'NSInteger',
-			isPointerType: res.isVariableNullable,
-		}
-	} else if (schema.type === Type.NUMBER) {
-		return {
-			...res,
-			type: 'NSNumber *',
-		}
-	} else if (schema.type === Type.OBJECT) {
-		// If no properties are set, allow this track call to take any properties.
-		if (schema.properties.length === 0) {
-			return {
-				...res,
-				type: 'SERIALIZABLE_DICT',
-			}
-		}
-
-		const name = namer.register(schema.name, 'interface', {
-			transform: (name: string) => {
-				return `SEG${upperFirst(camelCase(name))}`
-			},
-		})
-		const properties = schema.properties.map(p =>
-			getProperty(p, context, namer, `interface->${name}`)
-		)
-		const c: TemplateClass = {
-			name,
-			properties,
-			imports: properties.filter(p => !!p.importName).map(p => p.importName!),
-		}
-		context.classes.push(c)
-
-		return {
-			...res,
-			type: `${name} *`,
-			importName: `"${name}.h"`,
-		}
-	} else if (schema.type === Type.ARRAY) {
-		const itemsSchema: Schema = {
-			name: `${res.name} Item`,
-			description: res.description,
-			...schema.items,
-		}
-		const item = getProperty(itemsSchema, context, namer, `${namespace}->array`)
-
-		let itemType = item.type
-		// Objective-C doesn't support NSArray's of primitives. Therefore, we
-		// map booleans and integers to NSNumbers.
-		if ([Type.BOOLEAN, Type.INTEGER].includes(item.schemaType)) {
-			itemType = 'NSNumber *'
-		}
-
-		return {
-			...res,
-			type: `NSArray<${itemType}> *`,
-			importName: item.importName,
-		}
-	} else if (schema.type === Type.UNION) {
-		// TODO: support unions
-		return {
-			...res,
-			type: 'id',
-		}
-	} else {
-		throw new Error(`Invalid Schema Type: ${schema.type}`)
 	}
 }
 
@@ -293,7 +180,7 @@ function getProperty(
 
 function generateFunctionSignature(
 	functionName: string,
-	properties: TemplateProperty[],
+	properties: (BasePropertyContext & IOSPropertyContext)[],
 	withOptions: boolean
 ): string {
 	let signature = functionName
@@ -336,7 +223,7 @@ function generateFunctionSignature(
 function generateFunctionCall(
 	caller: string,
 	functionName: string,
-	properties: TemplateProperty[],
+	properties: (BasePropertyContext & IOSPropertyContext)[],
 	extraParameterName?: string,
 	extraParameterValue?: string
 ): string {
@@ -363,7 +250,10 @@ function generateFunctionCall(
 	return `[${caller} ${functionCall.trim()}];`
 }
 
-function generatePropertiesDictionary(properties: TemplateProperty[], prefix?: string): string {
+function generatePropertiesDictionary(
+	properties: (BasePropertyContext & IOSPropertyContext)[],
+	prefix?: string
+): string {
 	let out = 'NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];\n'
 	for (let property of properties) {
 		const name = prefix && prefix.length > 0 ? `${prefix}${property.name}` : property.name
@@ -387,18 +277,18 @@ function generatePropertiesDictionary(properties: TemplateProperty[], prefix?: s
 			if (property.isPayloadFieldNullable) {
 				// If the value is nil, we need to convert it from a primitive nil to NSNull (an object).
 				setter = `properties[@"${
-					property.raw
+					property.rawName
 				}"] = ${name} == nil ? [NSNull null] : ${serializableName};\n`
 			} else {
 				// If the property is not nullable, but is a pointer, then we need to guard on nil
 				// values. In that case, we don't set any value to the field.
 				// TODO: do we need these guards if we've already set a field as nonnull? TBD
 				setter = `if (${name} != nil) {\n  properties[@"${
-					property.raw
+					property.rawName
 				}"] = ${serializableName};\n}\n`
 			}
 		} else {
-			setter = `properties[@"${property.raw}"] = ${serializableName};\n`
+			setter = `properties[@"${property.rawName}"] = ${serializableName};\n`
 		}
 
 		out += setter
