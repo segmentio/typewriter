@@ -20,8 +20,7 @@
     "precommit": "lint-staged",
     "release": "yarn run build && np",
     "prerelease": "yarn run build && ./node_modules/.bin/np prerelease --any-branch --tag next --no-release-draft --no-yarn",
-    "snyk-protect": "snyk protect",
-    "prepare": "yarn run snyk-protect"
+    "snyk-protect": "snyk protect"
   },
   "engines": {
     "node": ">=0.10.15"
