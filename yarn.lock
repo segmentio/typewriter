@@ -6625,6 +6625,29 @@ typescript@^3.4.5:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.4.5.tgz#2d2618d10bb566572b8d7aad5180d84257d70a99"
   integrity sha512-YycBxUb49UUhdNMU5aJ7z5Ej2XGmaIBL0x34vZ82fn3hGvD+bgrMrVDpatgz2f7YxUMJxMkbWxJZeAvDxVe7Vw==
 
+typewriter@^7.0.0-27:
+  version "7.0.0-27"
+  resolved "https://registry.yarnpkg.com/typewriter/-/typewriter-7.0.0-27.tgz#5827a90df8ea6d9663c36d4f7cf6e226a5594b86"
+  integrity sha512-J1O9fLXxF+b1YqA3f0rDvwhujGCpqfZFYG9DcOjHIRHrMHByKmJ2BkBk+cTF2zzXB5VRcU11mZ8frVRwuAyq7w==
+  dependencies:
+    ajv "^6.10.0"
+    analytics-node "^3.3.0"
+    caller-path "^2.0.0"
+    handlebars "^4.1.2"
+    ink "^2.1.1"
+    js-yaml "^3.13.1"
+    lodash "^4.17.11"
+    node-fetch "^2.5.0"
+    node-machine-id "^1.1.12"
+    prettier "^1.17.0"
+    prompts "^2.0.4"
+    prop-types "^15.7.2"
+    react "^16.8.6"
+    snyk "^1.105.0"
+    sort-keys "^3.0.0"
+    typescript "^3.4.5"
+    yargs "^13.2.2"
+
 uglify-js@^3.1.4:
   version "3.5.5"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.5.5.tgz#9c5aaaf3a7586fbf559df31fa6d3bca1b3ba7e9b"
