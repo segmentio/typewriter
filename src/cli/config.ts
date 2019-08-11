@@ -148,9 +148,11 @@ export async function getTokenWithReason(
 	}
 
 	// Attempt to read a token by executing the tokenCommand from the typewriter.yml config file.
+	// Handle tokenCommand errors gracefully, f.e., in CI where you don't need it.
 	if (cfg && cfg.tokenCommand) {
 		const { stdout, stderr } = await exec(cfg.tokenCommand).catch(err => {
-			throw new Error(`Invalid tokenCommand: ${err}`)
+			console.error(err)
+			return { stdout: '', stderr: '' }
 		})
 
 		if (stderr.trim().length > 0) {
