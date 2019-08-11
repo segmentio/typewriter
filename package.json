@@ -1,17 +1,17 @@
 {
   "name": "typewriter",
-  "version": "7.0.0-28",
+  "version": "7.0.0-29",
   "description": "A compiler for generating strongly typed analytics clients via Segment Protocols",
   "repository": "ssh://git@github.com/segmentio/typewriter.git",
   "homepage": "https://github.com/segmentio/typewriter",
   "bugs": "https://github.com/segmentio/typewriter/issues",
   "author": "Colin King <colin.king@segment.com>",
   "license": "MIT",
-  "main": "./dist/cli/index.js",
-  "bin": "./dist/cli/index.js",
+  "main": "./dist/src/cli/index.js",
+  "bin": "./dist/src/cli/index.js",
   "scripts": {
     "dev": "IS_DEVELOPMENT=true ts-node ./src/cli",
-    "build": "rm -rf dist && tsc && copyfiles -u 1 \"src/**/*.hbs\" \"src/cli/typewriter.yml.schema.json\" dist/",
+    "build": "rm -rf dist && tsc && copyfiles -u 1 \"src/**/*.hbs\" \"src/cli/typewriter.yml.schema.json\" dist/src/",
     "build-example": "make build-example",
     "test": "jest --testPathIgnorePatterns 'tests/e2e/.*'",
     "e2e": "make e2e",
@@ -76,7 +76,8 @@
     "yargs": "^13.2.2"
   },
   "files": [
-    "dist/**/*"
+    "dist",
+    "src"
   ],
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
