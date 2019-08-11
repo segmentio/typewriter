@@ -1,6 +1,6 @@
 {
   "name": "typewriter",
-  "version": "7.0.0-27",
+  "version": "7.0.0-28",
   "description": "A compiler for generating strongly typed analytics clients via Segment Protocols",
   "repository": "ssh://git@github.com/segmentio/typewriter.git",
   "homepage": "https://github.com/segmentio/typewriter",
@@ -19,7 +19,7 @@
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "precommit": "lint-staged",
     "release": "yarn run build && np",
-    "prerelease": "yarn run build && np prerelease --any-branch --tag next --no-release-draft",
+    "prerelease": "yarn run build && ./node_modules/.bin/np prerelease --any-branch --tag next --no-release-draft --no-yarn",
     "snyk-protect": "snyk protect",
     "prepare": "yarn run snyk-protect"
   },
