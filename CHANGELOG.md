@@ -1,3 +1,7 @@
+## [6.1.5](https://github.com/segmentio/typewriter/compare/6.1.4...6.1.5) (2019-08-15)
+
+
+
 ## [6.1.4](https://github.com/segmentio/typewriter/compare/6.1.3...6.1.4) (2019-06-04)
 
 
