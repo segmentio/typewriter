@@ -19,8 +19,9 @@ export const defaultValidationErrorHandler = (message, violations) => {
 		{
 			type: 'Typewriter JSON Schema Validation Error',
 			description:
-				`You made an analytics call (${message.event}) using Typewriter that doesn't match the ` +
-				'Tracking Plan spec.',
+				`You made an analytics call (${
+					message.event
+				}) using Typewriter that doesn't match the ` + 'Tracking Plan spec.',
 			errors: violations,
 		},
 		undefined,
@@ -40,10 +41,10 @@ let analytics = () => {
  * @typedef {Object} TypewriterOptions
  * @property {Segment.AnalyticsJS} [analytics] - Underlying analytics instance where analytics
  * 		calls are forwarded on to. Defaults to window.analytics.
- * @property {Function} [onViolation] - Handler fired when if an event does not match its spec. Returns a boolean indicating
- * 		if the message should still be sent to Segment. This handler does not fire in production mode, because it requires
- * 		inlining the full JSON Schema spec for each event in your Tracking Plan. By default, it will throw errors if NODE_ENV
- * 		= "test" so that tests will fail if a message does not match the spec. Otherwise, errors will be logged to stderr.
+ * @property {Function} [onViolation] - Handler fired when if an event does not match its spec. This handler does not fire in
+ * 		production mode, because it requires inlining the full JSON Schema spec for each event in your Tracking Plan. By default,
+ * 		it will throw errors if NODE_ENV="test" so that tests will fail if a message does not match the spec. Otherwise, errors
+ * 		will be logged to stderr.
  */
 export function setTypewriterOptions(options) {
 	analytics = options.analytics

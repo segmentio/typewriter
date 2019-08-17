@@ -255,8 +255,9 @@ export const defaultValidationErrorHandler: ViolationHandler = (
 		{
 			type: 'Typewriter JSON Schema Validation Error',
 			description:
-				`You made an analytics call (${message.event}) using Typewriter that doesn't match the ` +
-				'Tracking Plan spec.',
+				`You made an analytics call (${
+					message.event
+				}) using Typewriter that doesn't match the ` + 'Tracking Plan spec.',
 			errors: violations,
 		},
 		undefined,
@@ -280,8 +281,7 @@ export interface TypewriterOptions {
 	 */
 	analytics?: SegmentAnalytics.AnalyticsJS
 	/**
-	 * Handler fired when if an event does not match its spec. Returns a boolean
-	 * indicating if the message should still be sent to Segment. This handler
+	 * Handler fired when if an event does not match its spec. This handler
 	 * does not fire in production mode, because it requires inlining the full
 	 * JSON Schema spec for each event in your Tracking Plan.
 	 *

@@ -11,22 +11,20 @@
   "bin": "./dist/src/cli/index.js",
   "scripts": {
     "dev": "IS_DEVELOPMENT=true ts-node ./src/cli",
-    "build": "rm -rf dist && tsc && copyfiles -u 1 \"src/**/*.hbs\" \"src/cli/typewriter.yml.schema.json\" dist/src/",
+    "build": "rm -rf dist && tsc && copyfiles --up 1 \"src/**/*.hbs\" dist/src/",
     "build-example": "make build-example",
     "test": "jest --testPathIgnorePatterns 'tests/e2e/.*'",
     "e2e": "make e2e",
     "update": "make update",
     "lint": "eslint './src/**/*.{ts,tsx}'",
-    "precommit": "lint-staged",
     "release": "yarn run build && np",
-    "prerelease": "yarn run build && ./node_modules/.bin/np prerelease --any-branch --tag next --no-release-draft",
+    "prerelease": "yarn run build && np prerelease --any-branch --tag next --no-release-draft",
     "snyk-protect": "snyk protect"
   },
   "engines": {
     "node": ">=0.10.15"
   },
   "devDependencies": {
-    "@hapi/joi": "^15.1.0",
     "@types/analytics-node": "^3.1.1",
     "@types/hapi__joi": "^15.0.2",
     "@types/jest": "^24.0.11",
@@ -56,6 +54,7 @@
     "typewriter": "^7.0.0-30"
   },
   "dependencies": {
+    "@hapi/joi": "^15.1.1",
     "ajv": "^6.10.0",
     "analytics-node": "^3.3.0",
     "caller-path": "^2.0.0",

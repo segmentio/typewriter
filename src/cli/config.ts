@@ -3,10 +3,10 @@ import { promisify } from 'util'
 import { resolve, dirname } from 'path'
 import * as yaml from 'js-yaml'
 import { generateFromTemplate } from '../templates'
-import Ajv from 'ajv'
-import { Arguments, Config } from './types'
+import { Arguments, Config, ConfigSchema } from './types'
 import * as childProcess from 'child_process'
 import { homedir } from 'os'
+import Joi from '@hapi/joi'
 
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
@@ -39,24 +39,15 @@ export async function getConfig(path = './'): Promise<Config | undefined> {
 	})
 	const rawConfig = yaml.safeLoad(file)
 
-	// Validate the provided configuration file using JSON Schema.
-	const schema = JSON.parse(
-		await readFile(resolve(__dirname, './typewriter.yml.schema.json'), {
-			encoding: 'utf-8',
-		})
-	)
-	const ajv = new Ajv({ schemaId: 'auto', allErrors: true, verbose: true })
-	if (!ajv.validate(schema, rawConfig) && ajv.errors) {
-		let error = 'Invalid `typewriter.yml`:\n'
-		for (var ajvError of ajv.errors) {
-			// Remove the "." prefix from the data path.
-			const dataPath = ajvError.dataPath.replace(/^\./, '')
-			error += `	- ${dataPath.length > 0 ? `${dataPath}: ` : ''}${ajvError.message}\n`
-		}
-
+	// Validate the provided configuration file using our Joi schema.
+	const result = Joi.validate(rawConfig, ConfigSchema, {
+		abortEarly: false,
+		convert: false,
+	})
+	if (!!result.error) {
 		// TODO: think of a better way to throw an error, such that we can render it better
 		// than the way yargs handles uncaught errors. Catch and render?
-		throw new Error(error)
+		throw new Error(result.error.annotate())
 	}
 
 	// We can safely type cast the config, now that is has been validated.

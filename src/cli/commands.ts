@@ -174,7 +174,6 @@ export async function init(args: Arguments, cfg: Config | undefined, buildClient
 		client,
 		trackingPlans: [
 			{
-				name: trackingPlan.display_name,
 				id: trackingPlan.name.split('/').slice(-1)[0],
 				workspaceSlug: trackingPlan.name.replace('workspaces/', '').split('/')[0],
 				path,
