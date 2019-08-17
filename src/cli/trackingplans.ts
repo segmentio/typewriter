@@ -37,7 +37,7 @@ export async function loadTrackingPlan(
 		const token = await getToken(cfg)
 		if (!token) {
 			throw new Error(
-				'Unable to find a TYPEWRITER_TOKEN in your environment or a valid `tokenCommand` field in your `typewriter.yml`.'
+				'Unable to find a TYPEWRITER_TOKEN in your environment or a valid token script in your `typewriter.yml`.'
 			)
 		}
 

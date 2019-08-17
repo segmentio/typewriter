@@ -100,7 +100,7 @@ export async function assertHasToken(cfg: Partial<Config> | undefined): Promise<
 
 // getToken uses a Config to fetch a Segment API token. It will search for it in this order:
 //   1. process.env.TYPEWRITER_TOKEN
-//   2. The stdout from executing tokenCommand from the config.
+//   2. The stdout from executing the optional token script from the config.
 //   3. cat ~/.typewriter.yml
 // Returns undefined if no token can be found.
 export async function getToken(cfg: Partial<Config> | undefined): Promise<string | undefined> {
@@ -108,7 +108,7 @@ export async function getToken(cfg: Partial<Config> | undefined): Promise<string
 	return token
 }
 
-// Only resolve tokens (specifically, tokenCommands) once per CLI invocation.
+// Only resolve tokens (specifically, token scripts) once per CLI invocation.
 let tokenCache: { token: string | undefined; reason: string | undefined } = {
 	token: undefined,
 	reason: undefined,
@@ -130,17 +130,15 @@ export async function getTokenWithReason(
 		return tokenCache
 	}
 
-	// Attempt to read a token by executing the tokenCommand from the typewriter.yml config file.
-	// Handle tokenCommand errors gracefully, f.e., in CI where you don't need it.
-	if (cfg && cfg.tokenCommand) {
-		const { stdout, stderr } = await exec(cfg.tokenCommand).catch(err => {
+	// Attempt to read a token by executing the token script from the typewriter.yml config file.
+	// Handle token script errors gracefully, f.e., in CI where you don't need it.
+	if (cfg && cfg.scripts && cfg.scripts.token) {
+		const { stdout, stderr } = await exec(cfg.scripts.token).catch(err => {
 			console.error(err)
 			return { stdout: '', stderr: '' }
 		})
 
-		if (stderr.trim().length > 0) {
-			console.error(stderr)
-		} else {
+		if (stderr.trim().length === 0) {
 			const token = stdout.trim()
 			if (token) {
 				tokenCache = {

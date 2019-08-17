@@ -15,7 +15,7 @@ update:
 	@yarn dev --config=tests/e2e/ios-swift
 	@# Changes to the Tracking Plan JSON files will need to be run through our
 	@# linter again to reduce git deltas.
-	@git add -A && yarn precommit
+	@git add -A && yarn lint-staged
 
 # e2e: launches our end-to-end test for each client library. 
 .PHONY: e2e

@@ -1,7 +1,9 @@
 # Segment Typewriter Configuration (https://github.com/segmentio/typewriter)
 # Just run `npx typewriter@next` to re-generate a client with the latest versions of these events.
 
-tokenCommand: aws-okta exec dev-privileged -- chamber export typewriter | jq -r .typewriter_token
+scripts:
+  token: aws-okta exec dev-privileged -- chamber export typewriter | jq -r .typewriter_token
+  after: ./node_modules/.bin/prettier --write src/analytics/plan.json
 
 # You can find more documentation on configuring this client in the Segment docs.
 # See: https://segment.com/docs/typewriter/typescript

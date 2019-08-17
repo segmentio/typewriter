@@ -14,11 +14,19 @@ export interface Arguments {
  * If you update this inferface, make sure to also update the Joi schema (ConfigSchema) below.
  */
 export interface Config {
-	/**
-	 * A shell command that must produce a Segment API token as its only output.
-	 * If not specified, your environment's TYPEWRITER_TOKEN will be used.
-	 */
-	tokenCommand?: string
+	/** A set of optional shell commands to customize typewriter's behavior. */
+	scripts?: {
+		/**
+		 * An optional shell command that must produce a Segment API token as its only output.
+		 * If not specified, your environment's TYPEWRITER_TOKEN will be used.
+		 */
+		token?: string
+		/**
+		 * An optional shell command executed after typewriter updates/builds clients
+		 * which can be used for things like applying automatic formatting to generated files.
+		 */
+		after?: string
+	}
 	/** Metadata on how to configure a client (language, SDK, module-type, etc.). */
 	client: Options
 	/** Which Tracking Plans to sync locally and generate clients for. */
@@ -30,7 +38,10 @@ export interface Config {
 // prettier-ignore
 /** Joi schema for performing validation on typewriter.yml files. */
 export const ConfigSchema = Joi.object().required().keys({
-	tokenCommand: Joi.string().optional().min(1),
+	scripts: Joi.object().optional().keys({
+		token: Joi.string().optional().min(1),
+		after: Joi.string().optional().min(1),
+	}),
 	client: Joi.object().required().keys({
 		sdk: Joi.string().required().valid('analytics.js', 'analytics-node', 'analytics-android', 'analytics-ios'),
 		language: Joi.string().required().valid('javascript', 'typescript', 'java', 'swift', 'objective-c'),
@@ -62,6 +73,11 @@ export const ConfigSchema = Joi.object().required().keys({
 
 /** Metadata on a specific Tracking Plan to generate a client for. */
 export interface TrackingPlanConfig {
+	/**
+	 * The name of the Tracking Plan. Only set during the `init` step, so it
+	 * can be added as a comment in the generated `typewriter.yml`.
+	 */
+	name?: string
 	/** The id of the Tracking Plan to generate a client for. */
 	id: string
 	/** The slug of the Segment workspace that owns this Tracking Plan. */
