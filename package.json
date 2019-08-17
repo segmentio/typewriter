@@ -19,7 +19,7 @@
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "release": "yarn run build && np",
     "prerelease": "yarn run build && np prerelease --any-branch --tag next --no-release-draft",
-    "snyk-protect": "snyk protect"
+    "prepare": "snyk protect"
   },
   "engines": {
     "node": ">=0.10.15"
