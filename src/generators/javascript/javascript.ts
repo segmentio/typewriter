@@ -128,7 +128,7 @@ export const javascript: Generator<
 		// index.hbs contains all JavaScript client logic.
 		await client.generateFile<JavaScriptRootContext>(
 			client.options.client.language === Language.TYPESCRIPT ? 'index.ts' : 'index.js',
-			'generators/javascript/index.hbs',
+			'generators/javascript/templates/index.hbs',
 			context
 		)
 
@@ -137,7 +137,7 @@ export const javascript: Generator<
 		if (client.options.client.language === Language.TYPESCRIPT) {
 			await client.generateFile<JavaScriptRootContext>(
 				'segment.ts',
-				'generators/javascript/segment.hbs',
+				'generators/javascript/templates/segment.hbs',
 				context
 			)
 		}
