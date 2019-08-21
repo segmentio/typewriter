@@ -5,7 +5,7 @@ scripts:
   token: aws-okta exec dev-privileged -- chamber export typewriter | jq -r .typewriter_token
 
 # You can find more documentation on configuring this client in the Segment docs.
-# See: https://segment.com/docs/typewriter/swift
+# See: https://segment.com/docs/protocols/typewriter/swift
 client:
   sdk: analytics-ios
   language: swift

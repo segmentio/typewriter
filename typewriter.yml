@@ -6,7 +6,7 @@ scripts:
   after: ./node_modules/.bin/prettier --write src/analytics/plan.json
 
 # You can find more documentation on configuring this client in the Segment docs.
-# See: https://segment.com/docs/typewriter/typescript
+# See: https://segment.com/docs/protocols/typewriter/typescript
 client:
   sdk: analytics-node
   language: typescript

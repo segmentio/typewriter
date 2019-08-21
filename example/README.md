@@ -40,4 +40,4 @@ You can regenerate the Typewriter client with `yarn run typewriter`.
 
 ## More Documentation
 
-See the [`Typewriter docs`](https://segment.com/docs/typewriter) for more information on instrumenting your app with Typewriter.
+See the [`Typewriter docs`](https://segment.com/docs/protocols/typewriter) for more information on instrumenting your app with Typewriter.

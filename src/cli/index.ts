@@ -29,7 +29,7 @@ require('yargs')
 	.showHelpOnFail(false)
 	.scriptName('npx typewriter')
 	.usage(
-		'Usage: `$0 [<cmd>] [args]`\n\nA compiler for generating strongly-typed analytics clients using a Segment Tracking Plan. Docs are available at: https://segment.com/docs/typewriter\n\nTo get started, just run `npx typewriter init`.'
+		'Usage: `$0 [<cmd>] [args]`\n\nA compiler for generating strongly-typed analytics clients using a Segment Tracking Plan. Docs are available at: https://segment.com/docs/protocols/typewriter\n\nTo get started, just run `npx typewriter init`.'
 	)
 	.command(
 		['init', 'initialize'],
