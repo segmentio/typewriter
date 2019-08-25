@@ -56,7 +56,7 @@ function toHaveBeenReceived(
 }
 
 expect.extend({
-	// Checks if an event was included in the events list from the sidecar snapshotter.
+	// Checks if an event was included in the list of events provided by segmentio/mock.
 	// Removes the matching events from the events list.
 	toHaveBeenReceived(eventName: string, schema?: Joi.SchemaMap) {
 		return toHaveBeenReceived(eventName, schema ? [schema] : undefined)

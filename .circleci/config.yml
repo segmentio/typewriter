@@ -62,14 +62,14 @@ jobs:
   test-javascript-node:
     docker:
       - image: circleci/node:10.15
-      - image: segment/snapshotter:v0.0.1
+      - image: segment/mock:v0.0.2
     steps:
       - attach_workspace: { at: . }
       - run: make test-javascript-node
   test-typescript-node:
     docker:
       - image: circleci/node:10.15
-      - image: segment/snapshotter:v0.0.1
+      - image: segment/mock:v0.0.2
     steps:
       - attach_workspace: { at: . }
       - run: make test-typescript-node
@@ -77,14 +77,14 @@ jobs:
   test-web-javascript:
     docker:
       - image: cypress/browsers:chrome69
-      - image: segment/snapshotter:v0.0.1
+      - image: segment/mock:v0.0.2
     steps:
       - attach_workspace: { at: . }
       - run: make test-web-javascript
   test-web-typescript:
     docker:
       - image: cypress/browsers:chrome69
-      - image: segment/snapshotter:v0.0.1
+      - image: segment/mock:v0.0.2
     steps:
       - attach_workspace: { at: . }
       - run: make test-web-typescript

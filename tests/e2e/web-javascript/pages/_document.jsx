@@ -16,7 +16,7 @@ export default class SSRDoc extends Document {
 		// support in the sidecar, with extra steps to add a new CA for
 		// self-signed certificates. In the future, we may want to explore
 		// adding support for a "localhost"-compatible analytics.js script.
-		// See https://github.com/segmentio/snapshotter for more details.
+		// See https://github.com/segmentio/mock for more details.
 		const analyticsSnippet = snippetFn({
 			apiKey: 'L7XFg6RtddWxeZbWX9gxiAWVIvAeDPKR',
 			page: false,

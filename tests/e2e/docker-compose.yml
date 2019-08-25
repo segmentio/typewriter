@@ -1,8 +1,11 @@
 version: "3"
 services:
-  snapshotter:
-    image: "segment/snapshotter:v0.0.1"
+  mock:
+    image: "segment/mock:v0.0.2"
     healthcheck:
-      test: "curl --silent --show-error --fail localhost:8765/messages || exit 1"
+      test: "curl --silent --show-error --fail localhost:8765/health || exit 1"
+      interval: 1s
+      timeout: 1s
+      retries: 10
     ports:
       - "8765:8765"

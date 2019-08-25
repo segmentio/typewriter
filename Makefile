@@ -44,16 +44,16 @@ e2e:
 	@### Android
 	@# TODO
 
-# docker: launches the sidecar for e2e snapshot testing
+# docker: launches segmentio/mock which we use to mock the Segment API for e2e testing.
 .PHONY: docker
 docker:
 	@docker-compose -f tests/e2e/docker-compose.yml up -d
-	@# Make sure the snapshotter is available and all messages have been cleared from any previous tests:
-	@sleep 3
-	@make clear-snapshotter
+	@while [ "`docker inspect -f {{.State.Health.Status}} e2e_mock_1`" != "healthy" ]; do sleep 1; done
+	@make clear-mock
 
-.PHONY: clear-snapshotter
-clear-snapshotter:
+# clear-mock: Clears segmentio/mock to give an e2e test a clean slate.
+.PHONY: clear-mock
+clear-mock:
 	@curl -f "http://localhost:8765/messages" > /dev/null 2>&1
 
 # teardown: shuts down the sidecar.
@@ -71,14 +71,14 @@ build-example:
 .PHONY: test-javascript-node
 test-javascript-node:
 	@echo "\n>>>	🏃 Running JavaScript Node client test suite...\n"
-	@make clear-snapshotter && \
+	@make clear-mock && \
 		yarn run -s dev build --config=./tests/e2e/javascript-node && \
 		cd tests/e2e/javascript-node && \
 		yarn && \
 		NODE_ENV=test yarn run -s test && \
 		cd ../../.. && \
 		SDK=analytics-node LANGUAGE=javascript IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
-	@make clear-snapshotter && \
+	@make clear-mock && \
 		yarn run -s dev prod --config=./tests/e2e/javascript-node && \
 		cd tests/e2e/javascript-node && \
 		yarn && \
@@ -89,14 +89,14 @@ test-javascript-node:
 .PHONY: test-typescript-node
 test-typescript-node:
 	@echo "\n>>>	🏃 Running TypeScript Node client test suite...\n"
-	@make clear-snapshotter && \
+	@make clear-mock && \
 		yarn run -s dev build --config=./tests/e2e/typescript-node && \
 		cd tests/e2e/typescript-node && \
 		yarn && \
 		NODE_ENV=test yarn run -s test && \
 		cd ../../.. && \
 		SDK=analytics-node LANGUAGE=typescript IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
-	@make clear-snapshotter && \
+	@make clear-mock && \
 		yarn run -s dev prod --config=./tests/e2e/typescript-node && \
 		cd tests/e2e/typescript-node && \
 		yarn && \
@@ -107,7 +107,7 @@ test-typescript-node:
 .PHONY: test-web-javascript
 test-web-javascript:
 	@echo "\n>>>	🏃 Running JavaScript analytics.js client test suite...\n"
-	@make clear-snapshotter && \
+	@make clear-mock && \
 		yarn run -s dev build --config=./tests/e2e/web-javascript && \
 		cd tests/e2e/web-javascript && \
 		yarn && \
@@ -115,7 +115,7 @@ test-web-javascript:
 		NODE_ENV=test yarn run -s test && \
 		cd ../../.. && \
 		SDK=analytics.js LANGUAGE=javascript IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
-	@make clear-snapshotter && \
+	@make clear-mock && \
 		yarn run -s dev prod --config=./tests/e2e/web-javascript && \
 		cd tests/e2e/web-javascript && \
 		yarn && \
@@ -127,7 +127,7 @@ test-web-javascript:
 .PHONY: test-web-typescript
 test-web-typescript:
 	@echo "\n>>>	🏃 Running TypeScript analytics.js client test suite...\n"
-	@make clear-snapshotter && \
+	@make clear-mock && \
 		yarn run -s dev build --config=./tests/e2e/web-typescript && \
 		cd tests/e2e/web-typescript && \
 		yarn && \
@@ -135,7 +135,7 @@ test-web-typescript:
 		NODE_ENV=test yarn run -s test && \
 		cd ../../.. && \
 		SDK=analytics.js LANGUAGE=typescript IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
-	@make clear-snapshotter && \
+	@make clear-mock && \
 		yarn run -s dev prod --config=./tests/e2e/web-typescript && \
 		cd tests/e2e/web-typescript && \
 		yarn && \
@@ -157,12 +157,12 @@ setup-ios-tests:
 .PHONY: run-ios-tests
 run-ios-tests:
 	@echo "\n>>>	🏃 Running iOS Objective-C client test suite...\n"
-	@make clear-snapshotter && \
+	@make clear-mock && \
 		yarn run -s dev build --config=./tests/e2e/ios && \
 		cd tests/e2e/ios && \
 		set -o pipefail && xcodebuild test $(XC_OBJECTIVE_C_ARGS) | xcpretty && \
 		SDK=analytics-ios LANGUAGE=objective-c IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
-	@make clear-snapshotter && \
+	@make clear-mock && \
 		yarn run -s dev prod --config=./tests/e2e/ios && \
 		cd tests/e2e/ios && \
 		set -o pipefail && xcodebuild test $(XC_OBJECTIVE_C_ARGS) | xcpretty && \
@@ -181,12 +181,12 @@ setup-ios-swift-tests:
 .PHONY: run-ios-swift-tests
 run-ios-swift-tests:
 	@echo "\n>>>	🏃 Running iOS Swift client test suite...\n"
-	@make clear-snapshotter && \
+	@make clear-mock && \
 		yarn run -s dev build --config=./tests/e2e/ios-swift && \
 		cd tests/e2e/ios-swift && \
 		set -o pipefail && xcodebuild test $(XC_SWIFT_ARGS) | xcpretty && \
 		SDK=analytics-ios LANGUAGE=swift IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
-	@make clear-snapshotter && \
+	@make clear-mock && \
 		yarn run -s dev prod --config=./tests/e2e/ios-swift && \
 		cd tests/e2e/ios-swift && \
 		set -o pipefail && xcodebuild test $(XC_SWIFT_ARGS) | xcpretty && \
