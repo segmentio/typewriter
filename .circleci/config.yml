@@ -59,20 +59,20 @@ jobs:
       - attach_workspace: { at: . }
       - run: make build-example
 
-  test-javascript-node:
+  test-node-javascript:
     docker:
       - image: circleci/node:10.15
       - image: segment/mock:v0.0.2
     steps:
       - attach_workspace: { at: . }
-      - run: make test-javascript-node
-  test-typescript-node:
+      - run: make test-node-javascript
+  test-node-typescript:
     docker:
       - image: circleci/node:10.15
       - image: segment/mock:v0.0.2
     steps:
       - attach_workspace: { at: . }
-      - run: make test-typescript-node
+      - run: make test-node-typescript
 
   test-web-javascript:
     docker:
@@ -130,9 +130,9 @@ workflows:
           requires: [setup]
       - test-unit-tests:
           requires: [setup]
-      - test-javascript-node:
+      - test-node-javascript:
           requires: [setup]
-      - test-typescript-node:
+      - test-node-typescript:
           requires: [setup]
       - test-web-javascript:
           requires: [setup]

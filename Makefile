@@ -7,8 +7,8 @@ XC_SWIFT_ARGS := -workspace TypewriterSwiftExample.xcworkspace -scheme Typewrite
 update:
 	@yarn dev
 	@yarn dev --config=example
-	@yarn dev --config=tests/e2e/javascript-node
-	@yarn dev --config=tests/e2e/typescript-node
+	@yarn dev --config=tests/e2e/node-javascript
+	@yarn dev --config=tests/e2e/node-typescript
 	@yarn dev --config=tests/e2e/web-javascript
 	@yarn dev --config=tests/e2e/web-typescript
 	@yarn dev --config=tests/e2e/ios
@@ -27,9 +27,9 @@ e2e:
 	@make build-example
 
 	@### JavaScript node
-	@make test-javascript-node
+	@make test-node-javascript
 	@### TypeScript node
-	@make test-typescript-node
+	@make test-node-typescript
 
 	@### JavaScript web
 	@make test-web-javascript
@@ -68,37 +68,37 @@ build-example:
 		yarn && \
 		yarn build
 
-.PHONY: test-javascript-node
-test-javascript-node:
+.PHONY: test-node-javascript
+test-node-javascript:
 	@echo "\n>>>	🏃 Running JavaScript Node client test suite...\n"
 	@make clear-mock && \
-		yarn run -s dev build --config=./tests/e2e/javascript-node && \
-		cd tests/e2e/javascript-node && \
+		yarn run -s dev build --config=./tests/e2e/node-javascript && \
+		cd tests/e2e/node-javascript && \
 		yarn && \
 		NODE_ENV=test yarn run -s test && \
 		cd ../../.. && \
 		SDK=analytics-node LANGUAGE=javascript IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
 	@make clear-mock && \
-		yarn run -s dev prod --config=./tests/e2e/javascript-node && \
-		cd tests/e2e/javascript-node && \
+		yarn run -s dev prod --config=./tests/e2e/node-javascript && \
+		cd tests/e2e/node-javascript && \
 		yarn && \
 		NODE_ENV=test yarn run -s test && \
 		cd ../../.. && \
 		SDK=analytics-node LANGUAGE=javascript IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
 
-.PHONY: test-typescript-node
-test-typescript-node:
+.PHONY: test-node-typescript
+test-node-typescript:
 	@echo "\n>>>	🏃 Running TypeScript Node client test suite...\n"
 	@make clear-mock && \
-		yarn run -s dev build --config=./tests/e2e/typescript-node && \
-		cd tests/e2e/typescript-node && \
+		yarn run -s dev build --config=./tests/e2e/node-typescript && \
+		cd tests/e2e/node-typescript && \
 		yarn && \
 		NODE_ENV=test yarn run -s test && \
 		cd ../../.. && \
 		SDK=analytics-node LANGUAGE=typescript IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
 	@make clear-mock && \
-		yarn run -s dev prod --config=./tests/e2e/typescript-node && \
-		cd tests/e2e/typescript-node && \
+		yarn run -s dev prod --config=./tests/e2e/node-typescript && \
+		cd tests/e2e/node-typescript && \
 		yarn && \
 		yarn run -s test && \
 		cd ../../.. && \
