@@ -101,7 +101,7 @@ export async function assertHasToken(cfg: Partial<Config> | undefined): Promise<
 // getToken uses a Config to fetch a Segment API token. It will search for it in this order:
 //   1. process.env.TYPEWRITER_TOKEN
 //   2. The stdout from executing the optional token script from the config.
-//   3. cat ~/.typewriter.yml
+//   3. cat ~/.typewriter
 // Returns undefined if no token can be found.
 export async function getToken(cfg: Partial<Config> | undefined): Promise<string | undefined> {
 	const { token } = await getTokenWithReason(cfg)
