@@ -16,7 +16,6 @@ export async function generateFromTemplate<Context extends object>(
 	needsWarning?: boolean
 ): Promise<string> {
 	const path = resolve(__dirname, templatePath)
-
 	const template = await readFile(path, {
 		encoding: 'utf-8',
 	})
@@ -33,6 +32,18 @@ export async function generateFromTemplate<Context extends object>(
 	}
 
 	return content
+}
+
+export async function registerPartial(partialPath: string, partialName: string) {
+	const path = resolve(__dirname, partialPath)
+	const template = await readFile(path, {
+		encoding: 'utf-8',
+	})
+	const templater = Handlebars.compile(template, {
+		noEscape: true,
+	})
+
+	Handlebars.registerPartial(partialName, templater)
 }
 
 export async function registerStandardHelpers() {

@@ -1637,29 +1637,101 @@ export function eventCollided1(
 }
 
 const clientAPI = {
+	/**
+	 * Updates the run-time configuration of this Typewriter client.
+	 */
 	setTypewriterOptions,
+	/**
+	 * Validates that clients properly sanitize event names.
+	 */
 	I42TerribleEventName3,
+	/**
+	 * Fired before an analytics instance has been set, which should throw an error.
+	 */
 	analyticsInstanceMissing,
+	/**
+	 * Fired after a client throws an "Analytics Instance Missing" error to mark the test as successful.
+	 */
 	analyticsInstanceMissingThrewError,
+	/**
+	 * Fires a 'Custom Violation Handler' track call.
+	 */
 	customViolationHandler,
+	/**
+	 * Fires a 'Custom Violation Handler Called' track call.
+	 */
 	customViolationHandlerCalled,
+	/**
+	 * Fires a 'Default Violation Handler' track call.
+	 */
 	defaultViolationHandler,
+	/**
+	 * Fires a 'Default Violation Handler Called' track call.
+	 */
 	defaultViolationHandlerCalled,
+	/**
+	 * Fires a 'Empty Event' track call.
+	 */
 	emptyEvent,
+	/**
+	 * Fires a 'Event Collided' track call.
+	 */
 	eventCollided,
+	/**
+	 * Fires a 'Every Nullable Optional Type' track call.
+	 */
 	everyNullableOptionalType,
+	/**
+	 * Fires a 'Every Nullable Required Type' track call.
+	 */
 	everyNullableRequiredType,
+	/**
+	 * Fires a 'Every Optional Type' track call.
+	 */
 	everyOptionalType,
+	/**
+	 * Fires a 'Every Required Type' track call.
+	 */
 	everyRequiredType,
+	/**
+	 * Fires a 'Nested Arrays' track call.
+	 */
 	nestedArrays,
+	/**
+	 * Fires a 'Nested Objects' track call.
+	 */
 	nestedObjects,
+	/**
+	 * Fires a 'Properties Collided' track call.
+	 */
 	propertiesCollided,
+	/**
+	 * Fires a 'Property Object Name Collision #1' track call.
+	 */
 	propertyObjectNameCollision1,
+	/**
+	 * Fires a 'Property Object Name Collision #2' track call.
+	 */
 	propertyObjectNameCollision2,
+	/**
+	 * Fires a 'Property Sanitized' track call.
+	 */
 	propertySanitized,
+	/**
+	 * Fires a 'Simple Array Types' track call.
+	 */
 	simpleArrayTypes,
+	/**
+	 * Fires a 'Union Type' track call.
+	 */
 	unionType,
+	/**
+	 * Fired if a client correctly handled an unknown method call.
+	 */
 	unknownEventHandlerCalled,
+	/**
+	 * Fires a 'event_collided' track call.
+	 */
 	eventCollided1,
 }
 

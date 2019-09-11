@@ -1515,29 +1515,226 @@ export function eventCollided1(props, options, callback) {
 	}
 }
 const clientAPI = {
+	/**
+	 * Updates the run-time configuration of this Typewriter client.
+	 *
+	 * @param {TypewriterOptions} options - the options to upsert
+	 *
+	 * @typedef {Object} TypewriterOptions
+	 * @property {Segment.AnalyticsJS} [analytics] - Underlying analytics instance where analytics
+	 * 		calls are forwarded on to. Defaults to window.analytics.
+	 * @property {Function} [onViolation] - Handler fired when if an event does not match its spec. This handler does not fire in
+	 * 		production mode, because it requires inlining the full JSON Schema spec for each event in your Tracking Plan. By default,
+	 * 		it will throw errors if NODE_ENV="test" so that tests will fail if a message does not match the spec. Otherwise, errors
+	 * 		will be logged to stderr.
+	 */
 	setTypewriterOptions,
+	/**
+	 * Validates that clients properly sanitize event names.
+	 *
+	 * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	I42TerribleEventName3,
+	/**
+	 * Fired before an analytics instance has been set, which should throw an error.
+	 *
+	 * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	analyticsInstanceMissing,
+	/**
+	 * Fired after a client throws an "Analytics Instance Missing" error to mark the test as successful.
+	 *
+	 * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	analyticsInstanceMissingThrewError,
+	/**
+	 * Fires a 'Custom Violation Handler' track call.
+	 *
+	 * @param {CustomViolationHandler} props - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	customViolationHandler,
+	/**
+	 * Fires a 'Custom Violation Handler Called' track call.
+	 *
+	 * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	customViolationHandlerCalled,
+	/**
+	 * Fires a 'Default Violation Handler' track call.
+	 *
+	 * @param {DefaultViolationHandler} props - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	defaultViolationHandler,
+	/**
+	 * Fires a 'Default Violation Handler Called' track call.
+	 *
+	 * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	defaultViolationHandlerCalled,
+	/**
+	 * Fires a 'Empty Event' track call.
+	 *
+	 * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	emptyEvent,
+	/**
+	 * Fires a 'Event Collided' track call.
+	 *
+	 * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	eventCollided,
+	/**
+	 * Fires a 'Every Nullable Optional Type' track call.
+	 *
+	 * @param {EveryNullableOptionalType} [props] - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	everyNullableOptionalType,
+	/**
+	 * Fires a 'Every Nullable Required Type' track call.
+	 *
+	 * @param {EveryNullableRequiredType} props - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	everyNullableRequiredType,
+	/**
+	 * Fires a 'Every Optional Type' track call.
+	 *
+	 * @param {EveryOptionalType} [props] - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	everyOptionalType,
+	/**
+	 * Fires a 'Every Required Type' track call.
+	 *
+	 * @param {EveryRequiredType} props - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	everyRequiredType,
+	/**
+	 * Fires a 'Nested Arrays' track call.
+	 *
+	 * @param {NestedArrays} props - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	nestedArrays,
+	/**
+	 * Fires a 'Nested Objects' track call.
+	 *
+	 * @param {NestedObjects} props - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	nestedObjects,
+	/**
+	 * Fires a 'Properties Collided' track call.
+	 *
+	 * @param {PropertiesCollided} props - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	propertiesCollided,
+	/**
+	 * Fires a 'Property Object Name Collision #1' track call.
+	 *
+	 * @param {PropertyObjectNameCollision1} [props] - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	propertyObjectNameCollision1,
+	/**
+	 * Fires a 'Property Object Name Collision #2' track call.
+	 *
+	 * @param {PropertyObjectNameCollision2} [props] - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	propertyObjectNameCollision2,
+	/**
+	 * Fires a 'Property Sanitized' track call.
+	 *
+	 * @param {PropertySanitized} props - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	propertySanitized,
+	/**
+	 * Fires a 'Simple Array Types' track call.
+	 *
+	 * @param {SimpleArrayTypes} [props] - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	simpleArrayTypes,
+	/**
+	 * Fires a 'Union Type' track call.
+	 *
+	 * @param {UnionType} props - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	unionType,
+	/**
+	 * Fired if a client correctly handled an unknown method call.
+	 *
+	 * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	unknownEventHandlerCalled,
+	/**
+	 * Fires a 'event_collided' track call.
+	 *
+	 * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
 	eventCollided1,
 }
 export default new Proxy(clientAPI, {

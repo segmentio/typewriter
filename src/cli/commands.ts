@@ -248,6 +248,7 @@ export async function update(args: Arguments, cfg: Config | undefined) {
 		}
 	} catch (err) {
 		// TODO: more reliable network connection detection
+		console.error(err)
 		console.warn('Skipping update: no network connection')
 	}
 
@@ -277,11 +278,18 @@ async function generateClients(
 
 		const segmentTrackingPlan = await loadTrackingPlan(args, config)
 		const trackingPlan: RawTrackingPlan = {
-			trackCalls: segmentTrackingPlan.rules.events.map<JSONSchema7>(e => ({
-				...e.rules,
-				title: e.name,
-				description: e.description,
-			})),
+			trackCalls: segmentTrackingPlan.rules.events
+				// Typewriter doesn't yet support event versioning. For now, we just choose the most recent version.
+				.filter(e =>
+					segmentTrackingPlan.rules.events.every(
+						e2 => e.name !== e2.name || e.version >= e2.version
+					)
+				)
+				.map<JSONSchema7>(e => ({
+					...e.rules,
+					title: e.name,
+					description: e.description,
+				})),
 		}
 
 		// Generate a client and write its files out to the specified path.

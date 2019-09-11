@@ -391,8 +391,19 @@ export function errorFired(
 }
 
 const clientAPI = {
+	/**
+	 * Updates the run-time configuration of this Typewriter client.
+	 * This function must be called with a configured analytics-node instance before firing
+	 * any analytics calls, or else a `missingAnalyticsNodeError` error will be thrown.
+	 */
 	setTypewriterOptions,
+	/**
+	 * Fired when a CLI command is started.
+	 */
 	commandRun,
+	/**
+	 * Fired when an error is encountered.
+	 */
 	errorFired,
 }
 

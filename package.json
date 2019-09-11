@@ -13,7 +13,7 @@
     "dev": "IS_DEVELOPMENT=true ts-node ./src/cli",
     "build": "rm -rf dist && tsc && copyfiles --up 1 \"src/**/*.hbs\" dist/src/",
     "build-example": "make build-example",
-    "test": "jest --testPathIgnorePatterns 'tests/e2e/.*'",
+    "test": "jest --testPathIgnorePatterns 'tests/e2e/.*' 'example'",
     "e2e": "make e2e",
     "update": "make update",
     "lint": "eslint './src/**/*.{ts,tsx}'",
@@ -139,7 +139,7 @@
   "lint-staged": {
     "linters": {
       "*.ts": [
-        "eslint",
+        "eslint --fix",
         "git add"
       ],
       "*.json": [

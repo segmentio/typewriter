@@ -115,6 +115,7 @@ export namespace SegmentAPI {
 		name: string
 		description?: string
 		rules: JSONSchema7
+		version: number
 	}
 
 	// https://reference.segmentapis.com/?version=latest#7ed2968b-c4a5-4cfb-b4bf-7d28c7b38bd2

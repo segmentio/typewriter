@@ -5,6 +5,7 @@ import { transpileModule } from 'typescript'
 import { Language, SDK } from '../options'
 import { Generator } from '../gen'
 import { toTarget, toModule } from './targets'
+import { registerPartial } from '../../templates'
 
 // These contexts are what will be passed to Handlebars to perform rendering.
 // Everything in these contexts should be properly sanitized.
@@ -62,11 +63,22 @@ export const javascript: Generator<
 		allowedIdentifierStartingChars: 'A-Za-z_$',
 		allowedIdentifierChars: 'A-Za-z0-9_$',
 	},
-	setup: async options => ({
-		isBrowser: options.client.sdk === SDK.WEB,
-		needsJSDoc: options.client.language === Language.JAVASCRIPT,
-		useProxy: true,
-	}),
+	setup: async options => {
+		await registerPartial(
+			'generators/javascript/templates/setTypewriterOptionsDocumentation.hbs',
+			'setTypewriterOptionsDocumentation'
+		)
+		await registerPartial(
+			'generators/javascript/templates/functionDocumentation.hbs',
+			'functionDocumentation'
+		)
+
+		return {
+			isBrowser: options.client.sdk === SDK.WEB,
+			needsJSDoc: options.client.language === Language.JAVASCRIPT,
+			useProxy: true,
+		}
+	},
 	generatePrimitive: async (client, schema) => {
 		let type = 'any'
 		if (schema.type === Type.STRING) {
