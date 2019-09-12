@@ -4,7 +4,6 @@
  * This function must be called with a configured analytics-node instance before firing
  * any analytics calls, or else a `missingAnalyticsNodeError` error will be thrown.
  {{/unless}}
- {{#if needsJSDoc}}
  *
  * @param {TypewriterOptions} options - the options to upsert
  *
@@ -15,5 +14,4 @@
  * 		production mode, because it requires inlining the full JSON Schema spec for each event in your Tracking Plan. By default,
  * 		it will throw errors if NODE_ENV="test" so that tests will fail if a message does not match the spec. Otherwise, errors
  * 		will be logged to stderr.
- {{/if}}
  */

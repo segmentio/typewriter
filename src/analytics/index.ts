@@ -95,6 +95,11 @@ export type ViolationHandler = (
 	violations: Ajv.ErrorObject[]
 ) => void
 
+/**
+ * The default handler that is fired if none is supplied with setTypewriterOptions.
+ * If NODE_ENV="test", this handler will throw an error. Otherwise, it will log
+ * a warning message to the console.
+ */
 export const defaultValidationErrorHandler: ViolationHandler = (
 	message,
 	violations
@@ -158,6 +163,16 @@ export interface TypewriterOptions {
  * Updates the run-time configuration of this Typewriter client.
  * This function must be called with a configured analytics-node instance before firing
  * any analytics calls, or else a `missingAnalyticsNodeError` error will be thrown.
+ *
+ * @param {TypewriterOptions} options - the options to upsert
+ *
+ * @typedef {Object} TypewriterOptions
+ * @property {Segment.AnalyticsNode} analytics - Underlying analytics instance where analytics
+ * 		calls are forwarded on to.
+ * @property {Function} [onViolation] - Handler fired when if an event does not match its spec. This handler does not fire in
+ * 		production mode, because it requires inlining the full JSON Schema spec for each event in your Tracking Plan. By default,
+ * 		it will throw errors if NODE_ENV="test" so that tests will fail if a message does not match the spec. Otherwise, errors
+ * 		will be logged to stderr.
  */
 export function setTypewriterOptions(options: TypewriterOptions) {
 	analytics = options.analytics ? () => options.analytics : analytics
@@ -201,7 +216,66 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
 }
 
 /**
+ * A message payload for an analytics-node `.track()` call.
+ * See: https://segment.com/docs/spec/track/
+ *
+ * @typedef TrackMessage<PropertiesType>
+ * @property {string | number} [userId] - The ID for this user in your database.
+ * @property {string | number} [anonymousId] - An ID to associated with the user when you don’t know who they are.
+ * @property {PropertiesType} [properties] - A dictionary of properties for the event.
+ * @property {Date} [timestamp] - A Javascript date object representing when the track took place. If the track
+ * 		just happened, leave it out and we’ll use the server’s time. If you’re importing data from the past make
+ * 		sure you to send a timestamp.
+ * @template PropertiesType
+ */
+
+/**
+ * @typedef Client
+ * @property {string} [language] -
+ * @property {string} [sdk] -
+ */
+/**
+ * @typedef TrackingPlan
+ * @property {string} [id] -
+ * @property {string} [workspace_slug] -
+ */
+/**
+ * @typedef CommandRun
+ * @property {Client} [client] - Metadata about the client that typewriter is generating.
+ * @property {string} `command` - The command name that was started.
+ * @property {number} `duration` - The time taken to execute this command, in ms.
+ * @property {boolean} [is_ci] - Whether or not typewriter is currently running in a CI environment or not.
+ * @property {string} [token_method] - Where the API token was fetched from.
+ * @property {TrackingPlan} [tracking_plan] - Metadata about the Tracking Plan that typewriter was fired on.
+ */
+/**
+ * @typedef Client1
+ * @property {string} [language] -
+ * @property {string} [sdk] -
+ */
+/**
+ * @typedef TrackingPlan1
+ * @property {string} [id] -
+ * @property {string} [workspace_slug] -
+ */
+/**
+ * @typedef ErrorFired
+ * @property {Client1} [client] - Metadata about the client that typewriter is generating.
+ * @property {string} [command] - The command name that was started.
+ * @property {Record<string, any>} `error` - The full error itself.
+ * @property {string} `error_string` - The minimal error string itself.
+ * @property {boolean} [is_ci] - Whether or not typewriter is currently running in a CI environment or not.
+ * @property {string} [token_method] - Where the API token was fetched from.
+ * @property {TrackingPlan1} [tracking_plan] - Metadata about the Tracking Plan that typewriter was fired on.
+ * @property {boolean} `unexpected` - Whether or not this error was an expected (and therefore, properly handled) error.
+ */
+
+/**
  * Fired when a CLI command is started.
+ *
+ * @param {TrackMessage<CommandRun>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 export function commandRun(
 	message: Segment.TrackMessage<CommandRun>,
@@ -292,6 +366,10 @@ export function commandRun(
 }
 /**
  * Fired when an error is encountered.
+ *
+ * @param {TrackMessage<ErrorFired>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
  */
 export function errorFired(
 	message: Segment.TrackMessage<ErrorFired>,
@@ -395,14 +473,32 @@ const clientAPI = {
 	 * Updates the run-time configuration of this Typewriter client.
 	 * This function must be called with a configured analytics-node instance before firing
 	 * any analytics calls, or else a `missingAnalyticsNodeError` error will be thrown.
+	 *
+	 * @param {TypewriterOptions} options - the options to upsert
+	 *
+	 * @typedef {Object} TypewriterOptions
+	 * @property {Segment.AnalyticsNode} analytics - Underlying analytics instance where analytics
+	 * 		calls are forwarded on to.
+	 * @property {Function} [onViolation] - Handler fired when if an event does not match its spec. This handler does not fire in
+	 * 		production mode, because it requires inlining the full JSON Schema spec for each event in your Tracking Plan. By default,
+	 * 		it will throw errors if NODE_ENV="test" so that tests will fail if a message does not match the spec. Otherwise, errors
+	 * 		will be logged to stderr.
 	 */
 	setTypewriterOptions,
 	/**
 	 * Fired when a CLI command is started.
+	 *
+	 * @param {TrackMessage<CommandRun>} message - The analytics properties that will be sent to Segment.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
 	 */
 	commandRun,
 	/**
 	 * Fired when an error is encountered.
+	 *
+	 * @param {TrackMessage<ErrorFired>} message - The analytics properties that will be sent to Segment.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
 	 */
 	errorFired,
 }

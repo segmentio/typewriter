@@ -12,7 +12,6 @@ import { registerPartial } from '../../templates'
 
 interface JavaScriptRootContext {
 	isBrowser: boolean
-	needsJSDoc: boolean
 	useProxy: boolean
 }
 
@@ -75,7 +74,6 @@ export const javascript: Generator<
 
 		return {
 			isBrowser: options.client.sdk === SDK.WEB,
-			needsJSDoc: options.client.language === Language.JAVASCRIPT,
 			useProxy: true,
 		}
 	},

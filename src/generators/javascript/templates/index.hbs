@@ -40,7 +40,6 @@ export type ViolationHandler = (
 ) => void
 
 {{#if isDevelopment}}
-{{#if needsJSDoc}}
 /**
  * The default handler that is fired if none is supplied with setTypewriterOptions.
  {{#if isBrowser}}
@@ -50,7 +49,6 @@ export type ViolationHandler = (
  * a warning message to the console.
  {{/if}}
  */
-{{/if}}
 export const defaultValidationErrorHandler: ViolationHandler = (message, violations) => {
 	const msg = JSON.stringify({
 		type: 'Typewriter JSON Schema Validation Error',
@@ -159,7 +157,6 @@ function withTypewriterContext{{#unless isBrowser}}<P, T extends Segment.TrackMe
 	}
 }
 
-{{#if needsJSDoc}}
 {{#unless isBrowser}}
 /**
  * A message payload for an analytics-node `.track()` call.
@@ -174,7 +171,8 @@ function withTypewriterContext{{#unless isBrowser}}<P, T extends Segment.TrackMe
  * 		sure you to send a timestamp.
  * @template PropertiesType
  */
- {{/unless}}
+{{/unless}}
+
 {{#each objects}}
 /**
  {{#if description}}
@@ -188,10 +186,9 @@ function withTypewriterContext{{#unless isBrowser}}<P, T extends Segment.TrackMe
  {{/each}}
  */
 {{/each}}
-{{/if}}
 
 {{#each tracks}}
-{{> functionDocumentation isBrowser=../isBrowser needsJSDoc=../needsJSDoc }}
+{{> functionDocumentation isBrowser=../isBrowser }}
 {{#if ../isBrowser}}
 export function {{functionName}}(
 	props{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
@@ -249,7 +246,7 @@ const clientAPI = {
 	{{> setTypewriterOptionsDocumentation}}
 	setTypewriterOptions,
 	{{#each tracks}}
-	{{> functionDocumentation isBrowser=../isBrowser needsJSDoc=../needsJSDoc }}
+	{{> functionDocumentation isBrowser=../isBrowser }}
 	{{functionName}},
 	{{/each}}
 }

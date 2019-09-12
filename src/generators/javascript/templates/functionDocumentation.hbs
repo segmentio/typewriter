@@ -4,7 +4,6 @@
  {{else}}
  * Fires a '{{rawEventName}}' track call.
  {{/if}}
- {{#if needsJSDoc}}
  *
  {{#if isBrowser}}
  {{!-- Note: this uses whitespace control to "escape" the outer curly braces. --}}
@@ -17,6 +16,5 @@
  * @param {TrackMessage<{{propertiesType}}>} message - The analytics properties that will be sent to Segment.
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
  * 		call is fired.
- {{/if}}
  {{/if}}
  */
