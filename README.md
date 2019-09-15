@@ -27,7 +27,7 @@
 
 - 👮 **Analytics Testing**: Validate your instrumentation matches your [spec](https://segment.com/docs/protocols/tracking-plan/) before deploying to production, so you can fail your CI builds without a manual analytics QA process.
 
-- 🌐 **Cross-Language Support**: Supports native clients for [`analytics.js`](https://segment.com/docs/protocols/typewriter/analytics.js), [`analytics-node`](https://segment.com/docs/protocols/typewriter/analytics-node), [`analytics-android`](https://segment.com/docs/protocols/typewriter/analytics-android) and [`analytics-ios`](https://segment.com/docs/protocols/typewriter/analytics-ios).
+- 🌐 **Cross-Language Support**: Supports native clients for [`analytics.js`](https://segment.com/docs/protocols/typewriter/#browser-quickstart), [`analytics-node`](https://segment.com/docs/protocols/typewriter/#node-js-quickstart), [`analytics-android`](https://segment.com/docs/protocols/typewriter/#android-quickstart) and [`analytics-ios`](https://segment.com/docs/protocols/typewriter/#ios-quickstart).
 
 - ✨ **Segment Protocols**: Built-in support to sync your `typewriter` clients with your [centralized Segment Tracking Plans](https://segment.com/docs/protocols/tracking-plan/).
 

@@ -1,4 +1,4 @@
-# Segment Typewriter Configuration (https://github.com/segmentio/typewriter)
+# Segment Typewriter Configuration (https://segment.com/docs/protocols/typewriter)
 # Just run `npx typewriter@next` to re-generate a client with the latest versions of these events.
 {{#if scripts.token}}
 
@@ -7,7 +7,7 @@ scripts:
 {{/if}}
 
 # You can find more documentation on configuring this client in the Segment docs.
-# See: https://segment.com/docs/protocols/typewriter/{{client.language}}
+# See: https://segment.com/docs/protocols/typewriter
 client:
   {{#each client}}
   {{@key}}: {{this}}
