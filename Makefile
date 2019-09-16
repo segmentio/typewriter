@@ -5,14 +5,15 @@ XC_SWIFT_ARGS := -workspace TypewriterSwiftExample.xcworkspace -scheme Typewrite
 # update: updates typewriter and all e2e tests to use the latest Tracking Plans.
 .PHONY: update
 update:
-	@yarn dev
-	@yarn dev --config=example
-	@yarn dev --config=tests/e2e/node-javascript
-	@yarn dev --config=tests/e2e/node-typescript
-	@yarn dev --config=tests/e2e/web-javascript
-	@yarn dev --config=tests/e2e/web-typescript
-	@yarn dev --config=tests/e2e/ios
-	@yarn dev --config=tests/e2e/ios-swift
+	@yarn build
+	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js
+	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js --config=example
+	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js --config=tests/e2e/node-javascript
+	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js --config=tests/e2e/node-typescript
+	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js --config=tests/e2e/web-javascript
+	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js --config=tests/e2e/web-typescript
+	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js --config=tests/e2e/ios
+	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js --config=tests/e2e/ios-swift
 	@# Changes to the Tracking Plan JSON files will need to be run through our
 	@# linter again to reduce git deltas.
 	@git add -A && yarn lint-staged

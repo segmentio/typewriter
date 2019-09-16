@@ -1,13 +1,5 @@
-import { JSONSchema7 } from 'json-schema'
 import { Options } from 'src/generators/options'
 import Joi from '@hapi/joi'
-
-export interface Arguments {
-	/** Any commands passed in to a yargs CLI. */
-	_: string[]
-	/** An optional path to a typewriter.yml (or directory with a typewriter.yml). **/
-	config: string | undefined
-}
 
 /**
  * A config, stored in a typewriter.yml file.
@@ -33,11 +25,29 @@ export interface Config {
 	trackingPlans: TrackingPlanConfig[]
 }
 
+/** Metadata on a specific Tracking Plan to generate a client for. */
+export interface TrackingPlanConfig {
+	/**
+	 * The name of the Tracking Plan. Only set during the `init` step, so it
+	 * can be added as a comment in the generated `typewriter.yml`.
+	 */
+	name?: string
+	/** The id of the Tracking Plan to generate a client for. */
+	id: string
+	/** The slug of the Segment workspace that owns this Tracking Plan. */
+	workspaceSlug: string
+	/**
+	 * A directory path relative to this typewriter.yml file, specifying where
+	 * this Tracking Plan's client should be output.
+	 */
+	path: string
+}
+
 // Ignore Prettier here, since otherwise prettier adds quite a bit of spacing
 // that makes this schema too long+verbose.
 // prettier-ignore
 /** Joi schema for performing validation on typewriter.yml files. */
-export const ConfigSchema = Joi.object().required().keys({
+const ConfigSchema = Joi.object().required().keys({
 	scripts: Joi.object().optional().keys({
 		token: Joi.string().optional().min(1),
 		after: Joi.string().optional().min(1),
@@ -71,62 +81,18 @@ export const ConfigSchema = Joi.object().required().keys({
 	),
 })
 
-/** Metadata on a specific Tracking Plan to generate a client for. */
-export interface TrackingPlanConfig {
-	/**
-	 * The name of the Tracking Plan. Only set during the `init` step, so it
-	 * can be added as a comment in the generated `typewriter.yml`.
-	 */
-	name?: string
-	/** The id of the Tracking Plan to generate a client for. */
-	id: string
-	/** The slug of the Segment workspace that owns this Tracking Plan. */
-	workspaceSlug: string
-	/**
-	 * A directory path relative to this typewriter.yml file, specifying where
-	 * this Tracking Plan's client should be output.
-	 */
-	path: string
-}
-
-export namespace SegmentAPI {
-	// https://reference.segmentapis.com/#1092fe01-379b-4ca1-8b1d-9f42b33d2899
-	export type GetTrackingPlanResponse = TrackingPlan
-
-	// https://reference.segmentapis.com/?version=latest#ef9f50a2-7031-4ddf-898a-387266894a04
-	export interface ListTrackingPlansResponse {
-		tracking_plans: TrackingPlan[]
+export const validateConfig = (rawConfig: object): Config => {
+	// Validate the provided configuration file using our Joi schema.
+	const result = Joi.validate(rawConfig, ConfigSchema, {
+		abortEarly: false,
+		convert: false,
+	})
+	if (!!result.error) {
+		// TODO: think of a better way to throw an error, such that we can render it better
+		// than the way yargs handles uncaught errors. Catch and render?
+		throw new Error(result.error.annotate())
 	}
 
-	export interface TrackingPlan {
-		name: string
-		display_name: string
-		rules: {
-			events: RuleMetadata[]
-			global: RuleMetadata
-			identify_traits: RuleMetadata
-			group_traits: RuleMetadata
-		}
-		create_time: Date
-		update_time: Date
-	}
-
-	export interface RuleMetadata {
-		name: string
-		description?: string
-		rules: JSONSchema7
-		version: number
-	}
-
-	// https://reference.segmentapis.com/?version=latest#7ed2968b-c4a5-4cfb-b4bf-7d28c7b38bd2
-	export interface ListWorkspacesResponse {
-		workspaces: Workspace[]
-	}
-
-	export interface Workspace {
-		name: string
-		display_name: string
-		id: string
-		create_time: Date
-	}
+	// We can safely type cast the config, now that is has been validated.
+	return rawConfig as Config
 }

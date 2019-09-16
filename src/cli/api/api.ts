@@ -1,5 +1,47 @@
 import fetch from 'node-fetch'
-import { SegmentAPI } from './types'
+import { JSONSchema7 } from 'json-schema'
+
+export namespace SegmentAPI {
+	// https://reference.segmentapis.com/#1092fe01-379b-4ca1-8b1d-9f42b33d2899
+	export type GetTrackingPlanResponse = TrackingPlan
+
+	// https://reference.segmentapis.com/?version=latest#ef9f50a2-7031-4ddf-898a-387266894a04
+	export interface ListTrackingPlansResponse {
+		tracking_plans: TrackingPlan[]
+	}
+
+	export interface TrackingPlan {
+		name: string
+		display_name: string
+		rules: {
+			events: RuleMetadata[]
+			global: RuleMetadata
+			identify_traits: RuleMetadata
+			group_traits: RuleMetadata
+		}
+		create_time: Date
+		update_time: Date
+	}
+
+	export interface RuleMetadata {
+		name: string
+		description?: string
+		rules: JSONSchema7
+		version: number
+	}
+
+	// https://reference.segmentapis.com/?version=latest#7ed2968b-c4a5-4cfb-b4bf-7d28c7b38bd2
+	export interface ListWorkspacesResponse {
+		workspaces: Workspace[]
+	}
+
+	export interface Workspace {
+		name: string
+		display_name: string
+		id: string
+		create_time: Date
+	}
+}
 
 export async function fetchTrackingPlan(options: {
 	workspaceSlug: string
@@ -73,14 +115,33 @@ export async function fetchWorkspaces(options: { token: string }): Promise<Segme
 	}))
 }
 
-// isValidToken returns true if a token is a valid Segment API token.
-export async function isValidToken(token: string): Promise<boolean> {
-	try {
-		const workspaces = await fetchWorkspaces({ token })
-		return workspaces.length > 0
-	} catch {
-		return false
+// validateToken returns true if a token is a valid Segment API token.
+// Note: results are cached in-memory since it is commonly called multiple times
+// for the same token (f.e. in `config/`).
+interface TokenValidationResult {
+	isValid: boolean
+	workspace?: SegmentAPI.Workspace
+}
+const tokenValidationCache: Record<string, TokenValidationResult> = {}
+export async function validateToken(token: string | undefined): Promise<TokenValidationResult> {
+	if (!token) {
+		return { isValid: false }
 	}
+
+	// If we don't have a cached result, query the API to find out if this is a valid token.
+	if (!tokenValidationCache[token]) {
+		let result: TokenValidationResult = { isValid: false }
+		try {
+			const workspaces = await fetchWorkspaces({ token })
+			result.isValid = workspaces.length > 0
+			result.workspace = workspaces.length === 1 ? workspaces[0] : undefined
+		} catch {
+			// If this request failed, then this token is not valid.
+		}
+		tokenValidationCache[token] = result
+	}
+
+	return tokenValidationCache[token]
 }
 
 async function apiGet(url: string, token: string): Promise<object> {

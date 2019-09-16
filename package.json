@@ -10,9 +10,8 @@
   "main": "./dist/src/cli/index.js",
   "bin": "./dist/src/cli/index.js",
   "scripts": {
-    "dev": "IS_DEVELOPMENT=true ts-node ./src/cli",
+    "dev": "TS_NODE_FILES=true IS_DEVELOPMENT=true ts-node ./src/cli",
     "build": "rm -rf dist && tsc && copyfiles --up 1 \"src/**/*.hbs\" dist/src/",
-    "build-example": "make build-example",
     "test": "jest --testPathIgnorePatterns 'tests/e2e/.*' 'example'",
     "e2e": "make e2e",
     "update": "make update",
@@ -47,7 +46,7 @@
     "jest": "^24.7.1",
     "lint-staged": "^8.1.7",
     "np": "^5.0.1",
-    "react": "^16.8.6",
+    "react": "^16.9.0",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.1.0",
     "tsconfig-paths": "^3.8.0",
@@ -60,7 +59,11 @@
     "analytics-node": "^3.3.0",
     "caller-path": "^2.0.0",
     "handlebars": "^4.1.2",
+    "ink": "^2.3.0",
+    "ink-link": "^1.0.0",
+    "ink-spinner": "^3.0.1",
     "js-yaml": "^3.13.1",
+    "latest-version": "^5.1.0",
     "lodash": "4.17.12",
     "node-fetch": "^2.5.0",
     "node-machine-id": "^1.1.12",
@@ -118,7 +121,17 @@
       "no-null/no-null": "error",
       "@typescript-eslint/no-non-null-assertion": "off",
       "@typescript-eslint/interface-name-prefix": "off"
-    }
+    },
+    "overrides": [
+      {
+        "files": [
+          "**/*.tsx"
+        ],
+        "rules": {
+          "react/prop-types": "off"
+        }
+      }
+    ]
   },
   "eslintIgnore": [
     "tests/e2e/**/analytics/*",
@@ -138,7 +151,7 @@
   },
   "lint-staged": {
     "linters": {
-      "*.ts": [
+      "*.(ts|tsx)": [
         "eslint --fix",
         "git add"
       ],

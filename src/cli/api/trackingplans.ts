@@ -1,21 +1,26 @@
-import { fetchTrackingPlan } from './api'
-import { resolveRelativePath, getConfig, getToken } from './config'
+import { fetchTrackingPlan, SegmentAPI } from './api'
+import {
+	TrackingPlanConfig,
+	resolveRelativePath,
+	verifyDirectoryExists,
+	getConfig,
+	getToken,
+} from '../config'
 import sortKeys from 'sort-keys'
 import * as fs from 'fs'
 import { promisify } from 'util'
-import { Arguments, TrackingPlanConfig, SegmentAPI } from './types'
 import { flow } from 'lodash'
 
 const writeFile = promisify(fs.writeFile)
 const readFile = promisify(fs.readFile)
 
-const TRACKING_PLAN_FILENAME = 'plan.json'
+export const TRACKING_PLAN_FILENAME = 'plan.json'
 
 export async function loadTrackingPlan(
-	args: Arguments,
+	configPath: string | undefined,
 	config: TrackingPlanConfig
 ): Promise<SegmentAPI.TrackingPlan> {
-	const path = await resolveRelativePath(args, 'file', config.path, TRACKING_PLAN_FILENAME)
+	const path = resolveRelativePath(configPath, config.path, TRACKING_PLAN_FILENAME)
 
 	try {
 		// Load the Tracking Plan from the local cache.
@@ -28,7 +33,7 @@ export async function loadTrackingPlan(
 		return await sanitizeTrackingPlan(plan)
 	} catch {
 		// If the Tracking Plan hasn't been cached locally, fetch the tracking plan and cache it.
-		const cfg = await getConfig(args.config)
+		const cfg = await getConfig(configPath)
 
 		if (!cfg) {
 			throw new Error('Unable to find typewriter.yml. Try `typewriter init`')
@@ -47,18 +52,19 @@ export async function loadTrackingPlan(
 			token,
 		})
 
-		await writeTrackingPlan(args, plan, config)
+		await writeTrackingPlan(configPath, plan, config)
 
 		return await sanitizeTrackingPlan(plan)
 	}
 }
 
 export async function writeTrackingPlan(
-	args: Arguments,
+	configPath: string | undefined,
 	plan: SegmentAPI.TrackingPlan,
 	config: TrackingPlanConfig
 ) {
-	const path = await resolveRelativePath(args, 'file', config.path, TRACKING_PLAN_FILENAME)
+	const path = resolveRelativePath(configPath, config.path, TRACKING_PLAN_FILENAME)
+	await verifyDirectoryExists(path, 'file')
 
 	// Perform some pre-processing on the Tracking Plan before writing it.
 	const planJSON = flow<SegmentAPI.TrackingPlan, SegmentAPI.TrackingPlan, string>(
