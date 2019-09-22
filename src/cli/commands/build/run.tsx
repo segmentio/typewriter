@@ -97,7 +97,6 @@ export async function* run(
 	step.running = true
 	yield state
 	const previousSegmentTrackingPlan = await loadTrackingPlan(configPath, trackingPlanConfig)
-	let segmentTrackingPlan: SegmentAPI.TrackingPlan
 	if (genOptions.update) {
 		step.notes.push({
 			text: 'Pulling most recent version from Segment',
@@ -120,17 +119,15 @@ export async function* run(
 					</Text>
 				),
 			})
-			// Use the cache instead:
-			segmentTrackingPlan = previousSegmentTrackingPlan
 		} else {
 			try {
-				segmentTrackingPlan = await fetchTrackingPlan({
+				const trackingPlan = await fetchTrackingPlan({
 					id: trackingPlanConfig.id,
 					workspaceSlug: trackingPlanConfig.workspaceSlug,
 					token,
 				})
 
-				await writeTrackingPlan(configPath, segmentTrackingPlan, trackingPlanConfig)
+				await writeTrackingPlan(configPath, trackingPlan, trackingPlanConfig)
 			} catch (err) {
 				// TODO: more reliable network connection detection
 				step.notes.push({
@@ -138,8 +135,6 @@ export async function* run(
 					text: 'API request failed, using cache',
 				})
 				yield state
-				// Use the cache instead:
-				segmentTrackingPlan = previousSegmentTrackingPlan
 			}
 		}
 	} else {
@@ -147,8 +142,9 @@ export async function* run(
 			text: `Loading from ${trackingPlanConfig.path + '/' + TRACKING_PLAN_FILENAME}`,
 		})
 		yield state
-		segmentTrackingPlan = previousSegmentTrackingPlan
 	}
+
+	const loadedTrackingPlan = await loadTrackingPlan(configPath, trackingPlanConfig)
 	step.notes.push({
 		key: 'which-tracking-plan',
 		text: (
@@ -159,7 +155,7 @@ export async function* run(
 						trackingPlanConfig.workspaceSlug
 					}/protocols/tracking-plans/${trackingPlanConfig.id}`}
 				>
-					{segmentTrackingPlan.display_name}
+					{loadedTrackingPlan.display_name}
 				</Link>
 			</Text>
 		),
@@ -167,7 +163,7 @@ export async function* run(
 	yield state
 
 	if (genOptions.update) {
-		const deltas = computeDelta(previousSegmentTrackingPlan, segmentTrackingPlan)
+		const deltas = computeDelta(previousSegmentTrackingPlan, loadedTrackingPlan)
 		step.notes.push({
 			key: 'changes',
 			text:
@@ -193,10 +189,10 @@ export async function* run(
 	}
 
 	const trackingPlan: RawTrackingPlan = {
-		trackCalls: segmentTrackingPlan.rules.events
+		trackCalls: loadedTrackingPlan.rules.events
 			// Typewriter doesn't yet support event versioning. For now, we just choose the most recent version.
 			.filter(e =>
-				segmentTrackingPlan.rules.events.every(e2 => e.name !== e2.name || e.version >= e2.version)
+				loadedTrackingPlan.rules.events.every(e2 => e.name !== e2.name || e.version >= e2.version)
 			)
 			.map<JSONSchema7>(e => ({
 				...e.rules,

@@ -3,7 +3,7 @@
 
 scripts:
   token: aws-okta exec dev-privileged -- chamber export typewriter | jq -r .typewriter_token
-  after: ./node_modules/.bin/prettier --write src/analytics/plan.json
+  # after: ./node_modules/.bin/prettier --write src/analytics/plan.json
 
 # You can find more documentation on configuring this client in the Segment docs.
 # See: https://segment.com/docs/protocols/typewriter
