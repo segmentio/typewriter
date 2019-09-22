@@ -89,6 +89,10 @@ export interface EveryNullableRequiredType {
 }
 export interface EveryOptionalType {
 	/**
+	 * Optional integer property
+	 */
+	'optional int'?: number
+	/**
 	 * Optional number property
 	 */
 	'optional number'?: number
@@ -116,24 +120,8 @@ export interface EveryOptionalType {
 	 * Optional boolean property
 	 */
 	'optional boolean'?: boolean
-	/**
-	 * Optional integer property
-	 */
-	'optional int'?: number
 }
 export interface EveryRequiredType {
-	/**
-	 * Required any property
-	 */
-	'required any': any | null
-	/**
-	 * Required array property
-	 */
-	'required array': any[]
-	/**
-	 * Required boolean property
-	 */
-	'required boolean': boolean
 	/**
 	 * Required integer property
 	 */
@@ -154,6 +142,18 @@ export interface EveryRequiredType {
 	 * Required string property with a regex conditional
 	 */
 	'required string with regex': string
+	/**
+	 * Required any property
+	 */
+	'required any': any | null
+	/**
+	 * Required array property
+	 */
+	'required array': any[]
+	/**
+	 * Required boolean property
+	 */
+	'required boolean': boolean
 }
 export interface UniverseCharactersItemItem {
 	/**
@@ -182,8 +182,8 @@ export interface NestedObjects {
 	garage: Garage
 }
 export interface PropertiesCollided {
-	property_collided: string
 	'Property Collided': string
+	property_collided: string
 }
 export interface OccupantsItem {
 	/**
@@ -230,13 +230,13 @@ export interface ObjectItem {
 	name?: string
 }
 export interface SimpleArrayTypes {
+	number?: number[]
 	object?: ObjectItem[]
 	string?: string[]
 	any?: any[]
 	boolean?: boolean[]
 	integer?: number[]
 	nullable?: string[]
-	number?: number[]
 }
 export interface UnionType {
 	universe_name: string | number | null
@@ -413,6 +413,7 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
  */
 /**
  * @typedef EveryOptionalType
+ * @property {number} [optional int] - Optional integer property
  * @property {number} [optional number] - Optional number property
  * @property {Record<string, any>} [optional object] - Optional object property
  * @property {string} [optional string] - Optional string property
@@ -420,18 +421,17 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
  * @property {any | null} [optional any] - Optional any property
  * @property {any[]} [optional array] - Optional array property
  * @property {boolean} [optional boolean] - Optional boolean property
- * @property {number} [optional int] - Optional integer property
  */
 /**
  * @typedef EveryRequiredType
- * @property {any | null} `required any` - Required any property
- * @property {any[]} `required array` - Required array property
- * @property {boolean} `required boolean` - Required boolean property
  * @property {number} `required int` - Required integer property
  * @property {number} `required number` - Required number property
  * @property {Record<string, any>} `required object` - Required object property
  * @property {string} `required string` - Required string property
  * @property {string} `required string with regex` - Required string property with a regex conditional
+ * @property {any | null} `required any` - Required any property
+ * @property {any[]} `required array` - Required array property
+ * @property {boolean} `required boolean` - Required boolean property
  */
 /**
  * @typedef UniverseCharactersItemItem
@@ -461,8 +461,8 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
  */
 /**
  * @typedef PropertiesCollided
- * @property {string} `property_collided` -
  * @property {string} `Property Collided` -
+ * @property {string} `property_collided` -
  */
 /**
  * @typedef OccupantsItem
@@ -500,13 +500,13 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
  */
 /**
  * @typedef SimpleArrayTypes
+ * @property {number[]} [number] -
  * @property {ObjectItem[]} [object] -
  * @property {string[]} [string] -
  * @property {any[]} [any] -
  * @property {boolean[]} [boolean] -
  * @property {number[]} [integer] -
  * @property {string[]} [nullable] -
- * @property {number[]} [number] -
  */
 /**
  * @typedef UnionType

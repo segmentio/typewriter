@@ -10,6 +10,7 @@ import sortKeys from 'sort-keys'
 import * as fs from 'fs'
 import { promisify } from 'util'
 import { flow, isEqual } from 'lodash'
+import stringify from 'json-stable-stringify'
 
 const writeFile = promisify(fs.writeFile)
 const readFile = promisify(fs.readFile)
@@ -70,7 +71,7 @@ export async function writeTrackingPlan(
 	const planJSON = flow<SegmentAPI.TrackingPlan, SegmentAPI.TrackingPlan, string>(
 		// Enforce a deterministic ordering to reduce verson control deltas.
 		plan => sortKeys(plan, { deep: true }),
-		plan => JSON.stringify(plan, undefined, 4)
+		plan => stringify(plan, { space: '\t' })
 	)(plan)
 
 	await writeFile(path, planJSON, {

@@ -48,14 +48,26 @@ export interface CommandRun {
 	tracking_plan?: TrackingPlan
 }
 export interface TrackingPlan1 {
-	id?: string
 	workspace_slug?: string
+	id?: string
 }
 export interface Client1 {
-	language?: string
 	sdk?: string
+	language?: string
 }
 export interface ErrorFired {
+	/**
+	 * Metadata about the Tracking Plan that typewriter was fired on.
+	 */
+	tracking_plan?: TrackingPlan1
+	/**
+	 * Whether or not this error was an expected (and therefore, properly handled) error.
+	 */
+	unexpected: boolean
+	/**
+	 * Metadata about the client that typewriter is generating.
+	 */
+	client?: Client1
 	/**
 	 * The command name that was started.
 	 */
@@ -76,18 +88,6 @@ export interface ErrorFired {
 	 * Where the API token was fetched from.
 	 */
 	token_method?: string
-	/**
-	 * Metadata about the Tracking Plan that typewriter was fired on.
-	 */
-	tracking_plan?: TrackingPlan1
-	/**
-	 * Whether or not this error was an expected (and therefore, properly handled) error.
-	 */
-	unexpected: boolean
-	/**
-	 * Metadata about the client that typewriter is generating.
-	 */
-	client?: Client1
 }
 
 export type ViolationHandler = (
@@ -250,24 +250,24 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
  */
 /**
  * @typedef TrackingPlan1
- * @property {string} [id] -
  * @property {string} [workspace_slug] -
+ * @property {string} [id] -
  */
 /**
  * @typedef Client1
- * @property {string} [language] -
  * @property {string} [sdk] -
+ * @property {string} [language] -
  */
 /**
  * @typedef ErrorFired
+ * @property {TrackingPlan1} [tracking_plan] - Metadata about the Tracking Plan that typewriter was fired on.
+ * @property {boolean} `unexpected` - Whether or not this error was an expected (and therefore, properly handled) error.
+ * @property {Client1} [client] - Metadata about the client that typewriter is generating.
  * @property {string} [command] - The command name that was started.
  * @property {Record<string, any>} `error` - The full error itself.
  * @property {string} `error_string` - The minimal error string itself.
  * @property {boolean} [is_ci] - Whether or not typewriter is currently running in a CI environment or not.
  * @property {string} [token_method] - Where the API token was fetched from.
- * @property {TrackingPlan1} [tracking_plan] - Metadata about the Tracking Plan that typewriter was fired on.
- * @property {boolean} `unexpected` - Whether or not this error was an expected (and therefore, properly handled) error.
- * @property {Client1} [client] - Metadata about the client that typewriter is generating.
  */
 
 /**

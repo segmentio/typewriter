@@ -55,10 +55,6 @@ export interface EveryNullableOptionalType {
 }
 export interface EveryNullableRequiredType {
 	/**
-	 * Required any property
-	 */
-	'required any': any | null
-	/**
 	 * Required array property
 	 */
 	'required array': any[] | null
@@ -86,8 +82,24 @@ export interface EveryNullableRequiredType {
 	 * Required string property with a regex conditional
 	 */
 	'required string with regex': string | null
+	/**
+	 * Required any property
+	 */
+	'required any': any | null
 }
 export interface EveryOptionalType {
+	/**
+	 * Optional array property
+	 */
+	'optional array'?: any[]
+	/**
+	 * Optional boolean property
+	 */
+	'optional boolean'?: boolean
+	/**
+	 * Optional integer property
+	 */
+	'optional int'?: number
 	/**
 	 * Optional number property
 	 */
@@ -108,24 +120,8 @@ export interface EveryOptionalType {
 	 * Optional any property
 	 */
 	'optional any'?: any | null
-	/**
-	 * Optional array property
-	 */
-	'optional array'?: any[]
-	/**
-	 * Optional boolean property
-	 */
-	'optional boolean'?: boolean
-	/**
-	 * Optional integer property
-	 */
-	'optional int'?: number
 }
 export interface EveryRequiredType {
-	/**
-	 * Required any property
-	 */
-	'required any': any | null
 	/**
 	 * Required array property
 	 */
@@ -154,6 +150,10 @@ export interface EveryRequiredType {
 	 * Required string property with a regex conditional
 	 */
 	'required string with regex': string
+	/**
+	 * Required any property
+	 */
+	'required any': any | null
 }
 export interface UniverseCharactersItemItem {
 	/**
@@ -193,13 +193,13 @@ export interface OccupantsItem {
 }
 export interface Universe {
 	/**
-	 * The most important occupants in this universe.
-	 */
-	occupants: OccupantsItem[]
-	/**
 	 * The common name of this universe.
 	 */
 	name: string
+	/**
+	 * The most important occupants in this universe.
+	 */
+	occupants: OccupantsItem[]
 }
 export interface PropertyObjectNameCollision1 {
 	universe?: Universe
@@ -212,13 +212,13 @@ export interface OccupantsItem1 {
 }
 export interface Universe1 {
 	/**
-	 * The most important occupants in this universe.
-	 */
-	occupants: OccupantsItem1[]
-	/**
 	 * The common name of this universe.
 	 */
 	name: string
+	/**
+	 * The most important occupants in this universe.
+	 */
+	occupants: OccupantsItem1[]
 }
 export interface PropertyObjectNameCollision2 {
 	universe?: Universe1
@@ -230,13 +230,13 @@ export interface ObjectItem {
 	name?: string
 }
 export interface SimpleArrayTypes {
-	integer?: number[]
-	nullable?: string[]
-	number?: number[]
 	object?: ObjectItem[]
 	string?: string[]
 	any?: any[]
 	boolean?: boolean[]
+	integer?: number[]
+	nullable?: string[]
+	number?: number[]
 }
 export interface UnionType {
 	universe_name: string | number | null
@@ -367,7 +367,6 @@ function withTypewriterContext(message: Segment.Options = {}): Segment.Options {
  */
 /**
  * @typedef EveryNullableRequiredType
- * @property {any | null} `required any` - Required any property
  * @property {any[] | null} `required array` - Required array property
  * @property {boolean | null} `required boolean` - Required boolean property
  * @property {number | null} `required int` - Required integer property
@@ -375,21 +374,21 @@ function withTypewriterContext(message: Segment.Options = {}): Segment.Options {
  * @property {Record<string, any> | null} `required object` - Required object property
  * @property {string | null} `required string` - Required string property
  * @property {string | null} `required string with regex` - Required string property with a regex conditional
+ * @property {any | null} `required any` - Required any property
  */
 /**
  * @typedef EveryOptionalType
+ * @property {any[]} [optional array] - Optional array property
+ * @property {boolean} [optional boolean] - Optional boolean property
+ * @property {number} [optional int] - Optional integer property
  * @property {number} [optional number] - Optional number property
  * @property {Record<string, any>} [optional object] - Optional object property
  * @property {string} [optional string] - Optional string property
  * @property {string} [optional string with regex] - Optional string property with a regex conditional
  * @property {any | null} [optional any] - Optional any property
- * @property {any[]} [optional array] - Optional array property
- * @property {boolean} [optional boolean] - Optional boolean property
- * @property {number} [optional int] - Optional integer property
  */
 /**
  * @typedef EveryRequiredType
- * @property {any | null} `required any` - Required any property
  * @property {any[]} `required array` - Required array property
  * @property {boolean} `required boolean` - Required boolean property
  * @property {number} `required int` - Required integer property
@@ -397,6 +396,7 @@ function withTypewriterContext(message: Segment.Options = {}): Segment.Options {
  * @property {Record<string, any>} `required object` - Required object property
  * @property {string} `required string` - Required string property
  * @property {string} `required string with regex` - Required string property with a regex conditional
+ * @property {any | null} `required any` - Required any property
  */
 /**
  * @typedef UniverseCharactersItemItem
@@ -435,8 +435,8 @@ function withTypewriterContext(message: Segment.Options = {}): Segment.Options {
  */
 /**
  * @typedef Universe
- * @property {OccupantsItem[]} `occupants` - The most important occupants in this universe.
  * @property {string} `name` - The common name of this universe.
+ * @property {OccupantsItem[]} `occupants` - The most important occupants in this universe.
  */
 /**
  * @typedef PropertyObjectNameCollision1
@@ -448,8 +448,8 @@ function withTypewriterContext(message: Segment.Options = {}): Segment.Options {
  */
 /**
  * @typedef Universe1
- * @property {OccupantsItem1[]} `occupants` - The most important occupants in this universe.
  * @property {string} `name` - The common name of this universe.
+ * @property {OccupantsItem1[]} `occupants` - The most important occupants in this universe.
  */
 /**
  * @typedef PropertyObjectNameCollision2
@@ -465,13 +465,13 @@ function withTypewriterContext(message: Segment.Options = {}): Segment.Options {
  */
 /**
  * @typedef SimpleArrayTypes
- * @property {number[]} [integer] -
- * @property {string[]} [nullable] -
- * @property {number[]} [number] -
  * @property {ObjectItem[]} [object] -
  * @property {string[]} [string] -
  * @property {any[]} [any] -
  * @property {boolean[]} [boolean] -
+ * @property {number[]} [integer] -
+ * @property {string[]} [nullable] -
+ * @property {number[]} [number] -
  */
 /**
  * @typedef UnionType
