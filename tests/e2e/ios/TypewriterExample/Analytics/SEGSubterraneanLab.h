@@ -9,13 +9,13 @@
 
 @interface SEGSubterraneanLab : NSObject<SEGTypewriterSerializable>
 
+@property (strong, nonatomic, nullable) NSString *summersContingencyPlan;
 @property (strong, nonatomic, nullable) NSArray<id> *jerrysMemories;
 @property (strong, nonatomic, nullable) NSArray<id> *mortysMemories;
-@property (strong, nonatomic, nullable) NSString *summersContingencyPlan;
 
-+(nonnull instancetype) initWithJerrysMemories:(nullable NSArray<id> *)jerrysMemories
-mortysMemories:(nullable NSArray<id> *)mortysMemories
-summersContingencyPlan:(nullable NSString *)summersContingencyPlan;
++(nonnull instancetype) initWithSummersContingencyPlan:(nullable NSString *)summersContingencyPlan
+jerrysMemories:(nullable NSArray<id> *)jerrysMemories
+mortysMemories:(nullable NSArray<id> *)mortysMemories;
 
 -(nonnull SERIALIZABLE_DICT) toDictionary;
 

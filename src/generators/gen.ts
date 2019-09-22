@@ -5,6 +5,7 @@ import { ios } from './ios'
 import { Options, SDK } from './options'
 import { registerStandardHelpers, generateFromTemplate } from '../templates'
 import { Namer, Options as NamerOptions } from './namer'
+import stringify from 'json-stable-stringify'
 
 export interface File {
 	path: string
@@ -293,7 +294,9 @@ async function runGenerator<R extends object, T extends object, O extends object
 
 		context.tracks.push({
 			functionDescription: schema.description,
-			rawJSONSchema: JSON.stringify(raw, undefined, '\t'),
+			rawJSONSchema: stringify(raw, {
+				space: '\t',
+			}),
 			rawEventName: client.namer.escapeString(schema.name),
 			...t,
 		})

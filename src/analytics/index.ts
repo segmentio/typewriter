@@ -13,15 +13,19 @@
 import Ajv from 'ajv'
 import * as Segment from './segment'
 
-export interface TrackingPlan {
-	id?: string
-	workspace_slug?: string
-}
 export interface Client {
 	sdk?: string
 	language?: string
 }
+export interface TrackingPlan {
+	id?: string
+	workspace_slug?: string
+}
 export interface CommandRun {
+	/**
+	 * Metadata about the client that typewriter is generating.
+	 */
+	client?: Client
 	/**
 	 * The command name that was started.
 	 */
@@ -42,10 +46,6 @@ export interface CommandRun {
 	 * Metadata about the Tracking Plan that typewriter was fired on.
 	 */
 	tracking_plan?: TrackingPlan
-	/**
-	 * Metadata about the client that typewriter is generating.
-	 */
-	client?: Client
 }
 export interface TrackingPlan1 {
 	id?: string
@@ -56,18 +56,6 @@ export interface Client1 {
 	sdk?: string
 }
 export interface ErrorFired {
-	/**
-	 * Metadata about the Tracking Plan that typewriter was fired on.
-	 */
-	tracking_plan?: TrackingPlan1
-	/**
-	 * Whether or not this error was an expected (and therefore, properly handled) error.
-	 */
-	unexpected: boolean
-	/**
-	 * Metadata about the client that typewriter is generating.
-	 */
-	client?: Client1
 	/**
 	 * The command name that was started.
 	 */
@@ -88,6 +76,18 @@ export interface ErrorFired {
 	 * Where the API token was fetched from.
 	 */
 	token_method?: string
+	/**
+	 * Metadata about the Tracking Plan that typewriter was fired on.
+	 */
+	tracking_plan?: TrackingPlan1
+	/**
+	 * Whether or not this error was an expected (and therefore, properly handled) error.
+	 */
+	unexpected: boolean
+	/**
+	 * Metadata about the client that typewriter is generating.
+	 */
+	client?: Client1
 }
 
 export type ViolationHandler = (
@@ -230,23 +230,23 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
  */
 
 /**
- * @typedef TrackingPlan
- * @property {string} [id] -
- * @property {string} [workspace_slug] -
- */
-/**
  * @typedef Client
  * @property {string} [sdk] -
  * @property {string} [language] -
  */
 /**
+ * @typedef TrackingPlan
+ * @property {string} [id] -
+ * @property {string} [workspace_slug] -
+ */
+/**
  * @typedef CommandRun
+ * @property {Client} [client] - Metadata about the client that typewriter is generating.
  * @property {string} `command` - The command name that was started.
  * @property {number} `duration` - The time taken to execute this command, in ms.
  * @property {boolean} [is_ci] - Whether or not typewriter is currently running in a CI environment or not.
  * @property {string} [token_method] - Where the API token was fetched from.
  * @property {TrackingPlan} [tracking_plan] - Metadata about the Tracking Plan that typewriter was fired on.
- * @property {Client} [client] - Metadata about the client that typewriter is generating.
  */
 /**
  * @typedef TrackingPlan1
@@ -260,14 +260,14 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
  */
 /**
  * @typedef ErrorFired
- * @property {TrackingPlan1} [tracking_plan] - Metadata about the Tracking Plan that typewriter was fired on.
- * @property {boolean} `unexpected` - Whether or not this error was an expected (and therefore, properly handled) error.
- * @property {Client1} [client] - Metadata about the client that typewriter is generating.
  * @property {string} [command] - The command name that was started.
  * @property {Record<string, any>} `error` - The full error itself.
  * @property {string} `error_string` - The minimal error string itself.
  * @property {boolean} [is_ci] - Whether or not typewriter is currently running in a CI environment or not.
  * @property {string} [token_method] - Where the API token was fetched from.
+ * @property {TrackingPlan1} [tracking_plan] - Metadata about the Tracking Plan that typewriter was fired on.
+ * @property {boolean} `unexpected` - Whether or not this error was an expected (and therefore, properly handled) error.
+ * @property {Client1} [client] - Metadata about the client that typewriter is generating.
  */
 
 /**
@@ -289,15 +289,28 @@ export function commandRun(
 
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
-		type: 'object',
+		description: 'Fired when a CLI command is started.',
 		labels: {},
 		properties: {
 			context: {},
-			traits: {},
 			properties: {
-				required: ['command', 'duration'],
-				type: 'object',
 				properties: {
+					client: {
+						description:
+							'Metadata about the client that typewriter is generating.',
+						properties: {
+							language: {
+								description: '',
+								type: 'string',
+							},
+							sdk: {
+								description: '',
+								type: 'string',
+							},
+						},
+						required: [],
+						type: 'object',
+					},
 					command: {
 						description: 'The command name that was started.',
 						type: 'string',
@@ -317,6 +330,8 @@ export function commandRun(
 						type: 'string',
 					},
 					tracking_plan: {
+						description:
+							'Metadata about the Tracking Plan that typewriter was fired on.',
 						properties: {
 							id: {
 								description: '',
@@ -329,31 +344,16 @@ export function commandRun(
 						},
 						required: [],
 						type: 'object',
-						description:
-							'Metadata about the Tracking Plan that typewriter was fired on.',
-					},
-					client: {
-						description:
-							'Metadata about the client that typewriter is generating.',
-						properties: {
-							sdk: {
-								type: 'string',
-								description: '',
-							},
-							language: {
-								description: '',
-								type: 'string',
-							},
-						},
-						required: [],
-						type: 'object',
 					},
 				},
+				required: ['command', 'duration'],
+				type: 'object',
 			},
+			traits: {},
 		},
 		required: ['properties'],
 		title: 'Command Run',
-		description: 'Fired when a CLI command is started.',
+		type: 'object',
 	}
 	validateAgainstSchema(msg, schema)
 
@@ -383,12 +383,50 @@ export function errorFired(
 
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description: 'Fired when an error is encountered.',
+		labels: {},
 		properties: {
 			context: {},
-			traits: {},
 			properties: {
-				type: 'object',
 				properties: {
+					client: {
+						description:
+							'Metadata about the client that typewriter is generating.',
+						properties: {
+							language: {
+								description: '',
+								type: 'string',
+							},
+							sdk: {
+								description: '',
+								type: 'string',
+							},
+						},
+						required: [],
+						type: 'object',
+					},
+					command: {
+						description: 'The command name that was started.',
+						type: 'string',
+					},
+					error: {
+						description: 'The full error itself.',
+						type: 'object',
+					},
+					error_string: {
+						description: 'The minimal error string itself.',
+						type: 'string',
+					},
+					is_ci: {
+						description:
+							'Whether or not typewriter is currently running in a CI environment or not.',
+						type: 'boolean',
+					},
+					token_method: {
+						description: 'Where the API token was fetched from.',
+						pattern: 'tokenCommand|env|file',
+						type: 'string',
+					},
 					tracking_plan: {
 						description:
 							'Metadata about the Tracking Plan that typewriter was fired on.',
@@ -410,53 +448,15 @@ export function errorFired(
 							'Whether or not this error was an expected (and therefore, properly handled) error.',
 						type: 'boolean',
 					},
-					client: {
-						properties: {
-							language: {
-								description: '',
-								type: 'string',
-							},
-							sdk: {
-								description: '',
-								type: 'string',
-							},
-						},
-						required: [],
-						type: 'object',
-						description:
-							'Metadata about the client that typewriter is generating.',
-					},
-					command: {
-						description: 'The command name that was started.',
-						type: 'string',
-					},
-					error: {
-						type: 'object',
-						description: 'The full error itself.',
-					},
-					error_string: {
-						description: 'The minimal error string itself.',
-						type: 'string',
-					},
-					is_ci: {
-						type: 'boolean',
-						description:
-							'Whether or not typewriter is currently running in a CI environment or not.',
-					},
-					token_method: {
-						type: 'string',
-						description: 'Where the API token was fetched from.',
-						pattern: 'tokenCommand|env|file',
-					},
 				},
 				required: ['error', 'error_string', 'unexpected'],
+				type: 'object',
 			},
+			traits: {},
 		},
 		required: ['properties'],
-		type: 'object',
-		labels: {},
 		title: 'Error Fired',
-		description: 'Fired when an error is encountered.',
+		type: 'object',
 	}
 	validateAgainstSchema(msg, schema)
 

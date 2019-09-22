@@ -133,7 +133,6 @@ export async function* run(
 				await writeTrackingPlan(configPath, segmentTrackingPlan, trackingPlanConfig)
 			} catch (err) {
 				// TODO: more reliable network connection detection
-				console.error(err)
 				step.notes.push({
 					type: 'warning',
 					text: 'API request failed, using cache',
