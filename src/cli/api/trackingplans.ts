@@ -42,9 +42,7 @@ export async function loadTrackingPlan(
 
 		const token = await getToken(cfg)
 		if (!token) {
-			throw new Error(
-				'Unable to find a TYPEWRITER_TOKEN in your environment or a valid token script in your `typewriter.yml`.'
-			)
+			throw new Error('Unable to find a Segment API token.')
 		}
 
 		const plan = await fetchTrackingPlan({
@@ -130,4 +128,16 @@ export function computeDelta(
 	}
 
 	return deltas
+}
+
+export function parseTrackingPlanName(name: string) {
+	const parts = name.split('/')
+	const workspaceSlug = parts[1]
+	const id = parts[3]
+
+	return {
+		workspaceSlug,
+		id,
+		url: `https://app.segment.com/${workspaceSlug}/protocols/tracking-plans/${id}`,
+	}
 }

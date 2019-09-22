@@ -22,7 +22,7 @@ export const Help: React.FC<Props> = () => {
 					pre-defined{' '}
 					<Link url="https://segment.com/docs/protocols/tracking-plan">Tracking Plan</Link> spec.
 					{'\n\n'}
-					Learn more with{' '}
+					Learn more from{' '}
 					<Link url="https://segment.com/docs/protocols/typewriter">
 						{"Typewriter's documentation here"}
 					</Link>

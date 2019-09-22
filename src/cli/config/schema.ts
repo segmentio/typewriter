@@ -10,7 +10,6 @@ export interface Config {
 	scripts?: {
 		/**
 		 * An optional shell command that must produce a Segment API token as its only output.
-		 * If not specified, your environment's TYPEWRITER_TOKEN will be used.
 		 */
 		token?: string
 		/**

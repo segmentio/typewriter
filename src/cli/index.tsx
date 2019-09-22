@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import React from 'react'
 import { render } from 'ink'
-import { Token, Version, Build, Help } from './commands'
+import { Token, Version, Build, Help, Init } from './commands'
 import { reportAnalytics } from './reportAnalytics'
 import { Config } from './config'
 
@@ -68,6 +68,8 @@ function toYargsHandler<P = {}>(
 
 			const { waitUntilExit } = render(component, {
 				debug: !!args.debug,
+				// @ts-ignore
+				// experimental: true
 			})
 
 			await waitUntilExit()
@@ -105,13 +107,11 @@ const commandDefaults = {
 }
 
 require('yargs')
-	// TODO!
-	// .command(
-	// 	['init', 'initialize'],
-	// 	'Initializes a new typewriter project',
-	// 	args,
-	// 	withAnalytics(init)
-	// )
+	.command({
+		...commandDefaults,
+		command: ['init', 'initialize', 'quickstart'],
+		handler: toYargsHandler(Init, {}),
+	})
 	.command({
 		...commandDefaults,
 		command: ['update', 'u', '*'],

@@ -32,7 +32,6 @@ export const Token: React.FC<Props> = props => {
 	return (
 		<Box marginTop={1} marginBottom={1} marginLeft={2} flexDirection="column">
 			<Box flexDirection="column">
-				<TokenRow name="TYPEWRITER_TOKEN" tokenMetadata={tokens && tokens.env} method={method} />
 				<TokenRow name="scripts.token" tokenMetadata={tokens && tokens.script} method={method} />
 				<TokenRow name="~/.typewriter" tokenMetadata={tokens && tokens.file} method={method} />
 			</Box>

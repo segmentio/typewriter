@@ -40,7 +40,7 @@ export async function getConfig(path = './'): Promise<Config | undefined> {
 // Note path is relative to the directory where the typewriter command
 // was run.
 export async function setConfig(config: Config, path = './') {
-	const file = await generateFromTemplate<Config>('cli/typewriter.yml.hbs', config, false)
+	const file = await generateFromTemplate<Config>('cli/config/typewriter.yml.hbs', config, false)
 
 	await writeFile(await getPath(path), file)
 }
@@ -82,9 +82,8 @@ export async function assertHasToken(cfg: Partial<Config> | undefined): Promise<
 }
 
 // getToken uses a Config to fetch a Segment API token. It will search for it in this order:
-//   1. process.env.TYPEWRITER_TOKEN
-//   2. The stdout from executing the optional token script from the config.
-//   3. cat ~/.typewriter
+//   1. The stdout from executing the optional token script from the config.
+//   2. cat ~/.typewriter
 // Returns undefined if no token can be found.
 export async function getToken(cfg: Partial<Config> | undefined): Promise<string | undefined> {
 	const token = await getTokenMetadata(cfg)
@@ -102,7 +101,7 @@ async function getTokenMetadata(
 	cfg: Partial<Config> | undefined
 ): Promise<TokenMetadata | undefined> {
 	const tokens = await listTokens(cfg)
-	const resolutionOrder = [tokens.env, tokens.script, tokens.file]
+	const resolutionOrder = [tokens.script, tokens.file]
 	for (const metadata of resolutionOrder) {
 		if (metadata.isValidToken) {
 			return metadata
@@ -113,14 +112,13 @@ async function getTokenMetadata(
 }
 
 export interface ListTokensOutput {
-	env: TokenMetadata
 	script: TokenMetadata & { error?: string }
 	file: TokenMetadata
 }
 
 export interface TokenMetadata {
 	token?: string
-	method: 'env' | 'script' | 'file'
+	method: 'script' | 'file'
 	isValidToken: boolean
 	workspace?: SegmentAPI.Workspace
 }
@@ -131,14 +129,8 @@ const tokenScriptCache: Record<string, string> = {}
 
 export async function listTokens(cfg: Partial<Config> | undefined): Promise<ListTokensOutput> {
 	const output: ListTokensOutput = {
-		env: { method: 'env', isValidToken: false },
 		script: { method: 'script', isValidToken: false },
 		file: { method: 'file', isValidToken: false },
-	}
-
-	// Check for a `TYPEWRITER_TOKEN` environment variable.
-	if (process.env.TYPEWRITER_TOKEN) {
-		output.env.token = process.env.TYPEWRITER_TOKEN
 	}
 
 	// Attempt to read a token from the ~/.typewriter token file.
