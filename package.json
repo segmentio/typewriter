@@ -39,7 +39,6 @@
     "copyfiles": "^2.1.0",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^4.1.0",
-    "eslint-plugin-no-null": "^1.0.2",
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.14.2",
     "husky": "^2.1.0",
@@ -83,8 +82,7 @@
     "parser": "@typescript-eslint/parser",
     "plugins": [
       "@typescript-eslint",
-      "prettier",
-      "no-null"
+      "prettier"
     ],
     "extends": [
       "plugin:@typescript-eslint/recommended",
@@ -118,7 +116,6 @@
         "nofunc"
       ],
       "@typescript-eslint/no-namespace": "off",
-      "no-null/no-null": "error",
       "@typescript-eslint/no-non-null-assertion": "off",
       "@typescript-eslint/interface-name-prefix": "off"
     },

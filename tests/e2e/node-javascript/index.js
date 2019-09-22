@@ -1,4 +1,3 @@
-/* eslint-disable no-null/no-null */
 /* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const {

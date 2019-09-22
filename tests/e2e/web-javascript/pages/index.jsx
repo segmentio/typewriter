@@ -1,4 +1,3 @@
-/* eslint-disable no-null/no-null */
 /* eslint-disable @typescript-eslint/camelcase */
 import * as React from 'react'
 

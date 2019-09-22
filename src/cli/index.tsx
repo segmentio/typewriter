@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import React from 'react'
 import { render } from 'ink'
-import { token, version, build } from './commands'
+import { Token, Version, Build, Help } from './commands'
 import { reportAnalytics } from './reportAnalytics'
 import { Config } from './config'
 
@@ -19,11 +19,17 @@ export interface CLIArguments {
 	debug: boolean
 	/** Standard --version flag to print the version of this CLI. */
 	version: boolean
+	/** Standard -v flag to print the version of this CLI. */
+	v: boolean
+	/** Standard --help flag to print help on a command. */
+	help: boolean
+	/** Standard -h flag to print help on a command. */
+	h: boolean
 }
 
-function toYargsHandler<Props = {}>(
-	Command: React.FC<StandardProps & Props>,
-	props: Props,
+function toYargsHandler<P = {}>(
+	Command: React.FC<StandardProps & P>,
+	props: P,
 	cliOptions?: { validateDefault?: boolean }
 ) {
 	// Return a closure which yargs will execute if this command is run.
@@ -42,19 +48,27 @@ function toYargsHandler<Props = {}>(
 
 		// reportAnalytics will report analytics to Segment, while handling any errors thrown by the command.
 		await reportAnalytics(args, async (config: Config | undefined) => {
-			let Component = Command
-			// We override the --version flag from yargs with our own output. If it was supplied, print
-			// the `version` component instead.
-			if (!!args.version) {
-				Component = version
+			let component: JSX.Element
+			if (!!args.version || !!args.v || Command.displayName === Version.displayName) {
+				// We override the --version flag from yargs with our own output. If it was supplied, print
+				// the `version` component instead.
+				component = <Version />
+			} else if (
+				!!args.help ||
+				!!args.h ||
+				args._.includes('help') ||
+				Command.displayName === Help.displayName
+			) {
+				// Same goes for the --help flag.
+				component = <Help config={config} />
+			} else {
+				// Otherwise, render this command's component.
+				component = <Command configPath={args.config} config={config} {...props} />
 			}
 
-			const { waitUntilExit } = render(
-				<Component configPath={args.config} config={config} {...props} />,
-				{
-					debug: !!args.debug,
-				}
-			)
+			const { waitUntilExit } = render(component, {
+				debug: !!args.debug,
+			})
 
 			await waitUntilExit()
 		})
@@ -65,33 +79,32 @@ const commandDefaults = {
 	builder: {
 		config: {
 			type: 'string',
-			description: 'Path to a typewriter.yml config',
 			default: './',
 		},
 		version: {
 			type: 'boolean',
-			description: 'Show version number',
 			default: false,
 		},
-		// Don't surface the --debug flag unless testing locally.
-		...(process.env.IS_DEVELOPMENT === 'true'
-			? {
-					debug: {
-						type: 'boolean',
-						description: "Enable Ink's debug mode",
-						default: false,
-					},
-			  }
-			: {}),
+		v: {
+			type: 'boolean',
+			default: false,
+		},
+		help: {
+			type: 'boolean',
+			default: false,
+		},
+		h: {
+			type: 'boolean',
+			default: false,
+		},
+		debug: {
+			type: 'boolean',
+			default: false,
+		},
 	},
 }
 
 require('yargs')
-	.showHelpOnFail(false)
-	.scriptName('npx typewriter')
-	.usage(
-		'Usage: `$0 [<cmd>] [args]`\n\nA compiler for generating strongly-typed analytics clients using a Segment Tracking Plan. Docs are available at: https://segment.com/docs/protocols/typewriter\n\nTo get started, just run `npx typewriter init`.'
-	)
 	// TODO!
 	// .command(
 	// 	['init', 'initialize'],
@@ -102,33 +115,35 @@ require('yargs')
 	.command({
 		...commandDefaults,
 		command: ['update', 'u', '*'],
-		description: 'Syncs your tracking plans and re-generates a development build of your client',
-		handler: toYargsHandler(build, { production: false, update: true }, { validateDefault: true }),
+		handler: toYargsHandler(Build, { production: false, update: true }, { validateDefault: true }),
 	})
 	.command({
 		...commandDefaults,
 		command: ['build', 'b', 'd', 'dev', 'development'],
-		description: 'Generates a development build of your client',
-		handler: toYargsHandler(build, { production: false, update: false }),
+		handler: toYargsHandler(Build, { production: false, update: false }),
 	})
 	.command({
 		...commandDefaults,
 		command: ['prod', 'p', 'production'],
-		description: 'Generates a production build of your client',
-		handler: toYargsHandler(build, { production: true, update: false }),
+		handler: toYargsHandler(Build, { production: true, update: false }),
 	})
 	.command({
 		...commandDefaults,
 		command: ['token', 'tokens', 't'],
-		description: 'Prints your Segment API token',
-		handler: toYargsHandler(token, {}),
+		handler: toYargsHandler(Token, {}),
 	})
 	.command({
 		...commandDefaults,
 		command: 'version',
-		describe: false,
-		handler: toYargsHandler(version, {}),
+		handler: toYargsHandler(Version, {}),
+	})
+	.command({
+		...commandDefaults,
+		command: 'help',
+		handler: toYargsHandler(Help, {}),
 	})
 	.strict(true)
-	.help()
+	// We override help + version ourselves.
+	.help(false)
+	.showHelpOnFail(false)
 	.version(false).argv

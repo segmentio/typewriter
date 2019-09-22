@@ -3,7 +3,7 @@ import { Box, Color } from 'ink'
 import { version as typewriterVersion } from '../../../package.json'
 import latest from 'latest-version'
 
-export const version: React.FC = () => {
+export const Version: React.FC = () => {
 	const [isLoading, setIsLoading] = useState(true)
 	const [latestVersion, setLatestVersion] = useState('')
 
@@ -33,3 +33,5 @@ export const version: React.FC = () => {
 		</Box>
 	)
 }
+
+Version.displayName = 'Version'

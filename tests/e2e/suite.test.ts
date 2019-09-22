@@ -1,4 +1,3 @@
-/* eslint-disable no-null/no-null */
 /* eslint-disable @typescript-eslint/camelcase */
 import fetch from 'node-fetch'
 import { SDK, Language } from '../../src/generators/options'

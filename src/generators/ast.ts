@@ -218,7 +218,6 @@ function parseTypeSpecificFields(raw: JSONSchema7, type: Type): TypeSpecificFiel
 		// is allowed, so treat this as a single-value enum.
 		const rawTypes = getRawTypes(raw)
 		if (rawTypes.has('null') && rawTypes.size === 1) {
-			// eslint-disable-next-line no-null/no-null
 			fields.enum = [null]
 		}
 
@@ -259,7 +258,6 @@ function getType(raw: JSONSchema7): Type {
 // isNullable returns true if `null` is a valid value for this JSON Schema.
 function isNullable(raw: JSONSchema7): boolean {
 	const typeAllowsNull = getRawTypes(raw).has('null') || getType(raw) === Type.ANY
-	// eslint-disable-next-line no-null/no-null
 	const enumAllowsNull = !raw.enum || raw.enum.includes(null)
 
 	return typeAllowsNull && enumAllowsNull
@@ -272,7 +270,6 @@ function getEnum(raw: JSONSchema7): EnumValue[] | undefined {
 	}
 
 	const enm = raw.enum.filter(
-		// eslint-disable-next-line no-null/no-null
 		val => ['boolean', 'number', 'string'].includes(typeof val) || val === null
 	) as EnumValue[]
 

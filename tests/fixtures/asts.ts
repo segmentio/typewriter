@@ -1,10 +1,8 @@
-/* eslint-disable no-null/no-null */
 import { Schema, Type } from '../../src/generators/ast'
 
 export const basicTypes: Schema = {
 	name: 'Types Fixture',
-	description:
-		'This fixture validates generation for the various JSON Schema types.',
+	description: 'This fixture validates generation for the various JSON Schema types.',
 	type: Type.OBJECT,
 	properties: [
 		{

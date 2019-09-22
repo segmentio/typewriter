@@ -19,7 +19,7 @@ interface Props {
 	update: boolean
 }
 
-export const build: React.FC<Props> = props => {
+export const Build: React.FC<Props> = props => {
 	const [generatorState, setGeneratorState] = useState(getInitialState(props.config!))
 
 	useEffect(() => {

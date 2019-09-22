@@ -10,13 +10,13 @@
 
 @interface SEGUniverse : NSObject<SEGTypewriterSerializable>
 
-/// The common name of this universe.
-@property (strong, nonatomic, nonnull) NSString *name;
 /// The most important occupants in this universe.
 @property (strong, nonatomic, nonnull) NSArray<SEGOccupantsItem *> *occupants;
+/// The common name of this universe.
+@property (strong, nonatomic, nonnull) NSString *name;
 
-+(nonnull instancetype) initWithName:(nonnull NSString *)name
-occupants:(nonnull NSArray<SEGOccupantsItem *> *)occupants;
++(nonnull instancetype) initWithOccupants:(nonnull NSArray<SEGOccupantsItem *> *)occupants
+name:(nonnull NSString *)name;
 
 -(nonnull SERIALIZABLE_DICT) toDictionary;
 
