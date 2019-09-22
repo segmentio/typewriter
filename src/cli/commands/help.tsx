@@ -15,7 +15,7 @@ interface Props {
 export const Help: React.FC<Props> = () => {
 	return (
 		<Box marginLeft={2} flexDirection="column">
-			<Box marginBottom={1}>
+			<Box marginBottom={2} textWrap="wrap">
 				<Color grey>
 					Typewriter is a tool for generating strongly-typed{' '}
 					<Link url="https://segment.com">Segment</Link> analytics libraries based on your

@@ -6,26 +6,26 @@
 
 @implementation SEGSubterraneanLab
 
-+(nonnull instancetype) initWithJerrysMemories:(nullable NSArray<id> *)jerrysMemories
-mortysMemories:(nullable NSArray<id> *)mortysMemories
-summersContingencyPlan:(nullable NSString *)summersContingencyPlan {
++(nonnull instancetype) initWithSummersContingencyPlan:(nullable NSString *)summersContingencyPlan
+jerrysMemories:(nullable NSArray<id> *)jerrysMemories
+mortysMemories:(nullable NSArray<id> *)mortysMemories {
   SEGSubterraneanLab *object = [[SEGSubterraneanLab alloc] init];
+  object.summersContingencyPlan = summersContingencyPlan;
   object.jerrysMemories = jerrysMemories;
   object.mortysMemories = mortysMemories;
-  object.summersContingencyPlan = summersContingencyPlan;
   return object;
 }
 
 -(nonnull SERIALIZABLE_DICT) toDictionary {
   NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
+  if (self.summersContingencyPlan != nil) {
+    properties[@"summer's contingency plan"] = self.summersContingencyPlan;
+  }
   if (self.jerrysMemories != nil) {
     properties[@"jerry's memories"] = [SEGTypewriterUtils toSerializableArray:self.jerrysMemories];
   }
   if (self.mortysMemories != nil) {
     properties[@"morty's memories"] = [SEGTypewriterUtils toSerializableArray:self.mortysMemories];
-  }
-  if (self.summersContingencyPlan != nil) {
-    properties[@"summer's contingency plan"] = self.summersContingencyPlan;
   }
 
   return properties;

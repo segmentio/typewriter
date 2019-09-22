@@ -18,18 +18,10 @@ export interface TrackingPlan {
 	workspace_slug?: string
 }
 export interface Client {
-	language?: string
 	sdk?: string
+	language?: string
 }
 export interface CommandRun {
-	/**
-	 * Metadata about the Tracking Plan that typewriter was fired on.
-	 */
-	tracking_plan?: TrackingPlan
-	/**
-	 * Metadata about the client that typewriter is generating.
-	 */
-	client?: Client
 	/**
 	 * The command name that was started.
 	 */
@@ -46,10 +38,18 @@ export interface CommandRun {
 	 * Where the API token was fetched from.
 	 */
 	token_method?: string
+	/**
+	 * Metadata about the Tracking Plan that typewriter was fired on.
+	 */
+	tracking_plan?: TrackingPlan
+	/**
+	 * Metadata about the client that typewriter is generating.
+	 */
+	client?: Client
 }
 export interface TrackingPlan1 {
-	workspace_slug?: string
 	id?: string
+	workspace_slug?: string
 }
 export interface Client1 {
 	language?: string
@@ -236,22 +236,22 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
  */
 /**
  * @typedef Client
- * @property {string} [language] -
  * @property {string} [sdk] -
+ * @property {string} [language] -
  */
 /**
  * @typedef CommandRun
- * @property {TrackingPlan} [tracking_plan] - Metadata about the Tracking Plan that typewriter was fired on.
- * @property {Client} [client] - Metadata about the client that typewriter is generating.
  * @property {string} `command` - The command name that was started.
  * @property {number} `duration` - The time taken to execute this command, in ms.
  * @property {boolean} [is_ci] - Whether or not typewriter is currently running in a CI environment or not.
  * @property {string} [token_method] - Where the API token was fetched from.
+ * @property {TrackingPlan} [tracking_plan] - Metadata about the Tracking Plan that typewriter was fired on.
+ * @property {Client} [client] - Metadata about the client that typewriter is generating.
  */
 /**
  * @typedef TrackingPlan1
- * @property {string} [workspace_slug] -
  * @property {string} [id] -
+ * @property {string} [workspace_slug] -
  */
 /**
  * @typedef Client1
@@ -295,40 +295,9 @@ export function commandRun(
 			context: {},
 			traits: {},
 			properties: {
+				required: ['command', 'duration'],
 				type: 'object',
 				properties: {
-					tracking_plan: {
-						required: [],
-						type: 'object',
-						description:
-							'Metadata about the Tracking Plan that typewriter was fired on.',
-						properties: {
-							id: {
-								description: '',
-								type: 'string',
-							},
-							workspace_slug: {
-								description: '',
-								type: 'string',
-							},
-						},
-					},
-					client: {
-						description:
-							'Metadata about the client that typewriter is generating.',
-						properties: {
-							language: {
-								description: '',
-								type: 'string',
-							},
-							sdk: {
-								type: 'string',
-								description: '',
-							},
-						},
-						required: [],
-						type: 'object',
-					},
 					command: {
 						description: 'The command name that was started.',
 						type: 'string',
@@ -347,8 +316,39 @@ export function commandRun(
 						pattern: 'tokenCommand|env|file',
 						type: 'string',
 					},
+					tracking_plan: {
+						properties: {
+							id: {
+								description: '',
+								type: 'string',
+							},
+							workspace_slug: {
+								description: '',
+								type: 'string',
+							},
+						},
+						required: [],
+						type: 'object',
+						description:
+							'Metadata about the Tracking Plan that typewriter was fired on.',
+					},
+					client: {
+						description:
+							'Metadata about the client that typewriter is generating.',
+						properties: {
+							sdk: {
+								type: 'string',
+								description: '',
+							},
+							language: {
+								description: '',
+								type: 'string',
+							},
+						},
+						required: [],
+						type: 'object',
+					},
 				},
-				required: ['command', 'duration'],
 			},
 		},
 		required: ['properties'],
@@ -384,23 +384,26 @@ export function errorFired(
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
 		properties: {
+			context: {},
+			traits: {},
 			properties: {
+				type: 'object',
 				properties: {
 					tracking_plan: {
-						required: [],
-						type: 'object',
 						description:
 							'Metadata about the Tracking Plan that typewriter was fired on.',
 						properties: {
-							workspace_slug: {
-								description: '',
-								type: 'string',
-							},
 							id: {
 								description: '',
 								type: 'string',
 							},
+							workspace_slug: {
+								description: '',
+								type: 'string',
+							},
 						},
+						required: [],
+						type: 'object',
 					},
 					unexpected: {
 						description:
@@ -408,10 +411,6 @@ export function errorFired(
 						type: 'boolean',
 					},
 					client: {
-						required: [],
-						type: 'object',
-						description:
-							'Metadata about the client that typewriter is generating.',
 						properties: {
 							language: {
 								description: '',
@@ -422,6 +421,10 @@ export function errorFired(
 								type: 'string',
 							},
 						},
+						required: [],
+						type: 'object',
+						description:
+							'Metadata about the client that typewriter is generating.',
 					},
 					command: {
 						description: 'The command name that was started.',
@@ -436,21 +439,18 @@ export function errorFired(
 						type: 'string',
 					},
 					is_ci: {
+						type: 'boolean',
 						description:
 							'Whether or not typewriter is currently running in a CI environment or not.',
-						type: 'boolean',
 					},
 					token_method: {
+						type: 'string',
 						description: 'Where the API token was fetched from.',
 						pattern: 'tokenCommand|env|file',
-						type: 'string',
 					},
 				},
 				required: ['error', 'error_string', 'unexpected'],
-				type: 'object',
 			},
-			context: {},
-			traits: {},
 		},
 		required: ['properties'],
 		type: 'object',
