@@ -75,6 +75,7 @@ export const Init: React.FC<Props> = ({ configPath, config }) => {
 			{step === 7 && (
 				<Build configPath={configPath} config={config} production={false} update={true} />
 			)}
+			{/* TODO: step 8 where we show an example script showing how to import typewriter */}
 		</Box>
 	)
 }
@@ -455,7 +456,8 @@ interface TrackingPlanPromptProps {
 	onSubmit: (trackingPlan: SegmentAPI.TrackingPlan) => void
 }
 
-/** A prompt to identify which Segment programming language a user wants to use. */
+/** A prompt to identify which Segment Tracking Plan a user wants to use. */
+// Needs an empty state — allows users to create a Tracking Plan, then a reload button to refetch
 const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
 	path,
 	token,
