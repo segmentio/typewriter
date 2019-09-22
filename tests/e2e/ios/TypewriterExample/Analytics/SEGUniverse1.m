@@ -6,21 +6,21 @@
 
 @implementation SEGUniverse1
 
-+(nonnull instancetype) initWithOccupants:(nonnull NSArray<SEGOccupantsItem1 *> *)occupants
-name:(nonnull NSString *)name {
++(nonnull instancetype) initWithName:(nonnull NSString *)name
+occupants:(nonnull NSArray<SEGOccupantsItem1 *> *)occupants {
   SEGUniverse1 *object = [[SEGUniverse1 alloc] init];
-  object.occupants = occupants;
   object.name = name;
+  object.occupants = occupants;
   return object;
 }
 
 -(nonnull SERIALIZABLE_DICT) toDictionary {
   NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
-  if (self.occupants != nil) {
-    properties[@"occupants"] = [SEGTypewriterUtils toSerializableArray:self.occupants];
-  }
   if (self.name != nil) {
     properties[@"name"] = self.name;
+  }
+  if (self.occupants != nil) {
+    properties[@"occupants"] = [SEGTypewriterUtils toSerializableArray:self.occupants];
   }
 
   return properties;

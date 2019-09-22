@@ -119,7 +119,7 @@ require('yargs')
 	})
 	.command({
 		...commandDefaults,
-		command: ['token', 't'],
+		command: ['token', 'tokens', 't'],
 		description: 'Prints your Segment API token',
 		handler: toYargsHandler(token, {}),
 	})

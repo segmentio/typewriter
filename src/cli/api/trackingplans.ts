@@ -9,7 +9,7 @@ import {
 import sortKeys from 'sort-keys'
 import * as fs from 'fs'
 import { promisify } from 'util'
-import { flow } from 'lodash'
+import { flow, isEqual } from 'lodash'
 
 const writeFile = promisify(fs.writeFile)
 const readFile = promisify(fs.readFile)
@@ -84,4 +84,49 @@ export async function sanitizeTrackingPlan(
 	// TODO: on JSON Schema Draft-04, required fields must have at least one element.
 	// Therefore, we strip `required: []` from your rules so this error isn't surfaced.
 	return plan
+}
+
+interface TrackingPlanDeltas {
+	added: number
+	modified: number
+	removed: number
+}
+
+export function computeDelta(
+	prev: SegmentAPI.TrackingPlan,
+	next: SegmentAPI.TrackingPlan
+): TrackingPlanDeltas {
+	const deltas: TrackingPlanDeltas = {
+		added: 0,
+		modified: 0,
+		removed: 0,
+	}
+
+	// Since we only use track calls in typewriter, we only changes to track calls.
+	const nextByName: Record<string, SegmentAPI.RuleMetadata> = {}
+	for (const rule of next.rules.events) {
+		nextByName[rule.name] = rule
+	}
+	const prevByName: Record<string, SegmentAPI.RuleMetadata> = {}
+	for (const rule of prev.rules.events) {
+		prevByName[rule.name] = rule
+	}
+
+	for (const rule of next.rules.events) {
+		const prevRule = prevByName[rule.name]
+		if (!prevRule) {
+			deltas.added++
+		} else {
+			if (prevRule.description !== rule.description || isEqual(prevRule.rules, next.rules)) {
+				deltas.modified++
+			}
+		}
+	}
+	for (const rule of prev.rules.events) {
+		if (!nextByName[rule.name]) {
+			deltas.removed++
+		}
+	}
+
+	return deltas
 }

@@ -10,18 +10,18 @@ interface Props {
 }
 
 export const token: React.FC<Props> = props => {
+	const [isLoading, setIsLoading] = useState(true)
+	const [method, setMethod] = useState<string | undefined>()
 	const [tokens, setTokens] = useState<ListTokensOutput | undefined>()
-	const [method, setMethod] = useState<string | undefined>(undefined)
 	useEffect(() => {
-		getTokenMethod(props.config).then(output => {
-			setMethod(output)
-			listTokens(props.config).then(output => {
-				setTokens(output)
-			})
-		})
+		;(async () => {
+			setMethod(await getTokenMethod(props.config))
+			setTokens(await listTokens(props.config))
+			setIsLoading(false)
+		})()
 	}, [])
 
-	if (!tokens || !method) {
+	if (isLoading) {
 		return (
 			<Box marginLeft={2} marginTop={1} marginBottom={1}>
 				<Spinner type="dots" /> <Color grey>Loading...</Color>
@@ -32,9 +32,9 @@ export const token: React.FC<Props> = props => {
 	return (
 		<Box marginTop={1} marginBottom={1} marginLeft={2} flexDirection="column">
 			<Box flexDirection="column">
-				<TokenRow name="TYPEWRITER_TOKEN" tokenMetadata={tokens.env} method={method} />
-				<TokenRow name="scripts.token" tokenMetadata={tokens.script} method={method} />
-				<TokenRow name="~/.typewriter" tokenMetadata={tokens.file} method={method} />
+				<TokenRow name="TYPEWRITER_TOKEN" tokenMetadata={tokens && tokens.env} method={method} />
+				<TokenRow name="scripts.token" tokenMetadata={tokens && tokens.script} method={method} />
+				<TokenRow name="~/.typewriter" tokenMetadata={tokens && tokens.file} method={method} />
 			</Box>
 			<Box marginTop={1} width={80} textWrap="wrap">
 				<Color grey>
@@ -50,28 +50,30 @@ export const token: React.FC<Props> = props => {
 }
 
 interface TokenRowProps {
-	tokenMetadata: TokenMetadata
-	method: string
+	tokenMetadata?: TokenMetadata
+	method?: string
 	name: string
 }
 
-const TokenRow: React.FC<TokenRowProps> = props => {
-	const isSelected = props.method === props.tokenMetadata.method
+const TokenRow: React.FC<TokenRowProps> = ({ tokenMetadata, method, name }) => {
+	const isSelected = tokenMetadata && method === tokenMetadata.method
 
 	return (
 		<Box flexDirection="row">
 			<Color green={isSelected} grey={!isSelected}>
-				<Box width={20}>{props.name}:</Box>
+				<Box width={20}>{name}:</Box>
 				<Box width={15}>
-					{props.tokenMetadata.token ? `${props.tokenMetadata.token.slice(0, 10)}...` : '(None)'}
+					{tokenMetadata && tokenMetadata.token
+						? `${tokenMetadata.token.slice(0, 10)}...`
+						: '(None)'}
 				</Box>
-				{!!props.tokenMetadata.token && !props.tokenMetadata.isValidToken ? (
+				{tokenMetadata && !!tokenMetadata.token && !tokenMetadata.isValidToken ? (
 					<Box width={10}>
 						<Color red={true}>(invalid token)</Color>
 					</Box>
 				) : (
 					<Box width={10}>
-						{props.tokenMetadata.workspace ? props.tokenMetadata.workspace.name : ''}
+						{tokenMetadata && tokenMetadata.workspace ? tokenMetadata.workspace.name : ''}
 					</Box>
 				)}
 			</Color>

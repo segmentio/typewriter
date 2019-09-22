@@ -132,6 +132,8 @@ export interface GenOptions {
 	isDevelopment: boolean
 }
 
+// TODO: it appears that the generated code, for sure for JS, is not always deterministic.
+// Are we sorting or something?
 export async function gen(trackingPlan: RawTrackingPlan, options: GenOptions): Promise<File[]> {
 	const parsedTrackingPlan = {
 		trackCalls: trackingPlan.trackCalls.map(s => {

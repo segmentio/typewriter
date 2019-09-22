@@ -90,6 +90,7 @@ function withTypewriterContext(message = {}) {
  */
 /**
  * @typedef EveryNullableOptionalType
+ * @property {Record<string, any> | null} [optional object] - Optional object property
  * @property {string | null} [optional string] - Optional string property
  * @property {string | null} [optional string with regex] - Optional string property with a regex conditional
  * @property {any | null} [optional any] - Optional any property
@@ -97,11 +98,9 @@ function withTypewriterContext(message = {}) {
  * @property {boolean | null} [optional boolean] - Optional boolean property
  * @property {number | null} [optional int] - Optional integer property
  * @property {number | null} [optional number] - Optional number property
- * @property {Record<string, any> | null} [optional object] - Optional object property
  */
 /**
  * @typedef EveryNullableRequiredType
- * @property {any[] | null} `required array` - Required array property
  * @property {boolean | null} `required boolean` - Required boolean property
  * @property {number | null} `required int` - Required integer property
  * @property {number | null} `required number` - Required number property
@@ -109,28 +108,29 @@ function withTypewriterContext(message = {}) {
  * @property {string | null} `required string` - Required string property
  * @property {string | null} `required string with regex` - Required string property with a regex conditional
  * @property {any | null} `required any` - Required any property
+ * @property {any[] | null} `required array` - Required array property
  */
 /**
  * @typedef EveryOptionalType
- * @property {Record<string, any>} [optional object] - Optional object property
- * @property {string} [optional string] - Optional string property
  * @property {string} [optional string with regex] - Optional string property with a regex conditional
  * @property {any | null} [optional any] - Optional any property
  * @property {any[]} [optional array] - Optional array property
  * @property {boolean} [optional boolean] - Optional boolean property
  * @property {number} [optional int] - Optional integer property
  * @property {number} [optional number] - Optional number property
+ * @property {Record<string, any>} [optional object] - Optional object property
+ * @property {string} [optional string] - Optional string property
  */
 /**
  * @typedef EveryRequiredType
- * @property {number} `required number` - Required number property
- * @property {Record<string, any>} `required object` - Required object property
- * @property {string} `required string` - Required string property
  * @property {string} `required string with regex` - Required string property with a regex conditional
  * @property {any | null} `required any` - Required any property
  * @property {any[]} `required array` - Required array property
  * @property {boolean} `required boolean` - Required boolean property
  * @property {number} `required int` - Required integer property
+ * @property {number} `required number` - Required number property
+ * @property {Record<string, any>} `required object` - Required object property
+ * @property {string} `required string` - Required string property
  */
 /**
  * @typedef UniverseCharactersItemItem
@@ -142,9 +142,9 @@ function withTypewriterContext(message = {}) {
  */
 /**
  * @typedef SubterraneanLab
- * @property {any[]} [morty\'s memories] -
  * @property {string} [summer\'s contingency plan] -
  * @property {any[]} [jerry\'s memories] -
+ * @property {any[]} [morty\'s memories] -
  */
 /**
  * @typedef Tunnel
@@ -199,13 +199,13 @@ function withTypewriterContext(message = {}) {
  */
 /**
  * @typedef SimpleArrayTypes
- * @property {number[]} [integer] -
- * @property {string[]} [nullable] -
- * @property {number[]} [number] -
  * @property {ObjectItem[]} [object] -
  * @property {string[]} [string] -
  * @property {any[]} [any] -
  * @property {boolean[]} [boolean] -
+ * @property {number[]} [integer] -
+ * @property {string[]} [nullable] -
+ * @property {number[]} [number] -
  */
 /**
  * @typedef UnionType
@@ -355,15 +355,15 @@ export function customViolationHandler(props, options, callback) {
 				type: 'object',
 			},
 			properties: {
-				type: 'object',
 				properties: {
 					'regex property': {
-						type: 'string',
 						description: '',
 						pattern: 'Lawyer Morty|Evil Morty',
+						type: 'string',
 					},
 				},
 				required: ['regex property'],
+				type: 'object',
 			},
 		},
 		required: ['properties'],
@@ -399,11 +399,11 @@ export function customViolationHandlerCalled(props, options, callback) {
 		type: 'object',
 		labels: {},
 		properties: {
-			context: {},
-			traits: {
+			properties: {
 				type: 'object',
 			},
-			properties: {
+			context: {},
+			traits: {
 				type: 'object',
 			},
 		},
@@ -436,16 +436,12 @@ export function customViolationHandlerCalled(props, options, callback) {
 export function defaultViolationHandler(props, options, callback) {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
-		required: ['properties'],
-		type: 'object',
-		labels: {},
 		properties: {
 			context: {},
 			traits: {
 				type: 'object',
 			},
 			properties: {
-				type: 'object',
 				properties: {
 					'regex property': {
 						pattern: 'Lawyer Morty|Evil Morty',
@@ -454,8 +450,12 @@ export function defaultViolationHandler(props, options, callback) {
 					},
 				},
 				required: ['regex property'],
+				type: 'object',
 			},
 		},
+		required: ['properties'],
+		type: 'object',
+		labels: {},
 		title: 'Default Violation Handler',
 	}
 	const message = {
@@ -488,11 +488,11 @@ export function defaultViolationHandlerCalled(props, options, callback) {
 		type: 'object',
 		labels: {},
 		properties: {
-			context: {},
-			traits: {
+			properties: {
 				type: 'object',
 			},
-			properties: {
+			context: {},
+			traits: {
 				type: 'object',
 			},
 		},
@@ -565,6 +565,7 @@ export function emptyEvent(props, options, callback) {
 export function eventCollided(props, options, callback) {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		type: 'object',
 		labels: {},
 		properties: {
 			properties: {
@@ -575,7 +576,6 @@ export function eventCollided(props, options, callback) {
 				type: 'object',
 			},
 		},
-		type: 'object',
 		title: 'Event Collided',
 	}
 	const message = {
@@ -605,50 +605,50 @@ export function eventCollided(props, options, callback) {
 export function everyNullableOptionalType(props, options, callback) {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
-		type: 'object',
 		properties: {
 			context: {},
 			traits: {},
 			properties: {
+				type: 'object',
 				properties: {
-					'optional string': {
-						description: 'Optional string property',
-						type: ['string', 'null'],
-					},
-					'optional string with regex': {
-						type: ['string', 'null'],
-						description: 'Optional string property with a regex conditional',
-						pattern: 'Evil Morty|Lawyer Morty',
-					},
-					'optional any': {
-						description: 'Optional any property',
-					},
-					'optional array': {
-						description: 'Optional array property',
-						type: ['array', 'null'],
-					},
-					'optional boolean': {
-						type: ['boolean', 'null'],
-						description: 'Optional boolean property',
-					},
-					'optional int': {
-						description: 'Optional integer property',
-						type: ['integer', 'null'],
-					},
-					'optional number': {
-						description: 'Optional number property',
-						type: ['number', 'null'],
-					},
 					'optional object': {
 						description: 'Optional object property',
 						properties: {},
 						required: [],
 						type: ['object', 'null'],
 					},
+					'optional string': {
+						type: ['string', 'null'],
+						description: 'Optional string property',
+					},
+					'optional string with regex': {
+						description: 'Optional string property with a regex conditional',
+						pattern: 'Evil Morty|Lawyer Morty',
+						type: ['string', 'null'],
+					},
+					'optional any': {
+						description: 'Optional any property',
+					},
+					'optional array': {
+						type: ['array', 'null'],
+						description: 'Optional array property',
+					},
+					'optional boolean': {
+						description: 'Optional boolean property',
+						type: ['boolean', 'null'],
+					},
+					'optional int': {
+						type: ['integer', 'null'],
+						description: 'Optional integer property',
+					},
+					'optional number': {
+						description: 'Optional number property',
+						type: ['number', 'null'],
+					},
 				},
-				type: 'object',
 			},
 		},
+		type: 'object',
 		title: 'Every Nullable Optional Type',
 	}
 	const message = {
@@ -685,10 +685,6 @@ export function everyNullableRequiredType(props, options, callback) {
 			properties: {
 				type: 'object',
 				properties: {
-					'required array': {
-						description: 'Required array property',
-						type: ['array', 'null'],
-					},
 					'required boolean': {
 						description: 'Required boolean property',
 						type: ['boolean', 'null'],
@@ -702,22 +698,26 @@ export function everyNullableRequiredType(props, options, callback) {
 						type: ['number', 'null'],
 					},
 					'required object': {
+						description: 'Required object property',
 						properties: {},
 						required: [],
 						type: ['object', 'null'],
-						description: 'Required object property',
 					},
 					'required string': {
 						description: 'Required string property',
 						type: ['string', 'null'],
 					},
 					'required string with regex': {
-						type: ['string', 'null'],
 						description: 'Required string property with a regex conditional',
 						pattern: 'Evil Morty|Lawyer Morty',
+						type: ['string', 'null'],
 					},
 					'required any': {
 						description: 'Required any property',
+					},
+					'required array': {
+						type: ['array', 'null'],
+						description: 'Required array property',
 					},
 				},
 				required: [
@@ -762,23 +762,11 @@ export function everyNullableRequiredType(props, options, callback) {
 export function everyOptionalType(props, options, callback) {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
-		type: 'object',
 		properties: {
 			traits: {},
 			properties: {
 				type: 'object',
 				properties: {
-					'optional object': {
-						key: 'optional object',
-						properties: {},
-						required: [],
-						type: 'object',
-						description: 'Optional object property',
-					},
-					'optional string': {
-						type: 'string',
-						description: 'Optional string property',
-					},
 					'optional string with regex': {
 						pattern: 'Evil Morty|Lawyer Morty',
 						type: 'string',
@@ -796,17 +784,29 @@ export function everyOptionalType(props, options, callback) {
 						type: 'boolean',
 					},
 					'optional int': {
-						type: 'integer',
 						description: 'Optional integer property',
+						type: 'integer',
 					},
 					'optional number': {
 						description: 'Optional number property',
 						type: 'number',
 					},
+					'optional object': {
+						description: 'Optional object property',
+						key: 'optional object',
+						properties: {},
+						required: [],
+						type: 'object',
+					},
+					'optional string': {
+						description: 'Optional string property',
+						type: 'string',
+					},
 				},
 			},
 			context: {},
 		},
+		type: 'object',
 		title: 'Every Optional Type',
 	}
 	const message = {
@@ -836,46 +836,12 @@ export function everyOptionalType(props, options, callback) {
 export function everyRequiredType(props, options, callback) {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		required: ['properties'],
+		type: 'object',
 		properties: {
+			context: {},
+			traits: {},
 			properties: {
-				type: 'object',
-				properties: {
-					'required number': {
-						description: 'Required number property',
-						type: 'number',
-					},
-					'required object': {
-						key: 'required object',
-						properties: {},
-						required: [],
-						type: 'object',
-						description: 'Required object property',
-					},
-					'required string': {
-						description: 'Required string property',
-						type: 'string',
-					},
-					'required string with regex': {
-						type: 'string',
-						description: 'Required string property with a regex conditional',
-						pattern: 'Evil Morty|Lawyer Morty',
-					},
-					'required any': {
-						description: 'Required any property',
-					},
-					'required array': {
-						description: 'Required array property',
-						type: 'array',
-					},
-					'required boolean': {
-						description: 'Required boolean property',
-						type: 'boolean',
-					},
-					'required int': {
-						description: 'Required integer property',
-						type: 'integer',
-					},
-				},
 				required: [
 					'required any',
 					'required array',
@@ -886,12 +852,46 @@ export function everyRequiredType(props, options, callback) {
 					'required string',
 					'required string with regex',
 				],
+				type: 'object',
+				properties: {
+					'required string with regex': {
+						description: 'Required string property with a regex conditional',
+						pattern: 'Evil Morty|Lawyer Morty',
+						type: 'string',
+					},
+					'required any': {
+						description: 'Required any property',
+					},
+					'required array': {
+						description: 'Required array property',
+						type: 'array',
+					},
+					'required boolean': {
+						type: 'boolean',
+						description: 'Required boolean property',
+					},
+					'required int': {
+						description: 'Required integer property',
+						type: 'integer',
+					},
+					'required number': {
+						description: 'Required number property',
+						type: 'number',
+					},
+					'required object': {
+						required: [],
+						type: 'object',
+						description: 'Required object property',
+						key: 'required object',
+						properties: {},
+					},
+					'required string': {
+						description: 'Required string property',
+						type: 'string',
+					},
+				},
 			},
-			context: {},
-			traits: {},
 		},
-		required: ['properties'],
-		type: 'object',
 		title: 'Every Required Type',
 	}
 	const message = {
@@ -924,6 +924,7 @@ export function nestedArrays(props, options, callback) {
 		type: 'object',
 		labels: {},
 		properties: {
+			context: {},
 			traits: {
 				type: 'object',
 			},
@@ -931,28 +932,27 @@ export function nestedArrays(props, options, callback) {
 				type: 'object',
 				properties: {
 					universeCharacters: {
-						description: 'All known characters from each universe.',
 						items: {
+							description: '',
 							items: {
 								description: '',
 								properties: {
 									name: {
-										type: 'string',
 										description: "The character's name.",
+										type: 'string',
 									},
 								},
 								required: ['name'],
 								type: 'object',
 							},
 							type: 'array',
-							description: '',
 						},
 						type: 'array',
+						description: 'All known characters from each universe.',
 					},
 				},
 				required: ['universeCharacters'],
 			},
-			context: {},
 		},
 		required: ['properties'],
 		title: 'Nested Arrays',
@@ -984,54 +984,54 @@ export function nestedArrays(props, options, callback) {
 export function nestedObjects(props, options, callback) {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		required: ['properties'],
+		type: 'object',
 		labels: {},
 		properties: {
-			traits: {
-				type: 'object',
-			},
 			properties: {
-				required: ['garage'],
 				type: 'object',
 				properties: {
 					garage: {
+						required: ['tunnel'],
+						type: 'object',
 						description: '',
 						properties: {
 							tunnel: {
+								type: 'object',
 								description: '',
 								properties: {
 									'subterranean lab': {
-										required: [],
 										type: 'object',
 										description: '',
 										properties: {
-											"morty's memories": {
-												description: '',
-												type: 'array',
-											},
 											"summer's contingency plan": {
 												description: '',
 												type: 'string',
 											},
 											"jerry's memories": {
-												type: 'array',
 												description: '',
+												type: 'array',
+											},
+											"morty's memories": {
+												description: '',
+												type: 'array',
 											},
 										},
+										required: [],
 									},
 								},
 								required: ['subterranean lab'],
-								type: 'object',
 							},
 						},
-						required: ['tunnel'],
-						type: 'object',
 					},
 				},
+				required: ['garage'],
 			},
 			context: {},
+			traits: {
+				type: 'object',
+			},
 		},
-		required: ['properties'],
-		type: 'object',
 		title: 'Nested Objects',
 	}
 	const message = {
@@ -1061,12 +1061,15 @@ export function nestedObjects(props, options, callback) {
 export function propertiesCollided(props, options, callback) {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		type: 'object',
+		labels: {},
 		properties: {
 			context: {},
 			traits: {
 				type: 'object',
 			},
 			properties: {
+				type: 'object',
 				properties: {
 					'Property Collided': {
 						description: '',
@@ -1078,12 +1081,9 @@ export function propertiesCollided(props, options, callback) {
 					},
 				},
 				required: ['property_collided', 'Property Collided'],
-				type: 'object',
 			},
 		},
 		required: ['properties'],
-		type: 'object',
-		labels: {},
 		title: 'Properties Collided',
 	}
 	const message = {
@@ -1113,11 +1113,9 @@ export function propertiesCollided(props, options, callback) {
 export function propertyObjectNameCollision1(props, options, callback) {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		type: 'object',
 		labels: {},
 		properties: {
-			traits: {
-				type: 'object',
-			},
 			properties: {
 				type: 'object',
 				properties: {
@@ -1127,13 +1125,13 @@ export function propertyObjectNameCollision1(props, options, callback) {
 						description: '',
 						properties: {
 							name: {
-								description: 'The common name of this universe.',
 								type: 'string',
+								description: 'The common name of this universe.',
 							},
 							occupants: {
-								type: 'array',
 								description: 'The most important occupants in this universe.',
 								items: {
+									type: 'object',
 									description: '',
 									properties: {
 										name: {
@@ -1142,16 +1140,18 @@ export function propertyObjectNameCollision1(props, options, callback) {
 										},
 									},
 									required: ['name'],
-									type: 'object',
 								},
+								type: 'array',
 							},
 						},
 					},
 				},
 			},
 			context: {},
+			traits: {
+				type: 'object',
+			},
 		},
-		type: 'object',
 		title: 'Property Object Name Collision #1',
 	}
 	const message = {
@@ -1189,19 +1189,16 @@ export function propertyObjectNameCollision2(props, options, callback) {
 				type: 'object',
 			},
 			properties: {
-				type: 'object',
 				properties: {
 					universe: {
+						description: '',
 						properties: {
 							name: {
 								description: 'The common name of this universe.',
 								type: 'string',
 							},
 							occupants: {
-								type: 'array',
-								description: 'The most important occupants in this universe.',
 								items: {
-									type: 'object',
 									description: '',
 									properties: {
 										name: {
@@ -1210,14 +1207,17 @@ export function propertyObjectNameCollision2(props, options, callback) {
 										},
 									},
 									required: ['name'],
+									type: 'object',
 								},
+								type: 'array',
+								description: 'The most important occupants in this universe.',
 							},
 						},
 						required: ['name', 'occupants'],
 						type: 'object',
-						description: '',
 					},
 				},
+				type: 'object',
 			},
 		},
 		title: 'Property Object Name Collision #2',
@@ -1249,12 +1249,10 @@ export function propertyObjectNameCollision2(props, options, callback) {
 export function propertySanitized(props, options, callback) {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		required: ['properties'],
+		type: 'object',
 		labels: {},
 		properties: {
-			context: {},
-			traits: {
-				type: 'object',
-			},
 			properties: {
 				required: ['0000---terrible-property-name~!3'],
 				type: 'object',
@@ -1265,9 +1263,11 @@ export function propertySanitized(props, options, callback) {
 					},
 				},
 			},
+			context: {},
+			traits: {
+				type: 'object',
+			},
 		},
-		required: ['properties'],
-		type: 'object',
 		title: 'Property Sanitized',
 	}
 	const message = {
@@ -1297,19 +1297,55 @@ export function propertySanitized(props, options, callback) {
 export function simpleArrayTypes(props, options, callback) {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		type: 'object',
+		labels: {},
 		properties: {
-			context: {},
-			traits: {
-				type: 'object',
-			},
 			properties: {
 				type: 'object',
 				properties: {
+					object: {
+						description: '',
+						items: {
+							type: 'object',
+							description: '',
+							properties: {
+								name: {
+									description: '',
+									type: 'string',
+								},
+							},
+							required: [],
+						},
+						type: 'array',
+					},
+					string: {
+						description: '',
+						items: {
+							description: '',
+							type: 'string',
+						},
+						type: 'array',
+					},
+					any: {
+						items: {
+							description: '',
+						},
+						type: 'array',
+						description: '',
+					},
+					boolean: {
+						description: '',
+						items: {
+							description: '',
+							type: 'boolean',
+						},
+						type: 'array',
+					},
 					integer: {
 						description: '',
 						items: {
-							type: 'integer',
 							description: '',
+							type: 'integer',
 						},
 						type: 'array',
 					},
@@ -1329,49 +1365,13 @@ export function simpleArrayTypes(props, options, callback) {
 							type: 'number',
 						},
 					},
-					object: {
-						type: 'array',
-						description: '',
-						items: {
-							required: [],
-							type: 'object',
-							description: '',
-							properties: {
-								name: {
-									description: '',
-									type: 'string',
-								},
-							},
-						},
-					},
-					string: {
-						description: '',
-						items: {
-							type: 'string',
-							description: '',
-						},
-						type: 'array',
-					},
-					any: {
-						description: '',
-						items: {
-							description: '',
-						},
-						type: 'array',
-					},
-					boolean: {
-						description: '',
-						items: {
-							description: '',
-							type: 'boolean',
-						},
-						type: 'array',
-					},
 				},
 			},
+			context: {},
+			traits: {
+				type: 'object',
+			},
 		},
-		type: 'object',
-		labels: {},
 		title: 'Simple Array Types',
 	}
 	const message = {
@@ -1401,7 +1401,6 @@ export function simpleArrayTypes(props, options, callback) {
 export function unionType(props, options, callback) {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
-		type: 'object',
 		labels: {},
 		properties: {
 			context: {},
@@ -1409,7 +1408,6 @@ export function unionType(props, options, callback) {
 				type: 'object',
 			},
 			properties: {
-				required: ['universe_name'],
 				type: 'object',
 				properties: {
 					universe_name: {
@@ -1417,9 +1415,11 @@ export function unionType(props, options, callback) {
 						type: ['string', 'null', 'integer'],
 					},
 				},
+				required: ['universe_name'],
 			},
 		},
 		required: ['properties'],
+		type: 'object',
 		title: 'Union Type',
 	}
 	const message = {
@@ -1488,13 +1488,13 @@ export function eventCollided1(props, options, callback) {
 		type: 'object',
 		labels: {},
 		properties: {
+			traits: {
+				type: 'object',
+			},
 			properties: {
 				type: 'object',
 			},
 			context: {},
-			traits: {
-				type: 'object',
-			},
 		},
 		title: 'event_collided',
 	}

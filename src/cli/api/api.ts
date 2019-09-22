@@ -1,5 +1,6 @@
-import fetch from 'node-fetch'
+import got from 'got'
 import { JSONSchema7 } from 'json-schema'
+import { version } from '../../../package.json'
 
 export namespace SegmentAPI {
 	// https://reference.segmentapis.com/#1092fe01-379b-4ca1-8b1d-9f42b33d2899
@@ -48,9 +49,7 @@ export async function fetchTrackingPlan(options: {
 	id: string
 	token: string
 }): Promise<SegmentAPI.TrackingPlan> {
-	const url = `https://platform.segmentapis.com/v1beta/workspaces/${
-		options.workspaceSlug
-	}/tracking-plans/${options.id}`
+	const url = `workspaces/${options.workspaceSlug}/tracking-plans/${options.id}`
 	const response = (await apiGet(url, options.token)) as SegmentAPI.GetTrackingPlanResponse
 
 	// eslint-disable-next-line @typescript-eslint/camelcase
@@ -67,9 +66,7 @@ export async function fetchTrackingPlans(options: {
 	workspaceSlug: string
 	token: string
 }): Promise<SegmentAPI.TrackingPlan[]> {
-	const url = `https://platform.segmentapis.com/v1beta/workspaces/${
-		options.workspaceSlug
-	}/tracking-plans`
+	const url = `workspaces/${options.workspaceSlug}/tracking-plans`
 	const response = (await apiGet(url, options.token)) as SegmentAPI.ListTrackingPlansResponse
 
 	// eslint-disable-next-line @typescript-eslint/camelcase
@@ -103,12 +100,9 @@ export async function fetchAllTrackingPlans(options: {
 
 // fetchWorkspaces lists all workspaces found with a given Segment API token.
 export async function fetchWorkspaces(options: { token: string }): Promise<SegmentAPI.Workspace[]> {
-	const { workspaces } = (await apiGet(
-		'https://platform.segmentapis.com/v1beta/workspaces',
-		options.token
-	)) as SegmentAPI.ListWorkspacesResponse
+	const resp = (await apiGet('workspaces', options.token)) as SegmentAPI.ListWorkspacesResponse
 
-	return workspaces.map(w => ({
+	return resp.workspaces.map(w => ({
 		...w,
 		// eslint-disable-next-line @typescript-eslint/camelcase
 		create_time: new Date(w.create_time),
@@ -135,7 +129,7 @@ export async function validateToken(token: string | undefined): Promise<TokenVal
 			const workspaces = await fetchWorkspaces({ token })
 			result.isValid = workspaces.length > 0
 			result.workspace = workspaces.length === 1 ? workspaces[0] : undefined
-		} catch {
+		} catch (err) {
 			// If this request failed, then this token is not valid.
 		}
 		tokenValidationCache[token] = result
@@ -145,17 +139,19 @@ export async function validateToken(token: string | undefined): Promise<TokenVal
 }
 
 async function apiGet(url: string, token: string): Promise<object> {
-	return fetch(url, {
-		method: 'get',
+	const resp = got(url, {
+		baseUrl: 'https://platform.segmentapis.com/v1beta',
 		headers: {
-			'Content-Type': 'application/json',
+			'User-Agent': `Segment (typewriter/${version})`,
 			Authorization: `Bearer ${token.trim()}`,
 		},
-	}).then(res => {
-		if (res.ok) {
-			return res.json()
-		} else {
-			throw new Error(`Error issuing GET to Segment API (${url}): ${res.status} ${res.statusText}`)
-		}
+		json: true,
+		timeout: 5000, // ms
 	})
+
+	try {
+		return (await resp).body
+	} catch (err) {
+		throw err
+	}
 }

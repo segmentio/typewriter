@@ -54,7 +54,45 @@ options:(nullable SERIALIZABLE_DICT)options;
 
 + (void)eventCollidedWithOptions:(nullable SERIALIZABLE_DICT)options;
 
-+ (void)everyNullableOptionalTypeWithOptionalNumber:(nullable NSNumber *)optionalNumber
++ (void)everyNullableOptionalTypeWithOptionalString:(nullable NSString *)optionalString
+optionalStringWithRegex:(nullable NSString *)optionalStringWithRegex
+optionalAny:(nullable id)optionalAny
+optionalArray:(nullable NSArray<id> *)optionalArray
+optionalBoolean:(nullable BOOL *)optionalBoolean
+optionalInt:(nullable NSInteger *)optionalInt
+optionalNumber:(nullable NSNumber *)optionalNumber
+optionalObject:(nullable SERIALIZABLE_DICT)optionalObject;
+
++ (void)everyNullableOptionalTypeWithOptionalString:(nullable NSString *)optionalString
+optionalStringWithRegex:(nullable NSString *)optionalStringWithRegex
+optionalAny:(nullable id)optionalAny
+optionalArray:(nullable NSArray<id> *)optionalArray
+optionalBoolean:(nullable BOOL *)optionalBoolean
+optionalInt:(nullable NSInteger *)optionalInt
+optionalNumber:(nullable NSNumber *)optionalNumber
+optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
+options:(nullable SERIALIZABLE_DICT)options;
+
++ (void)everyNullableRequiredTypeWithRequiredBoolean:(nullable BOOL *)requiredBoolean
+requiredInt:(nullable NSInteger *)requiredInt
+requiredNumber:(nullable NSNumber *)requiredNumber
+requiredObject:(nullable SERIALIZABLE_DICT)requiredObject
+requiredString:(nullable NSString *)requiredString
+requiredStringWithRegex:(nullable NSString *)requiredStringWithRegex
+requiredAny:(nullable id)requiredAny
+requiredArray:(nullable NSArray<id> *)requiredArray;
+
++ (void)everyNullableRequiredTypeWithRequiredBoolean:(nullable BOOL *)requiredBoolean
+requiredInt:(nullable NSInteger *)requiredInt
+requiredNumber:(nullable NSNumber *)requiredNumber
+requiredObject:(nullable SERIALIZABLE_DICT)requiredObject
+requiredString:(nullable NSString *)requiredString
+requiredStringWithRegex:(nullable NSString *)requiredStringWithRegex
+requiredAny:(nullable id)requiredAny
+requiredArray:(nullable NSArray<id> *)requiredArray
+options:(nullable SERIALIZABLE_DICT)options;
+
++ (void)everyOptionalTypeWithOptionalNumber:(nullable NSNumber *)optionalNumber
 optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
 optionalString:(nullable NSString *)optionalString
 optionalStringWithRegex:(nullable NSString *)optionalStringWithRegex
@@ -63,7 +101,7 @@ optionalArray:(nullable NSArray<id> *)optionalArray
 optionalBoolean:(nullable BOOL *)optionalBoolean
 optionalInt:(nullable NSInteger *)optionalInt;
 
-+ (void)everyNullableOptionalTypeWithOptionalNumber:(nullable NSNumber *)optionalNumber
++ (void)everyOptionalTypeWithOptionalNumber:(nullable NSNumber *)optionalNumber
 optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
 optionalString:(nullable NSString *)optionalString
 optionalStringWithRegex:(nullable NSString *)optionalStringWithRegex
@@ -73,61 +111,23 @@ optionalBoolean:(nullable BOOL *)optionalBoolean
 optionalInt:(nullable NSInteger *)optionalInt
 options:(nullable SERIALIZABLE_DICT)options;
 
-+ (void)everyNullableRequiredTypeWithRequiredArray:(nullable NSArray<id> *)requiredArray
-requiredBoolean:(nullable BOOL *)requiredBoolean
-requiredInt:(nullable NSInteger *)requiredInt
-requiredNumber:(nullable NSNumber *)requiredNumber
-requiredObject:(nullable SERIALIZABLE_DICT)requiredObject
-requiredString:(nullable NSString *)requiredString
-requiredStringWithRegex:(nullable NSString *)requiredStringWithRegex
-requiredAny:(nullable id)requiredAny;
-
-+ (void)everyNullableRequiredTypeWithRequiredArray:(nullable NSArray<id> *)requiredArray
-requiredBoolean:(nullable BOOL *)requiredBoolean
-requiredInt:(nullable NSInteger *)requiredInt
-requiredNumber:(nullable NSNumber *)requiredNumber
-requiredObject:(nullable SERIALIZABLE_DICT)requiredObject
-requiredString:(nullable NSString *)requiredString
-requiredStringWithRegex:(nullable NSString *)requiredStringWithRegex
++ (void)everyRequiredTypeWithRequiredString:(nonnull NSString *)requiredString
+requiredStringWithRegex:(nonnull NSString *)requiredStringWithRegex
 requiredAny:(nullable id)requiredAny
-options:(nullable SERIALIZABLE_DICT)options;
+requiredArray:(nonnull NSArray<id> *)requiredArray
+requiredBoolean:(BOOL)requiredBoolean
+requiredInt:(NSInteger)requiredInt
+requiredNumber:(nonnull NSNumber *)requiredNumber
+requiredObject:(nonnull SERIALIZABLE_DICT)requiredObject;
 
-+ (void)everyOptionalTypeWithOptionalStringWithRegex:(nullable NSString *)optionalStringWithRegex
-optionalAny:(nullable id)optionalAny
-optionalArray:(nullable NSArray<id> *)optionalArray
-optionalBoolean:(nullable BOOL *)optionalBoolean
-optionalInt:(nullable NSInteger *)optionalInt
-optionalNumber:(nullable NSNumber *)optionalNumber
-optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
-optionalString:(nullable NSString *)optionalString;
-
-+ (void)everyOptionalTypeWithOptionalStringWithRegex:(nullable NSString *)optionalStringWithRegex
-optionalAny:(nullable id)optionalAny
-optionalArray:(nullable NSArray<id> *)optionalArray
-optionalBoolean:(nullable BOOL *)optionalBoolean
-optionalInt:(nullable NSInteger *)optionalInt
-optionalNumber:(nullable NSNumber *)optionalNumber
-optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
-optionalString:(nullable NSString *)optionalString
-options:(nullable SERIALIZABLE_DICT)options;
-
-+ (void)everyRequiredTypeWithRequiredArray:(nonnull NSArray<id> *)requiredArray
++ (void)everyRequiredTypeWithRequiredString:(nonnull NSString *)requiredString
+requiredStringWithRegex:(nonnull NSString *)requiredStringWithRegex
+requiredAny:(nullable id)requiredAny
+requiredArray:(nonnull NSArray<id> *)requiredArray
 requiredBoolean:(BOOL)requiredBoolean
 requiredInt:(NSInteger)requiredInt
 requiredNumber:(nonnull NSNumber *)requiredNumber
 requiredObject:(nonnull SERIALIZABLE_DICT)requiredObject
-requiredString:(nonnull NSString *)requiredString
-requiredStringWithRegex:(nonnull NSString *)requiredStringWithRegex
-requiredAny:(nullable id)requiredAny;
-
-+ (void)everyRequiredTypeWithRequiredArray:(nonnull NSArray<id> *)requiredArray
-requiredBoolean:(BOOL)requiredBoolean
-requiredInt:(NSInteger)requiredInt
-requiredNumber:(nonnull NSNumber *)requiredNumber
-requiredObject:(nonnull SERIALIZABLE_DICT)requiredObject
-requiredString:(nonnull NSString *)requiredString
-requiredStringWithRegex:(nonnull NSString *)requiredStringWithRegex
-requiredAny:(nullable id)requiredAny
 options:(nullable SERIALIZABLE_DICT)options;
 
 + (void)nestedArraysWithUniverseCharacters:(nonnull NSArray<NSArray<SEGUniverseCharactersItemItem *> *> *)universeCharacters;
@@ -162,21 +162,21 @@ options:(nullable SERIALIZABLE_DICT)options;
 + (void)propertySanitizedWithI0000TerriblePropertyName3:(nonnull NSString *)I0000TerriblePropertyName3
 options:(nullable SERIALIZABLE_DICT)options;
 
-+ (void)simpleArrayTypesWithObject:(nullable NSArray<SEGObjectItem *> *)object
-string:(nullable NSArray<NSString *> *)string
-any:(nullable NSArray<id> *)any
-boolean:(nullable NSArray<NSNumber *> *)boolean
-integer:(nullable NSArray<NSNumber *> *)integer
-nullable_:(nullable NSArray<NSString *> *)nullable_
-number:(nullable NSArray<NSNumber *> *)number;
-
-+ (void)simpleArrayTypesWithObject:(nullable NSArray<SEGObjectItem *> *)object
-string:(nullable NSArray<NSString *> *)string
-any:(nullable NSArray<id> *)any
++ (void)simpleArrayTypesWithAny:(nullable NSArray<id> *)any
 boolean:(nullable NSArray<NSNumber *> *)boolean
 integer:(nullable NSArray<NSNumber *> *)integer
 nullable_:(nullable NSArray<NSString *> *)nullable_
 number:(nullable NSArray<NSNumber *> *)number
+object:(nullable NSArray<SEGObjectItem *> *)object
+string:(nullable NSArray<NSString *> *)string;
+
++ (void)simpleArrayTypesWithAny:(nullable NSArray<id> *)any
+boolean:(nullable NSArray<NSNumber *> *)boolean
+integer:(nullable NSArray<NSNumber *> *)integer
+nullable_:(nullable NSArray<NSString *> *)nullable_
+number:(nullable NSArray<NSNumber *> *)number
+object:(nullable NSArray<SEGObjectItem *> *)object
+string:(nullable NSArray<NSString *> *)string
 options:(nullable SERIALIZABLE_DICT)options;
 
 + (void)unionTypeWithUniverseName:(nullable id)universeName;
