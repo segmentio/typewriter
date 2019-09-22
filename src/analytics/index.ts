@@ -326,7 +326,7 @@ export function commandRun(
 					},
 					token_method: {
 						description: 'Where the API token was fetched from.',
-						pattern: 'tokenCommand|env|file',
+						enum: ['file', 'script'],
 						type: 'string',
 					},
 					tracking_plan: {
@@ -424,7 +424,7 @@ export function errorFired(
 					},
 					token_method: {
 						description: 'Where the API token was fetched from.',
-						pattern: 'tokenCommand|env|file',
+						enum: ['file', 'script'],
 						type: 'string',
 					},
 					tracking_plan: {

@@ -43,7 +43,7 @@
                 },
                 "token_method": {
                   "description": "Where the API token was fetched from.",
-                  "pattern": "tokenCommand|env|file",
+                  "enum": ["file", "script"],
                   "type": "string"
                 },
                 "tracking_plan": {
@@ -115,7 +115,7 @@
                 },
                 "token_method": {
                   "description": "Where the API token was fetched from.",
-                  "pattern": "tokenCommand|env|file",
+                  "enum": ["file", "script"],
                   "type": "string"
                 },
                 "tracking_plan": {
@@ -152,5 +152,5 @@
     "group_traits": [],
     "identify_traits": []
   },
-  "update_time": "2019-09-22T02:43:32.000Z"
+  "update_time": "2019-09-22T21:08:39.000Z"
 }

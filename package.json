@@ -11,7 +11,7 @@
   "bin": "./dist/src/cli/index.js",
   "scripts": {
     "dev": "TS_NODE_FILES=true IS_DEVELOPMENT=true ts-node ./src/cli",
-    "build": "rm -rf dist && tsc && copyfiles --up 1 \"src/**/*.hbs\" dist/src/",
+    "build": "rm -rf dist && yarn dev prod && tsc && copyfiles --up 1 \"src/**/*.hbs\" dist/src/",
     "test": "jest --testPathIgnorePatterns 'tests/e2e/.*' 'example'",
     "e2e": "make e2e",
     "update": "make update",
