@@ -7,6 +7,7 @@ import * as childProcess from 'child_process'
 import { homedir } from 'os'
 import { Config, validateConfig } from './schema'
 import { validateToken, SegmentAPI } from '../api'
+import { wrapError } from '../commands/error'
 
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
@@ -22,15 +23,27 @@ export const CONFIG_NAME = 'typewriter.yml'
 // Note: path is relative to the directory where the typewriter command
 // was run.
 export async function getConfig(path = './'): Promise<Config | undefined> {
-	// Check if typewriter.yml exists
+	// Check if a typewriter.yml exists.
 	const configPath = await getPath(path)
 	if (!(await exists(configPath))) {
 		return undefined
 	}
 
-	const file = await readFile(configPath, {
-		encoding: 'utf-8',
-	})
+	// If so, read it's contents.
+	let file
+	try {
+		file = await readFile(configPath, {
+			encoding: 'utf-8',
+		})
+	} catch (err) {
+		throw wrapError(
+			'Unable to open typewriter.yml',
+			err as Error,
+			`Failed due to an ${err.code} error (${err.errno}).`,
+			configPath
+		)
+	}
+
 	const rawConfig = yaml.safeLoad(file)
 
 	return validateConfig(rawConfig)

@@ -3,18 +3,30 @@ import { Box, Color } from 'ink'
 import { version as typewriterVersion } from '../../../package.json'
 import latest from 'latest-version'
 
-export const Version: React.FC = () => {
+interface VersionProps {
+	logError: (log: any) => void
+}
+
+export const Version: React.FC<VersionProps> = ({ logError }) => {
 	const [isLoading, setIsLoading] = useState(true)
 	const [latestVersion, setLatestVersion] = useState('')
 
 	useEffect(() => {
-		latest('typewriter', { version: 'next' }).then(latestVersion => {
-			setLatestVersion(latestVersion)
+		async function effect() {
+			try {
+				const latestVersion = await latest('typewriter', { version: 'next' })
+				setLatestVersion(latestVersion)
+			} catch (err) {
+				// If we can't access NPM, then ignore this check.
+				logError(err)
+			}
 			setIsLoading(false)
-		})
+		}
+
+		effect()
 	}, [])
 
-	const isLatest = isLoading || latestVersion === typewriterVersion
+	const isLatest = isLoading || latestVersion === '' || latestVersion === typewriterVersion
 	const newVersionText = isLoading
 		? '(checking for newer versions...)'
 		: !isLatest

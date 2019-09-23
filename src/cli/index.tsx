@@ -1,13 +1,15 @@
 #!/usr/bin/env node
 import React from 'react'
 import { render } from 'ink'
-import { Token, Version, Build, Help, Init } from './commands'
+import { Token, Version, Build, Help, Init, ErrorComponent } from './commands'
 import { reportAnalytics } from './reportAnalytics'
 import { Config } from './config'
 
 interface StandardProps {
 	configPath: string
 	config?: Config
+	/** Helper for logging error messages when in Ink debug mode. Otherwise, errors are ignored. */
+	logError: (log: any) => void
 }
 
 export interface CLIArguments {
@@ -46,13 +48,13 @@ function toYargsHandler<P = {}>(
 			throw new Error(`Unknown command: '${args._[0]}'`)
 		}
 
-		// reportAnalytics will report analytics to Segment, while handling any errors thrown by the command.
-		await reportAnalytics(args, async (config: Config | undefined) => {
+		const logError = (log: any) => (args.debug ? console.trace(log) : null)
+		const f = async (config: Config | undefined) => {
 			let component: JSX.Element
 			if (!!args.version || !!args.v || Command.displayName === Version.displayName) {
 				// We override the --version flag from yargs with our own output. If it was supplied, print
 				// the `version` component instead.
-				component = <Version />
+				component = <Version logError={logError} />
 			} else if (
 				!!args.help ||
 				!!args.h ||
@@ -63,17 +65,24 @@ function toYargsHandler<P = {}>(
 				component = <Help config={config} />
 			} else {
 				// Otherwise, render this command's component.
-				component = <Command configPath={args.config} config={config} {...props} />
+				component = (
+					<Command configPath={args.config} config={config} logError={logError} {...props} />
+				)
 			}
 
-			const { waitUntilExit } = render(component, {
-				debug: !!args.debug,
-				// @ts-ignore
-				// experimental: true
-			})
-
+			const { waitUntilExit } = render(component, { debug: !!args.debug })
 			await waitUntilExit()
-		})
+		}
+
+		try {
+			// reportAnalytics will execute f() and report analytics to Segment.
+			await reportAnalytics(args, f)
+		} catch (err) {
+			const { waitUntilExit } = render(<ErrorComponent error={err} logError={logError} />, {
+				debug: !!args.debug,
+			})
+			await waitUntilExit()
+		}
 	}
 }
 

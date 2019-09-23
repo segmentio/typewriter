@@ -23,38 +23,14 @@ export async function loadTrackingPlan(
 ): Promise<SegmentAPI.TrackingPlan> {
 	const path = resolveRelativePath(configPath, config.path, TRACKING_PLAN_FILENAME)
 
-	try {
-		// Load the Tracking Plan from the local cache.
-		const plan = JSON.parse(
-			await readFile(path, {
-				encoding: 'utf-8',
-			})
-		) as SegmentAPI.TrackingPlan
-
-		return await sanitizeTrackingPlan(plan)
-	} catch {
-		// If the Tracking Plan hasn't been cached locally, fetch the tracking plan and cache it.
-		const cfg = await getConfig(configPath)
-
-		if (!cfg) {
-			throw new Error('Unable to find typewriter.yml. Try `typewriter init`')
-		}
-
-		const token = await getToken(cfg)
-		if (!token) {
-			throw new Error('Unable to find a Segment API token.')
-		}
-
-		const plan = await fetchTrackingPlan({
-			id: config.id,
-			workspaceSlug: config.workspaceSlug,
-			token,
+	// Load the Tracking Plan from the local cache.
+	const plan = JSON.parse(
+		await readFile(path, {
+			encoding: 'utf-8',
 		})
+	) as SegmentAPI.TrackingPlan
 
-		await writeTrackingPlan(configPath, plan, config)
-
-		return await sanitizeTrackingPlan(plan)
-	}
+	return await sanitizeTrackingPlan(plan)
 }
 
 export async function writeTrackingPlan(

@@ -234,10 +234,10 @@ async function filterDirectories(path: string): Promise<string[]> {
 			.filter(f => normalize(f).startsWith(normalize(path).replace(/^\.\/?/, '')))
 	}
 
+	const isPathEmpty = ['', '.', './'].includes(path)
 	const directories = new Set()
 
 	// First look for all directories in the same directory as the current query path.
-	const isPathEmpty = ['', '.', './'].includes(path)
 	const parentPath = join(path, isPathEmpty || path.endsWith('/') ? '.' : '..')
 	const parentDirectories = await listDirectories(parentPath)
 	parentDirectories.forEach(f => directories.add(f))
@@ -245,7 +245,8 @@ async function filterDirectories(path: string): Promise<string[]> {
 	const queryPath = join(parentPath, path)
 	// Next, if the current query IS a directory, then we want to prioritize results from inside that directory.
 	if (directories.has(queryPath)) {
-		;(await listDirectories(queryPath)).forEach(f => directories.add(f))
+		const queryDirectories = await listDirectories(queryPath)
+		queryDirectories.forEach(f => directories.add(f))
 	}
 
 	// Otherwise, show results from inside any other directories at the level of the current query path.
@@ -254,7 +255,8 @@ async function filterDirectories(path: string): Promise<string[]> {
 			break
 		}
 
-		;(await listDirectories(dirPath)).forEach(f => directories.add(f))
+		const otherDirectories = await listDirectories(dirPath)
+		otherDirectories.forEach(f => directories.add(f))
 	}
 
 	// Now sort these directories by the query path.
@@ -292,9 +294,7 @@ const PathPrompt: React.FC<PathPromptProps> = ({ step, path: initialPath, onSubm
 	}
 
 	const isNewDirectory =
-		path.length > 0 &&
-		!['.', './'].includes(normalize(path)) &&
-		!directories.includes(normalize(path))
+		!['', '.', './'].includes(normalize(path)) && !directories.includes(normalize(path))
 	const directoryRows: (string | JSX.Element)[] = isNewDirectory
 		? [
 				<Text key="new-directory">
@@ -343,6 +343,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, onSubmit 
 			const token = method === tokens.script.method ? tokens.script : tokens.file
 
 			setToken(token.token || '')
+			setIsInvalid(false)
 			if (token.workspace) {
 				setWorkspace(token.workspace)
 			}
@@ -350,14 +351,9 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, onSubmit 
 			setIsLoading(false)
 			// If the user already has a typewriter.yml with a valid token,
 			// then let the user know that they can't overwrite it.
-			setCanBeSet(method !== tokens.script.method)
+			setCanBeSet(method === 'file')
 		})()
 	}, [])
-
-	// Helper to clear the invalid state every time the token changes.
-	useEffect(() => {
-		setIsInvalid(false)
-	}, [token])
 
 	// Fired after a user enters a token.
 	const onConfirm = async () => {
@@ -381,6 +377,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, onSubmit 
 			// Clear the selected token so they can enter their own.
 			setFoundCachedToken(false)
 			setToken('')
+			setIsInvalid(false)
 		} else {
 			// Otherwise submit this token.
 			await onConfirm()

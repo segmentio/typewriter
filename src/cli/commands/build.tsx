@@ -48,6 +48,7 @@ export const Build: React.FC<Props> = props => {
 	useEffect(() => {
 		;(async () => {
 			// TODO: multiple tracking plans
+			// TODO: replace this generator with split-up components, similar to Init.
 			const progress = run(props.configPath, props.config!, props.config!.trackingPlans[0], {
 				production: props.production,
 				update: props.update,
