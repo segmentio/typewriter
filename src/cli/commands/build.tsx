@@ -16,7 +16,6 @@ import {
 	fetchTrackingPlan,
 	loadTrackingPlan,
 	writeTrackingPlan,
-	SegmentAPI,
 	TRACKING_PLAN_FILENAME,
 	computeDelta,
 } from '../api'
