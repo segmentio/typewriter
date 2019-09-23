@@ -11,9 +11,9 @@ import figures from 'figures'
 import * as fs from 'fs'
 import { promisify } from 'util'
 import { join, normalize } from 'path'
-import { get as stringDistance } from 'fast-levenshtein'
 import { orderBy } from 'lodash'
 import { Build } from './build'
+import Fuse from 'fuse.js'
 
 const readir = promisify(fs.readdir)
 
@@ -29,7 +29,10 @@ export const Init: React.FC<Props> = ({ configPath, config }) => {
 	const [sdk, setSDK] = useState(SDK.WEB)
 	const [language, setLanguage] = useState(Language.JAVASCRIPT)
 	const [path, setPath] = useState('')
-	const [token, setToken] = useState('')
+	const [tokenMetadata, setTokenMetadata] = useState({
+		token: '',
+		workspace: undefined as SegmentAPI.Workspace | undefined,
+	})
 	const [trackingPlan, setTrackingPlan] = useState<SegmentAPI.TrackingPlan>()
 
 	const onNext = () => [setStep(step + 1)]
@@ -45,28 +48,45 @@ export const Init: React.FC<Props> = ({ configPath, config }) => {
 	}
 
 	return (
-		<Box marginLeft={2} marginRight={2} marginTop={1} marginBottom={1}>
-			{/* <Header/> */}
+		<Box
+			minHeight={20}
+			marginLeft={2}
+			marginRight={2}
+			marginTop={1}
+			marginBottom={1}
+			flexDirection="column"
+		>
+			<Header />
 			{step === 0 && <ConfirmationPrompt onSubmit={onNext} />}
-			{step === 1 && <SDKPrompt sdk={sdk} onSubmit={withNextStep(setSDK)} />}
+			{step === 1 && <SDKPrompt step={step} sdk={sdk} onSubmit={withNextStep(setSDK)} />}
 			{step === 2 && (
-				<LanguagePrompt sdk={sdk} language={language} onSubmit={withNextStep(setLanguage)} />
+				<LanguagePrompt
+					step={step}
+					sdk={sdk}
+					language={language}
+					onSubmit={withNextStep(setLanguage)}
+				/>
 			)}
-			{step === 3 && <PathPrompt path={path} onSubmit={withNextStep(setPath)} />}
-			{step === 4 && <APITokenPrompt config={config} onSubmit={withNextStep(setToken)} />}
-			{step === 5 && (
+			{step === 3 && (
+				<APITokenPrompt step={step} config={config} onSubmit={withNextStep(setTokenMetadata)} />
+			)}
+			{step === 4 && (
 				<TrackingPlanPrompt
-					path={path}
-					token={token}
+					step={step}
+					token={tokenMetadata.token}
 					trackingPlan={trackingPlan}
 					onSubmit={withNextStep(setTrackingPlan)}
 				/>
 			)}
+			{step === 5 && <PathPrompt step={step} path={path} onSubmit={withNextStep(setPath)} />}
 			{step === 6 && (
 				<SummaryPrompt
+					step={step}
 					sdk={sdk}
 					language={language}
 					path={path}
+					token={tokenMetadata.token}
+					workspace={tokenMetadata.workspace!}
 					trackingPlan={trackingPlan!}
 					onConfirm={onNext}
 					onRestart={onRestart}
@@ -83,7 +103,7 @@ export const Init: React.FC<Props> = ({ configPath, config }) => {
 const Header: React.FC = () => {
 	return (
 		<Box flexDirection="column">
-			<Box textWrap="wrap" marginBottom={10}>
+			<Box width={80} textWrap="wrap" marginBottom={4}>
 				<Color white>
 					Typewriter is a tool for generating strongly-typed{' '}
 					<Link url="https://segment.com">Segment</Link> analytics libraries from a{' '}
@@ -111,24 +131,23 @@ interface ConfirmationPromptProps {
 const ConfirmationPrompt: React.FC<ConfirmationPromptProps> = ({ text, onSubmit }) => {
 	const items = [{ label: 'Ok!', value: 'ok' }]
 
+	const tips = ['Hit return to continue.']
+
 	return (
-		<Box flexDirection="column">
-			<Color white>{text || 'Ready?'}</Color>
-			<Color grey>Tip: Hit return to continue.</Color>
-			<Box marginTop={1}>
-				<SelectInput items={items} onSelect={onSubmit} />
-			</Box>
-		</Box>
+		<Step name={text || 'Ready'} question={true} tips={tips}>
+			<SelectInput items={items} onSelect={onSubmit} />
+		</Step>
 	)
 }
 
 interface SDKPromptProps {
+	step: number
 	sdk: SDK
 	onSubmit: (sdk: SDK) => void
 }
 
 /** A prompt to identify which Segment SDK a user wants to use. */
-const SDKPrompt: React.FC<SDKPromptProps> = ({ sdk, onSubmit }) => {
+const SDKPrompt: React.FC<SDKPromptProps> = ({ step, sdk, onSubmit }) => {
 	const items: Item[] = [
 		{ label: 'Web (analytics.js)', value: SDK.WEB },
 		{ label: 'Node.js (analytics-node)', value: SDK.NODE },
@@ -140,32 +159,31 @@ const SDKPrompt: React.FC<SDKPromptProps> = ({ sdk, onSubmit }) => {
 		onSubmit(item.value as SDK)
 	}
 
+	const tips = [
+		'Use your arrow keys to select.',
+		'Typewriter clients are strongly-typed wrappers around a Segment analytics SDK.',
+		<Text key="sdk-docs">
+			To learn more about {"Segment's"} SDKs, see the{' '}
+			<Link url="https://segment.com/docs/sources">documentation</Link>.
+		</Text>,
+	]
+
 	return (
-		<Box flexDirection="column">
-			<Color white>What analytics library are you using?</Color>
-			<Color grey>Tip: Use your arrow keys to select an SDK.</Color>
-			<Color grey>
-				Tip: Typewriter clients are strongly-typed wrappers around a Segment analytics SDK.
-			</Color>
-			<Color grey>
-				Tip: To learn more about {"Segment's"} SDKs, see the{' '}
-				<Link url="https://segment.com/docs/sources">documentation</Link>.
-			</Color>
-			<Box marginTop={1}>
-				<SelectInput items={items} initialIndex={initialIndex} onSelect={onSelect} />
-			</Box>
-		</Box>
+		<Step name="Choose a SDK" step={step} tips={tips}>
+			<SelectInput items={items} initialIndex={initialIndex} onSelect={onSelect} />
+		</Step>
 	)
 }
 
 interface LanguagePromptProps {
+	step: number
 	sdk: SDK
 	language: Language
 	onSubmit: (language: Language) => void
 }
 
 /** A prompt to identify which Segment programming language a user wants to use. */
-const LanguagePrompt: React.FC<LanguagePromptProps> = ({ sdk, language, onSubmit }) => {
+const LanguagePrompt: React.FC<LanguagePromptProps> = ({ step, sdk, language, onSubmit }) => {
 	const items: Item[] = [
 		{ label: 'JavaScript', value: Language.JAVASCRIPT },
 		{ label: 'TypeScript', value: Language.TYPESCRIPT },
@@ -188,16 +206,14 @@ const LanguagePrompt: React.FC<LanguagePromptProps> = ({ sdk, language, onSubmit
 	}
 
 	return (
-		<Box flexDirection="column">
-			<Color white>What programming language are you using?</Color>
-			<Box marginTop={1}>
-				<SelectInput items={items} initialIndex={initialIndex} onSelect={onSelect} />
-			</Box>
-		</Box>
+		<Step name="Choose a language" step={step}>
+			<SelectInput items={items} initialIndex={initialIndex} onSelect={onSelect} />
+		</Step>
 	)
 }
 
 interface PathPromptProps {
+	step: number
 	path: string
 	onSubmit: (path: string) => void
 }
@@ -209,8 +225,11 @@ async function filterDirectories(path: string): Promise<string[]> {
 		const files = await readir(path, {
 			withFileTypes: true,
 		})
+		const directoryBlocklist = ['node_modules']
 		return files
-			.filter(f => f.isDirectory() && !f.name.startsWith('.'))
+			.filter(f => f.isDirectory())
+			.filter(f => !f.name.startsWith('.'))
+			.filter(f => !directoryBlocklist.some(b => f.name.startsWith(b)))
 			.map(f => join(path, f.name))
 			.filter(f => normalize(f).startsWith(normalize(path).replace(/^\.\/?/, '')))
 	}
@@ -218,7 +237,8 @@ async function filterDirectories(path: string): Promise<string[]> {
 	const directories = new Set()
 
 	// First look for all directories in the same directory as the current query path.
-	const parentPath = join(path, ['', '.', './'].includes(path) || path.endsWith('/') ? '.' : '..')
+	const isPathEmpty = ['', '.', './'].includes(path)
+	const parentPath = join(path, isPathEmpty || path.endsWith('/') ? '.' : '..')
 	const parentDirectories = await listDirectories(parentPath)
 	parentDirectories.forEach(f => directories.add(f))
 
@@ -238,20 +258,14 @@ async function filterDirectories(path: string): Promise<string[]> {
 	}
 
 	// Now sort these directories by the query path.
-	return [...directories].sort((a, b) => {
-		const distDelta = stringDistance(a, path) - stringDistance(b, path)
-		if (distDelta !== 0) {
-			return distDelta
-		}
-		// Fall back on showing "closer" paths.
-		return a.split('/').length - b.split('/').length
-	})
+	var fuse = new Fuse([...directories].map(d => ({ name: d })), { keys: ['name'] })
+	return isPathEmpty ? [...directories] : fuse.search(path).map(d => d.name)
 }
 
 /** A prompt to identify where to store the new client on the user's filesystem. */
-const PathPrompt: React.FC<PathPromptProps> = ({ path: initialPath, onSubmit }) => {
+const PathPrompt: React.FC<PathPromptProps> = ({ step, path: initialPath, onSubmit }) => {
 	const [path, setPath] = useState(initialPath)
-	const [directories, setDirectories] = useState<string[] | undefined>()
+	const [directories, setDirectories] = useState<string[]>([])
 
 	// Fetch a list of directories, filtering by the supplied path.
 	useEffect(() => {
@@ -259,62 +273,65 @@ const PathPrompt: React.FC<PathPromptProps> = ({ path: initialPath, onSubmit }) 
 			let directories: string[] = []
 			try {
 				directories = await filterDirectories(path)
-			} catch {}
+			} catch (err) {
+				console.error(err)
+			}
 
 			setDirectories(directories)
 		})()
 	}, [path])
 
-	const onChange = (newPath: string) => {
-		setPath(newPath)
+	const tips = [
+		'The generated client will be stored in this directory.',
+		'Start typing to filter existing directories. Hit return to submit.',
+		'Directories will be automatically created, if needed.',
+	]
+
+	const onSubmitPath = () => {
+		onSubmit(normalize(path))
 	}
 
+	const isNewDirectory =
+		path.length > 0 &&
+		!['.', './'].includes(normalize(path)) &&
+		!directories.includes(normalize(path))
+	const directoryRows: (string | JSX.Element)[] = isNewDirectory
+		? [
+				<Text key="new-directory">
+					{path} <Color blue>(new)</Color>
+				</Text>,
+		  ]
+		: []
+	directoryRows.push(...directories.slice(0, 10 - directoryRows.length))
+
 	return (
-		<Box flexDirection="column">
-			<Color white>Which directory should the Typewriter client be stored in?</Color>
-			<Box flexDirection="column" marginLeft={1}>
-				<Color grey>
-					{figures.arrowRight} Start typing to filter existing directories. Hit return to submit.
-				</Color>
-				<Color grey>
-					{figures.arrowRight} Directories will be automatically created, if needed.
-				</Color>
+		<Step name="Enter a directory" step={step} tips={tips}>
+			<Box>
+				<Text>{figures.pointer}</Text>{' '}
+				<TextInput value={path} showCursor={true} onChange={setPath} onSubmit={onSubmitPath} />
 			</Box>
-			<Box flexDirection="column" marginLeft={1}>
-				<Box marginTop={1}>
-					<Text>{figures.pointer}</Text>{' '}
-					<TextInput value={path} showCursor={true} onChange={onChange} onSubmit={onSubmit} />
-				</Box>
-				<Box height={10} flexDirection="column">
-					{!directories && (
-						<Color grey>
-							<Spinner type="dots" /> Loading...
-						</Color>
-					)}
-					{directories && directories.length === 0 && <Color grey>Hit return to create</Color>}
-					{directories &&
-						directories.length > 0 &&
-						directories.slice(0, 10).map(d => (
-							<Color key={d} grey>
-								{d}
-							</Color>
-						))}
-				</Box>
+			<Box height={10} marginLeft={2} flexDirection="column">
+				{directoryRows.map((d, i) => (
+					<Color key={i} grey>
+						{d}
+					</Color>
+				))}
 			</Box>
-		</Box>
+		</Step>
 	)
 }
 
 interface APITokenPromptProps {
+	step: number
 	config?: Config
-	onSubmit: (token: string) => void
+	onSubmit: (tokenMetadata: { token: string; workspace: SegmentAPI.Workspace }) => void
 }
 
 /** A prompt to walk a user through getting a new Segment API token. */
-const APITokenPrompt: React.FC<APITokenPromptProps> = ({ config, onSubmit }) => {
+const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, onSubmit }) => {
 	const [token, setToken] = useState('')
 	const [canBeSet, setCanBeSet] = useState(true)
-	const [workspace, setWorkspace] = useState('')
+	const [workspace, setWorkspace] = useState<SegmentAPI.Workspace>()
 	const [isLoading, setIsLoading] = useState(true)
 	const [isInvalid, setIsInvalid] = useState(false)
 	const [foundCachedToken, setFoundCachedToken] = useState(false)
@@ -326,10 +343,10 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ config, onSubmit }) => 
 			const token = method === tokens.script.method ? tokens.script : tokens.file
 
 			setToken(token.token || '')
-			setFoundCachedToken(!!token.token)
 			if (token.workspace) {
-				setWorkspace(token.workspace.name)
+				setWorkspace(token.workspace)
 			}
+			setFoundCachedToken(!!token.token)
 			setIsLoading(false)
 			// If the user already has a typewriter.yml with a valid token,
 			// then let the user know that they can't overwrite it.
@@ -350,13 +367,12 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ config, onSubmit }) => 
 		const result = await validateToken(token)
 		if (result.isValid) {
 			await storeToken(token)
-			onSubmit(token)
+			onSubmit({ token, workspace: workspace! })
 		} else {
 			setToken('')
 			setIsInvalid(true)
+			setIsLoading(false)
 		}
-
-		setIsLoading(false)
 	}
 
 	// Fired if a user confirms a cached token.
@@ -367,90 +383,69 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ config, onSubmit }) => 
 			setToken('')
 		} else {
 			// Otherwise submit this token.
-			onConfirm()
+			await onConfirm()
 		}
 	}
 
+	const tips = [
+		'An API token is used to download Tracking Plans from Segment.',
+		<Text key="api-token-docs">
+			Documentation on generating an API token can be found{' '}
+			<Link url="https://segment.com/docs/protocols/typewriter/#api-token-configuration">here</Link>
+			.
+		</Text>,
+	]
+
+	if (foundCachedToken) {
+		tips.push(
+			<Color yellow>A cached token for {workspace!.name} is already in your environment.</Color>
+		)
+	}
+
 	return (
-		<Box flexDirection="column">
-			<Color white>Segment API token:</Color>
-			<Color grey>
-				{figures.arrowRight} An API token is used to download Tracking Plans from Segment.
-			</Color>
-			<Color grey>
-				{figures.arrowRight} Documentation on generating an API token can be found{' '}
-				<Link url="https://segment.com/docs/protocols/typewriter/#api-token-configuration">
-					here
-				</Link>
-				.
-			</Color>
-			{foundCachedToken && (
-				<Box textWrap="wrap" marginRight={2}>
-					<Color yellow>
-						{figures.arrowRight} A cached token for {workspace} is already in your environment.
-					</Color>
-				</Box>
+		<Step name="Enter a Segment API token" step={step} isLoading={isLoading} tips={tips}>
+			{/* We found a token from a typewriter.yml token script. To let the user change token
+			 * in this init command, we'd have to remove their token script. Instead, just tell
+			 * the user this and don't let them change their token. */}
+			{!canBeSet && <SelectInput items={[{ label: 'Ok!', value: 'ok' }]} onSelect={onConfirm} />}
+			{/* We found a token in a ~/.typewriter. Confirm that the user wants to use this token
+			 * before continuing. */}
+			{canBeSet && foundCachedToken && (
+				<SelectInput
+					items={[
+						{ label: 'Use this token', value: 'yes' },
+						{ label: 'No, provide a different token.', value: 'no' },
+					]}
+					onSelect={onConfirmCachedToken}
+				/>
 			)}
-			{!canBeSet && (
-				<Box textWrap="wrap" marginRight={2}>
-					<Color yellow>
-						{figures.arrowRight} A token script has already been configured in your typewriter.yml.
-					</Color>
-				</Box>
-			)}
-			<Box marginTop={1}>
-				<>
-					{/* Loading state */}
-					{isLoading && (
-						<Color grey>
-							<Spinner type="dots" /> Loading...
-						</Color>
-					)}
-					{/* We found a token from a typewriter.yml token script. To let the user change token
-					 * in this init command, we'd have to remove their token script. Instead, just tell
-					 * the user this and don't let them change their token. */}
-					{!isLoading && !canBeSet && (
-						<SelectInput items={[{ label: 'Ok!', value: 'ok' }]} onSelect={onConfirm} />
-					)}
-					{/* We found a token in a ~/.typewriter. Confirm that the user wants to use this token
-					 * before continuing. */}
-					{!isLoading && canBeSet && foundCachedToken && (
-						<SelectInput
-							items={[
-								{ label: 'Use this token', value: 'yes' },
-								{ label: 'No, provide a different token.', value: 'no' },
-							]}
-							onSelect={onConfirmCachedToken}
+			{/* We didn't find a token anywhere that they wanted to use, so just prompt the user for one. */}
+			{canBeSet && !foundCachedToken && (
+				<Box flexDirection="column">
+					<Box>
+						<Text>{figures.pointer}</Text>{' '}
+						<TextInput
+							value={token}
+							// See: https://github.com/vadimdemedes/ink-text-input/issues/41
+							showCursor={true}
+							onChange={setToken}
+							onSubmit={onConfirm}
+							mask="*"
 						/>
-					)}
-					{/* We didn't find a token anywhere that they wanted to use, so just prompt the user for one. */}
-					{!isLoading && canBeSet && !foundCachedToken && (
-						<Box flexDirection="column">
-							<Box>
-								<Text>{figures.pointer}</Text>{' '}
-								<TextInput
-									value={token}
-									showCursor={true}
-									onChange={setToken}
-									onSubmit={onConfirm}
-									mask="*"
-								/>
-							</Box>
-							{isInvalid && (
-								<Box textWrap="wrap" marginLeft={2}>
-									<Color red>{figures.cross} Invalid Segment API token.</Color>
-								</Box>
-							)}
+					</Box>
+					{isInvalid && (
+						<Box textWrap="wrap" marginLeft={2}>
+							<Color red>{figures.cross} Invalid Segment API token.</Color>
 						</Box>
 					)}
-				</>
-			</Box>
-		</Box>
+				</Box>
+			)}
+		</Step>
 	)
 }
 
 interface TrackingPlanPromptProps {
-	path: string
+	step: number
 	token: string
 	trackingPlan?: SegmentAPI.TrackingPlan
 	onSubmit: (trackingPlan: SegmentAPI.TrackingPlan) => void
@@ -459,14 +454,12 @@ interface TrackingPlanPromptProps {
 /** A prompt to identify which Segment Tracking Plan a user wants to use. */
 // Needs an empty state — allows users to create a Tracking Plan, then a reload button to refetch
 const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
-	path,
+	step,
 	token,
 	trackingPlan,
 	onSubmit,
 }) => {
 	const [trackingPlans, setTrackingPlans] = useState<SegmentAPI.TrackingPlan[]>([])
-	const trackingPlanPath = join(path, 'plan.json')
-
 	const [isLoading, setIsLoading] = useState(true)
 
 	// Load all Tracking Plans accessible by this API token.
@@ -494,32 +487,27 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
 	let initialIndex = choices.findIndex(c => !!trackingPlan && c.value === trackingPlan.name)
 	initialIndex = initialIndex === -1 ? 0 : initialIndex
 
+	const tips = [
+		'Typewriter will generate a client from this Tracking Plan.',
+		<Text key="plan-path">
+			This Tracking Plan is saved locally in a <Color yellow>plan.json</Color> file.
+		</Text>,
+	]
+
 	return (
-		<Box flexDirection="column">
-			<Color white>Tracking Plan:</Color>
-			<Color grey>
-				{figures.arrowRight} Typewriter will generate a client from this Tracking Plan.
-			</Color>
-			<Color grey>
-				{figures.arrowRight} This Tracking Plan will be copied to{' '}
-				<Color yellow>{trackingPlanPath}</Color>.
-			</Color>
-			<Box marginTop={1} flexDirection="column">
-				{isLoading && (
-					<Color grey>
-						<Spinner type="dots" /> Loading...
-					</Color>
-				)}
-				{!isLoading && <SelectInput items={choices} onSelect={onSelect} limit={10} />}
-			</Box>
-		</Box>
+		<Step name="Tracking Plan" tips={tips} step={step} isLoading={isLoading}>
+			<SelectInput items={choices} onSelect={onSelect} initialIndex={initialIndex} limit={10} />
+		</Step>
 	)
 }
 
 interface SummaryPromptProps {
+	step: number
 	sdk: SDK
 	language: Language
 	path: string
+	token: string
+	workspace: SegmentAPI.Workspace
 	trackingPlan: SegmentAPI.TrackingPlan
 	onConfirm: () => void
 	onRestart: () => void
@@ -527,9 +515,12 @@ interface SummaryPromptProps {
 
 /** A prompt to confirm all of the configured settings with the user. */
 const SummaryPrompt: React.FC<SummaryPromptProps> = ({
+	step,
 	sdk,
 	language,
 	path,
+	token,
+	workspace,
 	trackingPlan,
 	onConfirm,
 	onRestart,
@@ -544,7 +535,7 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 			let client = ({
 				sdk,
 				language,
-			} as any) as Options
+			} as unknown) as Options
 			// Default to ES5 syntax for analytics-node in JS, since node doesn't support things
 			// like ES6 modules. TypeScript transpiles for you, so we don't need it there.
 			// See https://node.green
@@ -574,51 +565,91 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 		}
 	}
 
+	const summaryRows = [
+		{ label: 'SDK', value: sdk },
+		{ label: 'Language', value: language },
+		{ label: 'Directory', value: path },
+		{ label: 'API Token', value: `${workspace.name} (${token.slice(0, 10)}...)` },
+		{
+			label: 'Tracking Plan',
+			value: (
+				<Link url={parseTrackingPlanName(trackingPlan.name).url}>{trackingPlan.display_name}</Link>
+			),
+		},
+	]
+
+	const summary = (
+		<Box flexDirection="column">
+			{summaryRows.map(r => (
+				<Box key={r.label}>
+					<Box width={20}>
+						<Color grey>{r.label}:</Color>
+					</Box>
+					<Color yellow>{r.value}</Color>
+				</Box>
+			))}
+		</Box>
+	)
+
+	return (
+		<Step name="Summary" step={step} description={summary} isLoading={isLoading}>
+			<SelectInput
+				items={[{ label: 'Looks good!', value: 'lgtm' }, { label: 'Edit', value: 'edit' }]}
+				onSelect={onSelect}
+			/>
+		</Step>
+	)
+}
+
+interface StepProps {
+	name: string
+	step?: number
+	question?: boolean
+	isLoading?: boolean
+	description?: JSX.Element
+	tips?: (string | JSX.Element)[]
+}
+
+const Step: React.FC<StepProps> = ({
+	step,
+	name,
+	isLoading = false,
+	question = false,
+	description,
+	tips,
+	children,
+}) => {
 	return (
 		<Box flexDirection="column">
-			<Color white>Summary:</Color>
-			<Box marginLeft={2} flexDirection="column">
+			<Box flexDirection="row" width={80} justifyContent="space-between">
 				<Box>
-					<Box width="40%">
-						<Color grey>SDK:</Color>
-					</Box>
-					<Color yellow>{sdk}</Color>
-				</Box>
-				<Box>
-					<Box width="40%">
-						<Color grey>Language;</Color>
-					</Box>
-					<Color yellow>{language}</Color>
-				</Box>
-				<Box>
-					<Box width="40%">
-						<Color grey>Client Path:</Color>
-					</Box>
-					<Color yellow>{path}</Color>
-				</Box>
-				<Box>
-					<Box width="40%">
-						<Color grey>Tracking Plan:</Color>
-					</Box>
-					<Color yellow>
-						<Link url={parseTrackingPlanName(trackingPlan.name).url}>
-							{trackingPlan.display_name}
-						</Link>
+					<Color white>
+						{name}
+						{question ? '?' : ':'}
 					</Color>
 				</Box>
+				{step && (
+					<Box>
+						<Color yellow>[{step}/6]</Color>
+					</Box>
+				)}
 			</Box>
-			<Box marginTop={1}>
-				{isLoading && (
-					<Color grey>
-						<Spinner type="dots" /> Loading...
-					</Color>
-				)}
-				{!isLoading && (
-					<SelectInput
-						items={[{ label: 'Looks good!', value: 'lgtm' }, { label: 'Edit', value: 'edit' }]}
-						onSelect={onSelect}
-					/>
-				)}
+			<Box marginLeft={1} flexDirection="column">
+				{tips &&
+					tips.map((t, i) => (
+						<Color grey key={i}>
+							{figures.arrowRight} {t}
+						</Color>
+					))}
+				{description}
+				<Box marginTop={1} flexDirection="column">
+					{isLoading && (
+						<Color grey>
+							<Spinner type="dots" /> Loading...
+						</Color>
+					)}
+					{!isLoading && children}
+				</Box>
 			</Box>
 		</Box>
 	)
