@@ -14,7 +14,7 @@
   NSDictionary<NSString *, id> *typewriterContext = @{
     @"typewriter": @{
       @"language": @"objective-c",
-      @"version": @"7.0.0-37"
+      @"version": @"7.0.0-38"
     }
   };
   NSMutableDictionary *context = [NSMutableDictionary dictionaryWithCapacity:customContext.count + typewriterContext.count];
