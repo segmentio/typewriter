@@ -6,14 +6,14 @@ XC_SWIFT_ARGS := -workspace TypewriterSwiftExample.xcworkspace -scheme Typewrite
 .PHONY: update
 update:
 	@yarn build
-	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js
-	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js --config=example
-	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js --config=tests/e2e/node-javascript
-	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js --config=tests/e2e/node-typescript
-	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js --config=tests/e2e/web-javascript
-	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js --config=tests/e2e/web-typescript
-	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js --config=tests/e2e/ios
-	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js --config=tests/e2e/ios-swift
+	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js prod
+	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js prod --config=example
+	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js prod --config=tests/e2e/node-javascript
+	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js prod --config=tests/e2e/node-typescript
+	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js prod --config=tests/e2e/web-javascript
+	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js prod --config=tests/e2e/web-typescript
+	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js prod --config=tests/e2e/ios
+	@IS_DEVELOPMENT=true node ./dist/src/cli/index.js prod --config=tests/e2e/ios-swift
 	@# Changes to the Tracking Plan JSON files will need to be run through our
 	@# linter again to reduce git deltas.
 	@git add -A && yarn lint-staged
