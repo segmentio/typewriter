@@ -63,16 +63,7 @@ export const Build: React.FC<Props> = props => {
 	return (
 		<Box marginBottom={1} marginTop={1} flexDirection="column">
 			{Object.entries(generatorState.steps).map(([k, step]) => {
-				return (
-					<Step
-						key={k}
-						step={step}
-						stepName={k}
-						trackingPlanConfig={props.config!.trackingPlans[0]}
-						production={props.production}
-						update={props.update}
-					/>
-				)
+				return <Step key={k} step={step} stepName={k} />
 			})}
 		</Box>
 	)
@@ -81,12 +72,9 @@ export const Build: React.FC<Props> = props => {
 interface StepProps {
 	stepName: string
 	step: StepState
-	production: boolean
-	update: boolean
-	trackingPlanConfig: TrackingPlanConfig
 }
 
-const Step: React.FC<StepProps> = props => {
+const Step: React.FC<StepProps> = ({ stepName, step }) => {
 	const stepDescriptions: Record<string, string> = {
 		clearFiles: 'Removing generated files',
 		loadPlan: 'Loading Tracking Plan',
@@ -94,25 +82,23 @@ const Step: React.FC<StepProps> = props => {
 		afterScript: 'Cleaning up',
 	}
 
+	if (step.skipping) {
+		return null
+	}
+
 	return (
 		<Box flexDirection="column">
 			{/* Print the description and running state of this step. */}
 			<Color white>
 				<Box width={3} justifyContent="center">
-					{props.step.running ? (
-						<Spinner type="dots" />
-					) : props.step.done ? (
-						<Color green> ✔</Color>
-					) : (
-						''
-					)}
+					{step.running ? <Spinner type="dots" /> : step.done ? <Color green> ✔</Color> : ''}
 				</Box>
 				<Box marginLeft={1} width={70}>
-					{stepDescriptions[props.stepName]}
+					{stepDescriptions[stepName]}
 				</Box>
 			</Color>
 			{/* Print any notes/warnings on this step. */}
-			{props.step.notes.map(note => (
+			{step.notes.map(note => (
 				<Color
 					grey={!note.type || note.type === 'note'}
 					yellow={note.type === 'warning'}
