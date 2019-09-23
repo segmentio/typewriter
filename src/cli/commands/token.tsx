@@ -2,23 +2,24 @@ import React, { useState, useEffect } from 'react'
 import { Box, Color, Text } from 'ink'
 import Link from 'ink-link'
 import Spinner from 'ink-spinner'
-import { Config } from '../config'
 import { listTokens, ListTokensOutput, getTokenMethod, TokenMetadata } from '../config'
+import { StandardProps } from '../index'
+import { ErrorProps } from './error'
 
-interface Props {
-	config?: Config
-}
+interface Props extends StandardProps, ErrorProps {}
 
 export const Token: React.FC<Props> = props => {
 	const [isLoading, setIsLoading] = useState(true)
 	const [method, setMethod] = useState<string | undefined>()
 	const [tokens, setTokens] = useState<ListTokensOutput | undefined>()
 	useEffect(() => {
-		;(async () => {
+		async function effect() {
 			setMethod(await getTokenMethod(props.config))
 			setTokens(await listTokens(props.config))
 			setIsLoading(false)
-		})()
+		}
+
+		effect().catch(props.setError)
 	}, [])
 
 	if (isLoading) {

@@ -5,12 +5,10 @@
 import React from 'react'
 import { Box, Color, Text } from 'ink'
 import Link from 'ink-link'
-import { Config } from '../config'
+import { StandardProps } from '../index'
+import { ErrorProps } from './error'
 
-interface Props {
-	/** typewriter.yml contents */
-	config?: Config
-}
+interface Props extends StandardProps, ErrorProps {}
 
 export const Help: React.FC<Props> = () => {
 	return (

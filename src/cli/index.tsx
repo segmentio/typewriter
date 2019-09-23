@@ -1,11 +1,20 @@
 #!/usr/bin/env node
 import React from 'react'
 import { render } from 'ink'
-import { Token, Version, Build, Help, Init, ErrorComponent } from './commands'
+import {
+	Token,
+	Version,
+	Build,
+	Help,
+	Init,
+	ErrorComponent,
+	ErrorBoundary,
+	ErrorProps,
+} from './commands'
 import { reportAnalytics } from './reportAnalytics'
 import { Config } from './config'
 
-interface StandardProps {
+export interface StandardProps {
 	configPath: string
 	config?: Config
 	/** Helper for logging error messages when in Ink debug mode. Otherwise, errors are ignored. */
@@ -30,7 +39,7 @@ export interface CLIArguments {
 }
 
 function toYargsHandler<P = {}>(
-	Command: React.FC<StandardProps & P>,
+	Command: React.FC<StandardProps & ErrorProps & P>,
 	props: P,
 	cliOptions?: { validateDefault?: boolean }
 ) {
@@ -50,11 +59,12 @@ function toYargsHandler<P = {}>(
 
 		const logError = (log: any) => (args.debug ? console.trace(log) : null)
 		const f = async (config: Config | undefined) => {
-			let component: JSX.Element
+			let Component = Command
+			// Certain flags (--version, --help) will overide whatever command was provided.
 			if (!!args.version || !!args.v || Command.displayName === Version.displayName) {
 				// We override the --version flag from yargs with our own output. If it was supplied, print
 				// the `version` component instead.
-				component = <Version logError={logError} />
+				Component = Version as typeof Command
 			} else if (
 				!!args.help ||
 				!!args.h ||
@@ -62,15 +72,15 @@ function toYargsHandler<P = {}>(
 				Command.displayName === Help.displayName
 			) {
 				// Same goes for the --help flag.
-				component = <Help config={config} />
-			} else {
-				// Otherwise, render this command's component.
-				component = (
-					<Command configPath={args.config} config={config} logError={logError} {...props} />
-				)
+				Component = Help as typeof Command
 			}
 
-			const { waitUntilExit } = render(component, { debug: !!args.debug })
+			const { waitUntilExit } = render(
+				<ErrorBoundary logError={logError}>
+					<Component configPath={args.config} config={config} logError={logError} {...props} />
+				</ErrorBoundary>,
+				{ debug: !!args.debug }
+			)
 			await waitUntilExit()
 		}
 

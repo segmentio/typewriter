@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { Box, Color } from 'ink'
 import { version as typewriterVersion } from '../../../package.json'
 import latest from 'latest-version'
+import { StandardProps } from '../index'
+import { ErrorProps } from './error'
 
-interface VersionProps {
-	logError: (log: any) => void
-}
+interface Props extends StandardProps, ErrorProps {}
 
-export const Version: React.FC<VersionProps> = ({ logError }) => {
+export const Version: React.FC<Props> = ({ logError }) => {
 	const [isLoading, setIsLoading] = useState(true)
 	const [latestVersion, setLatestVersion] = useState('')
 

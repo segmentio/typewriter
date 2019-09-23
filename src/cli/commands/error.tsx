@@ -2,13 +2,13 @@
  * For Segmenters, see:
  *   https://paper.dropbox.com/doc/Typewriter-Error-Paths--AlUBLKIIcRc_9UU3_sgAh~9YAg-bdjW1EOlEHeomztWLrYWk
  */
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box, Color } from 'ink'
 import Link from 'ink-link'
 import figures from 'figures'
 import { version } from '../../../package.json'
 
-interface WrappedError {
+export interface WrappedError {
 	isWrappedError: true
 	description: string
 	notes: string[]
@@ -25,17 +25,43 @@ export function wrapError(description: string, error: Error, ...notes: string[])
 	}
 }
 
-interface ErrorProps {
+export function isWrappedError(error: any) {
+	return typeof error === 'object' && error.isWrappedError
+}
+
+interface ErrorBoundaryProps {
+	logError: (log: any) => void
+}
+
+export interface ErrorProps {
+	/** Use with fatal errors to render the `ErrorComponent` boundary. */
+	setError?: (error: WrappedError) => void
+}
+
+export const ErrorBoundary: React.FC<ErrorBoundaryProps> = ({ children, logError }) => {
+	const [err, setError] = useState<WrappedError>()
+
+	const content = (
+		<Box flexDirection="column">
+			{err && <ErrorComponent error={err} logError={logError} />}
+			{!err && React.cloneElement(children as React.ReactElement<any>, { setError })}
+		</Box>
+	)
+
+	return content
+}
+
+interface ErrorComponentProps {
 	error: any
 	logError: (log: any) => void
 }
 
-export const ErrorComponent: React.FC<ErrorProps> = ({ error, logError }) => {
+export const ErrorComponent: React.FC<ErrorComponentProps> = ({ error, logError }) => {
 	useEffect(() => {
 		logError(error)
 	}, [error])
 
-	if (typeof error === 'object' && error.isWrappedError) {
+	if (isWrappedError(error)) {
 		const wrappedError = error as WrappedError
 
 		return (
@@ -56,7 +82,7 @@ export const ErrorComponent: React.FC<ErrorProps> = ({ error, logError }) => {
 						<Link url="https://github.com/segmentio/typewriter/issues/new">
 							open an issue on GitHub
 						</Link>
-						. Please include that you are running version <Color yellow>{version}</Color> of
+						. Please include that you are using version <Color yellow>{version}</Color> of
 						Typewriter.
 					</Color>
 				</Box>

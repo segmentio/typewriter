@@ -125,7 +125,7 @@ async function getTokenMetadata(
 }
 
 export interface ListTokensOutput {
-	script: TokenMetadata & { error?: string }
+	script: TokenMetadata
 	file: TokenMetadata
 }
 
@@ -151,7 +151,7 @@ export async function listTokens(cfg: Partial<Config> | undefined): Promise<List
 	try {
 		const path = resolve(homedir(), '.typewriter')
 		const token = await readFile(path, 'utf-8')
-		output.file.token = token
+		output.file.token = token.trim()
 	} catch (e) {
 		// Ignore errors if ~/.typewriter doesn't exist
 	}
@@ -159,30 +159,28 @@ export async function listTokens(cfg: Partial<Config> | undefined): Promise<List
 	// Attempt to read a token by executing the token script from the typewriter.yml config file.
 	// Handle token script errors gracefully, f.e., in CI where you don't need it.
 	if (cfg && cfg.scripts && cfg.scripts.token) {
+		const tokenScript = cfg.scripts.token
 		// Since we don't know if this token script has side effects, cache (in-memory) the result
 		// s.t. we only execute it once per CLI invocation.
-		if (!tokenScriptCache[cfg.scripts.token]) {
-			const { stdout } = await exec(cfg.scripts.token).catch(err => {
-				output.script.error = err
+		if (!tokenScriptCache[tokenScript]) {
+			const { stdout } = await exec(tokenScript).catch(err => {
 				return { stdout: '' }
 			})
 
 			if (!!stdout) {
-				tokenScriptCache[cfg.scripts.token] = stdout.trim()
+				tokenScriptCache[tokenScript] = stdout.trim()
 			}
 		}
 
-		output.script.token = tokenScriptCache[cfg.scripts.token]
+		output.script.token = tokenScriptCache[tokenScript]
 	}
 
 	// Validate whether any of these tokens are valid Segment API tokens.
-	await Promise.all(
-		Object.values(output).map(async (metadata: TokenMetadata) => {
-			const result = await validateToken(metadata.token)
-			metadata.isValidToken = result.isValid
-			metadata.workspace = result.workspace
-		})
-	)
+	for (const metadata of Object.values(output)) {
+		const result = await validateToken(metadata.token)
+		metadata.isValidToken = result.isValid
+		metadata.workspace = result.workspace
+	}
 
 	return output
 }

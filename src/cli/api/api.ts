@@ -1,6 +1,7 @@
 import got from 'got'
 import { JSONSchema7 } from 'json-schema'
 import { version } from '../../../package.json'
+import { wrapError, isWrappedError } from '../commands/error'
 
 export namespace SegmentAPI {
 	// https://reference.segmentapis.com/#1092fe01-379b-4ca1-8b1d-9f42b33d2899
@@ -130,7 +131,11 @@ export async function validateToken(token: string | undefined): Promise<TokenVal
 			result.isValid = workspaces.length > 0
 			result.workspace = workspaces.length === 1 ? workspaces[0] : undefined
 		} catch (err) {
-			// If this request failed, then this token is not valid.
+			// If the request failed, but we wrapped it, then we should surface the error.
+			if (isWrappedError(err)) {
+				throw err
+			}
+			// Otherwise, we can safely assume that the token was invalid.
 		}
 		tokenValidationCache[token] = result
 	}
@@ -150,8 +155,13 @@ async function apiGet(url: string, token: string): Promise<object> {
 	})
 
 	try {
-		return (await resp).body
+		const { body } = await resp
+		return body
 	} catch (err) {
+		if (err.code === 'ETIMEDOUT') {
+			throw wrapError('Segment API request timed out', err, `Querying: ${url}`)
+		}
+
 		throw err
 	}
 }

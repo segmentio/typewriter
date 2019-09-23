@@ -14,17 +14,16 @@ import { join, normalize } from 'path'
 import { orderBy } from 'lodash'
 import { Build } from './build'
 import Fuse from 'fuse.js'
+import { StandardProps } from '../index'
+import { ErrorProps } from './error'
+
+interface Props extends StandardProps, ErrorProps {}
 
 const readir = promisify(fs.readdir)
 
-interface Props {
-	/** Path to typewriter.yml */
-	configPath: string
-	/** typewriter.yml contents */
-	config?: Config
-}
+export const Init: React.FC<Props> = props => {
+	const { configPath, config } = props
 
-export const Init: React.FC<Props> = ({ configPath, config }) => {
 	const [step, setStep] = useState(0)
 	const [sdk, setSDK] = useState(SDK.WEB)
 	const [language, setLanguage] = useState(Language.JAVASCRIPT)
@@ -92,9 +91,7 @@ export const Init: React.FC<Props> = ({ configPath, config }) => {
 					onRestart={onRestart}
 				/>
 			)}
-			{step === 7 && (
-				<Build configPath={configPath} config={config} production={false} update={true} />
-			)}
+			{step === 7 && <Build {...props} production={false} update={true} />}
 			{/* TODO: step 8 where we show an example script showing how to import typewriter */}
 		</Box>
 	)
