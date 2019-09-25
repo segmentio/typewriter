@@ -38,6 +38,7 @@ export interface ErrorProps {
 	setError?: (error: WrappedError) => void
 }
 
+/** TODO: we need to make sure we exit with a status code if a fatal error is raised. */
 export const ErrorBoundary: React.FC<ErrorBoundaryProps> = ({ children, logError }) => {
 	const [err, setError] = useState<WrappedError>()
 
