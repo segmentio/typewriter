@@ -35,11 +35,11 @@ export async function getConfig(path = './'): Promise<Config | undefined> {
 		file = await readFile(configPath, {
 			encoding: 'utf-8',
 		})
-	} catch (err) {
+	} catch (error) {
 		throw wrapError(
 			'Unable to open typewriter.yml',
-			err as Error,
-			`Failed due to an ${err.code} error (${err.errno}).`,
+			error,
+			`Failed due to an ${error.code} error (${error.errno}).`,
 			configPath
 		)
 	}

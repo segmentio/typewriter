@@ -380,7 +380,13 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, onSubmit 
 			try {
 				await storeToken(state.token)
 			} catch (error) {
-				handleFatalError(wrapError('Unable to save token to ~/.typewriter', error))
+				handleFatalError(
+					wrapError(
+						'Unable to save token to ~/.typewriter',
+						error,
+						`Failed due to an ${error.code} error (${error.errno}).`
+					)
+				)
 				return
 			}
 
@@ -584,6 +590,7 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 	onRestart,
 }) => {
 	const [isLoading, setIsLoading] = useState(false)
+	const { handleFatalError } = useContext(ErrorContext)
 
 	const onSelect = async (item: Item) => {
 		if (item.value === 'lgtm') {
@@ -603,17 +610,28 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 				client.scriptTarget = 'ES5'
 			}
 			const tp = parseTrackingPlanName(trackingPlan.name)
-			await setConfig({
-				client,
-				trackingPlans: [
-					{
-						name: trackingPlan.display_name,
-						id: tp.id,
-						workspaceSlug: tp.workspaceSlug,
-						path,
-					},
-				],
-			})
+			try {
+				await setConfig({
+					client,
+					trackingPlans: [
+						{
+							name: trackingPlan.display_name,
+							id: tp.id,
+							workspaceSlug: tp.workspaceSlug,
+							path,
+						},
+					],
+				})
+			} catch (error) {
+				handleFatalError(
+					wrapError(
+						'Unable to write typewriter.yml',
+						error,
+						`Failed due to an ${error.code} error (${error.errno}).`
+					)
+				)
+				return
+			}
 
 			setIsLoading(true)
 
