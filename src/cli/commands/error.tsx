@@ -140,8 +140,13 @@ const ErrorComponent: React.FC<ErrorComponentProps> = ({ error }) => {
 				</Color>
 			</Box>
 			{error.notes.map(n => (
-				<Box width={80} textWrap="wrap" key={n}>
-					<Color grey>↪ {n}</Color>
+				<Box key={n}>
+					<Box marginLeft={1} marginRight={1}>
+						<Color grey>{figures.arrowRight}</Color>
+					</Box>
+					<Box width={80} textWrap="wrap">
+						<Color grey>{n}</Color>
+					</Box>
 				</Box>
 			))}
 			<Box height={2} width={80} textWrap="wrap" marginTop={1}>

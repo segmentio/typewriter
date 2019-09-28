@@ -496,13 +496,36 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
 }) => {
 	const [trackingPlans, setTrackingPlans] = useState<SegmentAPI.TrackingPlan[]>([])
 	const [isLoading, setIsLoading] = useState(true)
+	const { handleFatalError } = useContext(ErrorContext)
 
 	// Load all Tracking Plans accessible by this API token.
 	useEffect(() => {
-		;(async () => {
-			setTrackingPlans(await fetchAllTrackingPlans({ token }))
-			setIsLoading(false)
-		})()
+		async function effect() {
+			try {
+				setTrackingPlans(await fetchAllTrackingPlans({ token }))
+				setIsLoading(false)
+			} catch (error) {
+				if (error.statusCode === 403) {
+					handleFatalError(
+						wrapError(
+							'Failed to authenticate with the Segment API',
+							error,
+							'You may be using a malformed/invalid token or a legacy personal access token'
+						)
+					)
+				} else {
+					handleFatalError(
+						wrapError(
+							'Unable to fetch Tracking Plans',
+							error,
+							'Check your internet connectivity and try again'
+						)
+					)
+				}
+			}
+		}
+
+		effect()
 	}, [])
 
 	const onSelect = (item: Item) => {
