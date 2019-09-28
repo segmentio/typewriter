@@ -55,7 +55,6 @@ export const Init: React.FC<StandardProps> = props => {
 			marginBottom={1}
 			flexDirection="column"
 		>
-			<Header />
 			{step === 0 && <ConfirmationPrompt onSubmit={onNext} />}
 			{step === 1 && <SDKPrompt step={step} sdk={sdk} onSubmit={withNextStep(setSDK)} />}
 			{step === 2 && (
@@ -120,20 +119,22 @@ const Header: React.FC = () => {
 }
 
 interface ConfirmationPromptProps {
-	text?: string
 	onSubmit: () => void
 }
 
 /** A simple prompt to get users acquainted with the terminal-based select. */
-const ConfirmationPrompt: React.FC<ConfirmationPromptProps> = ({ text, onSubmit }) => {
+const ConfirmationPrompt: React.FC<ConfirmationPromptProps> = ({ onSubmit }) => {
 	const items = [{ label: 'Ok!', value: 'ok' }]
 
 	const tips = ['Hit return to continue.']
 
 	return (
-		<Step name={text || 'Ready'} question={true} tips={tips}>
-			<SelectInput items={items} onSelect={onSubmit} />
-		</Step>
+		<>
+			<Header />
+			<Step name="Ready?" tips={tips}>
+				<SelectInput items={items} onSelect={onSubmit} />
+			</Step>
+		</>
 	)
 }
 
@@ -166,7 +167,7 @@ const SDKPrompt: React.FC<SDKPromptProps> = ({ step, sdk, onSubmit }) => {
 	]
 
 	return (
-		<Step name="Choose a SDK" step={step} tips={tips}>
+		<Step name="Choose a SDK:" step={step} tips={tips}>
 			<SelectInput items={items} initialIndex={initialIndex} onSelect={onSelect} />
 		</Step>
 	)
@@ -203,7 +204,7 @@ const LanguagePrompt: React.FC<LanguagePromptProps> = ({ step, sdk, language, on
 	}
 
 	return (
-		<Step name="Choose a language" step={step}>
+		<Step name="Choose a language:" step={step}>
 			<SelectInput items={items} initialIndex={initialIndex} onSelect={onSelect} />
 		</Step>
 	)
@@ -307,7 +308,7 @@ const PathPrompt: React.FC<PathPromptProps> = ({ step, path: initialPath, onSubm
 	directoryRows.push(...directories.slice(0, 10 - directoryRows.length))
 
 	return (
-		<Step name="Enter a directory" step={step} tips={tips}>
+		<Step name="Enter a directory:" step={step} tips={tips}>
 			<Box>
 				<Text>{figures.pointer}</Text>{' '}
 				<TextInput value={path} showCursor={true} onChange={setPath} onSubmit={onSubmitPath} />
@@ -442,7 +443,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, onSubmit 
 	}
 
 	return (
-		<Step name="Enter a Segment API token" step={step} isLoading={state.isLoading} tips={tips}>
+		<Step name="Enter a Segment API token:" step={step} isLoading={state.isLoading} tips={tips}>
 			{/* We found a token from a typewriter.yml token script. To let the user change token
 			 * in this init command, we'd have to remove their token script. Instead, just tell
 			 * the user this and don't let them change their token. */}
@@ -504,34 +505,34 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
 	const [isLoading, setIsLoading] = useState(true)
 	const { handleFatalError } = useContext(ErrorContext)
 
-	// Load all Tracking Plans accessible by this API token.
-	useEffect(() => {
-		async function effect() {
-			try {
-				setTrackingPlans(await fetchAllTrackingPlans({ token }))
-				setIsLoading(false)
-			} catch (error) {
-				if (error.statusCode === 403) {
-					handleFatalError(
-						wrapError(
-							'Failed to authenticate with the Segment API',
-							error,
-							'You may be using a malformed/invalid token or a legacy personal access token'
-						)
+	async function loadTrackingPlans() {
+		setIsLoading(true)
+		try {
+			setTrackingPlans(await fetchAllTrackingPlans({ token }))
+			setIsLoading(false)
+		} catch (error) {
+			if (error.statusCode === 403) {
+				return handleFatalError(
+					wrapError(
+						'Failed to authenticate with the Segment API',
+						error,
+						'You may be using a malformed/invalid token or a legacy personal access token'
 					)
-				} else {
-					handleFatalError(
-						wrapError(
-							'Unable to fetch Tracking Plans',
-							error,
-							'Check your internet connectivity and try again'
-						)
+				)
+			} else {
+				return handleFatalError(
+					wrapError(
+						'Unable to fetch Tracking Plans',
+						error,
+						'Check your internet connectivity and try again'
 					)
-				}
+				)
 			}
 		}
+	}
 
-		effect()
+	useEffect(() => {
+		loadTrackingPlans()
 	}, [])
 
 	const onSelect = (item: Item) => {
@@ -559,8 +560,18 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
 	]
 
 	return (
-		<Step name="Tracking Plan" tips={tips} step={step} isLoading={isLoading}>
-			<SelectInput items={choices} onSelect={onSelect} initialIndex={initialIndex} limit={10} />
+		<Step name="Tracking Plan:" tips={tips} step={step} isLoading={isLoading}>
+			{trackingPlans.length > 0 && (
+				<SelectInput items={choices} onSelect={onSelect} initialIndex={initialIndex} limit={10} />
+			)}
+			{trackingPlans.length === 0 && (
+				<Step name="Your workspace does not have any Tracking Plans. Add one first, before continuing.">
+					<SelectInput
+						items={[{ label: 'Refresh', value: 'refresh' }]}
+						onSelect={loadTrackingPlans}
+					/>
+				</Step>
+			)}
 		</Step>
 	)
 }
@@ -668,7 +679,7 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 	)
 
 	return (
-		<Step name="Summary" step={step} description={summary} isLoading={isLoading}>
+		<Step name="Summary:" step={step} description={summary} isLoading={isLoading}>
 			<SelectInput
 				items={[{ label: 'Looks good!', value: 'lgtm' }, { label: 'Edit', value: 'edit' }]}
 				onSelect={onSelect}
@@ -680,7 +691,6 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 interface StepProps {
 	name: string
 	step?: number
-	question?: boolean
 	isLoading?: boolean
 	description?: JSX.Element
 	tips?: (string | JSX.Element)[]
@@ -690,7 +700,6 @@ const Step: React.FC<StepProps> = ({
 	step,
 	name,
 	isLoading = false,
-	question = false,
 	description,
 	tips,
 	children,
@@ -701,10 +710,7 @@ const Step: React.FC<StepProps> = ({
 		<Box flexDirection="column">
 			<Box flexDirection="row" width={80} justifyContent="space-between">
 				<Box>
-					<Color white>
-						{name}
-						{question ? '?' : ':'}
-					</Color>
+					<Color white>{name}</Color>
 				</Box>
 				{step && (
 					<Box>
