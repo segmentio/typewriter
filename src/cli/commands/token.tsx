@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Box, Color, Text } from 'ink'
 import Link from 'ink-link'
 import Spinner from 'ink-spinner'
 import { listTokens, ListTokensOutput, getTokenMethod, TokenMetadata } from '../config'
 import { StandardProps } from '../index'
-import { ErrorProps } from './error'
+import { ErrorContext } from './error'
 
-interface Props extends StandardProps, ErrorProps {}
-
-export const Token: React.FC<Props> = props => {
+export const Token: React.FC<StandardProps> = props => {
 	const [isLoading, setIsLoading] = useState(true)
 	const [method, setMethod] = useState<string | undefined>()
 	const [tokens, setTokens] = useState<ListTokensOutput | undefined>()
+	const { handleFatalError } = useContext(ErrorContext)
+
 	useEffect(() => {
 		async function effect() {
 			setMethod(await getTokenMethod(props.config))
@@ -19,7 +19,7 @@ export const Token: React.FC<Props> = props => {
 			setIsLoading(false)
 		}
 
-		effect().catch(props.setError)
+		effect().catch(handleFatalError)
 	}, [])
 
 	if (isLoading) {

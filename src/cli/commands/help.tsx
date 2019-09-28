@@ -6,11 +6,8 @@ import React from 'react'
 import { Box, Color, Text } from 'ink'
 import Link from 'ink-link'
 import { StandardProps } from '../index'
-import { ErrorProps } from './error'
 
-interface Props extends StandardProps, ErrorProps {}
-
-export const Help: React.FC<Props> = () => {
+export const Help: React.FC<StandardProps> = () => {
 	return (
 		<Box marginLeft={2} flexDirection="column">
 			<Box marginBottom={2} textWrap="wrap">

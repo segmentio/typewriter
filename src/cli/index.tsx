@@ -1,24 +1,13 @@
 #!/usr/bin/env node
-import React from 'react'
+import React, { createContext } from 'react'
 import { render } from 'ink'
-import {
-	Token,
-	Version,
-	Build,
-	Help,
-	Init,
-	ErrorComponent,
-	ErrorBoundary,
-	ErrorProps,
-} from './commands'
+import { Token, Version, Build, Help, Init, ErrorBoundary } from './commands'
 import { reportAnalytics } from './reportAnalytics'
 import { Config } from './config'
 
 export interface StandardProps {
 	configPath: string
 	config?: Config
-	/** Helper for logging error messages when in Ink debug mode. Otherwise, errors are ignored. */
-	logError: (log: any) => void
 }
 
 export interface CLIArguments {
@@ -38,8 +27,14 @@ export interface CLIArguments {
 	h: boolean
 }
 
+interface DebugContextProps {
+	/** Whether or not debug mode is enabled. */
+	debug: boolean
+}
+export const DebugContext = createContext<DebugContextProps>({ debug: false })
+
 function toYargsHandler<P = {}>(
-	Command: React.FC<StandardProps & ErrorProps & P>,
+	Command: React.FC<StandardProps & P>,
 	props: P,
 	cliOptions?: { validateDefault?: boolean }
 ) {
@@ -57,7 +52,6 @@ function toYargsHandler<P = {}>(
 			throw new Error(`Unknown command: '${args._[0]}'`)
 		}
 
-		const logError = (log: any) => (args.debug ? console.trace(log) : null)
 		const f = async (config: Config | undefined) => {
 			let Component = Command
 			// Certain flags (--version, --help) will overide whatever command was provided.
@@ -76,9 +70,11 @@ function toYargsHandler<P = {}>(
 			}
 
 			const { waitUntilExit } = render(
-				<ErrorBoundary logError={logError}>
-					<Component configPath={args.config} config={config} logError={logError} {...props} />
-				</ErrorBoundary>,
+				<DebugContext.Provider value={{ debug: args.debug }}>
+					<ErrorBoundary>
+						<Component configPath={args.config} config={config} {...props} />
+					</ErrorBoundary>
+				</DebugContext.Provider>,
 				{ debug: !!args.debug }
 			)
 			await waitUntilExit()
@@ -87,10 +83,15 @@ function toYargsHandler<P = {}>(
 		try {
 			// reportAnalytics will execute f() and report analytics to Segment.
 			await reportAnalytics(args, f)
-		} catch (err) {
-			const { waitUntilExit } = render(<ErrorComponent error={err} logError={logError} />, {
-				debug: !!args.debug,
-			})
+		} catch (error) {
+			const { waitUntilExit } = render(
+				<DebugContext.Provider value={{ debug: args.debug }}>
+					<ErrorBoundary error={error} />
+				</DebugContext.Provider>,
+				{
+					debug: !!args.debug,
+				}
+			)
 			await waitUntilExit()
 		}
 	}

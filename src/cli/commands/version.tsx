@@ -1,24 +1,23 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Box, Color } from 'ink'
 import { version as typewriterVersion } from '../../../package.json'
 import latest from 'latest-version'
 import { StandardProps } from '../index'
-import { ErrorProps } from './error'
+import { ErrorContext } from './error'
 
-interface Props extends StandardProps, ErrorProps {}
-
-export const Version: React.FC<Props> = ({ logError }) => {
+export const Version: React.FC<StandardProps> = () => {
 	const [isLoading, setIsLoading] = useState(true)
 	const [latestVersion, setLatestVersion] = useState('')
+	const { handleError } = useContext(ErrorContext)
 
 	useEffect(() => {
 		async function effect() {
 			try {
 				const latestVersion = await latest('typewriter', { version: 'next' })
 				setLatestVersion(latestVersion)
-			} catch (err) {
-				// If we can't access NPM, then ignore this check.
-				logError(err)
+			} catch (error) {
+				// If we can't access NPM, then ignore this version check.
+				handleError(error)
 			}
 			setIsLoading(false)
 		}

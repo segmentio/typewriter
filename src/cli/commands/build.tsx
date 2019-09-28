@@ -25,7 +25,6 @@ import { join } from 'path'
 import * as childProcess from 'child_process'
 import { version } from '../../../package.json'
 import { StandardProps } from '../index'
-import { ErrorProps } from './error'
 
 const readFile = promisify(fs.readFile)
 const readdir = promisify(fs.readdir)
@@ -33,7 +32,7 @@ const writeFile = promisify(fs.writeFile)
 const unlink = promisify(fs.unlink)
 const exec = promisify(childProcess.exec)
 
-interface Props extends StandardProps, ErrorProps {
+interface Props extends StandardProps {
 	/** Whether or not to generate a production client. Defaults to false. */
 	production: boolean
 	/** Whether or not to update the local `plan.json` with the latest Tracking Plan. Defaults to true. */

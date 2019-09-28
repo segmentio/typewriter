@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Text, Box, Color } from 'ink'
 import Link from 'ink-link'
 import SelectInput, { Item } from 'ink-select-input'
@@ -14,20 +14,20 @@ import { join, normalize } from 'path'
 import { orderBy } from 'lodash'
 import { Build } from './build'
 import Fuse from 'fuse.js'
-import { StandardProps } from '../index'
-import { ErrorProps } from './error'
-
-interface Props extends StandardProps, ErrorProps {}
+import { StandardProps, DebugContext } from '../index'
+import { ErrorContext, wrapError } from './error'
 
 const readir = promisify(fs.readdir)
 
-export const Init: React.FC<Props> = props => {
-	const { configPath, config } = props
+export const Init: React.FC<StandardProps> = props => {
+	const { config } = props
 
 	const [step, setStep] = useState(0)
-	const [sdk, setSDK] = useState(SDK.WEB)
-	const [language, setLanguage] = useState(Language.JAVASCRIPT)
-	const [path, setPath] = useState('')
+	const [sdk, setSDK] = useState(config ? config.client.sdk : SDK.WEB)
+	const [language, setLanguage] = useState(config ? config.client.language : Language.JAVASCRIPT)
+	const [path, setPath] = useState(
+		config && config.trackingPlans.length > 0 ? config.trackingPlans[0].path : ''
+	)
 	const [tokenMetadata, setTokenMetadata] = useState({
 		token: '',
 		workspace: undefined as SegmentAPI.Workspace | undefined,
@@ -219,16 +219,21 @@ interface PathPromptProps {
 async function filterDirectories(path: string): Promise<string[]> {
 	/** Helper to list all directories in a given path. */
 	const listDirectories = async (path: string): Promise<string[]> => {
-		const files = await readir(path, {
-			withFileTypes: true,
-		})
-		const directoryBlocklist = ['node_modules']
-		return files
-			.filter(f => f.isDirectory())
-			.filter(f => !f.name.startsWith('.'))
-			.filter(f => !directoryBlocklist.some(b => f.name.startsWith(b)))
-			.map(f => join(path, f.name))
-			.filter(f => normalize(f).startsWith(normalize(path).replace(/^\.\/?/, '')))
+		try {
+			const files = await readir(path, {
+				withFileTypes: true,
+			})
+			const directoryBlocklist = ['node_modules']
+			return files
+				.filter(f => f.isDirectory())
+				.filter(f => !f.name.startsWith('.'))
+				.filter(f => !directoryBlocklist.some(b => f.name.startsWith(b)))
+				.map(f => join(path, f.name))
+				.filter(f => normalize(f).startsWith(normalize(path).replace(/^\.\/?/, '')))
+		} catch {
+			// If we can't read this path, then return an empty list of sub-directories.
+			return []
+		}
 	}
 
 	const isPathEmpty = ['', '.', './'].includes(path)
@@ -326,45 +331,67 @@ interface APITokenPromptProps {
 
 /** A prompt to walk a user through getting a new Segment API token. */
 const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, onSubmit }) => {
-	const [token, setToken] = useState('')
-	const [canBeSet, setCanBeSet] = useState(true)
-	const [workspace, setWorkspace] = useState<SegmentAPI.Workspace>()
-	const [isLoading, setIsLoading] = useState(true)
-	const [isInvalid, setIsInvalid] = useState(false)
-	const [foundCachedToken, setFoundCachedToken] = useState(false)
+	const [state, setState] = useState({
+		token: '',
+		canBeSet: true,
+		workspace: undefined as SegmentAPI.Workspace | undefined,
+		isLoading: true,
+		isInvalid: false,
+		foundCachedToken: false,
+	})
+	const { handleFatalError } = useContext(ErrorContext)
 
 	useEffect(() => {
-		;(async () => {
-			const tokens = await listTokens(config)
-			const method = await getTokenMethod(config)
-			const token = method === tokens.script.method ? tokens.script : tokens.file
+		async function effect() {
+			try {
+				const tokens = await listTokens(config)
+				const method = await getTokenMethod(config)
+				const token = method === tokens.script.method ? tokens.script : tokens.file
 
-			setToken(token.token || '')
-			setIsInvalid(false)
-			if (token.workspace) {
-				setWorkspace(token.workspace)
+				setState({
+					...state,
+					token: token.token || '',
+					isInvalid: false,
+					workspace: token.workspace || state.workspace,
+					foundCachedToken: !!token.token,
+					isLoading: false,
+					// If the user already has a typewriter.yml with a valid token,
+					// then let the user know that they can't overwrite it.
+					canBeSet: method === 'file',
+				})
+			} catch (error) {
+				handleFatalError(error)
 			}
-			setFoundCachedToken(!!token.token)
-			setIsLoading(false)
-			// If the user already has a typewriter.yml with a valid token,
-			// then let the user know that they can't overwrite it.
-			setCanBeSet(method === 'file')
-		})()
+		}
+
+		effect()
 	}, [])
 
 	// Fired after a user enters a token.
 	const onConfirm = async () => {
 		// Validate whether the entered token is a valid Segment API token.
-		setIsLoading(true)
+		setState({
+			...state,
+			isLoading: true,
+		})
 
-		const result = await validateToken(token)
+		const result = await validateToken(state.token)
 		if (result.isValid) {
-			await storeToken(token)
-			onSubmit({ token, workspace: workspace! })
+			try {
+				await storeToken(state.token)
+			} catch (error) {
+				handleFatalError(wrapError('Unable to save token to ~/.typewriter', error))
+				return
+			}
+
+			onSubmit({ token: state.token, workspace: state.workspace! })
 		} else {
-			setToken('')
-			setIsInvalid(true)
-			setIsLoading(false)
+			setState({
+				...state,
+				token: '',
+				isInvalid: true,
+				isLoading: false,
+			})
 		}
 	}
 
@@ -372,13 +399,23 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, onSubmit 
 	const onConfirmCachedToken = async (item: Item) => {
 		if (item.value === 'no') {
 			// Clear the selected token so they can enter their own.
-			setFoundCachedToken(false)
-			setToken('')
-			setIsInvalid(false)
+			setState({
+				...state,
+				foundCachedToken: false,
+				token: '',
+				isInvalid: false,
+			})
 		} else {
 			// Otherwise submit this token.
 			await onConfirm()
 		}
+	}
+
+	const setToken = (token: string) => {
+		setState({
+			...state,
+			token,
+		})
 	}
 
 	const tips = [
@@ -390,21 +427,25 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, onSubmit 
 		</Text>,
 	]
 
-	if (foundCachedToken) {
+	if (state.foundCachedToken) {
 		tips.push(
-			<Color yellow>A cached token for {workspace!.name} is already in your environment.</Color>
+			<Color yellow>
+				A cached token for {state.workspace!.name} is already in your environment.
+			</Color>
 		)
 	}
 
 	return (
-		<Step name="Enter a Segment API token" step={step} isLoading={isLoading} tips={tips}>
+		<Step name="Enter a Segment API token" step={step} isLoading={state.isLoading} tips={tips}>
 			{/* We found a token from a typewriter.yml token script. To let the user change token
 			 * in this init command, we'd have to remove their token script. Instead, just tell
 			 * the user this and don't let them change their token. */}
-			{!canBeSet && <SelectInput items={[{ label: 'Ok!', value: 'ok' }]} onSelect={onConfirm} />}
+			{!state.canBeSet && (
+				<SelectInput items={[{ label: 'Ok!', value: 'ok' }]} onSelect={onConfirm} />
+			)}
 			{/* We found a token in a ~/.typewriter. Confirm that the user wants to use this token
 			 * before continuing. */}
-			{canBeSet && foundCachedToken && (
+			{state.canBeSet && state.foundCachedToken && (
 				<SelectInput
 					items={[
 						{ label: 'Use this token', value: 'yes' },
@@ -414,12 +455,12 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, onSubmit 
 				/>
 			)}
 			{/* We didn't find a token anywhere that they wanted to use, so just prompt the user for one. */}
-			{canBeSet && !foundCachedToken && (
+			{state.canBeSet && !state.foundCachedToken && (
 				<Box flexDirection="column">
 					<Box>
 						<Text>{figures.pointer}</Text>{' '}
 						<TextInput
-							value={token}
+							value={state.token}
 							// See: https://github.com/vadimdemedes/ink-text-input/issues/41
 							showCursor={true}
 							onChange={setToken}
@@ -427,7 +468,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, onSubmit 
 							mask="*"
 						/>
 					</Box>
-					{isInvalid && (
+					{state.isInvalid && (
 						<Box textWrap="wrap" marginLeft={2}>
 							<Color red>{figures.cross} Invalid Segment API token.</Color>
 						</Box>
@@ -613,6 +654,8 @@ const Step: React.FC<StepProps> = ({
 	tips,
 	children,
 }) => {
+	const { debug } = useContext(DebugContext)
+
 	return (
 		<Box flexDirection="column">
 			<Box flexDirection="row" width={80} justifyContent="space-between">
@@ -639,7 +682,12 @@ const Step: React.FC<StepProps> = ({
 				<Box marginTop={1} flexDirection="column">
 					{isLoading && (
 						<Color grey>
-							<Spinner type="dots" /> Loading...
+							{!debug && (
+								<>
+									<Spinner type="dots" />{' '}
+								</>
+							)}
+							Loading...
 						</Color>
 					)}
 					{!isLoading && children}

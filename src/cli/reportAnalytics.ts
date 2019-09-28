@@ -101,6 +101,7 @@ async function typewriterLibraryProperties(args: CLIArguments, cfg: Config | und
 /**
  * Helper to fire an `Error Fired` analytics call. Async so that consumers
  * can await this analytics call before re-throwing any errors.
+ * TODO: move into the Error component.
  */
 async function reportError(
 	errorString: string,
