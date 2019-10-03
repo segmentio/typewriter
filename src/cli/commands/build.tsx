@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Box, Text, Color } from 'ink'
 import Link from 'ink-link'
 import Spinner from 'ink-spinner'
@@ -25,6 +25,7 @@ import { join } from 'path'
 import * as childProcess from 'child_process'
 import { version } from '../../../package.json'
 import { StandardProps } from '../index'
+import { ErrorContext, wrapError } from './error'
 
 const readFile = promisify(fs.readFile)
 const readdir = promisify(fs.readdir)
@@ -41,21 +42,28 @@ interface Props extends StandardProps {
 
 export const Build: React.FC<Props> = props => {
 	const [generatorState, setGeneratorState] = useState(getInitialState(props.config!))
+	const { handleFatalError } = useContext(ErrorContext)
 
 	useEffect(() => {
-		;(async () => {
-			// TODO: multiple tracking plans
-			// TODO: replace this generator with split-up components, similar to Init.
-			const progress = run(props.configPath, props.config!, props.config!.trackingPlans[0], {
-				production: props.production,
-				update: props.update,
-			})
+		async function effect() {
+			try {
+				// TODO: multiple tracking plans
+				// TODO: replace this generator with split-up components, similar to Init.
+				const progress = run(props.configPath, props.config!, props.config!.trackingPlans[0], {
+					production: props.production,
+					update: props.update,
+				})
 
-			for await (const step of progress) {
-				// Note: we copy the state here s.t. React can identify that it needs to re-render.
-				setGeneratorState({ ...step })
+				for await (const step of progress) {
+					// Note: we copy the state here s.t. React can identify that it needs to re-render.
+					setGeneratorState({ ...step })
+				}
+			} catch (error) {
+				handleFatalError(error)
 			}
-		})()
+		}
+
+		effect()
 	}, [])
 
 	return (
@@ -226,6 +234,10 @@ async function* run(
 	}
 
 	const loadedTrackingPlan = await loadTrackingPlan(configPath, trackingPlanConfig)
+	if (!loadedTrackingPlan) {
+		throw new Error('Failed to write Tracking Plan to plan.json.')
+	}
+
 	step.notes.push({
 		key: 'which-tracking-plan',
 		text: (

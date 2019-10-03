@@ -20,17 +20,22 @@ export const TRACKING_PLAN_FILENAME = 'plan.json'
 export async function loadTrackingPlan(
 	configPath: string | undefined,
 	config: TrackingPlanConfig
-): Promise<SegmentAPI.TrackingPlan> {
+): Promise<SegmentAPI.TrackingPlan | undefined> {
 	const path = resolveRelativePath(configPath, config.path, TRACKING_PLAN_FILENAME)
 
 	// Load the Tracking Plan from the local cache.
-	const plan = JSON.parse(
-		await readFile(path, {
-			encoding: 'utf-8',
-		})
-	) as SegmentAPI.TrackingPlan
+	try {
+		const plan = JSON.parse(
+			await readFile(path, {
+				encoding: 'utf-8',
+			})
+		) as SegmentAPI.TrackingPlan
 
-	return await sanitizeTrackingPlan(plan)
+		return await sanitizeTrackingPlan(plan)
+	} catch {
+		// We failed to read the Tracking Plan, possibly because no plan.json exists.
+		return undefined
+	}
 }
 
 export async function writeTrackingPlan(
@@ -68,7 +73,7 @@ interface TrackingPlanDeltas {
 }
 
 export function computeDelta(
-	prev: SegmentAPI.TrackingPlan,
+	prev: SegmentAPI.TrackingPlan | undefined,
 	next: SegmentAPI.TrackingPlan
 ): TrackingPlanDeltas {
 	const deltas: TrackingPlanDeltas = {
@@ -83,8 +88,10 @@ export function computeDelta(
 		nextByName[rule.name] = rule
 	}
 	const prevByName: Record<string, SegmentAPI.RuleMetadata> = {}
-	for (const rule of prev.rules.events) {
-		prevByName[rule.name] = rule
+	if (!!prev) {
+		for (const rule of prev.rules.events) {
+			prevByName[rule.name] = rule
+		}
 	}
 
 	for (const rule of next.rules.events) {
@@ -97,9 +104,11 @@ export function computeDelta(
 			}
 		}
 	}
-	for (const rule of prev.rules.events) {
-		if (!nextByName[rule.name]) {
-			deltas.removed++
+	if (!!prev) {
+		for (const rule of prev.rules.events) {
+			if (!nextByName[rule.name]) {
+				deltas.removed++
+			}
 		}
 	}
 
