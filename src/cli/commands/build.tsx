@@ -46,17 +46,19 @@ export const Build: React.FC<Props> = props => {
 
 	useEffect(() => {
 		async function effect() {
+			// TODO: replace this generator with split-up components, similar to Init.
+			// TODO: if rendering multiple Tracking Plans, make sure to not overwrite previous's steps.
 			try {
-				// TODO: multiple tracking plans
-				// TODO: replace this generator with split-up components, similar to Init.
-				const progress = run(props.configPath, props.config!, props.config!.trackingPlans[0], {
-					production: props.production,
-					update: props.update,
-				})
+				for (const trackingPlanConfig of props.config!.trackingPlans) {
+					const progress = run(props.configPath, props.config!, trackingPlanConfig, {
+						production: props.production,
+						update: props.update,
+					})
 
-				for await (const step of progress) {
-					// Note: we copy the state here s.t. React can identify that it needs to re-render.
-					setGeneratorState({ ...step })
+					for await (const step of progress) {
+						// Note: we copy the state here s.t. React can identify that it needs to re-render.
+						setGeneratorState({ ...step })
+					}
 				}
 			} catch (error) {
 				handleFatalError(error)
