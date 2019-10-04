@@ -1,15 +1,9 @@
-import { fetchTrackingPlan, SegmentAPI } from './api'
-import {
-	TrackingPlanConfig,
-	resolveRelativePath,
-	verifyDirectoryExists,
-	getConfig,
-	getToken,
-} from '../config'
+import { SegmentAPI } from './api'
+import { TrackingPlanConfig, resolveRelativePath, verifyDirectoryExists } from '../config'
 import sortKeys from 'sort-keys'
 import * as fs from 'fs'
 import { promisify } from 'util'
-import { flow, isEqual } from 'lodash'
+import { flow } from 'lodash'
 import stringify from 'json-stable-stringify'
 
 const writeFile = promisify(fs.writeFile)
@@ -99,7 +93,7 @@ export function computeDelta(
 		if (!prevRule) {
 			deltas.added++
 		} else {
-			if (prevRule.description !== rule.description || isEqual(prevRule.rules, next.rules)) {
+			if (JSON.stringify(rule) !== JSON.stringify(prevRule)) {
 				deltas.modified++
 			}
 		}
