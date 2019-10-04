@@ -185,8 +185,8 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
 /**
  * @typedef CommandRun
  * @property {Client} [client] - Metadata about the client that typewriter is generating.
- * @property {string} `command` - The command name that was started.
- * @property {number} `duration` - The time taken to execute this command, in ms.
+ * @property {string} command - The command name that was started.
+ * @property {number} duration - The time taken to execute this command, in ms.
  * @property {boolean} [is_ci] - Whether or not typewriter is currently running in a CI environment or not.
  * @property {string} [token_method] - Where the API token was fetched from.
  * @property {TrackingPlan} [tracking_plan] - Metadata about the Tracking Plan that typewriter was fired on.
@@ -205,12 +205,12 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
  * @typedef ErrorFired
  * @property {Client1} [client] - Metadata about the client that typewriter is generating.
  * @property {string} [command] - The command name that was started.
- * @property {Record<string, any>} `error` - The full error itself.
- * @property {string} `error_string` - The minimal error string itself.
+ * @property {Record<string, any>} error - The full error itself.
+ * @property {string} error_string - The minimal error string itself.
  * @property {boolean} [is_ci] - Whether or not typewriter is currently running in a CI environment or not.
  * @property {string} [token_method] - Where the API token was fetched from.
  * @property {TrackingPlan1} [tracking_plan] - Metadata about the Tracking Plan that typewriter was fired on.
- * @property {boolean} `unexpected` - Whether or not this error was an expected (and therefore, properly handled) error.
+ * @property {boolean} unexpected - Whether or not this error was an expected (and therefore, properly handled) error.
  */
 
 /**

@@ -326,11 +326,11 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
 
 /**
  * @typedef CustomViolationHandler
- * @property {string} `regex property` -
+ * @property {string} regex property -
  */
 /**
  * @typedef DefaultViolationHandler
- * @property {string} `regex property` -
+ * @property {string} regex property -
  */
 /**
  * @typedef EveryNullableOptionalType
@@ -345,14 +345,14 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
  */
 /**
  * @typedef EveryNullableRequiredType
- * @property {any | null} `required any` - Required any property
- * @property {any[] | null} `required array` - Required array property
- * @property {boolean | null} `required boolean` - Required boolean property
- * @property {number | null} `required int` - Required integer property
- * @property {number | null} `required number` - Required number property
- * @property {Record<string, any> | null} `required object` - Required object property
- * @property {string | null} `required string` - Required string property
- * @property {string | null} `required string with regex` - Required string property with a regex conditional
+ * @property {any | null} required any - Required any property
+ * @property {any[] | null} required array - Required array property
+ * @property {boolean | null} required boolean - Required boolean property
+ * @property {number | null} required int - Required integer property
+ * @property {number | null} required number - Required number property
+ * @property {Record<string, any> | null} required object - Required object property
+ * @property {string | null} required string - Required string property
+ * @property {string | null} required string with regex - Required string property with a regex conditional
  */
 /**
  * @typedef EveryOptionalType
@@ -367,22 +367,22 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
  */
 /**
  * @typedef EveryRequiredType
- * @property {any | null} `required any` - Required any property
- * @property {any[]} `required array` - Required array property
- * @property {boolean} `required boolean` - Required boolean property
- * @property {number} `required int` - Required integer property
- * @property {number} `required number` - Required number property
- * @property {Record<string, any>} `required object` - Required object property
- * @property {string} `required string` - Required string property
- * @property {string} `required string with regex` - Required string property with a regex conditional
+ * @property {any | null} required any - Required any property
+ * @property {any[]} required array - Required array property
+ * @property {boolean} required boolean - Required boolean property
+ * @property {number} required int - Required integer property
+ * @property {number} required number - Required number property
+ * @property {Record<string, any>} required object - Required object property
+ * @property {string} required string - Required string property
+ * @property {string} required string with regex - Required string property with a regex conditional
  */
 /**
  * @typedef UniverseCharactersItemItem
- * @property {string} `name` - The character's name.
+ * @property {string} name - The character's name.
  */
 /**
  * @typedef NestedArrays
- * @property {UniverseCharactersItemItem[][]} `universeCharacters` - All known characters from each universe.
+ * @property {UniverseCharactersItemItem[][]} universeCharacters - All known characters from each universe.
  */
 /**
  * @typedef SubterraneanLab
@@ -392,29 +392,29 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
  */
 /**
  * @typedef Tunnel
- * @property {SubterraneanLab} `subterranean lab` -
+ * @property {SubterraneanLab} subterranean lab -
  */
 /**
  * @typedef Garage
- * @property {Tunnel} `tunnel` -
+ * @property {Tunnel} tunnel -
  */
 /**
  * @typedef NestedObjects
- * @property {Garage} `garage` -
+ * @property {Garage} garage -
  */
 /**
  * @typedef PropertiesCollided
- * @property {string} `Property Collided` -
- * @property {string} `property_collided` -
+ * @property {string} Property Collided -
+ * @property {string} property_collided -
  */
 /**
  * @typedef OccupantsItem
- * @property {string} `name` - The name of this occupant.
+ * @property {string} name - The name of this occupant.
  */
 /**
  * @typedef Universe
- * @property {string} `name` - The common name of this universe.
- * @property {OccupantsItem[]} `occupants` - The most important occupants in this universe.
+ * @property {string} name - The common name of this universe.
+ * @property {OccupantsItem[]} occupants - The most important occupants in this universe.
  */
 /**
  * @typedef PropertyObjectNameCollision1
@@ -422,12 +422,12 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
  */
 /**
  * @typedef OccupantsItem1
- * @property {string} `name` - The name of this occupant.
+ * @property {string} name - The name of this occupant.
  */
 /**
  * @typedef Universe1
- * @property {string} `name` - The common name of this universe.
- * @property {OccupantsItem1[]} `occupants` - The most important occupants in this universe.
+ * @property {string} name - The common name of this universe.
+ * @property {OccupantsItem1[]} occupants - The most important occupants in this universe.
  */
 /**
  * @typedef PropertyObjectNameCollision2
@@ -435,7 +435,7 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
  */
 /**
  * @typedef PropertySanitized
- * @property {string} `0000---terrible-property-name~!3` -
+ * @property {string} 0000---terrible-property-name~!3 -
  */
 /**
  * @typedef ObjectItem
@@ -453,7 +453,7 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
  */
 /**
  * @typedef UnionType
- * @property {string | number | null} `universe_name` -
+ * @property {string | number | null} universe_name -
  */
 
 /**

@@ -180,9 +180,10 @@ function withTypewriterContext{{#unless isBrowser}}<P, T extends Segment.TrackMe
  {{/if}}
  * @typedef {{name}}
  {{#each properties}}
-  {{!-- Note: this uses whitespace control to "escape" the outer curly braces. --}}
+	{{!-- Note: this uses whitespace control to "escape" the outer curly braces. --}}
 	{{!-- Note: The backticks enable JSDoc to parse names with spaces (without resorting to square brackets). --}}
- * @property { {{~type~}} } {{#if isRequired}}`{{name}}`{{else}}[{{name}}]{{/if}} - {{description}}
+	{{!-- Temporary removed backticks around required names below because of typescript compiler + JSDoc error. Will investigate. --}}
+ * @property { {{~type~}} } {{#if isRequired}}{{name}}{{else}}[{{name}}]{{/if}} - {{description}}
  {{/each}}
  */
 {{/each}}
