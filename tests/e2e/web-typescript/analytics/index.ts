@@ -290,7 +290,7 @@ function withTypewriterContext(message: Segment.Options = {}): Segment.Options {
 			...(message.context || {}),
 			typewriter: {
 				language: 'typescript',
-				version: '7.0.0-43',
+				version: '7.0.0-44',
 			},
 		},
 	}
