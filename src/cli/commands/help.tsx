@@ -82,7 +82,7 @@ export const Help: React.FC<StandardProps> = () => {
 					{/* NOTE: we only show the --debug flag when developing locally on Typewriter. */}
 					<HelpRow
 						name="    --debug"
-						isHidden={process.env.IS_DEVELOPMENT !== 'true'}
+						isHidden={process.env.NODE_ENV === 'production'}
 						description="Enables Ink debug mode"
 					/>
 				</HelpSection>

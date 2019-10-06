@@ -57,11 +57,12 @@ export async function reportAnalytics(
 }
 
 // Initialize analytics-node + typewriter's typewriter client.
-const writeKey = process.env.IS_DEVELOPMENT
-	? // Development: https://app.segment.com/segment_prod/sources/typewriter_dev/overview
-	  'NwUMoJltCrmiW5gQZyiyvKpESDcwsj1r'
-	: // Production: https://app.segment.com/segment_prod/sources/typewriter/overview
-	  'ahPefUgNCh3w1BdkWX68vOpVgR2Blm5e'
+const writeKey =
+	process.env.NODE_ENV === 'production'
+		? // Production: https://app.segment.com/segment_prod/sources/typewriter/overview
+		  'ahPefUgNCh3w1BdkWX68vOpVgR2Blm5e'
+		: // Development: https://app.segment.com/segment_prod/sources/typewriter_dev/overview
+		  'NwUMoJltCrmiW5gQZyiyvKpESDcwsj1r'
 
 typewriter.setTypewriterOptions({
 	analytics: new Analytics(writeKey, {

@@ -5,6 +5,9 @@ import { Token, Version, Build, Help, Init, ErrorBoundary } from './commands'
 import { reportAnalytics } from './reportAnalytics'
 import { Config } from './config'
 
+// Default to production, so that React error messages are not shown.
+process.env.NODE_ENV = process.env.NODE_ENV || 'production'
+
 export interface StandardProps {
 	configPath: string
 	config?: Config

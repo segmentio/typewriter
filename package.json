@@ -10,7 +10,7 @@
   "main": "./dist/src/cli/index.js",
   "bin": "./dist/src/cli/index.js",
   "scripts": {
-    "dev": "TS_NODE_FILES=true IS_DEVELOPMENT=true ts-node ./src/cli",
+    "dev": "TS_NODE_FILES=true NODE_ENV=development ts-node ./src/cli",
     "build": "rm -rf dist && yarn dev prod && tsc && copyfiles --up 1 \"src/**/*.hbs\" dist/src/",
     "test": "jest --testPathIgnorePatterns 'tests/e2e/.*' 'example'",
     "e2e": "make e2e",
