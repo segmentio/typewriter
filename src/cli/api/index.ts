@@ -4,5 +4,7 @@ export {
 	writeTrackingPlan,
 	TRACKING_PLAN_FILENAME,
 	computeDelta,
+	toTrackingPlanURL,
 	parseTrackingPlanName,
+	TrackingPlanDeltas,
 } from './trackingplans'

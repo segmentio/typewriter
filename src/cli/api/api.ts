@@ -2,6 +2,7 @@ import got from 'got'
 import { JSONSchema7 } from 'json-schema'
 import { version } from '../../../package.json'
 import { wrapError, isWrappedError } from '../commands/error'
+import { sanitizeTrackingPlan } from './trackingplans'
 
 export namespace SegmentAPI {
 	// https://reference.segmentapis.com/#1092fe01-379b-4ca1-8b1d-9f42b33d2899
@@ -58,7 +59,7 @@ export async function fetchTrackingPlan(options: {
 	// eslint-disable-next-line @typescript-eslint/camelcase
 	response.update_time = new Date(response.update_time)
 
-	return response
+	return sanitizeTrackingPlan(response)
 }
 
 // fetchTrackingPlans fetches all Tracking Plans accessible by a given API token

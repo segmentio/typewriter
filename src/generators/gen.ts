@@ -13,6 +13,9 @@ export interface File {
 }
 
 export interface RawTrackingPlan {
+	name: string
+	url: string
+	path: string
 	trackCalls: JSONSchema7[]
 }
 

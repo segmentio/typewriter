@@ -43,7 +43,7 @@ export async function writeTrackingPlan(
 	// Perform some pre-processing on the Tracking Plan before writing it.
 	const planJSON = flow<SegmentAPI.TrackingPlan, SegmentAPI.TrackingPlan, string>(
 		// Enforce a deterministic ordering to reduce verson control deltas.
-		plan => sortKeys(plan, { deep: true }),
+		plan => sanitizeTrackingPlan(plan),
 		plan => stringify(plan, { space: '\t' })
 	)(plan)
 
@@ -52,15 +52,13 @@ export async function writeTrackingPlan(
 	})
 }
 
-export async function sanitizeTrackingPlan(
-	plan: SegmentAPI.TrackingPlan
-): Promise<SegmentAPI.TrackingPlan> {
+export function sanitizeTrackingPlan(plan: SegmentAPI.TrackingPlan) {
 	// TODO: on JSON Schema Draft-04, required fields must have at least one element.
 	// Therefore, we strip `required: []` from your rules so this error isn't surfaced.
-	return plan
+	return sortKeys(plan, { deep: true })
 }
 
-interface TrackingPlanDeltas {
+export interface TrackingPlanDeltas {
 	added: number
 	modified: number
 	removed: number
@@ -111,12 +109,22 @@ export function computeDelta(
 
 export function parseTrackingPlanName(name: string) {
 	const parts = name.split('/')
+
+	// Sane fallback:
+	if (parts.length !== 4 || (parts[0] !== 'workspaces' && parts[2] !== 'tracking-plans')) {
+		throw new Error(`Unable to parse Tracking Plan name: ${name}`)
+	}
+
 	const workspaceSlug = parts[1]
 	const id = parts[3]
 
 	return {
-		workspaceSlug,
 		id,
-		url: `https://app.segment.com/${workspaceSlug}/protocols/tracking-plans/${id}`,
+		workspaceSlug,
 	}
+}
+
+export function toTrackingPlanURL(name: string): string {
+	const { id, workspaceSlug } = parseTrackingPlanName(name)
+	return `https://app.segment.com/${workspaceSlug}/protocols/tracking-plans/${id}`
 }

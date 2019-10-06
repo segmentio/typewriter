@@ -5,7 +5,13 @@ import SelectInput, { Item } from 'ink-select-input'
 import TextInput from 'ink-text-input'
 import Spinner from 'ink-spinner'
 import { Config, listTokens, getTokenMethod, setConfig, storeToken } from '../config'
-import { validateToken, SegmentAPI, fetchAllTrackingPlans, parseTrackingPlanName } from '../api'
+import {
+	validateToken,
+	SegmentAPI,
+	fetchAllTrackingPlans,
+	toTrackingPlanURL,
+	parseTrackingPlanName,
+} from '../api'
 import { SDK, Language, Options, JavaScriptOptions } from '../../generators/options'
 import figures from 'figures'
 import * as fs from 'fs'
@@ -659,9 +665,7 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 		{ label: 'API Token', value: `${workspace.name} (${token.slice(0, 10)}...)` },
 		{
 			label: 'Tracking Plan',
-			value: (
-				<Link url={parseTrackingPlanName(trackingPlan.name).url}>{trackingPlan.display_name}</Link>
-			),
+			value: <Link url={toTrackingPlanURL(trackingPlan.name)}>{trackingPlan.display_name}</Link>,
 		},
 	]
 

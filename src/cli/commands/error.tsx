@@ -24,11 +24,11 @@ export interface WrappedError {
 	isWrappedError: true
 	description: string
 	notes: string[]
-	error: Error
+	error?: Error
 }
 
 /** Helper to wrap an error with a human-readable description. */
-export function wrapError(description: string, error: Error, ...notes: string[]): WrappedError {
+export function wrapError(description: string, error?: Error, ...notes: string[]): WrappedError {
 	return {
 		isWrappedError: true,
 		description,
@@ -67,7 +67,7 @@ interface ErrorBoundaryState {
  * 		See: https://github.com/vadimdemedes/ink/issues/234
  *
  * TODO: we need to make sure we exit with a non-zero status code when handleFatalError
- * 		is called.
+ * 		is called. useApp? https://github.com/vadimdemedes/ink#appcontext
  */
 export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
 	public state: ErrorBoundaryState = {}
