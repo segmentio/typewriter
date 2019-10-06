@@ -23,6 +23,7 @@ import { version } from '../../../package.json'
 import { StandardProps, DebugContext } from '../index'
 import { ErrorContext, wrapError } from './error'
 import figures from 'figures'
+import { Init } from './init'
 
 const readFile = promisify(fs.readFile)
 const readdir = promisify(fs.readdir)
@@ -44,9 +45,15 @@ enum Steps {
 	After = 3,
 }
 
-export const Build: React.FC<Props> = ({ config, configPath, production, update }) => {
+export const Build: React.FC<Props> = ({
+	config: currentConfig,
+	configPath,
+	production,
+	update,
+}) => {
 	const [step, setStep] = useState(Steps.UpdatePlan)
 	const [trackingPlans, setTrackingPlans] = useState<RawTrackingPlan[]>([])
+	const [config, setConfig] = useState(currentConfig)
 
 	const onNext = () => setStep(step + 1)
 	function withNextStep<Arg>(f: (arg: Arg) => void) {
@@ -56,9 +63,9 @@ export const Build: React.FC<Props> = ({ config, configPath, production, update 
 		}
 	}
 
+	// If a typewriter.yml hasn't been configured yet, drop the user into the init wizard.
 	if (!config) {
-		// TODO: Run init instead.
-		return null
+		return <Init config={config} configPath={configPath} onDone={setConfig} />
 	}
 
 	return (

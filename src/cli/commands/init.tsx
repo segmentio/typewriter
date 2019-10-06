@@ -25,7 +25,16 @@ import { ErrorContext, wrapError } from './error'
 
 const readir = promisify(fs.readdir)
 
-export const Init: React.FC<StandardProps> = props => {
+interface InitProps extends StandardProps {
+	/**
+	 * Optional handler that is fired after the init wizard finishes building a new config.
+	 *
+	 * Defaults to running a build with the new config.
+	 */
+	onDone?: (config: Config) => void
+}
+
+export const Init: React.FC<InitProps> = props => {
 	const { config } = props
 
 	const [step, setStep] = useState(0)
@@ -40,15 +49,24 @@ export const Init: React.FC<StandardProps> = props => {
 	})
 	const [trackingPlan, setTrackingPlan] = useState<SegmentAPI.TrackingPlan>()
 
-	const onNext = () => [setStep(step + 1)]
+	const onNext = () => setStep(step + 1)
 	const onRestart = () => {
 		setStep(1)
 	}
 
-	function withNextStep<Arg>(f: (arg: Arg) => void) {
+	function withNextStep<Arg>(f?: (arg: Arg) => void) {
 		return (arg: Arg) => {
-			f(arg)
+			if (f) {
+				f(arg)
+			}
 			setStep(step + 1)
+		}
+	}
+
+	function onAcceptSummary(config: Config) {
+		onNext()
+		if (props.onDone) {
+			props.onDone(config)
 		}
 	}
 
@@ -92,11 +110,11 @@ export const Init: React.FC<StandardProps> = props => {
 					token={tokenMetadata.token}
 					workspace={tokenMetadata.workspace!}
 					trackingPlan={trackingPlan!}
-					onConfirm={onNext}
+					onConfirm={onAcceptSummary}
 					onRestart={onRestart}
 				/>
 			)}
-			{step === 7 && <Build {...props} production={false} update={true} />}
+			{step === 7 && !props.onDone && <Build {...props} production={false} update={true} />}
 			{/* TODO: step 8 where we show an example script showing how to import typewriter */}
 		</Box>
 	)
@@ -590,7 +608,7 @@ interface SummaryPromptProps {
 	token: string
 	workspace: SegmentAPI.Workspace
 	trackingPlan: SegmentAPI.TrackingPlan
-	onConfirm: () => void
+	onConfirm: (config: Config) => void
 	onRestart: () => void
 }
 
@@ -612,7 +630,7 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 	const onSelect = async (item: Item) => {
 		if (item.value === 'lgtm') {
 			// Write the updated typewriter.yml config.
-			setIsLoading(false)
+			setIsLoading(true)
 
 			let client = ({
 				sdk,
@@ -628,7 +646,7 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 			}
 			const tp = parseTrackingPlanName(trackingPlan.name)
 			try {
-				await setConfig({
+				const config: Config = {
 					client,
 					trackingPlans: [
 						{
@@ -638,7 +656,10 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 							path,
 						},
 					],
-				})
+				}
+				await setConfig(config)
+				setIsLoading(false)
+				onConfirm(config)
 			} catch (error) {
 				handleFatalError(
 					wrapError(
@@ -649,10 +670,6 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 				)
 				return
 			}
-
-			setIsLoading(true)
-
-			onConfirm()
 		} else {
 			onRestart()
 		}
