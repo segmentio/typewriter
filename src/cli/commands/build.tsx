@@ -400,14 +400,16 @@ interface StepProps {
 const Step: React.FC<StepProps> = ({ name, isSkipped, isRunning, isDone, children }) => {
 	const { debug } = useContext(DebugContext)
 
+	if (isSkipped) {
+		return null
+	}
+
 	return (
 		<Box flexDirection="column">
 			<Color white>
 				<Box width={3} justifyContent="flex-end">
 					{/* In debug mode, skip the Spinner to reduce noise */}
-					{isSkipped ? (
-						<Color grey>⤵</Color>
-					) : isDone ? (
+					{isDone ? (
 						<Color green> ✔</Color>
 					) : isRunning ? (
 						debug ? (
