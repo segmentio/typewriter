@@ -249,17 +249,32 @@ interface ClearFilesProps {
 }
 
 export const ClearFilesStep: React.FC<ClearFilesProps> = ({ config, configPath, step, onDone }) => {
-	const { handleError } = useContext(ErrorContext)
+	const { handleFatalError } = useContext(ErrorContext)
 	const { isRunning, isDone } = useStep(step, Steps.ClearFiles, clearGeneratedFiles, onDone)
 
 	async function clearGeneratedFiles() {
-		await Promise.all(
+		const errors = await Promise.all(
 			config.trackingPlans.map(async trackingPlanConfig => {
 				const path = resolveRelativePath(configPath, trackingPlanConfig.path)
 				await verifyDirectoryExists(path)
-				return clearFolder(path)
+				try {
+					await clearFolder(path)
+				} catch (error) {
+					return wrapError(
+						'Failed to clear generated files',
+						error,
+						`Failed on: '${trackingPlanConfig.path}'`,
+						error.message
+					)
+				}
 			})
 		)
+
+		const error = errors.find(error => isWrappedError(error))
+		if (error) {
+			handleFatalError(error)
+			return null
+		}
 	}
 
 	// clearFolder removes all typewriter-generated files from the specified folder
@@ -282,7 +297,7 @@ export const ClearFilesStep: React.FC<ClearFilesProps> = ({ config, configPath, 
 				// update this logic to handle recursively traversing directores. For now, we just ignore
 				// any directories.
 				if (error.code !== 'EISDIR') {
-					handleError(error)
+					throw error
 				}
 			}
 		}
