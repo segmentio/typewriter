@@ -88,7 +88,7 @@ async function typewriterLibraryProperties(args: CLIArguments, cfg: Config | und
 		},
 		command: getCommand(args),
 		is_ci: Boolean(process.env.CI),
-		token_method: await getTokenMethod(cfg),
+		token_method: await getTokenMethod(cfg, args.config),
 		tracking_plan:
 			cfg && cfg.trackingPlans && cfg.trackingPlans.length > 0
 				? {

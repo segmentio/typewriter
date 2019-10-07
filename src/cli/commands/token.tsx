@@ -14,8 +14,8 @@ export const Token: React.FC<StandardProps> = props => {
 
 	useEffect(() => {
 		async function effect() {
-			setMethod(await getTokenMethod(props.config))
-			setTokens(await listTokens(props.config))
+			setMethod(await getTokenMethod(props.config, props.configPath))
+			setTokens(await listTokens(props.config, props.configPath))
 			setIsLoading(false)
 		}
 

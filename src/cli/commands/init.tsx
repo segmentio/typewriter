@@ -35,7 +35,7 @@ interface InitProps extends StandardProps {
 }
 
 export const Init: React.FC<InitProps> = props => {
-	const { config } = props
+	const { config, configPath } = props
 
 	const [step, setStep] = useState(0)
 	const [sdk, setSDK] = useState(config ? config.client.sdk : SDK.WEB)
@@ -90,7 +90,12 @@ export const Init: React.FC<InitProps> = props => {
 				/>
 			)}
 			{step === 3 && (
-				<APITokenPrompt step={step} config={config} onSubmit={withNextStep(setTokenMetadata)} />
+				<APITokenPrompt
+					step={step}
+					config={config}
+					configPath={configPath}
+					onSubmit={withNextStep(setTokenMetadata)}
+				/>
 			)}
 			{step === 4 && (
 				<TrackingPlanPrompt
@@ -351,11 +356,12 @@ const PathPrompt: React.FC<PathPromptProps> = ({ step, path: initialPath, onSubm
 interface APITokenPromptProps {
 	step: number
 	config?: Config
+	configPath: string
 	onSubmit: (tokenMetadata: { token: string; workspace: SegmentAPI.Workspace }) => void
 }
 
 /** A prompt to walk a user through getting a new Segment API token. */
-const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, onSubmit }) => {
+const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPath, onSubmit }) => {
 	const [state, setState] = useState({
 		token: '',
 		canBeSet: true,
@@ -369,8 +375,8 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, onSubmit 
 	useEffect(() => {
 		async function effect() {
 			try {
-				const tokens = await listTokens(config)
-				const method = await getTokenMethod(config)
+				const tokens = await listTokens(config, configPath)
+				const method = await getTokenMethod(config, configPath)
 				const token = method === tokens.script.method ? tokens.script : tokens.file
 
 				setState({

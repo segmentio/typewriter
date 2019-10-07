@@ -3,7 +3,6 @@ export {
 	setConfig,
 	resolveRelativePath,
 	verifyDirectoryExists,
-	assertHasToken,
 	getToken,
 	getTokenMethod,
 	listTokens,
@@ -12,3 +11,4 @@ export {
 	storeToken,
 } from './config'
 export { Config, TrackingPlanConfig } from './schema'
+export { runScript, Scripts } from './scripts'
