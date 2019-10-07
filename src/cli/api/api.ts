@@ -52,7 +52,7 @@ export async function fetchTrackingPlan(options: {
 	token: string
 }): Promise<SegmentAPI.TrackingPlan> {
 	const url = `workspaces/${options.workspaceSlug}/tracking-plans/${options.id}`
-	const response = (await apiGet(url, options.token)) as SegmentAPI.GetTrackingPlanResponse
+	const response = await apiGet<SegmentAPI.GetTrackingPlanResponse>(url, options.token)
 
 	// eslint-disable-next-line @typescript-eslint/camelcase
 	response.create_time = new Date(response.create_time)
@@ -69,7 +69,7 @@ export async function fetchTrackingPlans(options: {
 	token: string
 }): Promise<SegmentAPI.TrackingPlan[]> {
 	const url = `workspaces/${options.workspaceSlug}/tracking-plans`
-	const response = (await apiGet(url, options.token)) as SegmentAPI.ListTrackingPlansResponse
+	const response = await apiGet<SegmentAPI.ListTrackingPlansResponse>(url, options.token)
 
 	// eslint-disable-next-line @typescript-eslint/camelcase
 	return response.tracking_plans.map(tp => ({
@@ -102,7 +102,7 @@ export async function fetchAllTrackingPlans(options: {
 
 // fetchWorkspaces lists all workspaces found with a given Segment API token.
 export async function fetchWorkspaces(options: { token: string }): Promise<SegmentAPI.Workspace[]> {
-	const resp = (await apiGet('workspaces', options.token)) as SegmentAPI.ListWorkspacesResponse
+	const resp = await apiGet<SegmentAPI.ListWorkspacesResponse>('workspaces', options.token)
 
 	return resp.workspaces.map(w => ({
 		...w,
@@ -144,7 +144,7 @@ export async function validateToken(token: string | undefined): Promise<TokenVal
 	return tokenValidationCache[token]
 }
 
-async function apiGet(url: string, token: string): Promise<object> {
+async function apiGet<Response>(url: string, token: string): Promise<Response> {
 	const resp = got(url, {
 		baseUrl: 'https://platform.segmentapis.com/v1beta',
 		headers: {
@@ -152,7 +152,7 @@ async function apiGet(url: string, token: string): Promise<object> {
 			Authorization: `Bearer ${token.trim()}`,
 		},
 		json: true,
-		timeout: 5000, // ms
+		timeout: 10000, // ms
 	})
 
 	try {

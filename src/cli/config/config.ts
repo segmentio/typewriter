@@ -152,7 +152,7 @@ export async function listTokens(cfg: Partial<Config> | undefined): Promise<List
 		const path = resolve(homedir(), '.typewriter')
 		const token = await readFile(path, 'utf-8')
 		output.file.token = token.trim()
-	} catch (e) {
+	} catch (error) {
 		// Ignore errors if ~/.typewriter doesn't exist
 	}
 
@@ -163,8 +163,16 @@ export async function listTokens(cfg: Partial<Config> | undefined): Promise<List
 		// Since we don't know if this token script has side effects, cache (in-memory) the result
 		// s.t. we only execute it once per CLI invocation.
 		if (!tokenScriptCache[tokenScript]) {
-			const { stdout } = await exec(tokenScript).catch(err => {
-				return { stdout: '' }
+			const { stdout } = await exec(tokenScript, { timeout: 5000 }).catch(err => {
+				const { stderr = '' } = err
+				const firstStdErrLine = stderr.split('\n')[0]
+				// This child process will be SIGTERM-ed if it times out.
+				throw wrapError(
+					err.signal === 'SIGTERM' ? 'Token script timed out' : 'Token script failed',
+					err,
+					`Tried running: '${tokenScript}'`,
+					firstStdErrLine
+				)
 			})
 
 			if (!!stdout) {

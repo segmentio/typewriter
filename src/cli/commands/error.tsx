@@ -37,11 +37,15 @@ export function wrapError(description: string, error?: Error, ...notes: string[]
 	}
 }
 
-export function isWrappedError(error: unknown) {
+export function isWrappedError(error: unknown): error is WrappedError {
 	return !!error && typeof error === 'object' && (error as any).isWrappedError
 }
 
 export function toUnexpectedError(error: Error): WrappedError {
+	if (isWrappedError(error)) {
+		return error
+	}
+
 	return wrapError('An unexpected error occurred.', error, error.message)
 }
 
