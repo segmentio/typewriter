@@ -118,7 +118,7 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
 	// The various warning states we enter while loading Tracking Plans:
 	const [failedToFindToken, setFailedToFindToken] = useState(false)
 	const [fellbackToUpdate, setFellbackToUpdate] = useState(false)
-	const [apiGetFailed, setAPIGetFailed] = useState(false)
+	const [apiError, setAPIError] = useState<string | undefined>()
 	const { handleFatalError, handleError } = useContext(ErrorContext)
 	const { isRunning, isDone } = useStep(step, Steps.UpdatePlan, loadTrackingPlans, onDone)
 
@@ -149,9 +149,12 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
 							token,
 						})
 					} catch (error) {
-						// TODO: more reliable network connection detection
 						handleError(error)
-						setAPIGetFailed(true)
+						if (isWrappedError(error)) {
+							setAPIError(error.description)
+						} else {
+							setAPIError('API request failed')
+						}
 					}
 
 					if (newTrackingPlan) {
@@ -205,8 +208,10 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
 			{failedToFindToken && (
 				<Note isWarning>No valid API token, using local {s ? 'copies' : 'copy'} instead.</Note>
 			)}
-			{apiGetFailed && (
-				<Note isWarning>API request failed, using local {s ? 'copies' : 'copy'} instead.</Note>
+			{!!apiError && (
+				<Note isWarning>
+					{apiError}. Using local {s ? 'copies' : 'copy'} instead.
+				</Note>
 			)}
 			{trackingPlans.map(({ trackingPlan, deltas }) => (
 				<Box flexDirection="column" key={trackingPlan.url}>

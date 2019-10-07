@@ -131,12 +131,12 @@ export async function validateToken(token: string | undefined): Promise<TokenVal
 			const workspaces = await fetchWorkspaces({ token })
 			result.isValid = workspaces.length > 0
 			result.workspace = workspaces.length === 1 ? workspaces[0] : undefined
-		} catch (err) {
-			// If the request failed, but we wrapped it, then we should surface the error.
-			if (isWrappedError(err)) {
-				throw err
+		} catch (error) {
+			// Check if this was a 403 error, which means the token is invalid.
+			// Otherwise, surface the error becuase something else went wrong.
+			if (!isWrappedError(error) || !error.description.toLowerCase().includes('denied')) {
+				throw error
 			}
-			// Otherwise, we can safely assume that the token was invalid.
 		}
 		tokenValidationCache[token] = result
 	}
@@ -158,11 +158,22 @@ async function apiGet<Response>(url: string, token: string): Promise<Response> {
 	try {
 		const { body } = await resp
 		return body
-	} catch (err) {
-		if (err.code === 'ETIMEDOUT') {
-			throw wrapError('Segment API request timed out', err, `Querying: ${url}`)
+	} catch (error) {
+		if (error.statusCode === 401 || error.statusCode === 403) {
+			throw wrapError(
+				'Permission denied by Segment API',
+				error,
+				`Failed while querying the ${url} endpoint`,
+				"Verify you are using the right API token by running 'npx typewriter tokens'"
+			)
+		} else if (error.code === 'ETIMEDOUT') {
+			throw wrapError(
+				'Segment API request timed out',
+				error,
+				`Failed while querying the ${url} endpoint`
+			)
 		}
 
-		throw err
+		throw error
 	}
 }
