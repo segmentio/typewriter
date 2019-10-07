@@ -47,15 +47,11 @@ function toYargsHandler<P = {}>(
 	return async (args: CLIArguments) => {
 		// The '*' command is a catch-all. We want to fail the CLI if an unknown command is
 		// supplied ('yarn typewriter footothebar'), instead of just running the default command.
-		if (
-			cliOptions &&
-			cliOptions.validateDefault &&
-			args._.length !== 0 &&
-			!['update', 'u'].includes(args._[0])
-		) {
-			// TODO: better error reporting here.
-			throw new Error(`Unknown command: '${args._[0]}'`)
-		}
+		const isValidCommand =
+			!cliOptions ||
+			!cliOptions.validateDefault ||
+			args._.length === 0 ||
+			['update', 'u'].includes(args._[0])
 
 		const f = async (config: Config | undefined) => {
 			let Component = Command
@@ -65,6 +61,7 @@ function toYargsHandler<P = {}>(
 				// the `version` component instead.
 				Component = Version as typeof Command
 			} else if (
+				!isValidCommand ||
 				!!args.help ||
 				!!args.h ||
 				args._.includes('help') ||
@@ -83,6 +80,11 @@ function toYargsHandler<P = {}>(
 				{ debug: !!args.debug }
 			)
 			await waitUntilExit()
+
+			// If this isn't a valid command, make sure we exit with a non-zero exit code.
+			if (!isValidCommand) {
+				process.exit(1)
+			}
 		}
 
 		try {

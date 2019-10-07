@@ -393,7 +393,18 @@ export const AfterStep: React.FC<AfterStepProps> = ({ config, configPath, step, 
 	return (
 		<Step name={stepName} isRunning={isRunning} isDone={isDone} isSkipped={!afterScript}>
 			{afterScript && <Note>{afterScript}</Note>}
-			{error && <Note isWarning>{error}</Note>}
+			{error && (
+				<>
+					<Note isWarning>{error.description}</Note>
+					{error.notes
+						.filter(n => !!n)
+						.map(n => (
+							<Note isWarning key={n}>
+								{n}
+							</Note>
+						))}
+				</>
+			)}
 		</Step>
 	)
 }
