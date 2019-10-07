@@ -1,12 +1,14 @@
 #!/usr/bin/env node
+
+// Default to production, so that React error messages are not shown.
+// Note: this must happen before we import React.
+process.env.NODE_ENV = process.env.NODE_ENV || 'production'
+
 import React, { createContext } from 'react'
 import { render } from 'ink'
 import { Token, Version, Build, Help, Init, ErrorBoundary } from './commands'
 import { reportAnalytics } from './reportAnalytics'
 import { Config } from './config'
-
-// Default to production, so that React error messages are not shown.
-process.env.NODE_ENV = process.env.NODE_ENV || 'production'
 
 export interface StandardProps {
 	configPath: string

@@ -41,7 +41,7 @@ export function isWrappedError(error: unknown) {
 	return !!error && typeof error === 'object' && (error as any).isWrappedError
 }
 
-function toUnexpectedError(error: Error): WrappedError {
+export function toUnexpectedError(error: Error): WrappedError {
 	return wrapError('An unexpected error occurred.', error, error.message)
 }
 
@@ -139,16 +139,17 @@ const ErrorComponent: React.FC<ErrorComponentProps> = ({ error }) => {
 					{figures.cross} Error: {error.description}
 				</Color>
 			</Box>
-			{error.notes.map(n => (
-				<Box key={n}>
-					<Box marginLeft={1} marginRight={1}>
-						<Color grey>{figures.arrowRight}</Color>
+			{error.notes &&
+				error.notes.map(n => (
+					<Box key={n}>
+						<Box marginLeft={1} marginRight={1}>
+							<Color grey>{figures.arrowRight}</Color>
+						</Box>
+						<Box width={80} textWrap="wrap">
+							<Color grey>{n}</Color>
+						</Box>
 					</Box>
-					<Box width={80} textWrap="wrap">
-						<Color grey>{n}</Color>
-					</Box>
-				</Box>
-			))}
+				))}
 			<Box height={2} width={80} textWrap="wrap" marginTop={1}>
 				<Color grey>
 					If you are unable to resolve this issue,{' '}

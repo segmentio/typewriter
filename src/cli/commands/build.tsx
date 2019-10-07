@@ -21,7 +21,7 @@ import { join } from 'path'
 import * as childProcess from 'child_process'
 import { version } from '../../../package.json'
 import { StandardProps, DebugContext } from '../index'
-import { ErrorContext, wrapError } from './error'
+import { ErrorContext, wrapError, toUnexpectedError } from './error'
 import figures from 'figures'
 import { Init } from './init'
 
@@ -160,8 +160,8 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
 
 			newTrackingPlan = newTrackingPlan || previousTrackingPlan
 			if (!newTrackingPlan) {
-				handleFatalError(wrapError('No local copy of your Tracking Plan'))
-				return []
+				handleFatalError(wrapError('Unable to fetch Tracking Plan from local cache or API'))
+				return null
 			}
 
 			const { events } = newTrackingPlan.rules
@@ -198,10 +198,10 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
 				<Note isWarning>No local copy of this Tracking Plan, fetching from API.</Note>
 			)}
 			{failedToFindToken && (
-				<Note isWarning>No valid API token, using local copy of Tracking Plan instead.</Note>
+				<Note isWarning>No valid API token, using local {s ? 'copies' : 'copy'} instead.</Note>
 			)}
 			{apiGetFailed && (
-				<Note isWarning>API request failed, using local copy of Tracking Plan instead.</Note>
+				<Note isWarning>API request failed, using local {s ? 'copies' : 'copy'} instead.</Note>
 			)}
 			{trackingPlans.map(({ trackingPlan, deltas }) => (
 				<Box flexDirection="column" key={trackingPlan.url}>
@@ -371,7 +371,7 @@ export const AfterStep: React.FC<AfterStepProps> = ({ config, configPath, step, 
 function useStep<Arg>(
 	step: Steps,
 	thisStep: Steps,
-	f: () => Promise<Arg>,
+	f: () => Promise<Arg | null>,
 	onDone: (arg: Arg) => void
 ) {
 	const { handleFatalError } = useContext(ErrorContext)
@@ -379,9 +379,13 @@ function useStep<Arg>(
 
 	async function runStep() {
 		try {
-			onDone(await f())
+			const result = await f()
+			// If a fatal error occurred, return null to skip any further updates to this component.
+			if (result !== null) {
+				onDone(result)
+			}
 		} catch (error) {
-			handleFatalError(error)
+			handleFatalError(toUnexpectedError(error))
 		}
 	}
 
