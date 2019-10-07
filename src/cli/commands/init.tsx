@@ -381,14 +381,14 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 
 				setState({
 					...state,
-					token: token.token || '',
+					token: token.isValidToken ? token.token! : '',
 					isInvalid: false,
 					workspace: token.workspace || state.workspace,
-					foundCachedToken: !!token.token,
+					foundCachedToken: token.isValidToken,
 					isLoading: false,
-					// If the user already has a typewriter.yml with a valid token,
+					// If the user already has a typewriter.yml with a valid token script,
 					// then let the user know that they can't overwrite it.
-					canBeSet: method === 'file',
+					canBeSet: method !== tokens.script.method,
 				})
 			} catch (error) {
 				handleFatalError(error)
@@ -421,11 +421,12 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 				return
 			}
 
-			onSubmit({ token: state.token, workspace: state.workspace! })
+			onSubmit({ token: state.token, workspace: result.workspace! })
 		} else {
 			setState({
 				...state,
 				token: '',
+				workspace: undefined,
 				isInvalid: true,
 				isLoading: false,
 			})
@@ -440,6 +441,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 				...state,
 				foundCachedToken: false,
 				token: '',
+				workspace: undefined,
 				isInvalid: false,
 			})
 		} else {

@@ -1,5 +1,5 @@
 # Bootstrapping typewriter
 
-We use `typewriter` for analytics in `typewriter`. Because of that, we store a copy of the generated client in git, to avoid a circular dependency during the build step.
+We use `typewriter` for strongly-typed analytics in the `typewriter` CLI. While locally developing on Typewriter, feel free to test it on Typewriter itself (by running `yarn dev`).
 
-Keep in mind that you don't need to check-in the generated client in your application. Simply include a call to `typewriter build` in your build step to generate all the clients you need.
+If you end up in a bad state, where you can't run Typewriter to build this client because you don't have this client, then use the latest stable version of Typewriter: `npx typewriter`.
