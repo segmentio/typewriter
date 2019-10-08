@@ -204,13 +204,9 @@ export default class HomePage extends React.Component {
 
 		// There is no generated function for `aMissingAnalyticsCall`, but the JS Proxy should
 		// handle this and avoid a crash.
-		typewriter.aMissingAnalyticsCall({
-			userId,
-		})
+		typewriter.aMissingAnalyticsCall()
 		// If this program doesn't crash, this event will be fired to tell the e2e suite that
 		// proxy-behavior works.
-		typewriter.unknownEventHandlerCalled({
-			userId,
-		})
+		typewriter.unknownEventHandlerCalled()
 	}
 }
