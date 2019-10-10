@@ -18,6 +18,9 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "yarn.lock" }}
+      - run:
+          name: Bootstrap Typewriter
+          command: yarn typewriter build
       - persist_to_workspace:
           root: .
           paths: [.]
