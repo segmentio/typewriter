@@ -17,8 +17,7 @@
     "update": "make update",
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "release": "yarn run build && np",
-    "prerelease": "yarn run build && np prerelease --any-branch --tag next --no-release-draft",
-    "postinstall": "snyk protect"
+    "prerelease": "yarn run build && np prerelease --any-branch --tag next --no-release-draft"
   },
   "engines": {
     "node": ">=0.10.15"
@@ -60,7 +59,7 @@
     "figures": "^3.0.0",
     "fuse.js": "^3.4.5",
     "got": "^9.6.0",
-    "handlebars": "^4.1.2",
+    "handlebars": "^4.3.0",
     "ink": "^2.5.0",
     "ink-link": "^1.0.0",
     "ink-select-input": "^3.1.2",

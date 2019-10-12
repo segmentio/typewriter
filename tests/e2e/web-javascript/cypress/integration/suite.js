@@ -9,14 +9,11 @@ it('Fire the standard Typewriter test suite', function() {
 	}).as('trackCall')
 
 	cy.wait(500)
-
 	cy.visit(`http://localhost:${PORT}`)
-
 	cy.wait(500)
 
 	// Wait for analytics.js requests to finish.
-	const resp = cy.wait(Array(NUM_TRACK_CALLS).fill().map(_ => '@trackCall'))
-	console.log('track call fired: ', resp)
+	cy.wait(Array(NUM_TRACK_CALLS).fill().map(_ => '@trackCall'))
 
 	expect(true).to.equal(true)
 })
