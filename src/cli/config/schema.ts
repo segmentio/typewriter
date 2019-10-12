@@ -87,8 +87,6 @@ export const validateConfig = (rawConfig: object): Config => {
 		convert: false,
 	})
 	if (!!result.error) {
-		// TODO: think of a better way to throw an error, such that we can render it better
-		// than the way yargs handles uncaught errors. Catch and render?
 		throw new Error(result.error.annotate())
 	}
 

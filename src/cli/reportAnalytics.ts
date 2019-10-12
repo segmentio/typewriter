@@ -118,7 +118,7 @@ async function reportError(
 				properties: {
 					...(await typewriterLibraryProperties(args, cfg)),
 					error_string: errorString,
-					// TODO:
+					// TODO(colinking): fix error reporting
 					unexpected: true,
 					error,
 				},

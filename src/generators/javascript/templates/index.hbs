@@ -261,6 +261,7 @@ export default new Proxy<typeof clientAPI>(clientAPI, {
 		return () => {
 			console.warn(`⚠️  You made an analytics call (${String(method)}) that can't be found. Either:
     a) Re-generate your typewriter client: \`npm run typewriter\`
+		{{!-- TODO(colinking): provide workspace / tp id --}}
     b) Add it to your Tracking Plan: https://app.segment.com/TODO/tracking-plans/TODO`)
 			const a = analytics()
 			if (a) {

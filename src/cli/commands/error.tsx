@@ -70,7 +70,7 @@ interface ErrorBoundaryState {
  * NOTE: this component will not overwrite the component that threw the error.
  * 		See: https://github.com/vadimdemedes/ink/issues/234
  *
- * TODO: we need to make sure we exit with a non-zero status code when handleFatalError
+ * TODO(colinking): we need to make sure we exit with a non-zero status code when handleFatalError
  * 		is called. useApp? https://github.com/vadimdemedes/ink#appcontext
  */
 export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
