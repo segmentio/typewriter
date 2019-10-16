@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import got from 'got'
 import { SDK, Language } from '../../src/generators/options'
-import { validateSegmentEvent, events, exactArray } from './validation'
 import Joi from '@hapi/joi'
+import { remove } from 'lodash'
 
 const SIDECAR_ADDRESS = 'http://localhost:8765'
 
@@ -16,6 +16,24 @@ const sdk: SDK = process.env.SDK as SDK
 const language: Language = process.env.LANGUAGE as Language
 const isDevelopment: boolean = process.env.IS_DEVELOPMENT === 'true'
 
+// events contains all events intercepted by segmentio/mock.
+declare type Event = object
+export const events: Event[] = []
+
+interface Expectation {
+	name: string
+	properties?: Joi.SchemaMap
+}
+
+// Joi schema helper for expecting exact matches on array values.
+// It's a bit confusing since arrays are used as union schemas,
+// not exact matches by default.
+function exactArray<T>(arr: T[]): Joi.ArraySchema {
+	return Joi.array()
+		.ordered(arr)
+		.length(arr.length)
+}
+
 describe('e2e tests', () => {
 	const testCases: {
 		// The name of this test case.
@@ -24,15 +42,7 @@ describe('e2e tests', () => {
 		// We document those reasons below and skip the associated tests in the suite.
 		skip?: boolean
 		// The set of events we expect to have been captured by `segmentio/mock`.
-		expect:
-			| {
-					name: string
-					properties?: Joi.SchemaMap
-			  }
-			| {
-					name: string
-					properties?: Joi.SchemaMap
-			  }[]
+		expect: Expectation | Expectation[]
 	}[] = [
 		{
 			// For clients where a shared analytics instance (window.analytics, sharedAnalytics, etc)
@@ -92,12 +102,6 @@ describe('e2e tests', () => {
 					'required string': null,
 					'required string with regex': null,
 				},
-			},
-		},
-		{
-			name: 'sends an event with every supported type (nullable + required)',
-			expect: {
-				name: 'Every Nullable Required Type',
 			},
 		},
 		{
@@ -344,8 +348,29 @@ describe('e2e tests', () => {
 		// Do a sanity check to make sure our client isn't overwriting any fields that
 		// are usually set by the SDK itself.
 		for (let event of events) {
-			const error = validateSegmentEvent(event)
-			expect(error).toBe(undefined)
+			const resp = Joi.validate(
+				event,
+				Joi.object().keys({
+					properties: Joi.object(),
+					event: Joi.string(),
+					context: Joi.object().keys({
+						library: Joi.object().keys({
+							name: Joi.string(),
+							version: Joi.string(),
+						}),
+						typewriter: Joi.object().keys({
+							language: Joi.string(),
+							version: Joi.string(),
+						}),
+					}),
+					type: Joi.string(),
+				}),
+				{
+					abortEarly: false,
+					allowUnknown: true,
+				}
+			)
+			expect(resp.error).toBeNull()
 		}
 	})
 
@@ -355,7 +380,38 @@ describe('e2e tests', () => {
 		}
 
 		test(testCase.name, () => {
-			// TODO(colinking)
+			const expectations = ([] as Expectation[]).concat(testCase.expect)
+			const expectationsByName = expectations.reduce<Record<string, Joi.SchemaMap[]>>(
+				(m, { name, properties }) => {
+					return {
+						...m,
+						[name]: (m[name] || []).concat(properties || {}),
+					}
+				},
+				{}
+			)
+
+			for (const [name, propertySchemas] of Object.entries(expectationsByName)) {
+				const matchingEvents = remove(events, v => v['type'] === 'track' && v['event'] === name)
+				const schemas = propertySchemas.map(ps =>
+					Joi.object().keys({
+						properties: Joi.object()
+							.keys(ps)
+							.unknown(false),
+					})
+				)
+				// For simplicity, assume the events are fired in-order relative to how they're
+				// specified above. If this is flaky, we remove this requirement.
+				expect(matchingEvents).toHaveLength(schemas.length)
+				for (const [i, event] of matchingEvents.entries()) {
+					const schema = schemas[i]
+					let resp = Joi.validate(event, schema, {
+						abortEarly: false,
+						allowUnknown: true,
+					})
+					expect(resp.error).toBeNull()
+				}
+			}
 		})
 	}
 
