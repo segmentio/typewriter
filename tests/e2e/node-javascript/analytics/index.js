@@ -875,7 +875,7 @@ exports.default = new Proxy(clientAPI, {
 			console.warn(
 				'\u26A0\uFE0F  You made an analytics call (' +
 					String(method) +
-					") that can't be found. Either:\n    a) Re-generate your typewriter client: `npm run typewriter`\n    b) Add it to your Tracking Plan: https://app.segment.com/TODO/tracking-plans/TODO"
+					") that can't be found. Either:\n    a) Re-generate your typewriter client: `npx typewriter`\n    b) Add it to your Tracking Plan: https://app.segment.com/segment_prod/protocols/tracking-plans/rs_1N9oTnc5O8cv1peY65iXsSPnzGP"
 			)
 			var a = analytics()
 			if (a) {

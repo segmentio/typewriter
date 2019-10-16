@@ -20,6 +20,7 @@ export interface RawTrackingPlan {
 }
 
 export interface TrackingPlan {
+	url: string
 	trackCalls: {
 		raw: JSONSchema7
 		schema: Schema
@@ -30,6 +31,7 @@ export interface BaseRootContext<T extends object, O extends object, P extends o
 	isDevelopment: boolean
 	language: string
 	typewriterVersion: string
+	trackingPlanURL: string
 	tracks: (T & BaseTrackCallContext<P>)[]
 	objects: (O & BaseObjectContext<P>)[]
 }
@@ -138,6 +140,7 @@ export interface GenOptions {
 
 export async function gen(trackingPlan: RawTrackingPlan, options: GenOptions): Promise<File[]> {
 	const parsedTrackingPlan = {
+		url: trackingPlan.url,
 		trackCalls: trackingPlan.trackCalls.map(s => {
 			const sanitizedSchema = {
 				$schema: 'http://json-schema.org/draft-07/schema#',
@@ -173,6 +176,7 @@ async function runGenerator<R extends object, T extends object, O extends object
 		isDevelopment: options.isDevelopment,
 		language: options.client.language,
 		typewriterVersion: options.typewriterVersion,
+		trackingPlanURL: trackingPlan.url,
 		tracks: [],
 		objects: [],
 	}
