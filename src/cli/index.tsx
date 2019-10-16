@@ -99,7 +99,12 @@ function toYargsHandler<P = {}>(
 					debug: !!args.debug,
 				}
 			)
-			await waitUntilExit()
+			try {
+				await waitUntilExit()
+			} catch {
+				// Errors are handled/reported in ErrorBoundary.
+				process.exit(1)
+			}
 		}
 	}
 }

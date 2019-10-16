@@ -2,8 +2,8 @@
  * For Segmenters, see:
  *   https://paper.dropbox.com/doc/Typewriter-Error-Paths--AlUBLKIIcRc_9UU3_sgAh~9YAg-bdjW1EOlEHeomztWLrYWk
  */
-import React, { createContext } from 'react'
-import { Box, Color } from 'ink'
+import React, { createContext, useEffect } from 'react'
+import { Box, Color, useApp } from 'ink'
 import Link from 'ink-link'
 import figures from 'figures'
 import { version } from '../../../package.json'
@@ -67,11 +67,9 @@ interface ErrorBoundaryState {
  * We use a class component here, because we need access to the getDerivedStateFromError
  * lifecycle method, which is not yet supported by React Hooks.
  *
- * NOTE: this component will not overwrite the component that threw the error.
- * 		See: https://github.com/vadimdemedes/ink/issues/234
- *
- * TODO(colinking): we need to make sure we exit with a non-zero status code when handleFatalError
- * 		is called. useApp? https://github.com/vadimdemedes/ink#appcontext
+ * NOTE: it's important that the CLI runs in NODE_ENV=production when packaged up,
+ *    otherwise, React will print a warning preventing this component from overwriting
+ *    the error-ed component. See: https://github.com/vadimdemedes/ink/issues/234
  */
 export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
 	public state: ErrorBoundaryState = {}
@@ -136,6 +134,12 @@ interface ErrorComponentProps {
 }
 
 const ErrorComponent: React.FC<ErrorComponentProps> = ({ error }) => {
+	const { exit } = useApp()
+	// Wrap the call to `exit` in a `useEffect` so that it fires after rendering.
+	useEffect(() => {
+		exit(error.error)
+	}, [])
+
 	return (
 		<Box flexDirection="column" marginLeft={2} marginRight={2} marginTop={1} marginBottom={1}>
 			<Box width={80} textWrap="wrap">
