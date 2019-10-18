@@ -17,7 +17,7 @@ const language: Language = process.env.LANGUAGE as Language
 const isDevelopment: boolean = process.env.IS_DEVELOPMENT === 'true'
 
 // events contains all events intercepted by segmentio/mock.
-declare type Event = object
+declare type Event = Record<string, unknown>
 export const events: Event[] = []
 
 interface Expectation {
@@ -40,6 +40,7 @@ describe('e2e tests', () => {
 		name: string
 		// Some clients don't support the full standard test suite, for various reasons.
 		// We document those reasons below and skip the associated tests in the suite.
+		// TODO: skip -> if (blocklist -> allowlist)
 		skip?: boolean
 		// The set of events we expect to have been captured by `segmentio/mock`.
 		expect: Expectation | Expectation[]
@@ -51,7 +52,7 @@ describe('e2e tests', () => {
 			name: 'a missing analytics instance triggers an error',
 			// The analytics-node SDK requires you to initialize an analytics instance before making any
 			// calls. Therefore, we can't provide a sane default with standard behavior.
-			skip: sdk === SDK.NODE,
+			skip: sdk !== SDK.NODE,
 			expect: {
 				name: 'Analytics Instance Missing Threw Error',
 			},
@@ -90,6 +91,7 @@ describe('e2e tests', () => {
 		},
 		{
 			name: 'sends an event with every supported type (nullable + required)',
+			skip: sdk === SDK.IOS,
 			expect: {
 				name: 'Every Nullable Required Type',
 				properties: {
@@ -278,11 +280,14 @@ describe('e2e tests', () => {
 			// exist.
 			skip: ![Language.JAVASCRIPT, Language.TYPESCRIPT].includes(language),
 			expect: {
-				name: 'Unknown Event Handler Called',
+				name: 'Unknown Analytics Call Fired',
+				properties: {
+					method: 'aMissingAnalyticsCall',
+				},
 			},
 		},
 		{
-			name: '[development] the default violation handler is called upon a violation',
+			name: 'the default violation handler throws upon a violation',
 			// In development mode, we run full JSON Schema validation on payloads and
 			// surface any JSON Schema violations to a configurable handler.
 			// Note: we can't easily detect in our e2e tests when the default violation handler is
@@ -291,7 +296,7 @@ describe('e2e tests', () => {
 			// the tests. Currently, the only environment that can do this is Node, because there's
 			// a standard in the community around setting NODE_ENV=test (or testing) when a test suite
 			// is running.
-			skip: !isDevelopment || sdk !== SDK.NODE,
+			skip: !(isDevelopment && sdk === SDK.NODE),
 			expect: [
 				{
 					name: 'Default Violation Handler Called',
@@ -299,33 +304,37 @@ describe('e2e tests', () => {
 			],
 		},
 		{
-			name: '[development] when set, a custom violation handler is called upon a violation',
-			// We have not yet added support for run-time validation to the iOS client.
-			skip: !isDevelopment || sdk === SDK.IOS,
-			expect: [
-				{
-					name: 'Custom Violation Handler Called',
+			name: 'the default violation handler fires events upon a violation',
+			// The default violation handler should always fire events, except for in Node.js
+			// environments where we can detect if you are running tests.
+			// Note: we have not yet added support for run-time validation to the iOS client,
+			// so we cannot detect violations.
+			skip: (isDevelopment && sdk === SDK.NODE) || sdk === SDK.IOS,
+			expect: {
+				name: 'Default Violation Handler',
+				properties: {
+					'regex property': 'Not a Real Morty',
 				},
-			],
+			},
 		},
 		{
-			name: '[production] events with violations are fired anyway in production builds',
+			name: 'when set, a custom violation handler is called upon a violation',
 			// We have not yet added support for run-time validation to the iOS client.
-			skip: isDevelopment || sdk === SDK.IOS,
-			expect: [
-				{
-					name: 'Default Violation Handler',
-					properties: {
-						'regex property': 'Not a Real Morty',
-					},
+			skip: !isDevelopment || sdk === SDK.IOS,
+			expect: {
+				name: 'Custom Violation Handler Called',
+			},
+		},
+		{
+			name: 'when set, a custom violation handler fires events upon a violation',
+			// We have not yet added support for run-time validation to the iOS client.
+			skip: sdk === SDK.IOS,
+			expect: {
+				name: 'Custom Violation Handler',
+				properties: {
+					'regex property': 'Not a Real Morty',
 				},
-				{
-					name: 'Custom Violation Handler',
-					properties: {
-						'regex property': 'Not a Real Morty',
-					},
-				},
-			],
+			},
 		},
 		// TODO: can we add tests to validate the behavior of the default violation handler
 		// outside of test mode (NODE_ENV!=test)?
@@ -334,7 +343,7 @@ describe('e2e tests', () => {
 	]
 
 	// Fetch all analytics calls that were fired after running the client's e2e test application.
-	beforeAll(async () => {
+	test('expect all events to be valid', async () => {
 		const { body } = await got(`${SIDECAR_ADDRESS}/messages`, {
 			json: true,
 			timeout: 3000, // ms
@@ -368,18 +377,16 @@ describe('e2e tests', () => {
 				{
 					abortEarly: false,
 					allowUnknown: true,
+					presence: 'required',
 				}
 			)
-			expect(resp.error).toBeNull()
+			expect(resp.error, JSON.stringify(event, undefined, 2)).toBeNull()
 		}
 	})
 
 	for (const testCase of testCases) {
-		if (!!testCase.skip) {
-			continue
-		}
-
-		test(testCase.name, () => {
+		const t = testCase.skip ? test.skip : test
+		t(testCase.name, () => {
 			const expectations = ([] as Expectation[]).concat(testCase.expect)
 			const expectationsByName = expectations.reduce<Record<string, Joi.SchemaMap[]>>(
 				(m, { name, properties }) => {
@@ -392,7 +399,7 @@ describe('e2e tests', () => {
 			)
 
 			for (const [name, propertySchemas] of Object.entries(expectationsByName)) {
-				const matchingEvents = remove(events, v => v['type'] === 'track' && v['event'] === name)
+				const matchingEvents = remove(events, v => v.type === 'track' && v.event === name)
 				const schemas = propertySchemas.map(ps =>
 					Joi.object().keys({
 						properties: Joi.object()
@@ -400,22 +407,25 @@ describe('e2e tests', () => {
 							.unknown(false),
 					})
 				)
-				// For simplicity, assume the events are fired in-order relative to how they're
-				// specified above. If this is flaky, we remove this requirement.
+
 				expect(matchingEvents).toHaveLength(schemas.length)
-				for (const [i, event] of matchingEvents.entries()) {
-					const schema = schemas[i]
-					let resp = Joi.validate(event, schema, {
-						abortEarly: false,
-						allowUnknown: true,
+				for (const event of matchingEvents) {
+					const i = schemas.findIndex(schema => {
+						let resp = Joi.validate(event, schema, {
+							abortEarly: false,
+							allowUnknown: true,
+							presence: 'required',
+						})
+						return !resp.error
 					})
-					expect(resp.error).toBeNull()
+					// Verify that at least one schema matched.
+					expect(i >= 0, JSON.stringify(event, undefined, 2)).toBeTruthy()
 				}
 			}
 		})
 	}
 
-	afterAll(() => {
+	test('all events are expected', () => {
 		// If any analytics calls are still in `events`, then they were unexpected by the
 		// tests configured above. This either means that a test is missing, or there is a
 		// bug in this client.

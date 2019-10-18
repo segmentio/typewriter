@@ -27,6 +27,7 @@
     "@types/got": "^9.6.7",
     "@types/hapi__joi": "^15.0.2",
     "@types/jest": "^24.0.11",
+    "@types/jest-expect-message": "^1.0.0",
     "@types/js-yaml": "^3.12.1",
     "@types/json-schema": "^7.0.3",
     "@types/json-stable-stringify": "^1.0.32",
@@ -43,6 +44,7 @@
     "eslint-plugin-react": "^7.14.2",
     "husky": "^2.1.0",
     "jest": "^24.7.1",
+    "jest-expect-message": "^1.0.2",
     "lint-staged": "^8.1.7",
     "np": "^5.0.1",
     "ts-jest": "^24.0.2",
@@ -149,7 +151,10 @@
     ],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
-    }
+    },
+    "setupFilesAfterEnv": [
+      "jest-expect-message"
+    ]
   },
   "lint-staged": {
     "linters": {

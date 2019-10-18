@@ -265,9 +265,12 @@ export default new Proxy<typeof clientAPI>(clientAPI, {
 			const a = analytics()
 			if (a) {
 				{{#if isBrowser}}
-				a.track('Unknown Analytics Call Fired', {
-					method,
-				})
+				a.track('Unknown Analytics Call Fired',
+					{
+						method,
+					},
+					withTypewriterContext()
+				)
 				{{else}}
 				a.track(withTypewriterContext({
 					event: 'Unknown Analytics Call Fired',

@@ -24,7 +24,8 @@
     
     [SEGTypewriterAnalytics everyOptionalTypeWithOptionalAny:nil optionalArray:nil optionalBoolean:nil optionalInt:nil optionalNumber:nil optionalObject:nil optionalString:nil optionalStringWithRegex:nil];
     
-    [SEGTypewriterAnalytics everyNullableRequiredTypeWithRequiredAny:nil requiredArray:nil requiredBoolean:nil requiredInt:nil requiredNumber:nil requiredObject:nil requiredString:nil requiredStringWithRegex:nil];
+    // NOTE: It turns out analytics-ios does not support null values: https://github.com/segmentio/analytics-ios/pull/706
+    // [SEGTypewriterAnalytics everyNullableRequiredTypeWithRequiredAny:nil requiredArray:nil requiredBoolean:nil requiredInt:nil requiredNumber:nil requiredObject:nil requiredString:nil requiredStringWithRegex:nil];
     
     [SEGTypewriterAnalytics everyNullableOptionalTypeWithOptionalAny:nil optionalArray:nil optionalBoolean:nil optionalInt:nil optionalNumber:nil optionalObject:nil optionalString:nil optionalStringWithRegex:nil];
     

@@ -837,9 +837,13 @@ export default new Proxy(clientAPI, {
     b) Add it to your Tracking Plan: https://app.segment.com/segment_prod/protocols/tracking-plans/rs_1N9oTnc5O8cv1peY65iXsSPnzGP`)
 			const a = analytics()
 			if (a) {
-				a.track('Unknown Analytics Call Fired', {
-					method,
-				})
+				a.track(
+					'Unknown Analytics Call Fired',
+					{
+						method,
+					},
+					withTypewriterContext()
+				)
 			}
 		}
 	},

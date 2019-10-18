@@ -1,4 +1,4 @@
-DESTINATION ?= "platform=iOS Simulator,name=iPhone X"
+DESTINATION ?= "platform=iOS Simulator,name=iPhone 11"
 XC_OBJECTIVE_C_ARGS := -workspace TypewriterExample.xcworkspace -scheme TypewriterExample -destination $(DESTINATION)
 XC_SWIFT_ARGS := -workspace TypewriterSwiftExample.xcworkspace -scheme TypewriterSwiftExample -destination $(DESTINATION)
 

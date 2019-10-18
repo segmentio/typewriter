@@ -270,29 +270,20 @@ async function run() {
 				throw new Error('Wrong message supplied to custom onViolation handler')
 			}
 
-			throw new Error('onViolation called')
+			customViolationHandlerCalled({
+				userId,
+			})
 		},
 	})
 
-	try {
-		// This will trigger the Violation handler, iff running in development mode
-		// because the regex will not match.
-		customViolationHandler({
-			properties: {
-				'regex property': 'Not a Real Morty',
-			},
-			userId,
-		})
-	} catch (error) {
-		// Validate that the custom handler was called.
-		if (!(error instanceof Error) || !error.message.startsWith('onViolation called')) {
-			throw error
-		}
-
-		customViolationHandlerCalled({
-			userId,
-		})
-	}
+	// This will trigger the Violation handler, iff running in development mode
+	// because the regex will not match.
+	customViolationHandler({
+		properties: {
+			'regex property': 'Not a Real Morty',
+		},
+		userId,
+	})
 
 	// In JS files within a TS project, the compiler won't have any type information.
 	// Mock this with `as any` to validate JS Proxy behavior for our TS client when
@@ -301,11 +292,6 @@ async function run() {
 	// There is no generated function for `aMissingAnalyticsCall`, but the JS Proxy should
 	// handle this and avoid a crash.
 	typewriterWithoutTypes.aMissingAnalyticsCall({
-		userId,
-	})
-	// If this program doesn't crash, this event will be fired to tell the e2e suite that
-	// proxy-behavior works.
-	typewriter.unknownEventHandlerCalled({
 		userId,
 	})
 
