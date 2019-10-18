@@ -261,6 +261,13 @@ async function typewriterLibraryProperties(
 	args: CLIArguments,
 	cfg: Config | undefined = undefined
 ) {
+	// In CI environments, or if there is no internet, we may not be able to execute the
+	// the token script.
+	let tokenMethod = undefined
+	try {
+		tokenMethod = await getTokenMethod(cfg, args.config)
+	} catch {}
+
 	return {
 		/* eslint-disable @typescript-eslint/camelcase */
 		client: cfg && {
@@ -269,7 +276,7 @@ async function typewriterLibraryProperties(
 		},
 		command: getCommand(args),
 		is_ci: Boolean(process.env.CI),
-		token_method: await getTokenMethod(cfg, args.config),
+		token_method: tokenMethod,
 		tracking_plan:
 			cfg && cfg.trackingPlans && cfg.trackingPlans.length > 0
 				? {
