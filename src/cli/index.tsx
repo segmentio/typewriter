@@ -6,13 +6,21 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'production'
 
 import React, { createContext } from 'react'
 import { render } from 'ink'
-import { Token, Version, Build, Help, Init, ErrorBoundary } from './commands'
-import { reportAnalytics } from './reportAnalytics'
-import { Config } from './config'
+import { Token, Version, Build, Help, Init, ErrorBoundary, wrapError } from './commands'
+import { CLIArguments } from './index'
+import Analytics from 'analytics-node'
+import typewriter from '../analytics'
+import { Config, getConfig, getTokenMethod } from './config'
+import { machineId } from 'node-machine-id'
 
-export interface StandardProps {
+export interface StandardProps extends AnalyticsProps {
 	configPath: string
 	config?: Config
+}
+
+export interface AnalyticsProps {
+	analyticsProps: AsyncReturnType<typeof typewriterLibraryProperties>
+	anonymousId: string
 }
 
 export interface CLIArguments {
@@ -30,83 +38,6 @@ export interface CLIArguments {
 	help: boolean
 	/** Standard -h flag to print help on a command. */
 	h: boolean
-}
-
-interface DebugContextProps {
-	/** Whether or not debug mode is enabled. */
-	debug: boolean
-}
-export const DebugContext = createContext<DebugContextProps>({ debug: false })
-
-function toYargsHandler<P = {}>(
-	Command: React.FC<StandardProps & P>,
-	props: P,
-	cliOptions?: { validateDefault?: boolean }
-) {
-	// Return a closure which yargs will execute if this command is run.
-	return async (args: CLIArguments) => {
-		// The '*' command is a catch-all. We want to fail the CLI if an unknown command is
-		// supplied ('yarn typewriter footothebar'), instead of just running the default command.
-		const isValidCommand =
-			!cliOptions ||
-			!cliOptions.validateDefault ||
-			args._.length === 0 ||
-			['update', 'u'].includes(args._[0])
-
-		const f = async (config: Config | undefined) => {
-			let Component = Command
-			// Certain flags (--version, --help) will overide whatever command was provided.
-			if (!!args.version || !!args.v || Command.displayName === Version.displayName) {
-				// We override the --version flag from yargs with our own output. If it was supplied, print
-				// the `version` component instead.
-				Component = Version as typeof Command
-			} else if (
-				!isValidCommand ||
-				!!args.help ||
-				!!args.h ||
-				args._.includes('help') ||
-				Command.displayName === Help.displayName
-			) {
-				// Same goes for the --help flag.
-				Component = Help as typeof Command
-			}
-
-			const { waitUntilExit } = render(
-				<DebugContext.Provider value={{ debug: args.debug }}>
-					<ErrorBoundary>
-						<Component configPath={args.config} config={config} {...props} />
-					</ErrorBoundary>
-				</DebugContext.Provider>,
-				{ debug: !!args.debug }
-			)
-			await waitUntilExit()
-
-			// If this isn't a valid command, make sure we exit with a non-zero exit code.
-			if (!isValidCommand) {
-				process.exit(1)
-			}
-		}
-
-		try {
-			// reportAnalytics will execute f() and report analytics to Segment.
-			await reportAnalytics(args, f)
-		} catch (error) {
-			const { waitUntilExit } = render(
-				<DebugContext.Provider value={{ debug: args.debug }}>
-					<ErrorBoundary error={error} />
-				</DebugContext.Provider>,
-				{
-					debug: !!args.debug,
-				}
-			)
-			try {
-				await waitUntilExit()
-			} catch {
-				// Errors are handled/reported in ErrorBoundary.
-				process.exit(1)
-			}
-		}
-	}
 }
 
 const commandDefaults = {
@@ -138,6 +69,7 @@ const commandDefaults = {
 	},
 }
 
+// The `.argv` below will boot a Yargs CLI.
 require('yargs')
 	.command({
 		...commandDefaults,
@@ -179,3 +111,179 @@ require('yargs')
 	.help(false)
 	.showHelpOnFail(false)
 	.version(false).argv
+
+interface DebugContextProps {
+	/** Whether or not debug mode is enabled. */
+	debug: boolean
+}
+export const DebugContext = createContext<DebugContextProps>({ debug: false })
+
+// Initialize analytics-node + typewriter's typewriter client.
+const writeKey =
+	process.env.NODE_ENV === 'production'
+		? // Production: https://app.segment.com/segment_prod/sources/typewriter/overview
+		  'ahPefUgNCh3w1BdkWX68vOpVgR2Blm5e'
+		: // Development: https://app.segment.com/segment_prod/sources/typewriter_dev/overview
+		  'NwUMoJltCrmiW5gQZyiyvKpESDcwsj1r'
+
+typewriter.setTypewriterOptions({
+	analytics: new Analytics(writeKey, {
+		flushAt: 1,
+	}),
+})
+
+function toYargsHandler<P = {}>(
+	Command: React.FC<StandardProps & P>,
+	props: P,
+	cliOptions?: { validateDefault?: boolean }
+) {
+	// Return a closure which yargs will execute if this command is run.
+	return async (args: CLIArguments) => {
+		let anonymousId = 'unknown'
+		try {
+			anonymousId = await getAnonymousId()
+		} catch (error) {
+			typewriter.errorFired({
+				/* eslint-disable @typescript-eslint/camelcase */
+				error_string: 'Failed to generate an anonymous id',
+				error,
+			})
+		}
+
+		try {
+			// The '*' command is a catch-all. We want to fail the CLI if an unknown command is
+			// supplied ('yarn typewriter footothebar'), instead of just running the default command.
+			const isValidCommand =
+				!cliOptions ||
+				!cliOptions.validateDefault ||
+				args._.length === 0 ||
+				['update', 'u'].includes(args._[0])
+
+			// We'll measure how long it takes to render this command.
+			const startTime = process.hrtime()
+
+			// Attempt to read a config, if one is available.
+			const cfg = await getConfig(args.config)
+
+			const analyticsProps = await typewriterLibraryProperties(args, cfg)
+
+			// Figure out which component to render.
+			let Component = Command
+			// Certain flags (--version, --help) will overide whatever command was provided.
+			if (!!args.version || !!args.v || Command.displayName === Version.displayName) {
+				// We override the --version flag from yargs with our own output. If it was supplied, print
+				// the `version` component instead.
+				Component = Version as typeof Command
+			} else if (
+				!isValidCommand ||
+				!!args.help ||
+				!!args.h ||
+				args._.includes('help') ||
+				Command.displayName === Help.displayName
+			) {
+				// Same goes for the --help flag.
+				Component = Help as typeof Command
+			}
+
+			// 🌟Render the command.
+			try {
+				const { waitUntilExit } = render(
+					<DebugContext.Provider value={{ debug: args.debug }}>
+						<ErrorBoundary anonymousId={anonymousId} analyticsProps={analyticsProps}>
+							<Component
+								configPath={args.config}
+								config={cfg}
+								anonymousId={anonymousId}
+								analyticsProps={analyticsProps}
+								{...props}
+							/>
+						</ErrorBoundary>
+					</DebugContext.Provider>,
+					{ debug: !!args.debug }
+				)
+				await waitUntilExit()
+			} catch (err) {
+				throw wrapError(`Failed to call ${getCommand(args)} command handler`, err)
+			}
+
+			// Measure how long this command took.
+			const [sec, nsec] = process.hrtime(startTime)
+			const ms = sec * 1000 + nsec / 1000000
+
+			// Fire analytics to Segment on typewriter command usage.
+			typewriter.commandRun({
+				properties: {
+					...analyticsProps,
+					duration: Math.round(ms),
+				},
+				anonymousId,
+			})
+
+			// If this isn't a valid command, make sure we exit with a non-zero exit code.
+			if (!isValidCommand) {
+				process.exit(1)
+			}
+		} catch (error) {
+			// If an error was thrown in the command logic above (but outside of the ErrorBoundary in Component)
+			// then render an ErrorBoundary.
+			try {
+				const { waitUntilExit } = render(
+					<DebugContext.Provider value={{ debug: args.debug }}>
+						<ErrorBoundary
+							error={error}
+							anonymousId={anonymousId}
+							analyticsProps={await typewriterLibraryProperties(args)}
+						/>
+					</DebugContext.Provider>,
+					{
+						debug: !!args.debug,
+					}
+				)
+				await waitUntilExit()
+			} catch {
+				// Errors are handled/reported in ErrorBoundary.
+				process.exit(1)
+			}
+		}
+	}
+}
+
+/** Helper to fetch the name of the current yargs CLI command. */
+function getCommand(args: CLIArguments) {
+	return args._.length === 0 ? 'update' : args._.join(' ')
+}
+
+/**
+ * Helper to generate the shared library properties shared by all analytics calls.
+ * See: https://app.segment.com/segment_prod/protocols/libraries/rs_1OL4GFYCh62cOIRi3PJuIOdN7uM
+ */
+async function typewriterLibraryProperties(
+	args: CLIArguments,
+	cfg: Config | undefined = undefined
+) {
+	return {
+		/* eslint-disable @typescript-eslint/camelcase */
+		client: cfg && {
+			language: cfg.client.language,
+			sdk: cfg.client.sdk,
+		},
+		command: getCommand(args),
+		is_ci: Boolean(process.env.CI),
+		token_method: await getTokenMethod(cfg, args.config),
+		tracking_plan:
+			cfg && cfg.trackingPlans && cfg.trackingPlans.length > 0
+				? {
+						id: cfg.trackingPlans[0].id,
+						workspace_slug: cfg.trackingPlans[0].workspaceSlug,
+				  }
+				: undefined,
+	}
+}
+
+/**
+ * We generate an anonymous ID that is unique per user, s.t. we can group analytics from
+ * the same user together.
+ */
+async function getAnonymousId() {
+	return await machineId(false)
+}

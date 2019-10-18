@@ -7,7 +7,8 @@ import { Box, Color, useApp } from 'ink'
 import Link from 'ink-link'
 import figures from 'figures'
 import { version } from '../../../package.json'
-import { DebugContext } from '../index'
+import { DebugContext, AnalyticsProps } from '../index'
+import typewriter from '../../analytics'
 
 interface ErrorContextProps {
 	/** Called to indicate that a non-fatal error has occurred. This will be printed only in debug mode. */
@@ -49,7 +50,7 @@ export function toUnexpectedError(error: Error): WrappedError {
 	return wrapError('An unexpected error occurred.', error, error.message)
 }
 
-interface ErrorBoundaryProps {
+interface ErrorBoundaryProps extends AnalyticsProps {
 	/**
 	 * If an error is passed as a prop, then it's considered a fatal error.
 	 * Most errors will be raised via getDerivedStateFromError or the ErrorContext
@@ -84,21 +85,49 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 		return { error: toUnexpectedError(error) }
 	}
 
+	private reportError = async (params: { error: WrappedError; fatal: boolean; debug: boolean }) => {
+		const { anonymousId, analyticsProps } = this.props
+
+		await new Promise(resolve => {
+			typewriter.errorFired(
+				{
+					/* eslint-disable @typescript-eslint/camelcase */
+					properties: {
+						...analyticsProps,
+						error_string: params.error.description,
+						unexpected: params.fatal,
+						error: params.error,
+					},
+					anonymousId,
+				},
+				resolve
+			)
+		})
+
+		if (params.debug) {
+			console.trace(params.error)
+		}
+	}
+
 	/** For non-fatal errors, we just log the error when in debug mode. */
 	private handleError = (debug: boolean) => {
-		return (error: WrappedError) => {
-			if (debug) {
-				console.trace(error)
-			}
+		return async (error: WrappedError) => {
+			await this.reportError({
+				error,
+				fatal: false,
+				debug,
+			})
 		}
 	}
 
 	/** For fatal errors, we halt the CLI by rendering an ErrorComponent. */
 	private handleFatalError = (debug: boolean) => {
-		const handleError = this.handleError(debug)
-
-		return (error: WrappedError) => {
-			handleError(error)
+		return async (error: WrappedError) => {
+			await this.reportError({
+				error,
+				fatal: false,
+				debug,
+			})
 			this.setState({ error })
 		}
 	}
