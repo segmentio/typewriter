@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Box, Color } from 'ink'
+import { Box, Color, useApp } from 'ink'
 import { version as typewriterVersion } from '../../../package.json'
 import latest from 'latest-version'
 import { StandardProps } from '../index'
@@ -9,6 +9,7 @@ export const Version: React.FC<StandardProps> = () => {
 	const [isLoading, setIsLoading] = useState(true)
 	const [latestVersion, setLatestVersion] = useState('')
 	const { handleError } = useContext(ErrorContext)
+	const { exit } = useApp()
 
 	useEffect(() => {
 		async function effect() {
@@ -20,6 +21,7 @@ export const Version: React.FC<StandardProps> = () => {
 				handleError(error)
 			}
 			setIsLoading(false)
+			exit()
 		}
 
 		effect()

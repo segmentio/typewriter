@@ -118,18 +118,20 @@ interface DebugContextProps {
 }
 export const DebugContext = createContext<DebugContextProps>({ debug: false })
 
-// Initialize analytics-node + typewriter's typewriter client.
+// Initialize analytics-node
 const writeKey =
 	process.env.NODE_ENV === 'production'
 		? // Production: https://app.segment.com/segment_prod/sources/typewriter/overview
 		  'ahPefUgNCh3w1BdkWX68vOpVgR2Blm5e'
 		: // Development: https://app.segment.com/segment_prod/sources/typewriter_dev/overview
 		  'NwUMoJltCrmiW5gQZyiyvKpESDcwsj1r'
+const analyticsNode = new Analytics(writeKey, {
+	flushAt: 1,
+})
 
+// Initialize the typewriter client that this CLI uses.
 typewriter.setTypewriterOptions({
-	analytics: new Analytics(writeKey, {
-		flushAt: 1,
-	}),
+	analytics: analyticsNode,
 })
 
 function toYargsHandler<P = {}>(

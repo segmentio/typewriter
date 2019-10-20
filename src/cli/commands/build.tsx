@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Box, Text, Color } from 'ink'
+import { Box, Text, Color, useApp } from 'ink'
 import Link from 'ink-link'
 import Spinner from 'ink-spinner'
 import {
@@ -41,6 +41,8 @@ interface Props extends StandardProps {
 	production: boolean
 	/** Whether or not to update the local `plan.json` with the latest Tracking Plan. */
 	update: boolean
+	/** Optional callback fired after building has finished. */
+	onDone?: () => void
 }
 
 enum Steps {
@@ -48,6 +50,7 @@ enum Steps {
 	ClearFiles = 1,
 	Generation = 2,
 	After = 3,
+	Done = 4,
 }
 
 export const Build: React.FC<Props> = ({
@@ -57,10 +60,12 @@ export const Build: React.FC<Props> = ({
 	update,
 	anonymousId,
 	analyticsProps,
+	onDone,
 }) => {
 	const [step, setStep] = useState(Steps.UpdatePlan)
 	const [trackingPlans, setTrackingPlans] = useState<RawTrackingPlan[]>([])
 	const [config, setConfig] = useState(currentConfig)
+	const { exit } = useApp()
 
 	const onNext = () => setStep(step + 1)
 	function withNextStep<Arg>(f: (arg: Arg) => void) {
@@ -69,6 +74,12 @@ export const Build: React.FC<Props> = ({
 			setStep(step + 1)
 		}
 	}
+
+	useEffect(() => {
+		if (step === Steps.Done) {
+			onDone ? onDone() : exit()
+		}
+	}, [step])
 
 	// If a typewriter.yml hasn't been configured yet, drop the user into the init wizard.
 	if (!config) {

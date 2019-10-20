@@ -2,12 +2,17 @@
  * Help layout inspired by Zeit's Now CLI.
  *   https://zeit.co
  */
-import React from 'react'
-import { Box, Color, Text } from 'ink'
+import React, { useEffect } from 'react'
+import { Box, Color, Text, useApp } from 'ink'
 import Link from 'ink-link'
 import { StandardProps } from '../index'
 
 export const Help: React.FC<StandardProps> = () => {
+	const { exit } = useApp()
+	useEffect(() => {
+		exit()
+	}, [])
+
 	return (
 		<Box marginLeft={2} flexDirection="column">
 			<Box marginBottom={2} textWrap="wrap">

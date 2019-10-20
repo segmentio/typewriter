@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Box, Color, Text } from 'ink'
+import { Box, Color, Text, useApp } from 'ink'
 import Link from 'ink-link'
 import Spinner from 'ink-spinner'
 import { listTokens, ListTokensOutput, getTokenMethod, TokenMetadata } from '../config'
@@ -11,12 +11,14 @@ export const Token: React.FC<StandardProps> = props => {
 	const [method, setMethod] = useState<string | undefined>()
 	const [tokens, setTokens] = useState<ListTokensOutput | undefined>()
 	const { handleFatalError } = useContext(ErrorContext)
+	const { exit } = useApp()
 
 	useEffect(() => {
 		async function effect() {
 			setMethod(await getTokenMethod(props.config, props.configPath))
 			setTokens(await listTokens(props.config, props.configPath))
 			setIsLoading(false)
+			exit()
 		}
 
 		effect().catch(handleFatalError)

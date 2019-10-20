@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Text, Box, Color } from 'ink'
+import { Text, Box, Color, useApp } from 'ink'
 import Link from 'ink-link'
 import SelectInput, { Item } from 'ink-select-input'
 import TextInput from 'ink-text-input'
@@ -34,10 +34,22 @@ interface InitProps extends StandardProps {
 	onDone?: (config: Config) => void
 }
 
+enum Steps {
+	Confirmation = 0,
+	SDK = 1,
+	Language = 2,
+	APIToken = 3,
+	TrackingPlan = 4,
+	Path = 5,
+	Summary = 6,
+	Build = 7,
+	Done = 8,
+}
+
 export const Init: React.FC<InitProps> = props => {
 	const { config, configPath } = props
 
-	const [step, setStep] = useState(0)
+	const [step, setStep] = useState(Steps.Confirmation)
 	const [sdk, setSDK] = useState(config ? config.client.sdk : SDK.WEB)
 	const [language, setLanguage] = useState(config ? config.client.language : Language.JAVASCRIPT)
 	const [path, setPath] = useState(
@@ -49,9 +61,16 @@ export const Init: React.FC<InitProps> = props => {
 	})
 	const [trackingPlan, setTrackingPlan] = useState<SegmentAPI.TrackingPlan>()
 
+	const { exit } = useApp()
+	useEffect(() => {
+		if (!props.onDone && step === Steps.Done) {
+			exit()
+		}
+	}, [step])
+
 	const onNext = () => setStep(step + 1)
 	const onRestart = () => {
-		setStep(1)
+		setStep(Steps.SDK)
 	}
 
 	function withNextStep<Arg>(f?: (arg: Arg) => void) {
@@ -79,9 +98,9 @@ export const Init: React.FC<InitProps> = props => {
 			marginBottom={1}
 			flexDirection="column"
 		>
-			{step === 0 && <ConfirmationPrompt onSubmit={onNext} />}
-			{step === 1 && <SDKPrompt step={step} sdk={sdk} onSubmit={withNextStep(setSDK)} />}
-			{step === 2 && (
+			{step === Steps.Confirmation && <ConfirmationPrompt onSubmit={onNext} />}
+			{step === Steps.SDK && <SDKPrompt step={step} sdk={sdk} onSubmit={withNextStep(setSDK)} />}
+			{step === Steps.Language && (
 				<LanguagePrompt
 					step={step}
 					sdk={sdk}
@@ -89,7 +108,7 @@ export const Init: React.FC<InitProps> = props => {
 					onSubmit={withNextStep(setLanguage)}
 				/>
 			)}
-			{step === 3 && (
+			{step === Steps.APIToken && (
 				<APITokenPrompt
 					step={step}
 					config={config}
@@ -97,7 +116,7 @@ export const Init: React.FC<InitProps> = props => {
 					onSubmit={withNextStep(setTokenMetadata)}
 				/>
 			)}
-			{step === 4 && (
+			{step === Steps.TrackingPlan && (
 				<TrackingPlanPrompt
 					step={step}
 					token={tokenMetadata.token}
@@ -105,8 +124,10 @@ export const Init: React.FC<InitProps> = props => {
 					onSubmit={withNextStep(setTrackingPlan)}
 				/>
 			)}
-			{step === 5 && <PathPrompt step={step} path={path} onSubmit={withNextStep(setPath)} />}
-			{step === 6 && (
+			{step === Steps.Path && (
+				<PathPrompt step={step} path={path} onSubmit={withNextStep(setPath)} />
+			)}
+			{step === Steps.Summary && (
 				<SummaryPrompt
 					step={step}
 					sdk={sdk}
@@ -119,7 +140,9 @@ export const Init: React.FC<InitProps> = props => {
 					onRestart={onRestart}
 				/>
 			)}
-			{step === 7 && !props.onDone && <Build {...props} production={false} update={true} />}
+			{step === Steps.Build && !props.onDone && (
+				<Build {...props} production={false} update={true} onDone={onNext} />
+			)}
 			{/* TODO: step 8 where we show an example script showing how to import typewriter */}
 		</Box>
 	)
