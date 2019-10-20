@@ -53,6 +53,10 @@
                       "description": "",
                       "type": "string"
                     },
+                    "name": {
+                      "description": "Name of the Tracking Plan",
+                      "type": "string"
+                    },
                     "workspace_slug": {
                       "description": "",
                       "type": "string"
@@ -60,6 +64,10 @@
                   },
                   "required": [],
                   "type": "object"
+                },
+                "version": {
+                  "description": "Typewriter CLI version",
+                  "type": "string"
                 }
               },
               "required": ["command", "duration"],
@@ -125,6 +133,10 @@
                       "description": "",
                       "type": "string"
                     },
+                    "name": {
+                      "description": "Name of the Tracking Plan",
+                      "type": "string"
+                    },
                     "workspace_slug": {
                       "description": "",
                       "type": "string"
@@ -136,9 +148,13 @@
                 "unexpected": {
                   "description": "Whether or not this error was an expected (and therefore, properly handled) error.",
                   "type": "boolean"
+                },
+                "version": {
+                  "description": "Typewriter CLI version",
+                  "type": "string"
                 }
               },
-              "required": ["error", "error_string", "unexpected"],
+              "required": ["unexpected", "error", "error_string"],
               "type": "object"
             },
             "traits": {}
@@ -152,5 +168,5 @@
     "group_traits": [],
     "identify_traits": []
   },
-  "update_time": "2019-09-22T21:08:39.000Z"
+  "update_time": "2019-10-20T03:47:14.000Z"
 }

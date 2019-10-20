@@ -12,6 +12,8 @@ import Analytics from 'analytics-node'
 import typewriter from '../analytics'
 import { Config, getConfig, getTokenMethod } from './config'
 import { machineId } from 'node-machine-id'
+import { version } from '../../package.json'
+import { loadTrackingPlan } from './api'
 
 export interface StandardProps extends AnalyticsProps {
 	configPath: string
@@ -127,6 +129,7 @@ const writeKey =
 		  'NwUMoJltCrmiW5gQZyiyvKpESDcwsj1r'
 const analyticsNode = new Analytics(writeKey, {
 	flushAt: 1,
+	flushInterval: -1,
 })
 
 // Initialize the typewriter client that this CLI uses.
@@ -191,7 +194,11 @@ function toYargsHandler<P = {}>(
 			try {
 				const { waitUntilExit } = render(
 					<DebugContext.Provider value={{ debug: args.debug }}>
-						<ErrorBoundary anonymousId={anonymousId} analyticsProps={analyticsProps}>
+						<ErrorBoundary
+							anonymousId={anonymousId}
+							analyticsProps={analyticsProps}
+							debug={args.debug}
+						>
 							<Component
 								configPath={args.config}
 								config={cfg}
@@ -205,7 +212,8 @@ function toYargsHandler<P = {}>(
 				)
 				await waitUntilExit()
 			} catch (err) {
-				throw wrapError(`Failed to call ${getCommand(args)} command handler`, err)
+				// Errors are handled/reported in ErrorBoundary.
+				process.exitCode = 1
 			}
 
 			// Measure how long this command took.
@@ -223,7 +231,7 @@ function toYargsHandler<P = {}>(
 
 			// If this isn't a valid command, make sure we exit with a non-zero exit code.
 			if (!isValidCommand) {
-				process.exit(1)
+				process.exitCode = 1
 			}
 		} catch (error) {
 			// If an error was thrown in the command logic above (but outside of the ErrorBoundary in Component)
@@ -235,6 +243,7 @@ function toYargsHandler<P = {}>(
 							error={error}
 							anonymousId={anonymousId}
 							analyticsProps={await typewriterLibraryProperties(args)}
+							debug={args.debug}
 						/>
 					</DebugContext.Provider>,
 					{
@@ -244,7 +253,7 @@ function toYargsHandler<P = {}>(
 				await waitUntilExit()
 			} catch {
 				// Errors are handled/reported in ErrorBoundary.
-				process.exit(1)
+				process.exitCode = 1
 			}
 		}
 	}
@@ -270,8 +279,21 @@ async function typewriterLibraryProperties(
 		tokenMethod = await getTokenMethod(cfg, args.config)
 	} catch {}
 
+	// Attempt to read the name of the Tracking Plan from a local `plan.json`.
+	// If this fails, that's fine -- we'll still have the id from the config.
+	let trackingPlanName = ''
+	try {
+		if (cfg && cfg.trackingPlans.length > 0) {
+			const tp = await loadTrackingPlan(args.config, cfg.trackingPlans[0])
+			if (tp) {
+				trackingPlanName = tp.display_name
+			}
+		}
+	} catch {}
+
 	return {
 		/* eslint-disable @typescript-eslint/camelcase */
+		version,
 		client: cfg && {
 			language: cfg.client.language,
 			sdk: cfg.client.sdk,
@@ -282,6 +304,7 @@ async function typewriterLibraryProperties(
 		tracking_plan:
 			cfg && cfg.trackingPlans && cfg.trackingPlans.length > 0
 				? {
+						name: trackingPlanName,
 						id: cfg.trackingPlans[0].id,
 						workspace_slug: cfg.trackingPlans[0].workspaceSlug,
 				  }

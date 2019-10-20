@@ -58,6 +58,7 @@ interface ErrorBoundaryProps extends AnalyticsProps {
 	 * an error to be rendered via this prop.
 	 */
 	error?: Error
+	debug: boolean
 }
 
 interface ErrorBoundaryState {
@@ -75,85 +76,80 @@ interface ErrorBoundaryState {
 export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
 	public state: ErrorBoundaryState = {}
 
-	public static getDerivedStateFromProps(props: ErrorBoundaryProps, state: ErrorBoundaryState) {
-		return {
-			error: state.error || (props.error ? toUnexpectedError(props.error) : undefined),
-		}
-	}
-
 	public static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {
 		return { error: toUnexpectedError(error) }
 	}
 
-	private reportError = async (params: { error: WrappedError; fatal: boolean; debug: boolean }) => {
+	public componentDidCatch(error: Error) {
+		this.reportError({
+			error: toUnexpectedError(error),
+			fatal: true,
+		})
+	}
+
+	public componentDidMount() {
+		if (this.props.error) {
+			const err = toUnexpectedError(this.props.error)
+			this.reportError({
+				error: err,
+				fatal: true,
+			})
+			this.setState({ error: err })
+		}
+	}
+
+	private reportError = async (params: { error: WrappedError; fatal: boolean }) => {
 		const { anonymousId, analyticsProps } = this.props
 
-		await new Promise(resolve => {
-			typewriter.errorFired(
-				{
-					/* eslint-disable @typescript-eslint/camelcase */
-					properties: {
-						...analyticsProps,
-						error_string: params.error.description,
-						unexpected: params.fatal,
-						error: params.error,
-					},
-					anonymousId,
-				},
-				resolve
-			)
+		typewriter.errorFired({
+			/* eslint-disable @typescript-eslint/camelcase */
+			properties: {
+				...analyticsProps,
+				error_string: JSON.stringify(params.error, undefined, 2),
+				unexpected: params.fatal,
+				error: params.error,
+			},
+			anonymousId,
 		})
 
-		if (params.debug) {
+		if (this.props.debug) {
 			console.trace(params.error)
 		}
 	}
 
 	/** For non-fatal errors, we just log the error when in debug mode. */
-	private handleError = (debug: boolean) => {
-		return async (error: WrappedError) => {
-			await this.reportError({
-				error,
-				fatal: false,
-				debug,
-			})
-		}
+	private handleError = async (error: WrappedError) => {
+		await this.reportError({
+			error,
+			fatal: false,
+		})
 	}
 
 	/** For fatal errors, we halt the CLI by rendering an ErrorComponent. */
-	private handleFatalError = (debug: boolean) => {
-		return async (error: WrappedError) => {
-			await this.reportError({
-				error,
-				fatal: false,
-				debug,
-			})
-			this.setState({ error })
-		}
+	private handleFatalError = async (error: WrappedError) => {
+		await this.reportError({
+			error,
+			fatal: true,
+		})
+		this.setState({ error })
 	}
 
 	public render() {
 		const { children } = this.props
 		const { error } = this.state
 
-		return (
-			<DebugContext.Consumer>
-				{({ debug }) => {
-					const context = {
-						handleError: this.handleError(debug),
-						handleFatalError: this.handleFatalError(debug),
-					}
+		const context = {
+			handleError: this.handleError,
+			handleFatalError: this.handleFatalError,
+		}
 
-					return (
-						<ErrorContext.Provider value={context}>
-							<Box flexDirection="column">
-								{error && <ErrorComponent error={error} />}
-								{!error && children}
-							</Box>
-						</ErrorContext.Provider>
-					)
-				}}
-			</DebugContext.Consumer>
+		return (
+			<ErrorContext.Provider value={context}>
+				<Box flexDirection="column">
+					{error && <ErrorComponent error={error} />}
+					{!error && children}
+				</Box>
+			</ErrorContext.Provider>
 		)
 	}
 }
