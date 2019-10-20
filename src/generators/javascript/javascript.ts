@@ -100,27 +100,26 @@ export const javascript: Generator<
 	generateObject: async (client, schema, properties) => {
 		if (properties.length === 0) {
 			// If no properties are set, replace this object with a untyped map to allow any properties.
-			return [
-				conditionallyNullable(schema, {
+			return {
+				property: conditionallyNullable(schema, {
 					name: client.namer.escapeString(schema.name),
 					type: 'Record<string, any>',
 				}),
-				undefined,
-			]
+			}
 		} else {
 			// Otherwise generate an interface to represent this object.
 			const interfaceName = client.namer.register(schema.name, 'interface', {
 				transform: (name: string) => upperFirst(camelCase(name)),
 			})
-			return [
-				conditionallyNullable(schema, {
+			return {
+				property: conditionallyNullable(schema, {
 					name: client.namer.escapeString(schema.name),
 					type: interfaceName,
 				}),
-				{
+				object: {
 					name: interfaceName,
 				},
-			]
+			}
 		}
 	},
 	generateUnion: async (client, schema, types) =>

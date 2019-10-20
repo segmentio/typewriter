@@ -99,7 +99,7 @@ export declare type Generator<
 		schema: Schema,
 		properties: (P & BasePropertyContext)[],
 		parentPath: string
-	) => Promise<[P, O | undefined]>
+	) => Promise<{ property: P; object?: O }>
 	generateUnion: (
 		client: GeneratorClient,
 		schema: Schema,
@@ -232,19 +232,19 @@ async function runGenerator<R extends object, T extends object, O extends object
 				properties.push(await traverseSchema(property, path))
 			}
 
-			// TODO: determine if there's a simpler way to generate objects that doesn't require
-			// returning two fields. We do this now because objects have extra metadata. Possibly
-			// we could consider including an optional `properties` field in the property type?
-			// Maybe instead of a ObjectContext, an ObjectPropertyContext? Required on the return.
-			// Hmm, need some way to convey if it should generate an object or not (undefined object).
-			let o: O | undefined
-			;[p, o] = await generator.generateObject(client, schema, properties, parentPath)
-			if (o) {
+			const { property, object } = await generator.generateObject(
+				client,
+				schema,
+				properties,
+				parentPath
+			)
+			if (object) {
 				context.objects.push({
 					properties,
-					...o,
+					...object,
 				})
 			}
+			p = property
 		} else if (schema.type === Type.ARRAY) {
 			// Arrays are another special case, because we need to generate a type to represent
 			// the items allowed in this array.

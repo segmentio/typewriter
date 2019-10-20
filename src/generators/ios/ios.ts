@@ -93,8 +93,8 @@ export const ios: Generator<{}, IOSTrackCallContext, IOSObjectContext, IOSProper
 		}
 	},
 	generateObject: async (client, schema, properties, parentPath) => {
-		const p = defaultPropertyContext(client, schema, 'SERIALIZABLE_DICT', parentPath)
-		let obj: IOSObjectContext | undefined = undefined
+		const property = defaultPropertyContext(client, schema, 'SERIALIZABLE_DICT', parentPath)
+		let object: IOSObjectContext | undefined = undefined
 
 		if (properties.length > 0) {
 			// If at least one property is set, generate a class that only allows the explicitely
@@ -104,15 +104,15 @@ export const ios: Generator<{}, IOSTrackCallContext, IOSObjectContext, IOSProper
 					return `SEG${upperFirst(camelCase(name))}`
 				},
 			})
-			p.type = `${className} *`
-			p.importName = `"${className}.h"`
-			obj = {
+			property.type = `${className} *`
+			property.importName = `"${className}.h"`
+			object = {
 				name: className,
 				imports: properties.filter(p => !!p.importName).map(p => p.importName!),
 			}
 		}
 
-		return [p, obj]
+		return { property, object }
 	},
 	generateUnion: async (client, schema, _, parentPath) => {
 		// TODO: support unions in iOS
