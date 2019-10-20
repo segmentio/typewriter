@@ -102,7 +102,7 @@ jobs:
           name: Install build dependencies
           command: |
             sudo gem install xcpretty
-            sudo gem install cocoapods -v $(var=$(tail -1 tests/e2e/ios/Podfile.lock); echo ${var##COCOAPODS:})
+            sudo gem install cocoapods -v $(var=$(tail -1 tests/e2e/ios-objc/Podfile.lock); echo ${var##COCOAPODS:})
       - run:
           name: Fetch Cocoapods specs
           command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf

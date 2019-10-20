@@ -12,7 +12,7 @@ update:
 	@NODE_ENV=development node ./dist/src/cli/index.js prod --config=tests/e2e/node-typescript
 	@NODE_ENV=development node ./dist/src/cli/index.js prod --config=tests/e2e/web-javascript
 	@NODE_ENV=development node ./dist/src/cli/index.js prod --config=tests/e2e/web-typescript
-	@NODE_ENV=development node ./dist/src/cli/index.js prod --config=tests/e2e/ios
+	@NODE_ENV=development node ./dist/src/cli/index.js prod --config=tests/e2e/ios-objc
 	@NODE_ENV=development node ./dist/src/cli/index.js prod --config=tests/e2e/ios-swift
 	@# Changes to the Tracking Plan JSON files will need to be run through our
 	@# linter again to reduce git deltas.
@@ -38,7 +38,7 @@ e2e:
 	@make test-web-typescript
 
 	@### Objective-C iOS
-	@make test-ios
+	@make test-ios-objc
 	@### Swift iOS
 	@make test-ios-swift
 
@@ -145,27 +145,27 @@ test-web-typescript:
 		cd ../../.. && \
 		SDK=analytics.js LANGUAGE=typescript IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
 
-# We split up test-ios in order for CI to cache the setup step.
-.PHONY: test-ios
-test-ios: setup-ios-tests run-ios-tests
+# We split up test-ios-objc in order for CI to cache the setup step.
+.PHONY: test-ios-objc
+test-ios-objc: setup-ios-objc-tests run-ios-objc-tests
 
-.PHONY: setup-ios-tests
-setup-ios-tests:
+.PHONY: setup-ios-objc-tests
+setup-ios-objc-tests:
 	@# TODO: verify that xcodebuild and xcpretty are available
-	@cd tests/e2e/ios && \
+	@cd tests/e2e/ios-objc && \
 		pod install
 
-.PHONY: run-ios-tests
-run-ios-tests:
+.PHONY: run-ios-objc-tests
+run-ios-objc-tests:
 	@echo "\n>>>	🏃 Running iOS Objective-C client test suite...\n"
 	@make clear-mock && \
-		yarn run -s dev build --config=./tests/e2e/ios && \
-		cd tests/e2e/ios && \
+		yarn run -s dev build --config=./tests/e2e/ios-objc && \
+		cd tests/e2e/ios-objc && \
 		set -o pipefail && xcodebuild test $(XC_OBJECTIVE_C_ARGS) | xcpretty && \
 		SDK=analytics-ios LANGUAGE=objective-c IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
 	@make clear-mock && \
-		yarn run -s dev prod --config=./tests/e2e/ios && \
-		cd tests/e2e/ios && \
+		yarn run -s dev prod --config=./tests/e2e/ios-objc && \
+		cd tests/e2e/ios-objc && \
 		set -o pipefail && xcodebuild test $(XC_OBJECTIVE_C_ARGS) | xcpretty && \
 		SDK=analytics-ios LANGUAGE=objective-c IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
 
