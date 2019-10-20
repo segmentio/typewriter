@@ -115,7 +115,7 @@ jobs:
             yarn dev &
             cd ..
             sleep 5
-            make test-ios
+            make test-ios-objc
 
 workflows:
   version: 2

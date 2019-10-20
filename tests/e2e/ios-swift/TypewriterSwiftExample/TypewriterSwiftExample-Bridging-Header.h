@@ -6,7 +6,8 @@
 #import "Analytics/SEGSubterraneanLab.h"
 #import "Analytics/SEGTunnel.h"
 #import "Analytics/SEGTypewriterAnalytics.h"
+#import "Analytics/SEGTypewriterSerializable.h"
+#import "Analytics/SEGTypewriterUtils.h"
 #import "Analytics/SEGUniverse.h"
 #import "Analytics/SEGUniverse1.h"
 #import "Analytics/SEGUniverseCharactersItemItem.h"
-
