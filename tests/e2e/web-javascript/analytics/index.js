@@ -33,7 +33,7 @@ function withTypewriterContext(message = {}) {
 			...(message.context || {}),
 			typewriter: {
 				language: 'javascript',
-				version: '7.0.0-46',
+				version: '7.0.0-47',
 			},
 		},
 	}
