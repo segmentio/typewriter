@@ -1,0 +1,17 @@
+/**
+ * Updates the run-time configuration of this Typewriter client.
+ {{#unless isBrowser}}
+ * This function must be called with a configured analytics-node instance before firing
+ * any analytics calls, or else a `missingAnalyticsNodeError` error will be thrown.
+ {{/unless}}
+ *
+ * @param {TypewriterOptions} options - the options to upsert
+ *
+ * @typedef {Object} TypewriterOptions
+ * @property {{#if isBrowser}}{Segment.AnalyticsJS}{{else}}{Segment.AnalyticsNode}{{/if}} {{#if isBrowser}}[analytics]{{else}}analytics{{/if}} - Underlying analytics instance where analytics
+ * 		calls are forwarded on to.{{#if isBrowser}} Defaults to window.analytics.{{/if}}
+ * @property {Function} [onViolation] - Handler fired when if an event does not match its spec. This handler does not fire in
+ * 		production mode, because it requires inlining the full JSON Schema spec for each event in your Tracking Plan. By default,
+ * 		it will throw errors if NODE_ENV="test" so that tests will fail if a message does not match the spec. Otherwise, errors
+ * 		will be logged to stderr.
+ */

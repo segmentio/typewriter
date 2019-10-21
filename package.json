@@ -1,172 +1,182 @@
 {
   "name": "typewriter",
-  "version": "6.1.5",
-  "description": "A compiler for generating strongly typed analytics clients from JSON Schema",
-  "keywords": [
-    "analytics",
-    "json",
-    "json schema",
-    "segment",
-    "typescript",
-    "mobile",
-    "android",
-    "java",
-    "ios",
-    "objectivec",
-    "quicktype"
-  ],
+  "version": "7.0.0-47",
+  "description": "A compiler for generating strongly typed analytics clients via Segment Protocols",
+  "repository": "ssh://git@github.com/segmentio/typewriter.git",
   "homepage": "https://github.com/segmentio/typewriter",
   "bugs": "https://github.com/segmentio/typewriter/issues",
+  "author": "Colin King <colin.king@segment.com>",
   "license": "MIT",
-  "author": "segment",
-  "contributors": [
-    "Gurdas Nijor <gurdas@segment.com>",
-    "Colin King <colin.king@segment.com> (https://colinking.co)"
-  ],
+  "main": "./dist/src/cli/index.js",
+  "bin": "./dist/src/cli/index.js",
+  "scripts": {
+    "dev": "TS_NODE_FILES=true NODE_ENV=development ts-node ./src/cli",
+    "build": "rm -rf dist && yarn typewriter prod && tsc && copyfiles --up 1 \"src/**/*.hbs\" dist/src/",
+    "test": "jest --testPathIgnorePatterns 'tests/e2e/.*' 'example'",
+    "e2e": "make e2e",
+    "update": "make update",
+    "prod": "make prod",
+    "lint": "eslint './src/**/*.{ts,tsx}'",
+    "release": "yarn run build && np",
+    "prerelease": "yarn run build && np prerelease --any-branch --tag next --no-release-draft"
+  },
+  "engines": {
+    "node": ">=0.10.15"
+  },
+  "devDependencies": {
+    "@types/analytics-node": "^3.1.1",
+    "@types/got": "^9.6.7",
+    "@types/hapi__joi": "^15.0.2",
+    "@types/jest": "^24.0.11",
+    "@types/jest-expect-message": "^1.0.0",
+    "@types/js-yaml": "^3.12.1",
+    "@types/json-schema": "^7.0.3",
+    "@types/json-stable-stringify": "^1.0.32",
+    "@types/lodash": "^4.14.123",
+    "@types/node": "^11.13.6",
+    "@types/prettier": "^1.16.3",
+    "@types/prompts": "2.0.0",
+    "@typescript-eslint/eslint-plugin": "^1.6.0",
+    "@typescript-eslint/parser": "^1.6.0",
+    "copyfiles": "^2.1.0",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-react": "^7.14.2",
+    "husky": "^2.1.0",
+    "jest": "^24.7.1",
+    "jest-expect-message": "^1.0.2",
+    "lint-staged": "^8.1.7",
+    "np": "^5.0.1",
+    "ts-jest": "^24.0.2",
+    "ts-node": "^8.1.0",
+    "tsconfig-paths": "^3.8.0",
+    "type-fest": "^0.3.0",
+    "typewriter": "^7.0.0-33"
+  },
+  "dependencies": {
+    "@hapi/joi": "^15.1.1",
+    "ajv": "^6.10.0",
+    "analytics-node": "3.4.0-beta.1",
+    "caller-path": "^2.0.0",
+    "figures": "^3.0.0",
+    "fuse.js": "^3.4.5",
+    "got": "^9.6.0",
+    "handlebars": "^4.3.0",
+    "ink": "^2.5.0",
+    "ink-link": "^1.0.0",
+    "ink-select-input": "^3.1.2",
+    "ink-spinner": "^3.0.1",
+    "ink-text-input": "^3.2.1",
+    "js-yaml": "^3.13.1",
+    "json-stable-stringify": "^1.0.1",
+    "latest-version": "^5.1.0",
+    "lodash": "4.17.12",
+    "node-machine-id": "^1.1.12",
+    "prettier": "^1.17.0",
+    "prompts": "^2.0.4",
+    "prop-types": "^15.7.2",
+    "react": "^16.9.0",
+    "snyk": "1.192.5",
+    "sort-keys": "^3.0.0",
+    "typescript": "^3.4.5",
+    "yargs": "^13.2.2"
+  },
   "files": [
-    "package.json",
     "dist",
     "src"
   ],
-  "main": "dist/src/index.js",
-  "browser": "dist/src/index.js",
-  "bin": "dist/src/index.js",
-  "directories": {
-    "lib": "src",
-    "test": "tests"
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint",
+      "prettier"
+    ],
+    "extends": [
+      "plugin:@typescript-eslint/recommended",
+      "prettier/@typescript-eslint",
+      "plugin:prettier/recommended",
+      "plugin:react/recommended"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "module"
+    },
+    "settings": {
+      "react": {
+        "version": "16.8.6"
+      }
+    },
+    "rules": {
+      "prettier/prettier": [
+        "error",
+        {
+          "useTabs": true,
+          "semi": false,
+          "singleQuote": true,
+          "trailingComma": "es5",
+          "printWidth": 100
+        }
+      ],
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/no-use-before-define": [
+        "error",
+        "nofunc"
+      ],
+      "@typescript-eslint/no-namespace": "off",
+      "@typescript-eslint/no-non-null-assertion": "off",
+      "@typescript-eslint/interface-name-prefix": "off"
+    },
+    "overrides": [
+      {
+        "files": [
+          "**/*.tsx"
+        ],
+        "rules": {
+          "react/prop-types": "off"
+        }
+      }
+    ]
   },
-  "repository": "github:segmentio/typewriter",
-  "scripts": {
-    "start": "node ./dist/src/index.js",
-    "test": "jest",
-    "watch": "tsc -w",
-    "build": "rm -rf dist && tsc",
-    "prepare": "yarn run build",
-    "lint": "tslint src/**/*.ts",
-    "precommit": "lint-staged",
-    "release": "release-it",
-    "sync-fixtures:examples-standard": "yarn start sync --trackingPlanId 'rs_1AnzsusuSkTIlWw7Pq7MCcmVeo2' --workspaceSlug 'schema-test' --token \"${SEGMENT_SCHEMA_TEST_READ_ONLY_API_TOKEN}\" --outputPath ./examples/local-tracking-plans/tracking-plan.json",
-    "sync-fixtures:examples-slothgram": "yarn start sync --trackingPlanId 'rs_1CawusBJdQmYmspt8rWXtdb7COT' --workspaceSlug 'schema-test' --token \"${SEGMENT_SCHEMA_TEST_READ_ONLY_API_TOKEN}\" --outputPath ./examples/local-tracking-plans/tracking-plan-slothgram.json",
-    "sync-fixtures:test": "yarn start sync --trackingPlanId 'rs_1BRLuNotOa7lgAVEib6r12Vp9lv' --workspaceSlug 'schema-test' --token \"${SEGMENT_SCHEMA_TEST_READ_ONLY_API_TOKEN}\" --outputPath ./tests/__fixtures__/tracking-plan-fixture.json",
-    "sync-fixtures": "run-p sync-fixtures:*",
-    "generate-examples:android": "cd examples/gen-android/java && make typewriter",
-    "generate-examples:ios": "cd examples/gen-ios/objectivec && make typewriter",
-    "generate-examples:js": "cd ./examples/gen-js/js && yarn run typewriter",
-    "generate-examples:ts": "cd ./examples/gen-js/ts && yarn run typewriter",
-    "generate-examples:node": "cd ./examples/gen-js/node && yarn run typewriter",
-    "generate-examples": "yarn run build && run-p generate-examples:*"
-  },
-  "dependencies": {
-    "@nucleartide/dx": "^1.0.0",
-    "ajv": "^6.6.1",
-    "json-schema": "^0.2.3",
-    "json-schema-to-typescript": "^5.5.0",
-    "lodash": "^4.17.10",
-    "node-fetch": "^2.2.0",
-    "omit-deep-lodash": "^1.1.2",
-    "quicktype": "15.0.174",
-    "quicktype-core": "6.0.26",
-    "sort-keys": "^2.0.0",
-    "typescript": "^3.2.2",
-    "yargs": "^12.0.2"
-  },
-  "devDependencies": {
-    "@types/ajv": "^1.0.0",
-    "@types/jest": "^23.3.5",
-    "@types/jest-diff": "^20.0.0",
-    "@types/json-schema": "^7.0.1",
-    "@types/lodash": "^4.14.117",
-    "@types/node": "^8.0.14",
-    "@types/node-emoji": "^1.4.0",
-    "@types/node-fetch": "^2.1.2",
-    "@types/prettier": "^1.13.2",
-    "@types/typescript": "^2.0.0",
-    "@types/yargs": "^12.0.1",
-    "bdd-stdin": "^0.2.0",
-    "commitlint": "^7.2.1",
-    "commitlint-config-angular": "^7.1.2",
-    "conventional-changelog": "^3.0.5",
-    "conventional-changelog-cli": "^2.0.11",
-    "husky": "^1.3.1",
-    "jest": "^23.6",
-    "jest-file-snapshot": "^0.2.1",
-    "lint-staged": "^7.3.0",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^1.5.3",
-    "release-it": "^10.0.0",
-    "test": "^0.6.0",
-    "ts-jest": "^22.4.2",
-    "tslint": "^5.10.0",
-    "tslint-config-prettier": "^1.13.0",
-    "tslint-config-standard": "^7.0.0",
-    "tslint-plugin-prettier": "^2.0.0"
-  },
-  "engines": {
-    "node": ">=8"
-  },
-  "prettier": {
-    "semi": false,
-    "singleQuote": true,
-    "printWidth": 100
+  "eslintIgnore": [
+    "tests/e2e/**/analytics/*",
+    "src/analytics/**/*",
+    "example/analytics/**/*"
+  ],
+  "jest": {
+    "modulePaths": [
+      "<rootDir>/"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "setupFilesAfterEnv": [
+      "jest-expect-message"
+    ]
   },
   "lint-staged": {
     "linters": {
-      "*.ts": [
-        "yarn lint",
-        "prettier --write",
+      "*.(ts|tsx)": [
+        "eslint --fix",
         "git add"
       ],
       "*.json": [
         "prettier --write",
         "git add"
+      ],
+      "*.yml": [
+        "prettier --write",
+        "git add"
       ]
-    },
-    "ignore": [
-      "examples/**/generated/**",
-      "**/__snapshots__/**"
-    ]
+    }
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "(commitlint -E HUSKY_GIT_PARAMS && printf \"\n\n\") || (printf \"\n\n\" && exit 1)"
+      "pre-commit": "yarn run update && git add -A && lint-staged"
     }
   },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-angular"
-    ]
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "ts",
-      "js"
-    ],
-    "transform": {
-      "^.+\\.(ts|tsx)$": "ts-jest"
-    },
-    "globals": {
-      "ts-jest": {
-        "tsConfigFile": "tsconfig.json"
-      }
-    },
-    "testMatch": [
-      "**/?(*.)+(spec|test).+(ts|js)?(x)"
-    ]
-  },
-  "release-it": {
-    "increment": "conventional:angular",
-    "scripts": {
-      "changelog": "npx conventional-changelog -p angular | tail -n +3",
-      "beforeStart": "yarn test",
-      "beforeStage": "yarn build && yarn generate-examples && yarn test -u && npx conventional-changelog -p angular -i CHANGELOG.md -s"
-    },
-    "git": {
-      "commitMessage": "docs(changelog): release ${version}"
-    },
-    "github": {
-      "release": true,
-      "releaseNotes": "npx conventional-changelog -p angular | tail -n +3"
-    }
-  }
+  "snyk": true
 }

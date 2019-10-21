@@ -3,36 +3,38 @@ jobs:
   setup:
     working_directory: ~/typewriter
     docker:
-      - image: circleci/node:8.11
+      - image: circleci/node:10.15
 
     steps:
       - checkout
-
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "yarn.lock" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
       - run: yarn install --frozen-lockfile
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "yarn.lock" }}
+      - run:
+          name: Bootstrap Typewriter
+          command: yarn typewriter build
       - persist_to_workspace:
           root: .
           paths: [.]
-  
+
   build:
     docker:
-      - image: circleci/node:8.11
+      - image: circleci/node:10.15
     steps:
       - attach_workspace: { at: . }
       - run: yarn build
 
   snyk:
     docker:
-      - image: circleci/node:8.11
+      - image: circleci/node:10.15
     steps:
       - attach_workspace: { at: . }
       - run:
@@ -41,17 +43,104 @@ jobs:
 
   lint:
     docker:
-      - image: circleci/node:8.11
+      - image: circleci/node:10.15
     steps:
       - attach_workspace: { at: . }
       - run: yarn lint
 
-  test:
+  test-unit-tests:
     docker:
-      - image: circleci/node:8.11
+      - image: circleci/node:10.15
     steps:
       - attach_workspace: { at: . }
       - run: yarn test
+
+  build-example:
+    docker:
+      - image: circleci/node:10.15
+    steps:
+      - attach_workspace: { at: . }
+      - run: make build-example
+
+  test-node-javascript:
+    docker:
+      - image: circleci/node:10.15
+      - image: segment/mock:v0.0.2
+    steps:
+      - attach_workspace: { at: . }
+      - run: make test-node-javascript
+  test-node-typescript:
+    docker:
+      - image: circleci/node:10.15
+      - image: segment/mock:v0.0.2
+    steps:
+      - attach_workspace: { at: . }
+      - run: make test-node-typescript
+
+  test-web-javascript:
+    docker:
+      - image: cypress/browsers:chrome69
+      - image: segment/mock:v0.0.2
+    steps:
+      - attach_workspace: { at: . }
+      - run: make test-web-javascript
+  test-web-typescript:
+    docker:
+      - image: cypress/browsers:chrome69
+      - image: segment/mock:v0.0.2
+    steps:
+      - attach_workspace: { at: . }
+      - run: make test-web-typescript
+
+  test-ios-objc:
+    macos:
+      xcode: "11.0.0"
+    steps:
+      - attach_workspace: { at: . }
+      - run: xcrun simctl list
+      - run:
+          name: Install build dependencies
+          command: |
+            sudo gem install xcpretty
+            sudo gem install cocoapods -v $(var=$(tail -1 tests/e2e/ios-objc/Podfile.lock); echo ${var##COCOAPODS:})
+      - run:
+          name: Fetch Cocoapods specs
+          command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+      - run:
+          name: Run iOS Objective-C Tests
+          command: |
+            git clone https://github.com/segmentio/mock.git
+            cd mock
+            yarn
+            yarn dev &
+            cd ..
+            sleep 5
+            make test-ios-objc
+
+  test-ios-swift:
+    macos:
+      xcode: "11.0.0"
+    steps:
+      - attach_workspace: { at: . }
+      - run: xcrun simctl list
+      - run:
+          name: Install build dependencies
+          command: |
+            sudo gem install xcpretty
+            sudo gem install cocoapods -v $(var=$(tail -1 tests/e2e/ios-objc/Podfile.lock); echo ${var##COCOAPODS:})
+      - run:
+          name: Fetch Cocoapods specs
+          command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+      - run:
+          name: Run iOS Swift Tests
+          command: |
+            git clone https://github.com/segmentio/mock.git
+            cd mock
+            yarn
+            yarn dev &
+            cd ..
+            sleep 5
+            make test-ios-swift
 
 workflows:
   version: 2
@@ -65,5 +154,19 @@ workflows:
           requires: [setup]
       - lint:
           requires: [setup]
-      - test:
+      - build-example:
+          requires: [setup]
+      - test-unit-tests:
+          requires: [setup]
+      - test-node-javascript:
+          requires: [setup]
+      - test-node-typescript:
+          requires: [setup]
+      - test-web-javascript:
+          requires: [setup]
+      - test-web-typescript:
+          requires: [setup]
+      - test-ios-objc:
+          requires: [setup]
+      - test-ios-swift:
           requires: [setup]

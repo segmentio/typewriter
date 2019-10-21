@@ -1,18 +1,18 @@
 {
   "compilerOptions": {
+    "target": "es2015",
     "module": "commonjs",
-    "target": "es6",
-    "strict": true,
-    "strictFunctionTypes": false,
     "moduleResolution": "node",
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
     "resolveJsonModule": true,
-    "paths": {
-      "*": ["node_modules/*", "src/types/*"]
-    }
+    "esModuleInterop": true,
+    "jsx": "react",
+    "typeRoots": ["./node_modules/@types", "./src/@types"]
   },
-  "include": ["src/**/*"],
-  "exclude": ["tests/**/*"]
+  "include": ["src/**/*"]
 }

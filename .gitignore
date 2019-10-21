@@ -1,6 +1,3 @@
-# Created by https://www.gitignore.io/api/node
-
-### Node ###
 # Logs
 logs
 *.log
@@ -60,9 +57,6 @@ typings/
 # dotenv environment variables file
 .env
 
-
-# End of https://www.gitignore.io/api/node
-
 dist
 
 .next
@@ -74,10 +68,21 @@ dist
 # We use yarn.lock
 package-lock.json
 
+# VSCode
 .vscode
 
-# Whitelist the two Tracking Plans we use for examples, so that we can test
-# our example apps with other Tracking Plans without accidentally committing.
-examples/local-tracking-plans/*
-!examples/local-tracking-plans/tracking-plan.json
-!examples/local-tracking-plans/tracking-plan-slothgram.json
+# Typewriter's Typewriter client
+src/analytics/*
+!src/analytics/plan.json
+
+# Example Typewriter client
+example/analytics/*
+!example/analytics/plan.json
+
+# Cypress auto-generates these folders on every run.
+# We don't use them, so we don't need them in git.
+tests/e2e/**/cypress/fixtures/**
+tests/e2e/**/cypress/plugins/**
+tests/e2e/**/cypress/support/**
+tests/e2e/**/cypress/videos/**
+

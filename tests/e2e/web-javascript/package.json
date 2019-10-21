@@ -1,0 +1,31 @@
+{
+  "name": "typewriter-e2e-web-javascript",
+  "version": "1.0.0",
+  "description": "e2e test for Typewriter's JavaScript analytics.js client",
+  "repository": "https://github.com/segmentio/typewriter",
+  "author": "Colin King <colin.king@segment.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "cypress": "cypress run",
+    "test": "start-server-and-test start http://localhost:3000 cypress"
+  },
+  "dependencies": {
+    "@segment/snippet": "^4.4.0",
+    "evergreen-ui": "^4.17.0",
+    "express": "^4.17.1",
+    "next": "^7.0.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "@types/segment-analytics": "^0.0.31",
+    "cypress": "^3.3.2",
+    "jest": "^24.8.0",
+    "start-server-and-test": "^1.9.1"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "create_time": "2019-10-21T17:15:38.000Z",
+  "display_name": "Typewriter Example Tracking Plan",
+  "name": "workspaces/segment_prod/tracking-plans/rs_1SWT1hC4xpwcltyCUud43XMIlQo",
+  "rules": {
+    "events": [
+      {
+        "description": "Fired after a user's signin attempt fails to pass validation.",
+        "name": "Sign In Failed",
+        "rules": {
+          "properties": {
+            "context": {},
+            "properties": {},
+            "traits": {}
+          }
+        },
+        "version": 1
+      },
+      {
+        "description": "Fired when a user submits a sign in, prior to validating that user's login.",
+        "name": "Sign In Submitted",
+        "rules": {
+          "properties": {
+            "context": {},
+            "properties": {},
+            "traits": {}
+          }
+        },
+        "version": 1
+      },
+      {
+        "description": "Fired when a user successfully submits a sign in, prior to redirecting into the app.",
+        "name": "Sign In Succeeded",
+        "rules": {
+          "properties": {
+            "context": {},
+            "properties": {},
+            "traits": {}
+          }
+        },
+        "version": 1
+      },
+      {
+        "description": "Fired when a user successfully submits a sign in, prior to redirecting into the app.",
+        "name": "User Signed Out",
+        "rules": {
+          "properties": {
+            "context": {},
+            "properties": {},
+            "traits": {}
+          }
+        },
+        "version": 1
+      }
+    ],
+    "group_traits": [],
+    "identify_traits": []
+  },
+  "update_time": "2019-10-21T17:17:16.000Z"
+}

@@ -1,0 +1,16 @@
+{
+  "name": "typewriter-e2e-node-javascript",
+  "version": "1.0.0",
+  "description": "e2e test for Typewriter JS node client",
+  "main": "index.js",
+  "repository": "https://github.com/segmentio/typewriter",
+  "author": "Colin King <colin.king@segment.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "node index.js"
+  },
+  "dependencies": {
+    "analytics-node": "^3.3.0"
+  }
+}
