@@ -39,7 +39,6 @@ export type ViolationHandler = (
 	violations: {{#if isDevelopment}}Ajv.ErrorObject{{else}}any{{/if}}[]
 ) => void
 
-{{#if isDevelopment}}
 /**
  * The default handler that is fired if none is supplied with setTypewriterOptions.
  {{#if isBrowser}}
@@ -66,6 +65,7 @@ export const defaultValidationErrorHandler: ViolationHandler = (message, violati
 	console.warn(msg)
 }
 
+{{#if isDevelopment}}
 let onViolation = defaultValidationErrorHandler
 {{/if}}
 

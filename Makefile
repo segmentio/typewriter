@@ -2,18 +2,30 @@ DESTINATION ?= "platform=iOS Simulator,name=iPhone 11"
 XC_OBJECTIVE_C_ARGS := -workspace TypewriterExample.xcworkspace -scheme TypewriterExample -destination $(DESTINATION)
 XC_SWIFT_ARGS := -workspace TypewriterSwiftExample.xcworkspace -scheme TypewriterSwiftExample -destination $(DESTINATION)
 
-# update: updates typewriter and all e2e tests to use the latest Tracking Plans.
-.PHONY: update
-update:
+.PHONY: update prod bulk
+prod: COMMAND=prod
+prod: bulk
+update: COMMAND=update
+update: bulk
+bulk:
+	@echo " >> Building typewriter"
 	@yarn build
-	@NODE_ENV=development node ./dist/src/cli/index.js prod
-	@NODE_ENV=development node ./dist/src/cli/index.js prod --config=example
-	@NODE_ENV=development node ./dist/src/cli/index.js prod --config=tests/e2e/node-javascript
-	@NODE_ENV=development node ./dist/src/cli/index.js prod --config=tests/e2e/node-typescript
-	@NODE_ENV=development node ./dist/src/cli/index.js prod --config=tests/e2e/web-javascript
-	@NODE_ENV=development node ./dist/src/cli/index.js prod --config=tests/e2e/web-typescript
-	@NODE_ENV=development node ./dist/src/cli/index.js prod --config=tests/e2e/ios-objc
-	@NODE_ENV=development node ./dist/src/cli/index.js prod --config=tests/e2e/ios-swift
+	@echo " >> Running 'typewriter $(COMMAND)' on 'typewriter'"
+	@NODE_ENV=development node ./dist/src/cli/index.js $(COMMAND)
+	@echo " >> Running 'typewriter $(COMMAND)' on 'example'"
+	@NODE_ENV=development node ./dist/src/cli/index.js $(COMMAND) --config=example
+	@echo " >> Running 'typewriter $(COMMAND)' on 'tests/e2e/node-javascript'"
+	@NODE_ENV=development node ./dist/src/cli/index.js $(COMMAND) --config=tests/e2e/node-javascript
+	@echo " >> Running 'typewriter $(COMMAND)' on 'tests/e2e/node-typescript'"
+	@NODE_ENV=development node ./dist/src/cli/index.js $(COMMAND) --config=tests/e2e/node-typescript
+	@echo " >> Running 'typewriter $(COMMAND)' on 'tests/e2e/web-javascript'"
+	@NODE_ENV=development node ./dist/src/cli/index.js $(COMMAND) --config=tests/e2e/web-javascript
+	@echo " >> Running 'typewriter $(COMMAND)' on 'tests/e2e/web-typescript'"
+	@NODE_ENV=development node ./dist/src/cli/index.js $(COMMAND) --config=tests/e2e/web-typescript
+	@echo " >> Running 'typewriter $(COMMAND)' on 'tests/e2e/ios-objc'"
+	@NODE_ENV=development node ./dist/src/cli/index.js $(COMMAND) --config=tests/e2e/ios-objc
+	@echo " >> Running 'typewriter $(COMMAND)' on 'tests/e2e/ios-swift'"
+	@NODE_ENV=development node ./dist/src/cli/index.js $(COMMAND) --config=tests/e2e/ios-swift
 	@# Changes to the Tracking Plan JSON files will need to be run through our
 	@# linter again to reduce git deltas.
 	@git add -A && yarn lint-staged

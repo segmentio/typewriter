@@ -249,7 +249,7 @@ describe('e2e tests', () => {
 		{
 			name: 'sends an event with unions',
 			// We have not yet added support for unions to the iOS client.
-			skip: language === Language.OBJECTIVE_C,
+			skip: sdk === SDK.IOS,
 			expect: [
 				{
 					name: 'Union Type',
@@ -409,6 +409,7 @@ describe('e2e tests', () => {
 				)
 
 				expect(matchingEvents).toHaveLength(schemas.length)
+				const errors = [] as Joi.ValidationError[]
 				for (const event of matchingEvents) {
 					const i = schemas.findIndex(schema => {
 						let resp = Joi.validate(event, schema, {
@@ -416,10 +417,18 @@ describe('e2e tests', () => {
 							allowUnknown: true,
 							presence: 'required',
 						})
+
+						if (resp.error) {
+							errors.push(resp.error)
+						}
+
 						return !resp.error
 					})
 					// Verify that at least one schema matched.
-					expect(i >= 0, JSON.stringify(event, undefined, 2)).toBeTruthy()
+					expect(
+						i >= 0,
+						JSON.stringify({ event, schemas: schemas.map(s => s.describe()), errors }, undefined, 2)
+					).toBeTruthy()
 				}
 			}
 		})

@@ -3,6 +3,7 @@ import { JSONSchema7 } from 'json-schema'
 import { version } from '../../../package.json'
 import { wrapError, isWrappedError } from '../commands/error'
 import { sanitizeTrackingPlan } from './trackingplans'
+import { set } from 'lodash'
 
 export namespace SegmentAPI {
 	// https://reference.segmentapis.com/#1092fe01-379b-4ca1-8b1d-9f42b33d2899
@@ -159,6 +160,10 @@ async function apiGet<Response>(url: string, token: string): Promise<Response> {
 		const { body } = await resp
 		return body
 	} catch (error) {
+		// Don't include the user's authorization token. Overwrite the header value from this error.
+		const tokenHeader = `Bearer ${token.trim().substring(0, 10)}... (token redacted)`
+		error = set(error, 'gotOptions.headers.authorization', tokenHeader)
+
 		if (error.statusCode === 401 || error.statusCode === 403) {
 			throw wrapError(
 				'Permission denied by Segment API',

@@ -37,9 +37,9 @@ export default class SSRDoc extends Document<Props> {
 
 		// Generate and inject the Segment analytics.js snippet.
 		const snippetFn = process.env.NODE_ENV === 'production' ? snippet.min : snippet.max
-		// https://app.segment.com/automated-testing-demo/sources/automated_testing_demo/overview
+		// https://app.segment.com/segment_prod/sources/typewriter-source/overview
 		const analyticsSnippet = snippetFn({
-			apiKey: 'L7XFg6RtddWxeZbWX9gxiAWVIvAeDPKR',
+			apiKey: 'ZgsqNXhzqQ3nBsvPGXqZQn2RWoGBhlqC',
 			page: false,
 		})
 

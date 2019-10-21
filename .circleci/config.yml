@@ -92,7 +92,7 @@ jobs:
       - attach_workspace: { at: . }
       - run: make test-web-typescript
 
-  test-ios:
+  test-ios-objc:
     macos:
       xcode: "11.0.0"
     steps:
@@ -107,7 +107,7 @@ jobs:
           name: Fetch Cocoapods specs
           command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
       - run:
-          name: Run iOS Objective C Tests
+          name: Run iOS Objective-C Tests
           command: |
             git clone https://github.com/segmentio/mock.git
             cd mock
@@ -116,6 +116,31 @@ jobs:
             cd ..
             sleep 5
             make test-ios-objc
+
+  test-ios-swift:
+    macos:
+      xcode: "11.0.0"
+    steps:
+      - attach_workspace: { at: . }
+      - run: xcrun simctl list
+      - run:
+          name: Install build dependencies
+          command: |
+            sudo gem install xcpretty
+            sudo gem install cocoapods -v $(var=$(tail -1 tests/e2e/ios-objc/Podfile.lock); echo ${var##COCOAPODS:})
+      - run:
+          name: Fetch Cocoapods specs
+          command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+      - run:
+          name: Run iOS Swift Tests
+          command: |
+            git clone https://github.com/segmentio/mock.git
+            cd mock
+            yarn
+            yarn dev &
+            cd ..
+            sleep 5
+            make test-ios-swift
 
 workflows:
   version: 2
@@ -141,5 +166,7 @@ workflows:
           requires: [setup]
       - test-web-typescript:
           requires: [setup]
-      - test-ios:
+      - test-ios-objc:
+          requires: [setup]
+      - test-ios-swift:
           requires: [setup]

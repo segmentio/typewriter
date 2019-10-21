@@ -2,7 +2,7 @@
 # Just run `npx typewriter@next` to re-generate a client with the latest versions of these events.
 
 scripts:
-  token: aws-okta exec dev-privileged -- chamber export automated-testing-demo | jq -r .typewriter_token
+  token: aws-okta exec dev-privileged -- chamber export typewriter | jq -r .typewriter_token
 
 # You can find more documentation on configuring this client in the Segment docs.
 # See: https://segment.com/docs/protocols/typewriter
@@ -11,8 +11,8 @@ client:
   language: typescript
 
 trackingPlans:
-  # Tracking Plan: Demo Tracking Plan
-  # https://app.segment.com/automated-testing-demo/protocols/tracking-plans/rs_1LTIHwkhXakMLs70qUd2hfSGd4D
-  - id: rs_1LTIHwkhXakMLs70qUd2hfSGd4D
-    workspaceSlug: automated-testing-demo
+  # Tracking Plan: Typewriter Example Tracking Plan
+  # https://app.segment.com/segment_prod/protocols/tracking-plans/rs_1SWT1hC4xpwcltyCUud43XMIlQo
+  - id: rs_1SWT1hC4xpwcltyCUud43XMIlQo
+    workspaceSlug: segment_prod
     path: ./analytics

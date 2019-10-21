@@ -768,25 +768,6 @@
         "version": 1
       },
       {
-        "description": "Fired if a client correctly handled an unknown method call.",
-        "name": "Unknown Event Handler Called",
-        "rules": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
-          "labels": {},
-          "properties": {
-            "context": {},
-            "properties": {
-              "type": "object"
-            },
-            "traits": {
-              "type": "object"
-            }
-          },
-          "type": "object"
-        },
-        "version": 1
-      },
-      {
         "name": "event_collided",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
@@ -808,5 +789,5 @@
     "group_traits": [],
     "identify_traits": []
   },
-  "update_time": "2019-08-11T19:03:17.000Z"
+  "update_time": "2019-10-16T23:36:31.000Z"
 }

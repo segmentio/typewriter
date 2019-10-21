@@ -15,6 +15,7 @@
     "test": "jest --testPathIgnorePatterns 'tests/e2e/.*' 'example'",
     "e2e": "make e2e",
     "update": "make update",
+    "prod": "make prod",
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "release": "yarn run build && np",
     "prerelease": "yarn run build && np prerelease --any-branch --tag next --no-release-draft"

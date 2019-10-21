@@ -17,9 +17,6 @@ class TypewriterSwiftExampleTests: XCTestCase {
         
         SEGTypewriterAnalytics.everyOptionalType(withOptionalAny: nil, optionalArray: nil, optionalBoolean: nil, optionalInt: nil, optionalNumber: nil, optionalObject: nil, optionalString: nil, optionalStringWithRegex: nil)
         
-        // The bridging process borked the "required string with regex" field below.
-        SEGTypewriterAnalytics.everyNullableRequiredType(withRequiredAny: nil, requiredArray: nil, requiredBoolean: nil, requiredInt: nil, requiredNumber: nil, requiredObject: nil, requiredString: nil, requiredStringWithRegex: nil)
-        
         SEGTypewriterAnalytics.everyNullableOptionalType(withOptionalAny: nil, optionalArray: nil, optionalBoolean: nil, optionalInt: nil, optionalNumber: nil, optionalObject: nil, optionalString: nil, optionalStringWithRegex: nil)
         
         SEGTypewriterAnalytics.i42TerribleEventName3()
@@ -42,9 +39,9 @@ class TypewriterSwiftExampleTests: XCTestCase {
             SEGOccupantsItem1.initWithName("Thomas Lipkip"),
         ]))
         
-        SEGTypewriterAnalytics.simpleArrayTypes(withAny: [127, "C-137"], boolean: [true, false], integer: [3.14], nullable_: nil, number: [3.14], object: [SEGObjectItem.initWithName("Beth Smith")], string: ["Alpha-Betrium"])
+        SEGTypewriterAnalytics.simpleArrayTypes(withAny: [137, "C-137"], boolean: [true, false], integer: [97], nullable_: nil, number: [3.14], object: [SEGObjectItem.initWithName("Beth Smith")], string: ["Alpha-Betrium"])
         
-        SEGTypewriterAnalytics.nestedObjects(with: SEGGarage.initWith(SEGTunnel.initWith(SEGSubterraneanLab.initWithJerrysMemories([], mortysMemories: [], summersContingencyPlan: "Oh, man, it's a scenario four."))))
+        SEGTypewriterAnalytics.nestedObjects(with: SEGGarage.initWith(SEGTunnel.initWith(SEGSubterraneanLab.initWithJerrysMemories([], mortysMemories: [], summersContingencyPlan: "Oh, man, it’s a scenario four."))))
         
         SEGTypewriterAnalytics.nestedArrays(withUniverseCharacters: [
             [

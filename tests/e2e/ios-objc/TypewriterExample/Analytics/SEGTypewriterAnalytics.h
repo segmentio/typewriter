@@ -184,10 +184,6 @@ options:(nullable SERIALIZABLE_DICT)options;
 + (void)unionTypeWithUniverseName:(nullable id)universeName
 options:(nullable SERIALIZABLE_DICT)options;
 
-+ (void)unknownEventHandlerCalled;
-
-+ (void)unknownEventHandlerCalledWithOptions:(nullable SERIALIZABLE_DICT)options;
-
 + (void)eventCollided1;
 
 + (void)eventCollided1WithOptions:(nullable SERIALIZABLE_DICT)options;
