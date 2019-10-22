@@ -35,7 +35,7 @@
 
 ```sh
 # Walks you through setting up a `typewriter.yml` and generating your first client.
-$ npx typewriter@next init
+$ npx typewriter init
 ```
 
 For more instructions on setting up your `typewriter` client, such as adding it to your CI, see our [documentation](https://segment.com/docs/protocols/typewriter).
