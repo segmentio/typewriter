@@ -72,7 +72,7 @@ export const ios: Generator<{}, IOSTrackCallContext, IOSObjectContext, IOSProper
 			p.type = p.isVariableNullable ? 'BOOL *' : 'BOOL'
 			p.isPointerType = p.isVariableNullable
 		} else if (schema.type === Type.INTEGER) {
-			p.type = p.isVariableNullable ? 'NSInteger *' : 'NSInteger'
+			p.type = p.isVariableNullable ? 'NSNumber *' : 'NSInteger'
 			p.isPointerType = p.isVariableNullable
 		} else if (schema.type === Type.NUMBER) {
 			p.type = 'NSNumber *'
@@ -264,7 +264,7 @@ function generatePropertiesDictionary(
 					: `[NSNumber numberWithBool:${name}]`
 				: property.schemaType === Type.INTEGER
 				? property.isPointerType
-					? `[NSNumber numberWithInteger:*${name}]`
+					? name
 					: `[NSNumber numberWithInteger:${name}]`
 				: property.schemaType === Type.OBJECT && !property.type.includes('SERIALIZABLE_DICT')
 				? `[${name} toDictionary]`

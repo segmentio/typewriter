@@ -57,7 +57,7 @@ options:(nullable SERIALIZABLE_DICT)options;
 + (void)everyNullableOptionalTypeWithOptionalAny:(nullable id)optionalAny
 optionalArray:(nullable NSArray<id> *)optionalArray
 optionalBoolean:(nullable BOOL *)optionalBoolean
-optionalInt:(nullable NSInteger *)optionalInt
+optionalInt:(nullable NSNumber *)optionalInt
 optionalNumber:(nullable NSNumber *)optionalNumber
 optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
 optionalString:(nullable NSString *)optionalString
@@ -66,7 +66,7 @@ optionalStringWithRegex:(nullable NSString *)optionalStringWithRegex;
 + (void)everyNullableOptionalTypeWithOptionalAny:(nullable id)optionalAny
 optionalArray:(nullable NSArray<id> *)optionalArray
 optionalBoolean:(nullable BOOL *)optionalBoolean
-optionalInt:(nullable NSInteger *)optionalInt
+optionalInt:(nullable NSNumber *)optionalInt
 optionalNumber:(nullable NSNumber *)optionalNumber
 optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
 optionalString:(nullable NSString *)optionalString
@@ -76,7 +76,7 @@ options:(nullable SERIALIZABLE_DICT)options;
 + (void)everyNullableRequiredTypeWithRequiredAny:(nullable id)requiredAny
 requiredArray:(nullable NSArray<id> *)requiredArray
 requiredBoolean:(nullable BOOL *)requiredBoolean
-requiredInt:(nullable NSInteger *)requiredInt
+requiredInt:(nullable NSNumber *)requiredInt
 requiredNumber:(nullable NSNumber *)requiredNumber
 requiredObject:(nullable SERIALIZABLE_DICT)requiredObject
 requiredString:(nullable NSString *)requiredString
@@ -85,7 +85,7 @@ requiredStringWithRegex:(nullable NSString *)requiredStringWithRegex;
 + (void)everyNullableRequiredTypeWithRequiredAny:(nullable id)requiredAny
 requiredArray:(nullable NSArray<id> *)requiredArray
 requiredBoolean:(nullable BOOL *)requiredBoolean
-requiredInt:(nullable NSInteger *)requiredInt
+requiredInt:(nullable NSNumber *)requiredInt
 requiredNumber:(nullable NSNumber *)requiredNumber
 requiredObject:(nullable SERIALIZABLE_DICT)requiredObject
 requiredString:(nullable NSString *)requiredString
@@ -95,7 +95,7 @@ options:(nullable SERIALIZABLE_DICT)options;
 + (void)everyOptionalTypeWithOptionalAny:(nullable id)optionalAny
 optionalArray:(nullable NSArray<id> *)optionalArray
 optionalBoolean:(nullable BOOL *)optionalBoolean
-optionalInt:(nullable NSInteger *)optionalInt
+optionalInt:(nullable NSNumber *)optionalInt
 optionalNumber:(nullable NSNumber *)optionalNumber
 optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
 optionalString:(nullable NSString *)optionalString
@@ -104,7 +104,7 @@ optionalStringWithRegex:(nullable NSString *)optionalStringWithRegex;
 + (void)everyOptionalTypeWithOptionalAny:(nullable id)optionalAny
 optionalArray:(nullable NSArray<id> *)optionalArray
 optionalBoolean:(nullable BOOL *)optionalBoolean
-optionalInt:(nullable NSInteger *)optionalInt
+optionalInt:(nullable NSNumber *)optionalInt
 optionalNumber:(nullable NSNumber *)optionalNumber
 optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
 optionalString:(nullable NSString *)optionalString
@@ -128,6 +128,25 @@ requiredNumber:(nonnull NSNumber *)requiredNumber
 requiredObject:(nonnull SERIALIZABLE_DICT)requiredObject
 requiredString:(nonnull NSString *)requiredString
 requiredStringWithRegex:(nonnull NSString *)requiredStringWithRegex
+options:(nullable SERIALIZABLE_DICT)options;
+
++ (void)largeNumbersEventWithLargeNullableOptionalInteger:(nullable NSNumber *)largeNullableOptionalInteger
+largeNullableOptionalNumber:(nullable NSNumber *)largeNullableOptionalNumber
+largeNullableRequiredInteger:(nullable NSNumber *)largeNullableRequiredInteger
+largeNullableRequiredNumber:(nullable NSNumber *)largeNullableRequiredNumber
+largeOptionalInteger:(nullable NSNumber *)largeOptionalInteger
+largeOptionalNumber:(nullable NSNumber *)largeOptionalNumber
+largeRequiredInteger:(NSInteger)largeRequiredInteger
+largeRequiredNumber:(nonnull NSNumber *)largeRequiredNumber;
+
++ (void)largeNumbersEventWithLargeNullableOptionalInteger:(nullable NSNumber *)largeNullableOptionalInteger
+largeNullableOptionalNumber:(nullable NSNumber *)largeNullableOptionalNumber
+largeNullableRequiredInteger:(nullable NSNumber *)largeNullableRequiredInteger
+largeNullableRequiredNumber:(nullable NSNumber *)largeNullableRequiredNumber
+largeOptionalInteger:(nullable NSNumber *)largeOptionalInteger
+largeOptionalNumber:(nullable NSNumber *)largeOptionalNumber
+largeRequiredInteger:(NSInteger)largeRequiredInteger
+largeRequiredNumber:(nonnull NSNumber *)largeRequiredNumber
 options:(nullable SERIALIZABLE_DICT)options;
 
 + (void)nestedArraysWithUniverseCharacters:(nonnull NSArray<NSArray<SEGUniverseCharactersItemItem *> *> *)universeCharacters;

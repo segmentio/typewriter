@@ -69,6 +69,8 @@
                                                                      ]
                                                                  ]];
     
+    [SEGTypewriterAnalytics largeNumbersEventWithLargeNullableOptionalInteger:@1230007112658965944 largeNullableOptionalNumber:@1240007112658965944331.0 largeNullableRequiredInteger:@1250007112658965944 largeNullableRequiredNumber:@1260007112658965944331.0 largeOptionalInteger:@1270007112658965944 largeOptionalNumber:@1280007112658965944331.0 largeRequiredInteger:1290007112658965944 largeRequiredNumber:@1300007112658965944331.0];
+
     // Note: flushing is an async operation in analytics-ios. Therefore, we use notifications to
     // identify when all events have finished flushing.
     __block BOOL finishedFlushing = false;
