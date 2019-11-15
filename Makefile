@@ -69,7 +69,7 @@ docker:
 # clear-mock: Clears segmentio/mock to give an e2e test a clean slate.
 .PHONY: clear-mock
 clear-mock:
-	@curl -f "http://localhost:8765/messages" > /dev/null 2>&1
+	@curl -f "http://localhost:8765/messages" > /dev/null 2>&1 || (echo "Failed to clear segmentio/mock. Is it running? Try 'make docker'"; exit 1)
 
 # teardown: shuts down the sidecar.
 .PHONY: teardown
