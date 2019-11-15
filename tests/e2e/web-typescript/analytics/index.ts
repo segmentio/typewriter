@@ -155,6 +155,16 @@ export interface EveryRequiredType {
 	 */
 	'required string with regex': string
 }
+export interface LargeNumbersEvent {
+	'large nullable optional integer'?: number | null
+	'large nullable optional number'?: number | null
+	'large nullable required integer': number | null
+	'large nullable required number': number | null
+	'large optional integer'?: number
+	'large optional number'?: number
+	'large required integer': number
+	'large required number': number
+}
 export interface UniverseCharactersItemItem {
 	/**
 	 * The character's name.
@@ -399,6 +409,17 @@ function withTypewriterContext(message: Segment.Options = {}): Segment.Options {
  * @property {string} required string with regex - Required string property with a regex conditional
  */
 /**
+ * @typedef LargeNumbersEvent
+ * @property {number | null} [large nullable optional integer] -
+ * @property {number | null} [large nullable optional number] -
+ * @property {number | null} large nullable required integer -
+ * @property {number | null} large nullable required number -
+ * @property {number} [large optional integer] -
+ * @property {number} [large optional number] -
+ * @property {number} large required integer -
+ * @property {number} large required number -
+ */
+/**
  * @typedef UniverseCharactersItemItem
  * @property {string} name - The character's name.
  */
@@ -619,7 +640,7 @@ export function analyticsInstanceMissingThrewError(
 	}
 }
 /**
- * Fires a 'Custom Violation Handler' track call.
+ * This event is fired in order to trigger a custom violation handler. It should be called with a JSON Schema violation.
  *
  * @param {CustomViolationHandler} props - The analytics properties that will be sent to Segment.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -633,6 +654,8 @@ export function customViolationHandler(
 ): void {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'This event is fired in order to trigger a custom violation handler. It should be called with a JSON Schema violation.',
 		labels: {},
 		properties: {
 			context: {},
@@ -673,7 +696,7 @@ export function customViolationHandler(
 	}
 }
 /**
- * Fires a 'Custom Violation Handler Called' track call.
+ * This event should be fired if a custom violation handler is correctly called due to a call to `Custom Violation Handler` with a violation.
  *
  * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -687,6 +710,8 @@ export function customViolationHandlerCalled(
 ): void {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'This event should be fired if a custom violation handler is correctly called due to a call to `Custom Violation Handler` with a violation.',
 		labels: {},
 		properties: {
 			context: {},
@@ -718,7 +743,7 @@ export function customViolationHandlerCalled(
 	}
 }
 /**
- * Fires a 'Default Violation Handler' track call.
+ * This event is fired in order to trigger the default violation handler. It should be called with a JSON Schema violation.
  *
  * @param {DefaultViolationHandler} props - The analytics properties that will be sent to Segment.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -732,6 +757,8 @@ export function defaultViolationHandler(
 ): void {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'This event is fired in order to trigger the default violation handler. It should be called with a JSON Schema violation.',
 		labels: {},
 		properties: {
 			context: {},
@@ -772,7 +799,7 @@ export function defaultViolationHandler(
 	}
 }
 /**
- * Fires a 'Default Violation Handler Called' track call.
+ * This event should be fired if the default violation handler is correctly called due to a call to `Default Violation Handler` with a violation.
  *
  * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -786,6 +813,8 @@ export function defaultViolationHandlerCalled(
 ): void {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'This event should be fired if the default violation handler is correctly called due to a call to `Default Violation Handler` with a violation.',
 		labels: {},
 		properties: {
 			context: {},
@@ -817,7 +846,7 @@ export function defaultViolationHandlerCalled(
 	}
 }
 /**
- * Fires a 'Empty Event' track call.
+ * Validates that a generated client supports events with no explicit properties. It is expected that this event accepts ANY properties.
  *
  * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -831,6 +860,8 @@ export function emptyEvent(
 ): void {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that a generated client supports events with no explicit properties. It is expected that this event accepts ANY properties.',
 		labels: {},
 		properties: {
 			context: {},
@@ -862,7 +893,7 @@ export function emptyEvent(
 	}
 }
 /**
- * Fires a 'Event Collided' track call.
+ * Validates that a generated client handles even naming collisions.
  *
  * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -876,6 +907,8 @@ export function eventCollided(
 ): void {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that a generated client handles even naming collisions.',
 		labels: {},
 		properties: {
 			context: {},
@@ -907,7 +940,7 @@ export function eventCollided(
 	}
 }
 /**
- * Fires a 'Every Nullable Optional Type' track call.
+ * Validates that clients handle all of the supported field types, as nullable optional fields. If a field is null, it is expected to be NOT sent through.
  *
  * @param {EveryNullableOptionalType} [props] - The analytics properties that will be sent to Segment.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -921,6 +954,8 @@ export function everyNullableOptionalType(
 ): void {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that clients handle all of the supported field types, as nullable optional fields. If a field is null, it is expected to be NOT sent through.',
 		properties: {
 			context: {},
 			properties: {
@@ -985,7 +1020,7 @@ export function everyNullableOptionalType(
 	}
 }
 /**
- * Fires a 'Every Nullable Required Type' track call.
+ * Validates that clients handle all of the supported field types, as nullable required fields. If a field is null, it is expected to be sent through.
  *
  * @param {EveryNullableRequiredType} props - The analytics properties that will be sent to Segment.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -999,6 +1034,8 @@ export function everyNullableRequiredType(
 ): void {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that clients handle all of the supported field types, as nullable required fields. If a field is null, it is expected to be sent through.',
 		properties: {
 			context: {},
 			properties: {
@@ -1074,7 +1111,7 @@ export function everyNullableRequiredType(
 	}
 }
 /**
- * Fires a 'Every Optional Type' track call.
+ * Validates that clients handle all of the supported field types, as optional fields.
  *
  * @param {EveryOptionalType} [props] - The analytics properties that will be sent to Segment.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -1088,6 +1125,8 @@ export function everyOptionalType(
 ): void {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that clients handle all of the supported field types, as optional fields.',
 		properties: {
 			context: {},
 			properties: {
@@ -1153,7 +1192,7 @@ export function everyOptionalType(
 	}
 }
 /**
- * Fires a 'Every Required Type' track call.
+ * Validates that clients handle all of the supported field types, as required fields.
  *
  * @param {EveryRequiredType} props - The analytics properties that will be sent to Segment.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -1167,6 +1206,8 @@ export function everyRequiredType(
 ): void {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that clients handle all of the supported field types, as required fields. ',
 		properties: {
 			context: {},
 			properties: {
@@ -1243,7 +1284,95 @@ export function everyRequiredType(
 	}
 }
 /**
- * Fires a 'Nested Arrays' track call.
+ * Validates that clients correctly serialize large numbers (integers and floats).
+ *
+ * @param {LargeNumbersEvent} props - The analytics properties that will be sent to Segment.
+ * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
+ */
+export function largeNumbersEvent(
+	props: LargeNumbersEvent,
+	options?: Segment.Options,
+	callback?: Segment.Callback
+): void {
+	const schema = {
+		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that clients correctly serialize large numbers (integers and floats).',
+		labels: {},
+		properties: {
+			context: {},
+			properties: {
+				properties: {
+					'large nullable optional integer': {
+						description: '',
+						type: ['integer', 'null'],
+					},
+					'large nullable optional number': {
+						description: '',
+						type: ['number', 'null'],
+					},
+					'large nullable required integer': {
+						description: '',
+						type: ['integer', 'null'],
+					},
+					'large nullable required number': {
+						description: '',
+						type: ['number', 'null'],
+					},
+					'large optional integer': {
+						description: '',
+						type: 'integer',
+					},
+					'large optional number': {
+						description: '',
+						type: 'number',
+					},
+					'large required integer': {
+						description: '',
+						type: 'integer',
+					},
+					'large required number': {
+						description: '',
+						type: 'number',
+					},
+				},
+				required: [
+					'large required integer',
+					'large required number',
+					'large nullable required integer',
+					'large nullable required number',
+				],
+				type: 'object',
+			},
+			traits: {
+				type: 'object',
+			},
+		},
+		required: ['properties'],
+		title: 'Large Numbers Event',
+		type: 'object',
+	}
+	const message = {
+		event: 'Large Numbers Event',
+		properties: props || {},
+		options,
+	}
+	validateAgainstSchema(message, schema)
+
+	const a = analytics()
+	if (a) {
+		a.track(
+			'Large Numbers Event',
+			props || {},
+			withTypewriterContext(options),
+			callback
+		)
+	}
+}
+/**
+ * Validates that clients handle arrays-within-arrays.
  *
  * @param {NestedArrays} props - The analytics properties that will be sent to Segment.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -1257,6 +1386,7 @@ export function nestedArrays(
 ): void {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description: 'Validates that clients handle arrays-within-arrays.',
 		labels: {},
 		properties: {
 			context: {},
@@ -1311,7 +1441,7 @@ export function nestedArrays(
 	}
 }
 /**
- * Fires a 'Nested Objects' track call.
+ * Validates that clients handle objects-within-objects.
  *
  * @param {NestedObjects} props - The analytics properties that will be sent to Segment.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -1325,6 +1455,7 @@ export function nestedObjects(
 ): void {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description: 'Validates that clients handle objects-within-objects.',
 		labels: {},
 		properties: {
 			context: {},
@@ -1393,7 +1524,7 @@ export function nestedObjects(
 	}
 }
 /**
- * Fires a 'Properties Collided' track call.
+ * Validates that clients handle collisions in property names within a single event.
  *
  * @param {PropertiesCollided} props - The analytics properties that will be sent to Segment.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -1407,6 +1538,8 @@ export function propertiesCollided(
 ): void {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that clients handle collisions in property names within a single event.',
 		labels: {},
 		properties: {
 			context: {},
@@ -1450,7 +1583,7 @@ export function propertiesCollided(
 	}
 }
 /**
- * Fires a 'Property Object Name Collision #1' track call.
+ * Validates that clients handle collisions in object names across multiple events.
  *
  * @param {PropertyObjectNameCollision1} [props] - The analytics properties that will be sent to Segment.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -1464,6 +1597,8 @@ export function propertyObjectNameCollision1(
 ): void {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that clients handle collisions in object names across multiple events.',
 		labels: {},
 		properties: {
 			context: {},
@@ -1523,7 +1658,7 @@ export function propertyObjectNameCollision1(
 	}
 }
 /**
- * Fires a 'Property Object Name Collision #2' track call.
+ * Validates that clients handle collisions in object names across multiple events.
  *
  * @param {PropertyObjectNameCollision2} [props] - The analytics properties that will be sent to Segment.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -1537,6 +1672,8 @@ export function propertyObjectNameCollision2(
 ): void {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that clients handle collisions in object names across multiple events.',
 		labels: {},
 		properties: {
 			context: {},
@@ -1596,7 +1733,7 @@ export function propertyObjectNameCollision2(
 	}
 }
 /**
- * Fires a 'Property Sanitized' track call.
+ * Validates that clients sanitize property names that contain invalid identifier characters.
  *
  * @param {PropertySanitized} props - The analytics properties that will be sent to Segment.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -1610,6 +1747,8 @@ export function propertySanitized(
 ): void {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that clients sanitize property names that contain invalid identifier characters.',
 		labels: {},
 		properties: {
 			context: {},
@@ -1649,7 +1788,7 @@ export function propertySanitized(
 	}
 }
 /**
- * Fires a 'Simple Array Types' track call.
+ * Validates that clients support fields with various types of arrays.
  *
  * @param {SimpleArrayTypes} [props] - The analytics properties that will be sent to Segment.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -1663,6 +1802,8 @@ export function simpleArrayTypes(
 ): void {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that clients support fields with various types of arrays.',
 		labels: {},
 		properties: {
 			context: {},
@@ -1758,7 +1899,7 @@ export function simpleArrayTypes(
 	}
 }
 /**
- * Fires a 'Union Type' track call.
+ * Validates that clients support fields with multiple (union) types.
  *
  * @param {UnionType} props - The analytics properties that will be sent to Segment.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -1772,6 +1913,8 @@ export function unionType(
 ): void {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that clients support fields with multiple (union) types.',
 		labels: {},
 		properties: {
 			context: {},
@@ -1806,7 +1949,7 @@ export function unionType(
 	}
 }
 /**
- * Fires a 'event_collided' track call.
+ * Validates that a generated client handles even naming collisions.
  *
  * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -1820,6 +1963,8 @@ export function eventCollided1(
 ): void {
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that a generated client handles even naming collisions.',
 		labels: {},
 		properties: {
 			context: {},
@@ -1894,7 +2039,7 @@ const clientAPI = {
 	 */
 	analyticsInstanceMissingThrewError,
 	/**
-	 * Fires a 'Custom Violation Handler' track call.
+	 * This event is fired in order to trigger a custom violation handler. It should be called with a JSON Schema violation.
 	 *
 	 * @param {CustomViolationHandler} props - The analytics properties that will be sent to Segment.
 	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -1903,7 +2048,7 @@ const clientAPI = {
 	 */
 	customViolationHandler,
 	/**
-	 * Fires a 'Custom Violation Handler Called' track call.
+	 * This event should be fired if a custom violation handler is correctly called due to a call to `Custom Violation Handler` with a violation.
 	 *
 	 * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
 	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -1912,7 +2057,7 @@ const clientAPI = {
 	 */
 	customViolationHandlerCalled,
 	/**
-	 * Fires a 'Default Violation Handler' track call.
+	 * This event is fired in order to trigger the default violation handler. It should be called with a JSON Schema violation.
 	 *
 	 * @param {DefaultViolationHandler} props - The analytics properties that will be sent to Segment.
 	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -1921,7 +2066,7 @@ const clientAPI = {
 	 */
 	defaultViolationHandler,
 	/**
-	 * Fires a 'Default Violation Handler Called' track call.
+	 * This event should be fired if the default violation handler is correctly called due to a call to `Default Violation Handler` with a violation.
 	 *
 	 * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
 	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -1930,7 +2075,7 @@ const clientAPI = {
 	 */
 	defaultViolationHandlerCalled,
 	/**
-	 * Fires a 'Empty Event' track call.
+	 * Validates that a generated client supports events with no explicit properties. It is expected that this event accepts ANY properties.
 	 *
 	 * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
 	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -1939,7 +2084,7 @@ const clientAPI = {
 	 */
 	emptyEvent,
 	/**
-	 * Fires a 'Event Collided' track call.
+	 * Validates that a generated client handles even naming collisions.
 	 *
 	 * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
 	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -1948,7 +2093,7 @@ const clientAPI = {
 	 */
 	eventCollided,
 	/**
-	 * Fires a 'Every Nullable Optional Type' track call.
+	 * Validates that clients handle all of the supported field types, as nullable optional fields. If a field is null, it is expected to be NOT sent through.
 	 *
 	 * @param {EveryNullableOptionalType} [props] - The analytics properties that will be sent to Segment.
 	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -1957,7 +2102,7 @@ const clientAPI = {
 	 */
 	everyNullableOptionalType,
 	/**
-	 * Fires a 'Every Nullable Required Type' track call.
+	 * Validates that clients handle all of the supported field types, as nullable required fields. If a field is null, it is expected to be sent through.
 	 *
 	 * @param {EveryNullableRequiredType} props - The analytics properties that will be sent to Segment.
 	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -1966,7 +2111,7 @@ const clientAPI = {
 	 */
 	everyNullableRequiredType,
 	/**
-	 * Fires a 'Every Optional Type' track call.
+	 * Validates that clients handle all of the supported field types, as optional fields.
 	 *
 	 * @param {EveryOptionalType} [props] - The analytics properties that will be sent to Segment.
 	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -1975,7 +2120,7 @@ const clientAPI = {
 	 */
 	everyOptionalType,
 	/**
-	 * Fires a 'Every Required Type' track call.
+	 * Validates that clients handle all of the supported field types, as required fields.
 	 *
 	 * @param {EveryRequiredType} props - The analytics properties that will be sent to Segment.
 	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -1984,7 +2129,16 @@ const clientAPI = {
 	 */
 	everyRequiredType,
 	/**
-	 * Fires a 'Nested Arrays' track call.
+	 * Validates that clients correctly serialize large numbers (integers and floats).
+	 *
+	 * @param {LargeNumbersEvent} props - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
+	largeNumbersEvent,
+	/**
+	 * Validates that clients handle arrays-within-arrays.
 	 *
 	 * @param {NestedArrays} props - The analytics properties that will be sent to Segment.
 	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -1993,7 +2147,7 @@ const clientAPI = {
 	 */
 	nestedArrays,
 	/**
-	 * Fires a 'Nested Objects' track call.
+	 * Validates that clients handle objects-within-objects.
 	 *
 	 * @param {NestedObjects} props - The analytics properties that will be sent to Segment.
 	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -2002,7 +2156,7 @@ const clientAPI = {
 	 */
 	nestedObjects,
 	/**
-	 * Fires a 'Properties Collided' track call.
+	 * Validates that clients handle collisions in property names within a single event.
 	 *
 	 * @param {PropertiesCollided} props - The analytics properties that will be sent to Segment.
 	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -2011,7 +2165,7 @@ const clientAPI = {
 	 */
 	propertiesCollided,
 	/**
-	 * Fires a 'Property Object Name Collision #1' track call.
+	 * Validates that clients handle collisions in object names across multiple events.
 	 *
 	 * @param {PropertyObjectNameCollision1} [props] - The analytics properties that will be sent to Segment.
 	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -2020,7 +2174,7 @@ const clientAPI = {
 	 */
 	propertyObjectNameCollision1,
 	/**
-	 * Fires a 'Property Object Name Collision #2' track call.
+	 * Validates that clients handle collisions in object names across multiple events.
 	 *
 	 * @param {PropertyObjectNameCollision2} [props] - The analytics properties that will be sent to Segment.
 	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -2029,7 +2183,7 @@ const clientAPI = {
 	 */
 	propertyObjectNameCollision2,
 	/**
-	 * Fires a 'Property Sanitized' track call.
+	 * Validates that clients sanitize property names that contain invalid identifier characters.
 	 *
 	 * @param {PropertySanitized} props - The analytics properties that will be sent to Segment.
 	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -2038,7 +2192,7 @@ const clientAPI = {
 	 */
 	propertySanitized,
 	/**
-	 * Fires a 'Simple Array Types' track call.
+	 * Validates that clients support fields with various types of arrays.
 	 *
 	 * @param {SimpleArrayTypes} [props] - The analytics properties that will be sent to Segment.
 	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -2047,7 +2201,7 @@ const clientAPI = {
 	 */
 	simpleArrayTypes,
 	/**
-	 * Fires a 'Union Type' track call.
+	 * Validates that clients support fields with multiple (union) types.
 	 *
 	 * @param {UnionType} props - The analytics properties that will be sent to Segment.
 	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
@@ -2056,7 +2210,7 @@ const clientAPI = {
 	 */
 	unionType,
 	/**
-	 * Fires a 'event_collided' track call.
+	 * Validates that a generated client handles even naming collisions.
 	 *
 	 * @param {Record<string, any>} [props] - The analytics properties that will be sent to Segment.
 	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.

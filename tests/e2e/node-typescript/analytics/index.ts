@@ -155,6 +155,16 @@ export interface EveryRequiredType {
 	 */
 	'required string with regex': string
 }
+export interface LargeNumbersEvent {
+	'large nullable optional integer'?: number | null
+	'large nullable optional number'?: number | null
+	'large nullable required integer': number | null
+	'large nullable required number': number | null
+	'large optional integer'?: number
+	'large optional number'?: number
+	'large required integer': number
+	'large required number': number
+}
 export interface UniverseCharactersItemItem {
 	/**
 	 * The character's name.
@@ -434,6 +444,17 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
  * @property {string} required string with regex - Required string property with a regex conditional
  */
 /**
+ * @typedef LargeNumbersEvent
+ * @property {number | null} [large nullable optional integer] -
+ * @property {number | null} [large nullable optional number] -
+ * @property {number | null} large nullable required integer -
+ * @property {number | null} large nullable required number -
+ * @property {number} [large optional integer] -
+ * @property {number} [large optional number] -
+ * @property {number} large required integer -
+ * @property {number} large required number -
+ */
+/**
  * @typedef UniverseCharactersItemItem
  * @property {string} name - The character's name.
  */
@@ -642,7 +663,7 @@ export function analyticsInstanceMissingThrewError(
 	}
 }
 /**
- * Fires a 'Custom Violation Handler' track call.
+ * This event is fired in order to trigger a custom violation handler. It should be called with a JSON Schema violation.
  *
  * @param {TrackMessage<CustomViolationHandler>} message - The analytics properties that will be sent to Segment.
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -660,6 +681,8 @@ export function customViolationHandler(
 
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'This event is fired in order to trigger a custom violation handler. It should be called with a JSON Schema violation.',
 		labels: {},
 		properties: {
 			context: {},
@@ -692,7 +715,7 @@ export function customViolationHandler(
 	}
 }
 /**
- * Fires a 'Custom Violation Handler Called' track call.
+ * This event should be fired if a custom violation handler is correctly called due to a call to `Custom Violation Handler` with a violation.
  *
  * @param {TrackMessage<Record<string, any>>} message - The analytics properties that will be sent to Segment.
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -710,6 +733,8 @@ export function customViolationHandlerCalled(
 
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'This event should be fired if a custom violation handler is correctly called due to a call to `Custom Violation Handler` with a violation.',
 		labels: {},
 		properties: {
 			context: {},
@@ -733,7 +758,7 @@ export function customViolationHandlerCalled(
 	}
 }
 /**
- * Fires a 'Default Violation Handler' track call.
+ * This event is fired in order to trigger the default violation handler. It should be called with a JSON Schema violation.
  *
  * @param {TrackMessage<DefaultViolationHandler>} message - The analytics properties that will be sent to Segment.
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -751,6 +776,8 @@ export function defaultViolationHandler(
 
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'This event is fired in order to trigger the default violation handler. It should be called with a JSON Schema violation.',
 		labels: {},
 		properties: {
 			context: {},
@@ -783,7 +810,7 @@ export function defaultViolationHandler(
 	}
 }
 /**
- * Fires a 'Default Violation Handler Called' track call.
+ * This event should be fired if the default violation handler is correctly called due to a call to `Default Violation Handler` with a violation.
  *
  * @param {TrackMessage<Record<string, any>>} message - The analytics properties that will be sent to Segment.
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -801,6 +828,8 @@ export function defaultViolationHandlerCalled(
 
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'This event should be fired if the default violation handler is correctly called due to a call to `Default Violation Handler` with a violation.',
 		labels: {},
 		properties: {
 			context: {},
@@ -824,7 +853,7 @@ export function defaultViolationHandlerCalled(
 	}
 }
 /**
- * Fires a 'Empty Event' track call.
+ * Validates that a generated client supports events with no explicit properties. It is expected that this event accepts ANY properties.
  *
  * @param {TrackMessage<Record<string, any>>} message - The analytics properties that will be sent to Segment.
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -842,6 +871,8 @@ export function emptyEvent(
 
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that a generated client supports events with no explicit properties. It is expected that this event accepts ANY properties.',
 		labels: {},
 		properties: {
 			context: {},
@@ -865,7 +896,7 @@ export function emptyEvent(
 	}
 }
 /**
- * Fires a 'Event Collided' track call.
+ * Validates that a generated client handles even naming collisions.
  *
  * @param {TrackMessage<Record<string, any>>} message - The analytics properties that will be sent to Segment.
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -883,6 +914,8 @@ export function eventCollided(
 
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that a generated client handles even naming collisions.',
 		labels: {},
 		properties: {
 			context: {},
@@ -906,7 +939,7 @@ export function eventCollided(
 	}
 }
 /**
- * Fires a 'Every Nullable Optional Type' track call.
+ * Validates that clients handle all of the supported field types, as nullable optional fields. If a field is null, it is expected to be NOT sent through.
  *
  * @param {TrackMessage<EveryNullableOptionalType>} message - The analytics properties that will be sent to Segment.
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -924,6 +957,8 @@ export function everyNullableOptionalType(
 
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that clients handle all of the supported field types, as nullable optional fields. If a field is null, it is expected to be NOT sent through.',
 		properties: {
 			context: {},
 			properties: {
@@ -980,7 +1015,7 @@ export function everyNullableOptionalType(
 	}
 }
 /**
- * Fires a 'Every Nullable Required Type' track call.
+ * Validates that clients handle all of the supported field types, as nullable required fields. If a field is null, it is expected to be sent through.
  *
  * @param {TrackMessage<EveryNullableRequiredType>} message - The analytics properties that will be sent to Segment.
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -998,6 +1033,8 @@ export function everyNullableRequiredType(
 
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that clients handle all of the supported field types, as nullable required fields. If a field is null, it is expected to be sent through.',
 		properties: {
 			context: {},
 			properties: {
@@ -1065,7 +1102,7 @@ export function everyNullableRequiredType(
 	}
 }
 /**
- * Fires a 'Every Optional Type' track call.
+ * Validates that clients handle all of the supported field types, as optional fields.
  *
  * @param {TrackMessage<EveryOptionalType>} message - The analytics properties that will be sent to Segment.
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1083,6 +1120,8 @@ export function everyOptionalType(
 
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that clients handle all of the supported field types, as optional fields.',
 		properties: {
 			context: {},
 			properties: {
@@ -1140,7 +1179,7 @@ export function everyOptionalType(
 	}
 }
 /**
- * Fires a 'Every Required Type' track call.
+ * Validates that clients handle all of the supported field types, as required fields.
  *
  * @param {TrackMessage<EveryRequiredType>} message - The analytics properties that will be sent to Segment.
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1158,6 +1197,8 @@ export function everyRequiredType(
 
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that clients handle all of the supported field types, as required fields. ',
 		properties: {
 			context: {},
 			properties: {
@@ -1226,7 +1267,91 @@ export function everyRequiredType(
 	}
 }
 /**
- * Fires a 'Nested Arrays' track call.
+ * Validates that clients correctly serialize large numbers (integers and floats).
+ *
+ * @param {TrackMessage<LargeNumbersEvent>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
+ */
+export function largeNumbersEvent(
+	message: Segment.TrackMessage<LargeNumbersEvent>,
+	callback?: Segment.Callback
+): void {
+	const msg = withTypewriterContext({
+		properties: {},
+		...message,
+		event: 'Large Numbers Event',
+	})
+
+	const schema = {
+		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that clients correctly serialize large numbers (integers and floats).',
+		labels: {},
+		properties: {
+			context: {},
+			properties: {
+				properties: {
+					'large nullable optional integer': {
+						description: '',
+						type: ['integer', 'null'],
+					},
+					'large nullable optional number': {
+						description: '',
+						type: ['number', 'null'],
+					},
+					'large nullable required integer': {
+						description: '',
+						type: ['integer', 'null'],
+					},
+					'large nullable required number': {
+						description: '',
+						type: ['number', 'null'],
+					},
+					'large optional integer': {
+						description: '',
+						type: 'integer',
+					},
+					'large optional number': {
+						description: '',
+						type: 'number',
+					},
+					'large required integer': {
+						description: '',
+						type: 'integer',
+					},
+					'large required number': {
+						description: '',
+						type: 'number',
+					},
+				},
+				required: [
+					'large required integer',
+					'large required number',
+					'large nullable required integer',
+					'large nullable required number',
+				],
+				type: 'object',
+			},
+			traits: {
+				type: 'object',
+			},
+		},
+		required: ['properties'],
+		title: 'Large Numbers Event',
+		type: 'object',
+	}
+	validateAgainstSchema(msg, schema)
+
+	const a = analytics()
+	if (a) {
+		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
+	}
+}
+/**
+ * Validates that clients handle arrays-within-arrays.
  *
  * @param {TrackMessage<NestedArrays>} message - The analytics properties that will be sent to Segment.
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1244,6 +1369,7 @@ export function nestedArrays(
 
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description: 'Validates that clients handle arrays-within-arrays.',
 		labels: {},
 		properties: {
 			context: {},
@@ -1290,7 +1416,7 @@ export function nestedArrays(
 	}
 }
 /**
- * Fires a 'Nested Objects' track call.
+ * Validates that clients handle objects-within-objects.
  *
  * @param {TrackMessage<NestedObjects>} message - The analytics properties that will be sent to Segment.
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1308,6 +1434,7 @@ export function nestedObjects(
 
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description: 'Validates that clients handle objects-within-objects.',
 		labels: {},
 		properties: {
 			context: {},
@@ -1368,7 +1495,7 @@ export function nestedObjects(
 	}
 }
 /**
- * Fires a 'Properties Collided' track call.
+ * Validates that clients handle collisions in property names within a single event.
  *
  * @param {TrackMessage<PropertiesCollided>} message - The analytics properties that will be sent to Segment.
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1386,6 +1513,8 @@ export function propertiesCollided(
 
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that clients handle collisions in property names within a single event.',
 		labels: {},
 		properties: {
 			context: {},
@@ -1421,7 +1550,7 @@ export function propertiesCollided(
 	}
 }
 /**
- * Fires a 'Property Object Name Collision #1' track call.
+ * Validates that clients handle collisions in object names across multiple events.
  *
  * @param {TrackMessage<PropertyObjectNameCollision1>} message - The analytics properties that will be sent to Segment.
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1439,6 +1568,8 @@ export function propertyObjectNameCollision1(
 
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that clients handle collisions in object names across multiple events.',
 		labels: {},
 		properties: {
 			context: {},
@@ -1490,7 +1621,7 @@ export function propertyObjectNameCollision1(
 	}
 }
 /**
- * Fires a 'Property Object Name Collision #2' track call.
+ * Validates that clients handle collisions in object names across multiple events.
  *
  * @param {TrackMessage<PropertyObjectNameCollision2>} message - The analytics properties that will be sent to Segment.
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1508,6 +1639,8 @@ export function propertyObjectNameCollision2(
 
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that clients handle collisions in object names across multiple events.',
 		labels: {},
 		properties: {
 			context: {},
@@ -1559,7 +1692,7 @@ export function propertyObjectNameCollision2(
 	}
 }
 /**
- * Fires a 'Property Sanitized' track call.
+ * Validates that clients sanitize property names that contain invalid identifier characters.
  *
  * @param {TrackMessage<PropertySanitized>} message - The analytics properties that will be sent to Segment.
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1577,6 +1710,8 @@ export function propertySanitized(
 
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that clients sanitize property names that contain invalid identifier characters.',
 		labels: {},
 		properties: {
 			context: {},
@@ -1608,7 +1743,7 @@ export function propertySanitized(
 	}
 }
 /**
- * Fires a 'Simple Array Types' track call.
+ * Validates that clients support fields with various types of arrays.
  *
  * @param {TrackMessage<SimpleArrayTypes>} message - The analytics properties that will be sent to Segment.
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1626,6 +1761,8 @@ export function simpleArrayTypes(
 
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that clients support fields with various types of arrays.',
 		labels: {},
 		properties: {
 			context: {},
@@ -1713,7 +1850,7 @@ export function simpleArrayTypes(
 	}
 }
 /**
- * Fires a 'Union Type' track call.
+ * Validates that clients support fields with multiple (union) types.
  *
  * @param {TrackMessage<UnionType>} message - The analytics properties that will be sent to Segment.
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1731,6 +1868,8 @@ export function unionType(
 
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that clients support fields with multiple (union) types.',
 		labels: {},
 		properties: {
 			context: {},
@@ -1762,7 +1901,7 @@ export function unionType(
 	}
 }
 /**
- * Fires a 'event_collided' track call.
+ * Validates that a generated client handles even naming collisions.
  *
  * @param {TrackMessage<Record<string, any>>} message - The analytics properties that will be sent to Segment.
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1780,6 +1919,8 @@ export function eventCollided1(
 
 	const schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
+		description:
+			'Validates that a generated client handles even naming collisions.',
 		labels: {},
 		properties: {
 			context: {},
@@ -1845,7 +1986,7 @@ const clientAPI = {
 	 */
 	analyticsInstanceMissingThrewError,
 	/**
-	 * Fires a 'Custom Violation Handler' track call.
+	 * This event is fired in order to trigger a custom violation handler. It should be called with a JSON Schema violation.
 	 *
 	 * @param {TrackMessage<CustomViolationHandler>} message - The analytics properties that will be sent to Segment.
 	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1853,7 +1994,7 @@ const clientAPI = {
 	 */
 	customViolationHandler,
 	/**
-	 * Fires a 'Custom Violation Handler Called' track call.
+	 * This event should be fired if a custom violation handler is correctly called due to a call to `Custom Violation Handler` with a violation.
 	 *
 	 * @param {TrackMessage<Record<string, any>>} message - The analytics properties that will be sent to Segment.
 	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1861,7 +2002,7 @@ const clientAPI = {
 	 */
 	customViolationHandlerCalled,
 	/**
-	 * Fires a 'Default Violation Handler' track call.
+	 * This event is fired in order to trigger the default violation handler. It should be called with a JSON Schema violation.
 	 *
 	 * @param {TrackMessage<DefaultViolationHandler>} message - The analytics properties that will be sent to Segment.
 	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1869,7 +2010,7 @@ const clientAPI = {
 	 */
 	defaultViolationHandler,
 	/**
-	 * Fires a 'Default Violation Handler Called' track call.
+	 * This event should be fired if the default violation handler is correctly called due to a call to `Default Violation Handler` with a violation.
 	 *
 	 * @param {TrackMessage<Record<string, any>>} message - The analytics properties that will be sent to Segment.
 	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1877,7 +2018,7 @@ const clientAPI = {
 	 */
 	defaultViolationHandlerCalled,
 	/**
-	 * Fires a 'Empty Event' track call.
+	 * Validates that a generated client supports events with no explicit properties. It is expected that this event accepts ANY properties.
 	 *
 	 * @param {TrackMessage<Record<string, any>>} message - The analytics properties that will be sent to Segment.
 	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1885,7 +2026,7 @@ const clientAPI = {
 	 */
 	emptyEvent,
 	/**
-	 * Fires a 'Event Collided' track call.
+	 * Validates that a generated client handles even naming collisions.
 	 *
 	 * @param {TrackMessage<Record<string, any>>} message - The analytics properties that will be sent to Segment.
 	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1893,7 +2034,7 @@ const clientAPI = {
 	 */
 	eventCollided,
 	/**
-	 * Fires a 'Every Nullable Optional Type' track call.
+	 * Validates that clients handle all of the supported field types, as nullable optional fields. If a field is null, it is expected to be NOT sent through.
 	 *
 	 * @param {TrackMessage<EveryNullableOptionalType>} message - The analytics properties that will be sent to Segment.
 	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1901,7 +2042,7 @@ const clientAPI = {
 	 */
 	everyNullableOptionalType,
 	/**
-	 * Fires a 'Every Nullable Required Type' track call.
+	 * Validates that clients handle all of the supported field types, as nullable required fields. If a field is null, it is expected to be sent through.
 	 *
 	 * @param {TrackMessage<EveryNullableRequiredType>} message - The analytics properties that will be sent to Segment.
 	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1909,7 +2050,7 @@ const clientAPI = {
 	 */
 	everyNullableRequiredType,
 	/**
-	 * Fires a 'Every Optional Type' track call.
+	 * Validates that clients handle all of the supported field types, as optional fields.
 	 *
 	 * @param {TrackMessage<EveryOptionalType>} message - The analytics properties that will be sent to Segment.
 	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1917,7 +2058,7 @@ const clientAPI = {
 	 */
 	everyOptionalType,
 	/**
-	 * Fires a 'Every Required Type' track call.
+	 * Validates that clients handle all of the supported field types, as required fields.
 	 *
 	 * @param {TrackMessage<EveryRequiredType>} message - The analytics properties that will be sent to Segment.
 	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1925,7 +2066,15 @@ const clientAPI = {
 	 */
 	everyRequiredType,
 	/**
-	 * Fires a 'Nested Arrays' track call.
+	 * Validates that clients correctly serialize large numbers (integers and floats).
+	 *
+	 * @param {TrackMessage<LargeNumbersEvent>} message - The analytics properties that will be sent to Segment.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
+	largeNumbersEvent,
+	/**
+	 * Validates that clients handle arrays-within-arrays.
 	 *
 	 * @param {TrackMessage<NestedArrays>} message - The analytics properties that will be sent to Segment.
 	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1933,7 +2082,7 @@ const clientAPI = {
 	 */
 	nestedArrays,
 	/**
-	 * Fires a 'Nested Objects' track call.
+	 * Validates that clients handle objects-within-objects.
 	 *
 	 * @param {TrackMessage<NestedObjects>} message - The analytics properties that will be sent to Segment.
 	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1941,7 +2090,7 @@ const clientAPI = {
 	 */
 	nestedObjects,
 	/**
-	 * Fires a 'Properties Collided' track call.
+	 * Validates that clients handle collisions in property names within a single event.
 	 *
 	 * @param {TrackMessage<PropertiesCollided>} message - The analytics properties that will be sent to Segment.
 	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1949,7 +2098,7 @@ const clientAPI = {
 	 */
 	propertiesCollided,
 	/**
-	 * Fires a 'Property Object Name Collision #1' track call.
+	 * Validates that clients handle collisions in object names across multiple events.
 	 *
 	 * @param {TrackMessage<PropertyObjectNameCollision1>} message - The analytics properties that will be sent to Segment.
 	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1957,7 +2106,7 @@ const clientAPI = {
 	 */
 	propertyObjectNameCollision1,
 	/**
-	 * Fires a 'Property Object Name Collision #2' track call.
+	 * Validates that clients handle collisions in object names across multiple events.
 	 *
 	 * @param {TrackMessage<PropertyObjectNameCollision2>} message - The analytics properties that will be sent to Segment.
 	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1965,7 +2114,7 @@ const clientAPI = {
 	 */
 	propertyObjectNameCollision2,
 	/**
-	 * Fires a 'Property Sanitized' track call.
+	 * Validates that clients sanitize property names that contain invalid identifier characters.
 	 *
 	 * @param {TrackMessage<PropertySanitized>} message - The analytics properties that will be sent to Segment.
 	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1973,7 +2122,7 @@ const clientAPI = {
 	 */
 	propertySanitized,
 	/**
-	 * Fires a 'Simple Array Types' track call.
+	 * Validates that clients support fields with various types of arrays.
 	 *
 	 * @param {TrackMessage<SimpleArrayTypes>} message - The analytics properties that will be sent to Segment.
 	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1981,7 +2130,7 @@ const clientAPI = {
 	 */
 	simpleArrayTypes,
 	/**
-	 * Fires a 'Union Type' track call.
+	 * Validates that clients support fields with multiple (union) types.
 	 *
 	 * @param {TrackMessage<UnionType>} message - The analytics properties that will be sent to Segment.
 	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
@@ -1989,7 +2138,7 @@ const clientAPI = {
 	 */
 	unionType,
 	/**
-	 * Fires a 'event_collided' track call.
+	 * Validates that a generated client handles even naming collisions.
 	 *
 	 * @param {TrackMessage<Record<string, any>>} message - The analytics properties that will be sent to Segment.
 	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics

@@ -126,7 +126,7 @@ options:(nullable SERIALIZABLE_DICT)options
 + (void)everyNullableOptionalTypeWithOptionalAny:(nullable id)optionalAny
 optionalArray:(nullable NSArray<id> *)optionalArray
 optionalBoolean:(nullable BOOL *)optionalBoolean
-optionalInt:(nullable NSInteger *)optionalInt
+optionalInt:(nullable NSNumber *)optionalInt
 optionalNumber:(nullable NSNumber *)optionalNumber
 optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
 optionalString:(nullable NSString *)optionalString
@@ -138,7 +138,7 @@ optionalStringWithRegex:(nullable NSString *)optionalStringWithRegex
 + (void)everyNullableOptionalTypeWithOptionalAny:(nullable id)optionalAny
 optionalArray:(nullable NSArray<id> *)optionalArray
 optionalBoolean:(nullable BOOL *)optionalBoolean
-optionalInt:(nullable NSInteger *)optionalInt
+optionalInt:(nullable NSNumber *)optionalInt
 optionalNumber:(nullable NSNumber *)optionalNumber
 optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
 optionalString:(nullable NSString *)optionalString
@@ -149,7 +149,7 @@ options:(nullable SERIALIZABLE_DICT)options
     properties[@"optional any"] = optionalAny == nil ? [NSNull null] : optionalAny;
     properties[@"optional array"] = optionalArray == nil ? [NSNull null] : [SEGTypewriterUtils toSerializableArray:optionalArray];
     properties[@"optional boolean"] = optionalBoolean == nil ? [NSNull null] : [NSNumber numberWithBool:*optionalBoolean];
-    properties[@"optional int"] = optionalInt == nil ? [NSNull null] : [NSNumber numberWithInteger:*optionalInt];
+    properties[@"optional int"] = optionalInt == nil ? [NSNull null] : optionalInt;
     properties[@"optional number"] = optionalNumber == nil ? [NSNull null] : optionalNumber;
     properties[@"optional object"] = optionalObject == nil ? [NSNull null] : optionalObject;
     properties[@"optional string"] = optionalString == nil ? [NSNull null] : optionalString;
@@ -161,7 +161,7 @@ options:(nullable SERIALIZABLE_DICT)options
 + (void)everyNullableRequiredTypeWithRequiredAny:(nullable id)requiredAny
 requiredArray:(nullable NSArray<id> *)requiredArray
 requiredBoolean:(nullable BOOL *)requiredBoolean
-requiredInt:(nullable NSInteger *)requiredInt
+requiredInt:(nullable NSNumber *)requiredInt
 requiredNumber:(nullable NSNumber *)requiredNumber
 requiredObject:(nullable SERIALIZABLE_DICT)requiredObject
 requiredString:(nullable NSString *)requiredString
@@ -173,7 +173,7 @@ requiredStringWithRegex:(nullable NSString *)requiredStringWithRegex
 + (void)everyNullableRequiredTypeWithRequiredAny:(nullable id)requiredAny
 requiredArray:(nullable NSArray<id> *)requiredArray
 requiredBoolean:(nullable BOOL *)requiredBoolean
-requiredInt:(nullable NSInteger *)requiredInt
+requiredInt:(nullable NSNumber *)requiredInt
 requiredNumber:(nullable NSNumber *)requiredNumber
 requiredObject:(nullable SERIALIZABLE_DICT)requiredObject
 requiredString:(nullable NSString *)requiredString
@@ -184,7 +184,7 @@ options:(nullable SERIALIZABLE_DICT)options
     properties[@"required any"] = requiredAny == nil ? [NSNull null] : requiredAny;
     properties[@"required array"] = requiredArray == nil ? [NSNull null] : [SEGTypewriterUtils toSerializableArray:requiredArray];
     properties[@"required boolean"] = requiredBoolean == nil ? [NSNull null] : [NSNumber numberWithBool:*requiredBoolean];
-    properties[@"required int"] = requiredInt == nil ? [NSNull null] : [NSNumber numberWithInteger:*requiredInt];
+    properties[@"required int"] = requiredInt == nil ? [NSNull null] : requiredInt;
     properties[@"required number"] = requiredNumber == nil ? [NSNull null] : requiredNumber;
     properties[@"required object"] = requiredObject == nil ? [NSNull null] : requiredObject;
     properties[@"required string"] = requiredString == nil ? [NSNull null] : requiredString;
@@ -196,7 +196,7 @@ options:(nullable SERIALIZABLE_DICT)options
 + (void)everyOptionalTypeWithOptionalAny:(nullable id)optionalAny
 optionalArray:(nullable NSArray<id> *)optionalArray
 optionalBoolean:(nullable BOOL *)optionalBoolean
-optionalInt:(nullable NSInteger *)optionalInt
+optionalInt:(nullable NSNumber *)optionalInt
 optionalNumber:(nullable NSNumber *)optionalNumber
 optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
 optionalString:(nullable NSString *)optionalString
@@ -208,7 +208,7 @@ optionalStringWithRegex:(nullable NSString *)optionalStringWithRegex
 + (void)everyOptionalTypeWithOptionalAny:(nullable id)optionalAny
 optionalArray:(nullable NSArray<id> *)optionalArray
 optionalBoolean:(nullable BOOL *)optionalBoolean
-optionalInt:(nullable NSInteger *)optionalInt
+optionalInt:(nullable NSNumber *)optionalInt
 optionalNumber:(nullable NSNumber *)optionalNumber
 optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
 optionalString:(nullable NSString *)optionalString
@@ -224,7 +224,7 @@ options:(nullable SERIALIZABLE_DICT)options
       properties[@"optional boolean"] = [NSNumber numberWithBool:*optionalBoolean];
     }
     if (optionalInt != nil) {
-      properties[@"optional int"] = [NSNumber numberWithInteger:*optionalInt];
+      properties[@"optional int"] = optionalInt;
     }
     if (optionalNumber != nil) {
       properties[@"optional number"] = optionalNumber;
@@ -285,6 +285,47 @@ options:(nullable SERIALIZABLE_DICT)options
     }
 
     [[SEGAnalytics sharedAnalytics] track:@"Every Required Type" properties:properties options:[SEGTypewriterUtils withTypewriterContextFields:options]];
+}
+
++ (void)largeNumbersEventWithLargeNullableOptionalInteger:(nullable NSNumber *)largeNullableOptionalInteger
+largeNullableOptionalNumber:(nullable NSNumber *)largeNullableOptionalNumber
+largeNullableRequiredInteger:(nullable NSNumber *)largeNullableRequiredInteger
+largeNullableRequiredNumber:(nullable NSNumber *)largeNullableRequiredNumber
+largeOptionalInteger:(nullable NSNumber *)largeOptionalInteger
+largeOptionalNumber:(nullable NSNumber *)largeOptionalNumber
+largeRequiredInteger:(NSInteger)largeRequiredInteger
+largeRequiredNumber:(nonnull NSNumber *)largeRequiredNumber
+{
+    [SEGTypewriterAnalytics largeNumbersEventWithLargeNullableOptionalInteger:largeNullableOptionalInteger largeNullableOptionalNumber:largeNullableOptionalNumber largeNullableRequiredInteger:largeNullableRequiredInteger largeNullableRequiredNumber:largeNullableRequiredNumber largeOptionalInteger:largeOptionalInteger largeOptionalNumber:largeOptionalNumber largeRequiredInteger:largeRequiredInteger largeRequiredNumber:largeRequiredNumber options:@{}];
+}
+
++ (void)largeNumbersEventWithLargeNullableOptionalInteger:(nullable NSNumber *)largeNullableOptionalInteger
+largeNullableOptionalNumber:(nullable NSNumber *)largeNullableOptionalNumber
+largeNullableRequiredInteger:(nullable NSNumber *)largeNullableRequiredInteger
+largeNullableRequiredNumber:(nullable NSNumber *)largeNullableRequiredNumber
+largeOptionalInteger:(nullable NSNumber *)largeOptionalInteger
+largeOptionalNumber:(nullable NSNumber *)largeOptionalNumber
+largeRequiredInteger:(NSInteger)largeRequiredInteger
+largeRequiredNumber:(nonnull NSNumber *)largeRequiredNumber
+options:(nullable SERIALIZABLE_DICT)options
+{
+    NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
+    properties[@"large nullable optional integer"] = largeNullableOptionalInteger == nil ? [NSNull null] : largeNullableOptionalInteger;
+    properties[@"large nullable optional number"] = largeNullableOptionalNumber == nil ? [NSNull null] : largeNullableOptionalNumber;
+    properties[@"large nullable required integer"] = largeNullableRequiredInteger == nil ? [NSNull null] : largeNullableRequiredInteger;
+    properties[@"large nullable required number"] = largeNullableRequiredNumber == nil ? [NSNull null] : largeNullableRequiredNumber;
+    if (largeOptionalInteger != nil) {
+      properties[@"large optional integer"] = largeOptionalInteger;
+    }
+    if (largeOptionalNumber != nil) {
+      properties[@"large optional number"] = largeOptionalNumber;
+    }
+    properties[@"large required integer"] = [NSNumber numberWithInteger:largeRequiredInteger];
+    if (largeRequiredNumber != nil) {
+      properties[@"large required number"] = largeRequiredNumber;
+    }
+
+    [[SEGAnalytics sharedAnalytics] track:@"Large Numbers Event" properties:properties options:[SEGTypewriterUtils withTypewriterContextFields:options]];
 }
 
 + (void)nestedArraysWithUniverseCharacters:(nonnull NSArray<NSArray<SEGUniverseCharactersItemItem *> *> *)universeCharacters

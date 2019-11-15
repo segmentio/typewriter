@@ -24,6 +24,7 @@ const {
 	customViolationHandlerCalled,
 	analyticsInstanceMissingThrewError,
 	propertySanitized,
+	largeNumbersEvent,
 } = require('./analytics')
 const typewriter = require('./analytics').default
 const SegmentAnalytics = require('analytics-node')
@@ -290,6 +291,20 @@ async function run() {
 	// There is no generated function for `aMissingAnalyticsCall`, but the JS Proxy should
 	// handle this and avoid a crash.
 	typewriter.aMissingAnalyticsCall({
+		userId,
+	})
+
+	largeNumbersEvent({
+		properties: {
+			'large nullable optional integer': 1230007112658965944,
+			'large nullable optional number': 1240007112658965944331.0,
+			'large nullable required integer': 1250007112658965944,
+			'large nullable required number': 1260007112658965944331.0,
+			'large optional integer': 1270007112658965944,
+			'large optional number': 1280007112658965944331.0,
+			'large required integer': 1290007112658965944,
+			'large required number': 1300007112658965944331.0,
+		},
 		userId,
 	})
 

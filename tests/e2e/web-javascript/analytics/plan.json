@@ -62,6 +62,7 @@
         "version": 1
       },
       {
+        "description": "This event is fired in order to trigger a custom violation handler. It should be called with a JSON Schema violation.",
         "name": "Custom Violation Handler",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
@@ -89,6 +90,7 @@
         "version": 1
       },
       {
+        "description": "This event should be fired if a custom violation handler is correctly called due to a call to `Custom Violation Handler` with a violation.",
         "name": "Custom Violation Handler Called",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
@@ -107,6 +109,7 @@
         "version": 1
       },
       {
+        "description": "This event is fired in order to trigger the default violation handler. It should be called with a JSON Schema violation.",
         "name": "Default Violation Handler",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
@@ -134,6 +137,7 @@
         "version": 1
       },
       {
+        "description": "This event should be fired if the default violation handler is correctly called due to a call to `Default Violation Handler` with a violation.",
         "name": "Default Violation Handler Called",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
@@ -152,6 +156,7 @@
         "version": 1
       },
       {
+        "description": "Validates that a generated client supports events with no explicit properties. It is expected that this event accepts ANY properties.",
         "name": "Empty Event",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
@@ -170,6 +175,7 @@
         "version": 1
       },
       {
+        "description": "Validates that a generated client handles even naming collisions.",
         "name": "Event Collided",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
@@ -188,6 +194,7 @@
         "version": 1
       },
       {
+        "description": "Validates that clients handle all of the supported field types, as nullable optional fields. If a field is null, it is expected to be NOT sent through.",
         "name": "Every Nullable Optional Type",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
@@ -239,6 +246,7 @@
         "version": 1
       },
       {
+        "description": "Validates that clients handle all of the supported field types, as nullable required fields. If a field is null, it is expected to be sent through.",
         "name": "Every Nullable Required Type",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
@@ -301,6 +309,7 @@
         "version": 1
       },
       {
+        "description": "Validates that clients handle all of the supported field types, as optional fields.",
         "name": "Every Optional Type",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
@@ -353,6 +362,7 @@
         "version": 1
       },
       {
+        "description": "Validates that clients handle all of the supported field types, as required fields. ",
         "name": "Every Required Type",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
@@ -416,6 +426,67 @@
         "version": 1
       },
       {
+        "description": "Validates that clients correctly serialize large numbers (integers and floats).",
+        "name": "Large Numbers Event",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "labels": {},
+          "properties": {
+            "context": {},
+            "properties": {
+              "properties": {
+                "large nullable optional integer": {
+                  "description": "",
+                  "type": ["integer", "null"]
+                },
+                "large nullable optional number": {
+                  "description": "",
+                  "type": ["number", "null"]
+                },
+                "large nullable required integer": {
+                  "description": "",
+                  "type": ["integer", "null"]
+                },
+                "large nullable required number": {
+                  "description": "",
+                  "type": ["number", "null"]
+                },
+                "large optional integer": {
+                  "description": "",
+                  "type": "integer"
+                },
+                "large optional number": {
+                  "description": "",
+                  "type": "number"
+                },
+                "large required integer": {
+                  "description": "",
+                  "type": "integer"
+                },
+                "large required number": {
+                  "description": "",
+                  "type": "number"
+                }
+              },
+              "required": [
+                "large required integer",
+                "large required number",
+                "large nullable required integer",
+                "large nullable required number"
+              ],
+              "type": "object"
+            },
+            "traits": {
+              "type": "object"
+            }
+          },
+          "required": ["properties"],
+          "type": "object"
+        },
+        "version": 1
+      },
+      {
+        "description": "Validates that clients handle arrays-within-arrays.",
         "name": "Nested Arrays",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
@@ -457,6 +528,7 @@
         "version": 1
       },
       {
+        "description": "Validates that clients handle objects-within-objects.",
         "name": "Nested Objects",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
@@ -512,6 +584,7 @@
         "version": 1
       },
       {
+        "description": "Validates that clients handle collisions in property names within a single event.",
         "name": "Properties Collided",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
@@ -542,6 +615,7 @@
         "version": 1
       },
       {
+        "description": "Validates that clients handle collisions in object names across multiple events.",
         "name": "Property Object Name Collision #1",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
@@ -588,6 +662,7 @@
         "version": 1
       },
       {
+        "description": "Validates that clients handle collisions in object names across multiple events.",
         "name": "Property Object Name Collision #2",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
@@ -634,6 +709,7 @@
         "version": 1
       },
       {
+        "description": "Validates that clients sanitize property names that contain invalid identifier characters.",
         "name": "Property Sanitized",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
@@ -660,6 +736,7 @@
         "version": 1
       },
       {
+        "description": "Validates that clients support fields with various types of arrays.",
         "name": "Simple Array Types",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
@@ -742,6 +819,7 @@
         "version": 1
       },
       {
+        "description": "Validates that clients support fields with multiple (union) types.",
         "name": "Union Type",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
@@ -768,6 +846,7 @@
         "version": 1
       },
       {
+        "description": "Validates that a generated client handles even naming collisions.",
         "name": "event_collided",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
@@ -789,5 +868,5 @@
     "group_traits": [],
     "identify_traits": []
   },
-  "update_time": "2019-10-16T23:36:31.000Z"
+  "update_time": "2019-11-15T17:43:14.000Z"
 }
