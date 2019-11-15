@@ -2,7 +2,9 @@ DESTINATION ?= "platform=iOS Simulator,name=iPhone 11"
 XC_OBJECTIVE_C_ARGS := -workspace TypewriterExample.xcworkspace -scheme TypewriterExample -destination $(DESTINATION)
 XC_SWIFT_ARGS := -workspace TypewriterSwiftExample.xcworkspace -scheme TypewriterSwiftExample -destination $(DESTINATION)
 
-.PHONY: update prod bulk
+.PHONY: update build prod bulk
+build: COMMAND=build
+build: bulk
 prod: COMMAND=prod
 prod: bulk
 update: COMMAND=update
@@ -67,7 +69,7 @@ docker:
 # clear-mock: Clears segmentio/mock to give an e2e test a clean slate.
 .PHONY: clear-mock
 clear-mock:
-	@curl -f "http://localhost:8765/messages" > /dev/null 2>&1
+	@curl -f "http://localhost:8765/messages" > /dev/null 2>&1 || (echo "Failed to clear segmentio/mock. Is it running? Try 'make docker'"; exit 1)
 
 # teardown: shuts down the sidecar.
 .PHONY: teardown
