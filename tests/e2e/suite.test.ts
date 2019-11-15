@@ -40,8 +40,7 @@ describe('e2e tests', () => {
 		name: string
 		// Some clients don't support the full standard test suite, for various reasons.
 		// We document those reasons below and skip the associated tests in the suite.
-		// TODO: skip -> if (blocklist -> allowlist)
-		skip?: boolean
+		if?: boolean
 		// The set of events we expect to have been captured by `segmentio/mock`.
 		expect: Expectation | Expectation[]
 	}[] = [
@@ -52,7 +51,7 @@ describe('e2e tests', () => {
 			name: 'a missing analytics instance triggers an error',
 			// The analytics-node SDK requires you to initialize an analytics instance before making any
 			// calls. Therefore, we can't provide a sane default with standard behavior.
-			skip: sdk !== SDK.NODE,
+			if: sdk === SDK.NODE,
 			expect: {
 				name: 'Analytics Instance Missing Threw Error',
 			},
@@ -91,7 +90,7 @@ describe('e2e tests', () => {
 		},
 		{
 			name: 'sends an event with every supported type (nullable + required)',
-			skip: sdk === SDK.IOS,
+			if: sdk !== SDK.IOS,
 			expect: {
 				name: 'Every Nullable Required Type',
 				properties: {
@@ -249,7 +248,7 @@ describe('e2e tests', () => {
 		{
 			name: 'sends an event with unions',
 			// We have not yet added support for unions to the iOS client.
-			skip: sdk === SDK.IOS,
+			if: sdk !== SDK.IOS,
 			expect: [
 				{
 					name: 'Union Type',
@@ -278,7 +277,7 @@ describe('e2e tests', () => {
 			// languages like JavaScript can't do this, so this feature tests that the generated
 			// client supports proxying methods s.t. they fail quietly if a generated method does not
 			// exist.
-			skip: ![Language.JAVASCRIPT, Language.TYPESCRIPT].includes(language),
+			if: [Language.JAVASCRIPT, Language.TYPESCRIPT].includes(language),
 			expect: {
 				name: 'Unknown Analytics Call Fired',
 				properties: {
@@ -296,7 +295,7 @@ describe('e2e tests', () => {
 			// the tests. Currently, the only environment that can do this is Node, because there's
 			// a standard in the community around setting NODE_ENV=test (or testing) when a test suite
 			// is running.
-			skip: !(isDevelopment && sdk === SDK.NODE),
+			if: isDevelopment && sdk === SDK.NODE,
 			expect: [
 				{
 					name: 'Default Violation Handler Called',
@@ -309,7 +308,7 @@ describe('e2e tests', () => {
 			// environments where we can detect if you are running tests.
 			// Note: we have not yet added support for run-time validation to the iOS client,
 			// so we cannot detect violations.
-			skip: (isDevelopment && sdk === SDK.NODE) || sdk === SDK.IOS,
+			if: !((isDevelopment && sdk === SDK.NODE) || sdk === SDK.IOS),
 			expect: {
 				name: 'Default Violation Handler',
 				properties: {
@@ -320,7 +319,7 @@ describe('e2e tests', () => {
 		{
 			name: 'when set, a custom violation handler is called upon a violation',
 			// We have not yet added support for run-time validation to the iOS client.
-			skip: !isDevelopment || sdk === SDK.IOS,
+			if: isDevelopment && sdk !== SDK.IOS,
 			expect: {
 				name: 'Custom Violation Handler Called',
 			},
@@ -328,7 +327,7 @@ describe('e2e tests', () => {
 		{
 			name: 'when set, a custom violation handler fires events upon a violation',
 			// We have not yet added support for run-time validation to the iOS client.
-			skip: sdk === SDK.IOS,
+			if: sdk !== SDK.IOS,
 			expect: {
 				name: 'Custom Violation Handler',
 				properties: {
@@ -400,7 +399,7 @@ describe('e2e tests', () => {
 	})
 
 	for (const testCase of testCases) {
-		const t = testCase.skip ? test.skip : test
+		const t = testCase.if === undefined || testCase.if ? test : test.skip
 		t(testCase.name, () => {
 			const expectations = ([] as Expectation[]).concat(testCase.expect)
 			const expectationsByName = expectations.reduce<Record<string, Joi.SchemaMap[]>>(
