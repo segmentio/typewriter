@@ -2,7 +2,9 @@ DESTINATION ?= "platform=iOS Simulator,name=iPhone 11"
 XC_OBJECTIVE_C_ARGS := -workspace TypewriterExample.xcworkspace -scheme TypewriterExample -destination $(DESTINATION)
 XC_SWIFT_ARGS := -workspace TypewriterSwiftExample.xcworkspace -scheme TypewriterSwiftExample -destination $(DESTINATION)
 
-.PHONY: update prod bulk
+.PHONY: update build prod bulk
+build: COMMAND=build
+build: bulk
 prod: COMMAND=prod
 prod: bulk
 update: COMMAND=update

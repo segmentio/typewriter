@@ -175,7 +175,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn run update && git add -A && lint-staged"
+      "pre-commit": "make build && git add -A && lint-staged"
     }
   },
   "snyk": true
