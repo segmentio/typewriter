@@ -133,17 +133,19 @@ jobs:
           command: date +%m-%d-%Y > .ci-date
       - restore_cache:
           keys:
-            - v1-cocoapods-{{ checksum ".ci-date" }}
+            - v7-cocoapods-{{ checksum ".ci-date" }}
       - run:
           name: Fetch Cocoapods specs
           command: |
-            # Don't bother syncing if a cocoapods directory was found in the cache.
-            [ -e .cocoapods ] && exit 0
-            curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash
+            pwd
+            ls -la
+            ls -la ..
+            ls -la ../.cocoapods
+            [ -e ../.cocoapods/repos ] || curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash
       - save_cache:
           paths:
-            - .cocoapods
-          key: v1-cocoapods-{{ checksum ".ci-date" }}
+            - ../.cocoapods/repos
+          key: v7-cocoapods-{{ checksum ".ci-date" }}
       - run:
           name: Run iOS Swift Tests
           command: |
