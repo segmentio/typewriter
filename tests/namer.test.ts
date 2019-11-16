@@ -45,6 +45,8 @@ describe('Namer', () => {
 		test('sanitizes names with reserved words', () => {
 			expect(namer.register('if', 'example')).toEqual('if_')
 			expect(namer.register('ifthen', 'example')).toEqual('ifthen')
+			expect(namer.register('identify', 'example')).toEqual('identify_')
+			expect(namer.register('group', 'example')).toEqual('group_')
 		})
 		test('handles name collisions in the same namespace', () => {
 			expect(namer.register('order-completed', 'example')).toEqual('order_completed')
