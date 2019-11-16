@@ -129,8 +129,21 @@ jobs:
             sudo gem install xcpretty
             sudo gem install cocoapods -v $(var=$(tail -1 tests/e2e/ios-objc/Podfile.lock); echo ${var##COCOAPODS:})
       - run:
+          name: Save cache key (date)
+          command: date +%m-%d-%Y > .ci-date
+      - restore_cache:
+          keys:
+            - v1-cocoapods-{{ checksum ".ci-date" }}
+      - run:
           name: Fetch Cocoapods specs
-          command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+          command: |
+            # Don't bother syncing if a cocoapods directory was found in the cache.
+            [ -e .cocoapods ] && exit 0
+            curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash
+      - save_cache:
+          paths:
+            - .cocoapods
+          key: v1-cocoapods-{{ checksum ".ci-date" }}
       - run:
           name: Run iOS Swift Tests
           command: |
