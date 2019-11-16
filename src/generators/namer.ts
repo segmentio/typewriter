@@ -38,6 +38,19 @@ export class Namer {
 		this.options = options
 		this.lookupByID = {}
 		this.lookupByName = {}
+
+		// Add the various analytics calls as reserved words.
+		this.options.reservedWords.push(
+			// v1
+			'track',
+			'identify',
+			'group',
+			'page',
+			'screen',
+			'alias',
+			// v2
+			'set'
+		)
 	}
 
 	/**
