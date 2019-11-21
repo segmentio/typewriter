@@ -50,18 +50,16 @@
     "ts-jest": "^24.0.2",
     "ts-node": "^8.1.0",
     "tsconfig-paths": "^3.8.0",
-    "type-fest": "^0.3.0",
-    "typewriter": "^7.0.0-33"
+    "typewriter": "^7.0.0-33",
+    "snyk": "^1.250.0"
   },
   "dependencies": {
     "@hapi/joi": "^15.1.1",
-    "ajv": "^6.10.0",
     "analytics-node": "3.4.0-beta.1",
-    "caller-path": "^2.0.0",
     "figures": "^3.0.0",
     "fuse.js": "^3.4.5",
     "got": "^9.6.0",
-    "handlebars": "^4.3.0",
+    "handlebars": "4.5.3",
     "ink": "^2.5.0",
     "ink-link": "^1.0.0",
     "ink-select-input": "^3.1.2",
@@ -73,10 +71,7 @@
     "lodash": "4.17.12",
     "node-machine-id": "^1.1.12",
     "prettier": "^1.17.0",
-    "prompts": "^2.0.4",
-    "prop-types": "^15.7.2",
     "react": "^16.9.0",
-    "snyk": "1.192.5",
     "sort-keys": "^3.0.0",
     "typescript": "^3.4.5",
     "yargs": "^13.2.2"
@@ -176,6 +171,5 @@
     "hooks": {
       "pre-commit": "make build && git add -A && lint-staged"
     }
-  },
-  "snyk": true
+  }
 }
