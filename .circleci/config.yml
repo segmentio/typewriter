@@ -32,15 +32,6 @@ jobs:
       - attach_workspace: { at: . }
       - run: yarn build
 
-  snyk:
-    docker:
-      - image: circleci/node:10.15
-    steps:
-      - attach_workspace: { at: . }
-      - run:
-          name: Snyk Setup
-          command: curl -sL https://raw.githubusercontent.com/segmentio/snyk_helpers/master/initialization/snyk.sh | sh
-
   lint:
     docker:
       - image: circleci/node:10.15
@@ -148,9 +139,6 @@ workflows:
     jobs:
       - setup
       - build:
-          requires: [setup]
-      - snyk:
-          context: snyk
           requires: [setup]
       - lint:
           requires: [setup]
