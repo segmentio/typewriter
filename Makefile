@@ -84,8 +84,11 @@ build-example:
 		yarn build
 
 .PHONY: test-node-javascript
-test-node-javascript:
-	@echo "\n>>>	🏃 Running JavaScript Node client test suite...\n"
+test-node-javascript: test-node-javascript-dev test-node-javascript-prod
+
+.PHONY: test-node-javascript-dev
+test-node-javascript-dev:
+	@echo "\n>>>	🏃 Running dev JavaScript Node client test suite...\n"
 	@make clear-mock && \
 		yarn run -s dev build --config=./tests/e2e/node-javascript && \
 		cd tests/e2e/node-javascript && \
@@ -93,6 +96,10 @@ test-node-javascript:
 		NODE_ENV=test yarn run -s test && \
 		cd ../../.. && \
 		SDK=analytics-node LANGUAGE=javascript IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
+
+.PHONY: test-node-javascript-prod
+test-node-javascript-prod:
+	@echo "\n>>>	🏃 Running prod JavaScript Node client test suite...\n"
 	@make clear-mock && \
 		yarn run -s dev prod --config=./tests/e2e/node-javascript && \
 		cd tests/e2e/node-javascript && \
@@ -102,8 +109,11 @@ test-node-javascript:
 		SDK=analytics-node LANGUAGE=javascript IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
 
 .PHONY: test-node-typescript
-test-node-typescript:
-	@echo "\n>>>	🏃 Running TypeScript Node client test suite...\n"
+test-node-typescript: test-node-typescript-dev test-node-typescript-prod
+
+.PHONY: test-node-typescript-dev
+test-node-typescript-dev:
+	@echo "\n>>>	🏃 Running dev TypeScript Node client test suite...\n"
 	@make clear-mock && \
 		yarn run -s dev build --config=./tests/e2e/node-typescript && \
 		cd tests/e2e/node-typescript && \
@@ -111,6 +121,10 @@ test-node-typescript:
 		NODE_ENV=test yarn run -s test && \
 		cd ../../.. && \
 		SDK=analytics-node LANGUAGE=typescript IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
+
+.PHONY: test-node-typescript-prod
+test-node-typescript-prod:
+	@echo "\n>>>	🏃 Running prod TypeScript Node client test suite...\n"
 	@make clear-mock && \
 		yarn run -s dev prod --config=./tests/e2e/node-typescript && \
 		cd tests/e2e/node-typescript && \
@@ -120,8 +134,11 @@ test-node-typescript:
 		SDK=analytics-node LANGUAGE=typescript IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
 
 .PHONY: test-web-javascript
-test-web-javascript:
-	@echo "\n>>>	🏃 Running JavaScript analytics.js client test suite...\n"
+test-web-javascript: test-web-javascript-dev test-web-javascript-prod
+
+.PHONY: test-web-javascript-dev
+test-web-javascript-dev:
+	@echo "\n>>>	🏃 Running dev JavaScript analytics.js client test suite...\n"
 	@make clear-mock && \
 		yarn run -s dev build --config=./tests/e2e/web-javascript && \
 		cd tests/e2e/web-javascript && \
@@ -130,6 +147,10 @@ test-web-javascript:
 		NODE_ENV=test yarn run -s test && \
 		cd ../../.. && \
 		SDK=analytics.js LANGUAGE=javascript IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
+
+.PHONY: test-web-javascript-prod
+test-web-javascript-prod:
+	@echo "\n>>>	🏃 Running prod JavaScript analytics.js client test suite...\n"
 	@make clear-mock && \
 		yarn run -s dev prod --config=./tests/e2e/web-javascript && \
 		cd tests/e2e/web-javascript && \
@@ -140,8 +161,11 @@ test-web-javascript:
 		SDK=analytics.js LANGUAGE=javascript IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
 
 .PHONY: test-web-typescript
-test-web-typescript:
-	@echo "\n>>>	🏃 Running TypeScript analytics.js client test suite...\n"
+test-web-typescript: test-web-typescript-dev test-web-typescript-prod
+
+.PHONY: test-web-typescript-dev
+test-web-typescript-dev:
+	@echo "\n>>>	🏃 Running dev TypeScript analytics.js client test suite...\n"
 	@make clear-mock && \
 		yarn run -s dev build --config=./tests/e2e/web-typescript && \
 		cd tests/e2e/web-typescript && \
@@ -150,6 +174,10 @@ test-web-typescript:
 		NODE_ENV=test yarn run -s test && \
 		cd ../../.. && \
 		SDK=analytics.js LANGUAGE=typescript IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
+	
+.PHONY: test-web-typescript-prod
+test-web-typescript-prod:
+	@echo "\n>>>	🏃 Running prod TypeScript analytics.js client test suite...\n"
 	@make clear-mock && \
 		yarn run -s dev prod --config=./tests/e2e/web-typescript && \
 		cd tests/e2e/web-typescript && \
@@ -159,48 +187,54 @@ test-web-typescript:
 		cd ../../.. && \
 		SDK=analytics.js LANGUAGE=typescript IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
 
-# We split up test-ios-objc in order for CI to cache the setup step.
 .PHONY: test-ios-objc
-test-ios-objc: setup-ios-objc-tests run-ios-objc-tests
+test-ios-objc: test-ios-objc-dev test-ios-objc-prod
 
-.PHONY: setup-ios-objc-tests
-setup-ios-objc-tests:
+.PHONY: test-ios-objc-dev
+test-ios-objc-dev:
+	@echo "\n>>>	🏃 Running dev iOS Objective-C client test suite...\n"
 	@# TODO: verify that xcodebuild and xcpretty are available
 	@cd tests/e2e/ios-objc && \
 		pod install
-
-.PHONY: run-ios-objc-tests
-run-ios-objc-tests:
-	@echo "\n>>>	🏃 Running iOS Objective-C client test suite...\n"
 	@make clear-mock && \
 		yarn run -s dev build --config=./tests/e2e/ios-objc && \
 		cd tests/e2e/ios-objc && \
 		set -o pipefail && xcodebuild test $(XC_OBJECTIVE_C_ARGS) | xcpretty && \
 		SDK=analytics-ios LANGUAGE=objective-c IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
+
+.PHONY: test-ios-objc-prod
+test-ios-objc-prod:
+	@echo "\n>>>	🏃 Running prod iOS Objective-C client test suite...\n"
+	@# TODO: verify that xcodebuild and xcpretty are available
+	@cd tests/e2e/ios-objc && \
+		pod install
 	@make clear-mock && \
 		yarn run -s dev prod --config=./tests/e2e/ios-objc && \
 		cd tests/e2e/ios-objc && \
 		set -o pipefail && xcodebuild test $(XC_OBJECTIVE_C_ARGS) | xcpretty && \
 		SDK=analytics-ios LANGUAGE=objective-c IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
 
-# We split up test-ios in order for CI to cache the setup step.
 .PHONY: test-ios-swift
-test-ios-swift: setup-ios-swift-tests run-ios-swift-tests
+test-ios-swift: test-ios-swift-dev test-ios-swift-prod
 
-.PHONY: setup-ios-swift-tests
-setup-ios-swift-tests:
+.PHONY: test-ios-swift-dev
+test-ios-swift-dev:
+	@echo "\n>>>	🏃 Running dev iOS Swift client test suite...\n"
 	@# TODO: verify that xcodebuild and xcpretty are available
 	@cd tests/e2e/ios-swift && \
 		pod install
-
-.PHONY: run-ios-swift-tests
-run-ios-swift-tests:
-	@echo "\n>>>	🏃 Running iOS Swift client test suite...\n"
 	@make clear-mock && \
 		yarn run -s dev build --config=./tests/e2e/ios-swift && \
 		cd tests/e2e/ios-swift && \
 		set -o pipefail && xcodebuild test $(XC_SWIFT_ARGS) | xcpretty && \
 		SDK=analytics-ios LANGUAGE=swift IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
+	
+.PHONY: test-ios-swift-prod
+test-ios-swift-prod:
+	@echo "\n>>>	🏃 Running prod iOS Swift client test suite...\n"
+	@# TODO: verify that xcodebuild and xcpretty are available
+	@cd tests/e2e/ios-swift && \
+		pod install
 	@make clear-mock && \
 		yarn run -s dev prod --config=./tests/e2e/ios-swift && \
 		cd tests/e2e/ios-swift && \

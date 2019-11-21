@@ -53,37 +53,65 @@ jobs:
       - attach_workspace: { at: . }
       - run: make build-example
 
-  test-node-javascript:
+  test-node-javascript-dev:
     docker:
       - image: circleci/node:10.15
       - image: segment/mock:v0.0.2
     steps:
       - attach_workspace: { at: . }
-      - run: make test-node-javascript
-  test-node-typescript:
+      - run: make test-node-javascript-dev
+  test-node-javascript-prod:
     docker:
       - image: circleci/node:10.15
       - image: segment/mock:v0.0.2
     steps:
       - attach_workspace: { at: . }
-      - run: make test-node-typescript
+      - run: make test-node-javascript-prod
+  test-node-typescript-dev:
+    docker:
+      - image: circleci/node:10.15
+      - image: segment/mock:v0.0.2
+    steps:
+      - attach_workspace: { at: . }
+      - run: make test-node-typescript-dev
+  test-node-typescript-prod:
+    docker:
+      - image: circleci/node:10.15
+      - image: segment/mock:v0.0.2
+    steps:
+      - attach_workspace: { at: . }
+      - run: make test-node-typescript-prod
 
-  test-web-javascript:
+  test-web-javascript-dev:
     docker:
       - image: cypress/browsers:chrome69
       - image: segment/mock:v0.0.2
     steps:
       - attach_workspace: { at: . }
-      - run: make test-web-javascript
-  test-web-typescript:
+      - run: make test-web-javascript-dev
+  test-web-javascript-prod:
     docker:
       - image: cypress/browsers:chrome69
       - image: segment/mock:v0.0.2
     steps:
       - attach_workspace: { at: . }
-      - run: make test-web-typescript
+      - run: make test-web-javascript-prod
+  test-web-typescript-dev:
+    docker:
+      - image: cypress/browsers:chrome69
+      - image: segment/mock:v0.0.2
+    steps:
+      - attach_workspace: { at: . }
+      - run: make test-web-typescript-dev
+  test-web-typescript-prod:
+    docker:
+      - image: cypress/browsers:chrome69
+      - image: segment/mock:v0.0.2
+    steps:
+      - attach_workspace: { at: . }
+      - run: make test-web-typescript-prod
 
-  test-ios-objc:
+  test-ios-objc-dev:
     macos:
       xcode: "11.0.0"
     steps:
@@ -106,9 +134,32 @@ jobs:
             yarn dev &
             cd ..
             sleep 5
-            make test-ios-objc
-
-  test-ios-swift:
+            make test-ios-objc-dev
+  test-ios-objc-prod:
+    macos:
+      xcode: "11.0.0"
+    steps:
+      - attach_workspace: { at: . }
+      - run: xcrun simctl list
+      - run:
+          name: Install build dependencies
+          command: |
+            sudo gem install xcpretty
+            sudo gem install cocoapods -v $(var=$(tail -1 tests/e2e/ios-objc/Podfile.lock); echo ${var##COCOAPODS:})
+      - run:
+          name: Fetch Cocoapods specs
+          command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+      - run:
+          name: Run iOS Objective-C Tests
+          command: |
+            git clone https://github.com/segmentio/mock.git
+            cd mock
+            yarn
+            yarn dev &
+            cd ..
+            sleep 5
+            make test-ios-objc-prod
+  test-ios-swift-dev:
     macos:
       xcode: "11.0.0"
     steps:
@@ -131,7 +182,31 @@ jobs:
             yarn dev &
             cd ..
             sleep 5
-            make test-ios-swift
+            make test-ios-swift-dev
+  test-ios-swift-prod:
+    macos:
+      xcode: "11.0.0"
+    steps:
+      - attach_workspace: { at: . }
+      - run: xcrun simctl list
+      - run:
+          name: Install build dependencies
+          command: |
+            sudo gem install xcpretty
+            sudo gem install cocoapods -v $(var=$(tail -1 tests/e2e/ios-objc/Podfile.lock); echo ${var##COCOAPODS:})
+      - run:
+          name: Fetch Cocoapods specs
+          command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+      - run:
+          name: Run iOS Swift Tests
+          command: |
+            git clone https://github.com/segmentio/mock.git
+            cd mock
+            yarn
+            yarn dev &
+            cd ..
+            sleep 5
+            make test-ios-swift-prod
 
 workflows:
   version: 2
@@ -146,15 +221,27 @@ workflows:
           requires: [setup]
       - test-unit-tests:
           requires: [setup]
-      - test-node-javascript:
+      - test-node-javascript-dev:
           requires: [setup]
-      - test-node-typescript:
+      - test-node-javascript-prod:
           requires: [setup]
-      - test-web-javascript:
+      - test-node-typescript-dev:
           requires: [setup]
-      - test-web-typescript:
+      - test-node-typescript-prod:
           requires: [setup]
-      - test-ios-objc:
+      - test-web-javascript-dev:
           requires: [setup]
-      - test-ios-swift:
+      - test-web-javascript-prod:
+          requires: [setup]
+      - test-web-typescript-dev:
+          requires: [setup]
+      - test-web-typescript-prod:
+          requires: [setup]
+      - test-ios-objc-dev:
+          requires: [setup]
+      - test-ios-objc-prod:
+          requires: [setup]
+      - test-ios-swift-dev:
+          requires: [setup]
+      - test-ios-swift-prod:
           requires: [setup]
