@@ -4,6 +4,7 @@ import { version as typewriterVersion } from '../../../package.json'
 import latest from 'latest-version'
 import { StandardProps } from '../index'
 import { ErrorContext } from './error'
+import semver from 'semver'
 
 export const Version: React.FC<StandardProps> = () => {
 	const [isLoading, setIsLoading] = useState(true)
@@ -14,7 +15,16 @@ export const Version: React.FC<StandardProps> = () => {
 	useEffect(() => {
 		async function effect() {
 			try {
-				const latestVersion = await latest('typewriter', { version: 'next' })
+				let options: latest.Options = {}
+
+				// If the user is on a pre-release, check if there's a new pre-release.
+				// Otherwise, only compare against stable versions.
+				const prerelease = semver.prerelease(typewriterVersion)
+				if (prerelease && prerelease.length > 0) {
+					options = { version: 'next' }
+				}
+
+				const latestVersion = await latest('typewriter', options)
 				setLatestVersion(latestVersion)
 			} catch (error) {
 				// If we can't access NPM, then ignore this version check.
