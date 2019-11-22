@@ -16,6 +16,9 @@
   <a href="./.github/LICENSE.md">
     <img src="https://img.shields.io/npm/l/typewriter.svg" alt="License">
   </a>
+  <a href="https://snyk.io/test/github/segmentio/typewriter?targetFile=package.json">
+    <img src="https://snyk.io/test/github/segmentio/typewriter/badge.svg?targetFile=package.json" alt="Known Vulnerabilities" data-canonical-src="https://snyk.io/test/github/segmentio/typewriter?targetFile=package.json">
+  </a>
   <br>
   <br>
   <br>
