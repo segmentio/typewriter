@@ -17,7 +17,7 @@
     "update": "make update",
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "release": "yarn run build && np",
-    "prerelease": "yarn run build && np prerelease --any-branch --tag next --no-release-draft"
+    "release:pre": "yarn run build && np prerelease --any-branch --tag next --no-release-draft"
   },
   "engines": {
     "node": ">=0.10.15"
