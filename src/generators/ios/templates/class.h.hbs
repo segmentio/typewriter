@@ -16,7 +16,7 @@
 {{#if description}}
 /// {{description}}
 {{/if}}
-@property ({{modifiers}}, {{#if isRequired}}nonnull{{else}}nullable{{/if}}) {{type}}{{name}};
+@property ({{modifiers}}) {{type}}{{variableSeparator type}}{{name}};
 {{/each}}
 
 +(nonnull instancetype) {{functionSignature "init" properties false}};

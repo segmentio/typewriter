@@ -30,7 +30,7 @@ bulk:
 	@NODE_ENV=development node ./dist/src/cli/index.js $(COMMAND) --config=tests/e2e/ios-swift
 	@# Changes to the Tracking Plan JSON files will need to be run through our
 	@# linter again to reduce git deltas.
-	@git add -A && yarn lint-staged
+	@make lint
 
 # e2e: launches our end-to-end test for each client library. 
 .PHONY: e2e
@@ -58,6 +58,11 @@ e2e:
 
 	@### Android
 	@# TODO
+
+.PHONY: lint
+lint:
+	@yarn run eslint --fix 'src/**/*.ts' 'src/**/*.tsx'
+	@yarn run -s prettier --write --loglevel warn '**/*.json' '**/*.yml'
 
 # docker: launches segmentio/mock which we use to mock the Segment API for e2e testing.
 .PHONY: docker
@@ -228,7 +233,7 @@ test-ios-swift-dev:
 		cd tests/e2e/ios-swift && \
 		set -o pipefail && xcodebuild test $(XC_SWIFT_ARGS) | xcpretty && \
 		SDK=analytics-ios LANGUAGE=swift IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
-	
+
 .PHONY: test-ios-swift-prod
 test-ios-swift-prod:
 	@echo "\n>>>	🏃 Running prod iOS Swift client test suite...\n"
@@ -240,3 +245,20 @@ test-ios-swift-prod:
 		cd tests/e2e/ios-swift && \
 		set -o pipefail && xcodebuild test $(XC_SWIFT_ARGS) | xcpretty && \
 		SDK=analytics-ios LANGUAGE=swift IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
+
+.PHONY: precommit
+precommit:
+	@make build
+
+	@# Lint the working directory:
+	@yarn run lint-staged
+
+.PHONY: update-bridging-header
+update-bridging-header:
+	@echo "// Generated Typewriter Headers:" > \
+		tests/e2e/ios-swift/TypewriterSwiftExample/TypewriterSwiftExample-Bridging-Header.h
+	@ls -l tests/e2e/ios-swift/TypewriterSwiftExample/Analytics | \
+		grep '.h$$' | \
+		sed -e 's/^.*SEG/#import "Analytics\/SEG/' | \
+		sed -e 's/$$/"/' >> \
+		tests/e2e/ios-swift/TypewriterSwiftExample/TypewriterSwiftExample-Bridging-Header.h

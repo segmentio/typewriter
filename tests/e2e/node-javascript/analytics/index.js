@@ -139,7 +139,7 @@ function withTypewriterContext(message) {
  * @property {string} regex property -
  */
 /**
- * @typedef EveryNullableOptionalType
+ * @typedef OptionalArrayWithPropertiesItem
  * @property {any | null} [optional any] - Optional any property
  * @property {any[] | null} [optional array] - Optional array property
  * @property {boolean | null} [optional boolean] - Optional boolean property
@@ -150,7 +150,31 @@ function withTypewriterContext(message) {
  * @property {string | null} [optional string with regex] - Optional string property with a regex conditional
  */
 /**
- * @typedef EveryNullableRequiredType
+ * @typedef OptionalObjectWithProperties
+ * @property {any | null} [optional any] - Optional any property
+ * @property {any[] | null} [optional array] - Optional array property
+ * @property {boolean | null} [optional boolean] - Optional boolean property
+ * @property {number | null} [optional int] - Optional integer property
+ * @property {number | null} [optional number] - Optional number property
+ * @property {Record<string, any> | null} [optional object] - Optional object property
+ * @property {string | null} [optional string] - Optional string property
+ * @property {string | null} [optional string with regex] - Optional string property with a regex conditional
+ */
+/**
+ * @typedef EveryNullableOptionalType
+ * @property {any | null} [optional any] - Optional any property
+ * @property {any[] | null} [optional array] - Optional array property
+ * @property {OptionalArrayWithPropertiesItem[] | null} [optional array with properties] - Optional array with properties
+ * @property {boolean | null} [optional boolean] - Optional boolean property
+ * @property {number | null} [optional int] - Optional integer property
+ * @property {number | null} [optional number] - Optional number property
+ * @property {Record<string, any> | null} [optional object] - Optional object property
+ * @property {OptionalObjectWithProperties | null} [optional object with properties] - Optional object with properties
+ * @property {string | null} [optional string] - Optional string property
+ * @property {string | null} [optional string with regex] - Optional string property with a regex conditional
+ */
+/**
+ * @typedef RequiredArrayWithPropertiesItem
  * @property {any | null} required any - Required any property
  * @property {any[] | null} required array - Required array property
  * @property {boolean | null} required boolean - Required boolean property
@@ -161,7 +185,31 @@ function withTypewriterContext(message) {
  * @property {string | null} required string with regex - Required string property with a regex conditional
  */
 /**
- * @typedef EveryOptionalType
+ * @typedef RequiredObjectWithProperties
+ * @property {any | null} required any - Required any property
+ * @property {any[] | null} required array - Required array property
+ * @property {boolean | null} required boolean - Required boolean property
+ * @property {number | null} required int - Required integer property
+ * @property {number | null} required number - Required number property
+ * @property {Record<string, any> | null} required object - Required object property
+ * @property {string | null} required string - Required string property
+ * @property {string | null} required string with regex - Required string property with a regex conditional
+ */
+/**
+ * @typedef EveryNullableRequiredType
+ * @property {any | null} required any - Required any property
+ * @property {any[] | null} required array - Required array property
+ * @property {RequiredArrayWithPropertiesItem[] | null} required array with properties - Required array with properties
+ * @property {boolean | null} required boolean - Required boolean property
+ * @property {number | null} required int - Required integer property
+ * @property {number | null} required number - Required number property
+ * @property {Record<string, any> | null} required object - Required object property
+ * @property {RequiredObjectWithProperties | null} required object with properties - Required object with properties
+ * @property {string | null} required string - Required string property
+ * @property {string | null} required string with regex - Required string property with a regex conditional
+ */
+/**
+ * @typedef OptionalArrayWithPropertiesItem1
  * @property {any | null} [optional any] - Optional any property
  * @property {any[]} [optional array] - Optional array property
  * @property {boolean} [optional boolean] - Optional boolean property
@@ -172,13 +220,61 @@ function withTypewriterContext(message) {
  * @property {string} [optional string with regex] - Optional string property with a regex conditional
  */
 /**
- * @typedef EveryRequiredType
+ * @typedef OptionalObjectWithProperties1
+ * @property {any | null} [optional any] - Optional any property
+ * @property {any[]} [optional array] - Optional array property
+ * @property {boolean} [optional boolean] - Optional boolean property
+ * @property {number} [optional int] - Optional integer property
+ * @property {number} [optional number] - Optional number property
+ * @property {Record<string, any>} [optional object] - Optional object property
+ * @property {string} [optional string] - Optional string property
+ * @property {string} [optional string with regex] - Optional string property with a regex conditional
+ */
+/**
+ * @typedef EveryOptionalType
+ * @property {any | null} [optional any] - Optional any property
+ * @property {any[]} [optional array] - Optional array property
+ * @property {OptionalArrayWithPropertiesItem1[]} [optional array with properties] - Optional array with properties
+ * @property {boolean} [optional boolean] - Optional boolean property
+ * @property {number} [optional int] - Optional integer property
+ * @property {number} [optional number] - Optional number property
+ * @property {Record<string, any>} [optional object] - Optional object property
+ * @property {OptionalObjectWithProperties1} [optional object with properties] - Optional object with properties
+ * @property {string} [optional string] - Optional string property
+ * @property {string} [optional string with regex] - Optional string property with a regex conditional
+ */
+/**
+ * @typedef RequiredArrayWithPropertiesItem1
  * @property {any | null} required any - Required any property
  * @property {any[]} required array - Required array property
  * @property {boolean} required boolean - Required boolean property
  * @property {number} required int - Required integer property
  * @property {number} required number - Required number property
  * @property {Record<string, any>} required object - Required object property
+ * @property {string} required string - Required string property
+ * @property {string} required string with regex - Required string property with a regex conditional
+ */
+/**
+ * @typedef RequiredObjectWithProperties1
+ * @property {any | null} required any - Required any property
+ * @property {any[]} required array - Required array property
+ * @property {boolean} required boolean - Required boolean property
+ * @property {number} required int - Required integer property
+ * @property {number} required number - Required number property
+ * @property {Record<string, any>} required object - Required object property
+ * @property {string} required string - Required string property
+ * @property {string} required string with regex - Required string property with a regex conditional
+ */
+/**
+ * @typedef EveryRequiredType
+ * @property {any | null} required any - Required any property
+ * @property {any[]} required array - Required array property
+ * @property {RequiredArrayWithPropertiesItem1[]} required array with properties - Required array with properties
+ * @property {boolean} required boolean - Required boolean property
+ * @property {number} required int - Required integer property
+ * @property {number} required number - Required number property
+ * @property {Record<string, any>} required object - Required object property
+ * @property {RequiredObjectWithProperties1} required object with properties - Required object with properties
  * @property {string} required string - Required string property
  * @property {string} required string with regex - Required string property with a regex conditional
  */
@@ -662,6 +758,50 @@ function everyNullableOptionalType(message, callback) {
 						description: 'Optional array property',
 						type: ['array', 'null'],
 					},
+					'optional array with properties': {
+						description: 'Optional array with properties',
+						items: {
+							properties: {
+								'optional any': {
+									description: 'Optional any property',
+								},
+								'optional array': {
+									description: 'Optional array property',
+									type: ['array', 'null'],
+								},
+								'optional boolean': {
+									description: 'Optional boolean property',
+									type: ['boolean', 'null'],
+								},
+								'optional int': {
+									description: 'Optional integer property',
+									type: ['integer', 'null'],
+								},
+								'optional number': {
+									description: 'Optional number property',
+									type: ['number', 'null'],
+								},
+								'optional object': {
+									description: 'Optional object property',
+									properties: {},
+									required: [],
+									type: ['object', 'null'],
+								},
+								'optional string': {
+									description: 'Optional string property',
+									type: ['string', 'null'],
+								},
+								'optional string with regex': {
+									description:
+										'Optional string property with a regex conditional',
+									pattern: 'Evil Morty|Lawyer Morty',
+									type: ['string', 'null'],
+								},
+							},
+							type: ['object', 'null'],
+						},
+						type: ['array', 'null'],
+					},
 					'optional boolean': {
 						description: 'Optional boolean property',
 						type: ['boolean', 'null'],
@@ -677,6 +817,48 @@ function everyNullableOptionalType(message, callback) {
 					'optional object': {
 						description: 'Optional object property',
 						properties: {},
+						required: [],
+						type: ['object', 'null'],
+					},
+					'optional object with properties': {
+						description: 'Optional object with properties',
+						properties: {
+							'optional any': {
+								description: 'Optional any property',
+							},
+							'optional array': {
+								description: 'Optional array property',
+								type: ['array', 'null'],
+							},
+							'optional boolean': {
+								description: 'Optional boolean property',
+								type: ['boolean', 'null'],
+							},
+							'optional int': {
+								description: 'Optional integer property',
+								type: ['integer', 'null'],
+							},
+							'optional number': {
+								description: 'Optional number property',
+								type: ['number', 'null'],
+							},
+							'optional object': {
+								description: 'Optional object property',
+								properties: {},
+								required: [],
+								type: ['object', 'null'],
+							},
+							'optional string': {
+								description: 'Optional string property',
+								type: ['string', 'null'],
+							},
+							'optional string with regex': {
+								description:
+									'Optional string property with a regex conditional',
+								pattern: 'Evil Morty|Lawyer Morty',
+								type: ['string', 'null'],
+							},
+						},
 						required: [],
 						type: ['object', 'null'],
 					},
@@ -734,6 +916,60 @@ function everyNullableRequiredType(message, callback) {
 						description: 'Required array property',
 						type: ['array', 'null'],
 					},
+					'required array with properties': {
+						description: 'Required array with properties',
+						items: {
+							properties: {
+								'required any': {
+									description: 'Required any property',
+								},
+								'required array': {
+									description: 'Required array property',
+									type: ['array', 'null'],
+								},
+								'required boolean': {
+									description: 'Required boolean property',
+									type: ['boolean', 'null'],
+								},
+								'required int': {
+									description: 'Required integer property',
+									type: ['integer', 'null'],
+								},
+								'required number': {
+									description: 'Required number property',
+									type: ['number', 'null'],
+								},
+								'required object': {
+									description: 'Required object property',
+									properties: {},
+									required: [],
+									type: ['object', 'null'],
+								},
+								'required string': {
+									description: 'Required string property',
+									type: ['string', 'null'],
+								},
+								'required string with regex': {
+									description:
+										'Required string property with a regex conditional',
+									pattern: 'Evil Morty|Lawyer Morty',
+									type: ['string', 'null'],
+								},
+							},
+							required: [
+								'required any',
+								'required array',
+								'required boolean',
+								'required int',
+								'required number',
+								'required object',
+								'required string',
+								'required string with regex',
+							],
+							type: ['object', 'null'],
+						},
+						type: ['array', 'null'],
+					},
 					'required boolean': {
 						description: 'Required boolean property',
 						type: ['boolean', 'null'],
@@ -750,6 +986,57 @@ function everyNullableRequiredType(message, callback) {
 						description: 'Required object property',
 						properties: {},
 						required: [],
+						type: ['object', 'null'],
+					},
+					'required object with properties': {
+						description: 'Required object with properties',
+						properties: {
+							'required any': {
+								description: 'Required any property',
+							},
+							'required array': {
+								description: 'Required array property',
+								type: ['array', 'null'],
+							},
+							'required boolean': {
+								description: 'Required boolean property',
+								type: ['boolean', 'null'],
+							},
+							'required int': {
+								description: 'Required integer property',
+								type: ['integer', 'null'],
+							},
+							'required number': {
+								description: 'Required number property',
+								type: ['number', 'null'],
+							},
+							'required object': {
+								description: 'Required object property',
+								properties: {},
+								required: [],
+								type: ['object', 'null'],
+							},
+							'required string': {
+								description: 'Required string property',
+								type: ['string', 'null'],
+							},
+							'required string with regex': {
+								description:
+									'Required string property with a regex conditional',
+								pattern: 'Evil Morty|Lawyer Morty',
+								type: ['string', 'null'],
+							},
+						},
+						required: [
+							'required any',
+							'required array',
+							'required boolean',
+							'required int',
+							'required number',
+							'required object',
+							'required string',
+							'required string with regex',
+						],
 						type: ['object', 'null'],
 					},
 					'required string': {
@@ -771,6 +1058,8 @@ function everyNullableRequiredType(message, callback) {
 					'required object',
 					'required string',
 					'required string with regex',
+					'required object with properties',
+					'required array with properties',
 				],
 				type: 'object',
 			},
@@ -815,6 +1104,50 @@ function everyOptionalType(message, callback) {
 						description: 'Optional array property',
 						type: 'array',
 					},
+					'optional array with properties': {
+						description: 'Optional array with properties',
+						items: {
+							properties: {
+								'optional any': {
+									description: 'Optional any property',
+								},
+								'optional array': {
+									description: 'Optional array property',
+									type: 'array',
+								},
+								'optional boolean': {
+									description: 'Optional boolean property',
+									type: 'boolean',
+								},
+								'optional int': {
+									description: 'Optional integer property',
+									type: 'integer',
+								},
+								'optional number': {
+									description: 'Optional number property',
+									type: 'number',
+								},
+								'optional object': {
+									description: 'Optional object property',
+									key: 'optional object',
+									properties: {},
+									type: 'object',
+								},
+								'optional string': {
+									description: 'Optional string property',
+									type: 'string',
+								},
+								'optional string with regex': {
+									description:
+										'Optional string property with a regex conditional',
+									pattern: 'Evil Morty|Lawyer Morty',
+									type: 'string',
+								},
+							},
+							type: 'object',
+						},
+						type: 'array',
+					},
 					'optional boolean': {
 						description: 'Optional boolean property',
 						type: 'boolean',
@@ -831,7 +1164,47 @@ function everyOptionalType(message, callback) {
 						description: 'Optional object property',
 						key: 'optional object',
 						properties: {},
-						required: [],
+						type: 'object',
+					},
+					'optional object with properties': {
+						description: 'Optional object with properties',
+						properties: {
+							'optional any': {
+								description: 'Optional any property',
+							},
+							'optional array': {
+								description: 'Optional array property',
+								type: 'array',
+							},
+							'optional boolean': {
+								description: 'Optional boolean property',
+								type: 'boolean',
+							},
+							'optional int': {
+								description: 'Optional integer property',
+								type: 'integer',
+							},
+							'optional number': {
+								description: 'Optional number property',
+								type: 'number',
+							},
+							'optional object': {
+								description: 'Optional object property',
+								key: 'optional object',
+								properties: {},
+								type: 'object',
+							},
+							'optional string': {
+								description: 'Optional string property',
+								type: 'string',
+							},
+							'optional string with regex': {
+								description:
+									'Optional string property with a regex conditional',
+								pattern: 'Evil Morty|Lawyer Morty',
+								type: 'string',
+							},
+						},
 						type: 'object',
 					},
 					'optional string': {
@@ -886,6 +1259,61 @@ function everyRequiredType(message, callback) {
 						description: 'Required array property',
 						type: 'array',
 					},
+					'required array with properties': {
+						description: 'Required array with properties',
+						items: {
+							properties: {
+								'required any': {
+									description: 'Required any property',
+								},
+								'required array': {
+									description: 'Required array property',
+									type: 'array',
+								},
+								'required boolean': {
+									description: 'Required boolean property',
+									type: 'boolean',
+								},
+								'required int': {
+									description: 'Required integer property',
+									type: 'integer',
+								},
+								'required number': {
+									description: 'Required number property',
+									type: 'number',
+								},
+								'required object': {
+									description: 'Required object property',
+									key: 'required object',
+									properties: {},
+									required: [],
+									type: 'object',
+								},
+								'required string': {
+									description: 'Required string property',
+									type: 'string',
+								},
+								'required string with regex': {
+									description:
+										'Required string property with a regex conditional',
+									pattern: 'Evil Morty|Lawyer Morty',
+									type: 'string',
+								},
+							},
+							required: [
+								'required any',
+								'required array',
+								'required boolean',
+								'required int',
+								'required number',
+								'required object',
+								'required string',
+								'required string with regex',
+							],
+							type: 'object',
+						},
+						type: 'array',
+					},
 					'required boolean': {
 						description: 'Required boolean property',
 						type: 'boolean',
@@ -903,6 +1331,58 @@ function everyRequiredType(message, callback) {
 						key: 'required object',
 						properties: {},
 						required: [],
+						type: 'object',
+					},
+					'required object with properties': {
+						description: 'Required object with properties',
+						properties: {
+							'required any': {
+								description: 'Required any property',
+							},
+							'required array': {
+								description: 'Required array property',
+								type: 'array',
+							},
+							'required boolean': {
+								description: 'Required boolean property',
+								type: 'boolean',
+							},
+							'required int': {
+								description: 'Required integer property',
+								type: 'integer',
+							},
+							'required number': {
+								description: 'Required number property',
+								type: 'number',
+							},
+							'required object': {
+								description: 'Required object property',
+								key: 'required object',
+								properties: {},
+								required: [],
+								type: 'object',
+							},
+							'required string': {
+								description: 'Required string property',
+								type: 'string',
+							},
+							'required string with regex': {
+								description:
+									'Required string property with a regex conditional',
+								pattern: 'Evil Morty|Lawyer Morty',
+								type: 'string',
+							},
+						},
+						required: [
+							'required any',
+							'required array',
+							'required boolean',
+							'required int',
+							'required number',
+							'required object',
+							'required string',
+							'required string with regex',
+						],
 						type: 'object',
 					},
 					'required string': {
@@ -924,6 +1404,8 @@ function everyRequiredType(message, callback) {
 					'required object',
 					'required string',
 					'required string with regex',
+					'required object with properties',
+					'required array with properties',
 				],
 				type: 'object',
 			},

@@ -1,8 +1,16 @@
-// Typewriter Generated Code
+// Generated Typewriter Headers:
 #import "Analytics/SEGGarage.h"
 #import "Analytics/SEGObjectItem.h"
 #import "Analytics/SEGOccupantsItem.h"
 #import "Analytics/SEGOccupantsItem1.h"
+#import "Analytics/SEGOptionalArrayWithPropertiesItem.h"
+#import "Analytics/SEGOptionalArrayWithPropertiesItem1.h"
+#import "Analytics/SEGOptionalObjectWithProperties.h"
+#import "Analytics/SEGOptionalObjectWithProperties1.h"
+#import "Analytics/SEGRequiredArrayWithPropertiesItem.h"
+#import "Analytics/SEGRequiredArrayWithPropertiesItem1.h"
+#import "Analytics/SEGRequiredObjectWithProperties.h"
+#import "Analytics/SEGRequiredObjectWithProperties1.h"
 #import "Analytics/SEGSubterraneanLab.h"
 #import "Analytics/SEGTunnel.h"
 #import "Analytics/SEGTypewriterAnalytics.h"
