@@ -8,7 +8,7 @@
 
 +(nonnull instancetype) initWithOptionalAny:(nullable id)optionalAny
 optionalArray:(nullable NSArray<id> *)optionalArray
-optionalBoolean:(nullable BOOL *)optionalBoolean
+optionalBoolean:(nullable NSNumber *)optionalBoolean
 optionalInt:(nullable NSNumber *)optionalInt
 optionalNumber:(nullable NSNumber *)optionalNumber
 optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
@@ -30,7 +30,7 @@ optionalStringWithRegex:(nullable NSString *)optionalStringWithRegex {
   NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
   properties[@"optional any"] = self.optionalAny == nil ? [NSNull null] : self.optionalAny;
   properties[@"optional array"] = self.optionalArray == nil ? [NSNull null] : [SEGTypewriterUtils toSerializableArray:self.optionalArray];
-  properties[@"optional boolean"] = self.optionalBoolean == nil ? [NSNull null] : [NSNumber numberWithBool:*self.optionalBoolean];
+  properties[@"optional boolean"] = self.optionalBoolean == nil ? [NSNull null] : self.optionalBoolean;
   properties[@"optional int"] = self.optionalInt == nil ? [NSNull null] : self.optionalInt;
   properties[@"optional number"] = self.optionalNumber == nil ? [NSNull null] : self.optionalNumber;
   properties[@"optional object"] = self.optionalObject == nil ? [NSNull null] : self.optionalObject;

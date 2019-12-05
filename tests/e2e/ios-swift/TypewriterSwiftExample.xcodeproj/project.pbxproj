@@ -13,28 +13,46 @@
 		430293E422D5A7640029A05D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 430293E322D5A7640029A05D /* Assets.xcassets */; };
 		430293E722D5A7640029A05D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 430293E522D5A7640029A05D /* LaunchScreen.storyboard */; };
 		430293F222D5A7650029A05D /* TypewriterSwiftExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430293F122D5A7650029A05D /* TypewriterSwiftExampleTests.swift */; };
-		43B1D4F3235E12B50009E6FF /* SEGSubterraneanLab.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B1D4DD235E12B40009E6FF /* SEGSubterraneanLab.m */; };
-		43B1D4F4235E12B50009E6FF /* SEGSubterraneanLab.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B1D4DD235E12B40009E6FF /* SEGSubterraneanLab.m */; };
-		43B1D4F5235E12B50009E6FF /* SEGOccupantsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B1D4E2235E12B40009E6FF /* SEGOccupantsItem.m */; };
-		43B1D4F6235E12B50009E6FF /* SEGOccupantsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B1D4E2235E12B40009E6FF /* SEGOccupantsItem.m */; };
-		43B1D4F7235E12B50009E6FF /* SEGTypewriterUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B1D4E3235E12B40009E6FF /* SEGTypewriterUtils.m */; };
-		43B1D4F8235E12B50009E6FF /* SEGTypewriterUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B1D4E3235E12B40009E6FF /* SEGTypewriterUtils.m */; };
-		43B1D4F9235E12B50009E6FF /* SEGOccupantsItem1.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B1D4E4235E12B40009E6FF /* SEGOccupantsItem1.m */; };
-		43B1D4FA235E12B50009E6FF /* SEGOccupantsItem1.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B1D4E4235E12B40009E6FF /* SEGOccupantsItem1.m */; };
-		43B1D4FB235E12B50009E6FF /* SEGTypewriterAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B1D4E5235E12B40009E6FF /* SEGTypewriterAnalytics.m */; };
-		43B1D4FC235E12B50009E6FF /* SEGTypewriterAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B1D4E5235E12B40009E6FF /* SEGTypewriterAnalytics.m */; };
-		43B1D4FD235E12B50009E6FF /* SEGGarage.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B1D4E7235E12B40009E6FF /* SEGGarage.m */; };
-		43B1D4FE235E12B50009E6FF /* SEGGarage.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B1D4E7235E12B40009E6FF /* SEGGarage.m */; };
-		43B1D4FF235E12B50009E6FF /* SEGTunnel.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B1D4EA235E12B40009E6FF /* SEGTunnel.m */; };
-		43B1D500235E12B50009E6FF /* SEGTunnel.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B1D4EA235E12B40009E6FF /* SEGTunnel.m */; };
-		43B1D501235E12B50009E6FF /* SEGObjectItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B1D4EB235E12B40009E6FF /* SEGObjectItem.m */; };
-		43B1D502235E12B50009E6FF /* SEGObjectItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B1D4EB235E12B40009E6FF /* SEGObjectItem.m */; };
-		43B1D503235E12B50009E6FF /* SEGUniverse.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B1D4EE235E12B50009E6FF /* SEGUniverse.m */; };
-		43B1D504235E12B50009E6FF /* SEGUniverse.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B1D4EE235E12B50009E6FF /* SEGUniverse.m */; };
-		43B1D505235E12B50009E6FF /* SEGUniverse1.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B1D4EF235E12B50009E6FF /* SEGUniverse1.m */; };
-		43B1D506235E12B50009E6FF /* SEGUniverse1.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B1D4EF235E12B50009E6FF /* SEGUniverse1.m */; };
-		43B1D507235E12B50009E6FF /* SEGUniverseCharactersItemItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B1D4F0235E12B50009E6FF /* SEGUniverseCharactersItemItem.m */; };
-		43B1D508235E12B50009E6FF /* SEGUniverseCharactersItemItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B1D4F0235E12B50009E6FF /* SEGUniverseCharactersItemItem.m */; };
+		43D78E912398BCAF00983D1F /* SEGRequiredObjectWithProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E692398BCAF00983D1F /* SEGRequiredObjectWithProperties.m */; };
+		43D78E922398BCAF00983D1F /* SEGRequiredObjectWithProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E692398BCAF00983D1F /* SEGRequiredObjectWithProperties.m */; };
+		43D78E932398BCAF00983D1F /* SEGUniverseCharactersItemItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E6A2398BCAF00983D1F /* SEGUniverseCharactersItemItem.m */; };
+		43D78E942398BCAF00983D1F /* SEGUniverseCharactersItemItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E6A2398BCAF00983D1F /* SEGUniverseCharactersItemItem.m */; };
+		43D78E952398BCAF00983D1F /* SEGObjectItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E6B2398BCAF00983D1F /* SEGObjectItem.m */; };
+		43D78E962398BCAF00983D1F /* SEGObjectItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E6B2398BCAF00983D1F /* SEGObjectItem.m */; };
+		43D78E972398BCAF00983D1F /* SEGOptionalArrayWithPropertiesItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E6C2398BCAF00983D1F /* SEGOptionalArrayWithPropertiesItem.m */; };
+		43D78E982398BCAF00983D1F /* SEGOptionalArrayWithPropertiesItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E6C2398BCAF00983D1F /* SEGOptionalArrayWithPropertiesItem.m */; };
+		43D78E992398BCAF00983D1F /* plan.json in Resources */ = {isa = PBXBuildFile; fileRef = 43D78E6F2398BCAF00983D1F /* plan.json */; };
+		43D78E9A2398BCAF00983D1F /* plan.json in Resources */ = {isa = PBXBuildFile; fileRef = 43D78E6F2398BCAF00983D1F /* plan.json */; };
+		43D78E9B2398BCAF00983D1F /* SEGTypewriterAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E712398BCAF00983D1F /* SEGTypewriterAnalytics.m */; };
+		43D78E9C2398BCAF00983D1F /* SEGTypewriterAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E712398BCAF00983D1F /* SEGTypewriterAnalytics.m */; };
+		43D78E9D2398BCAF00983D1F /* SEGOptionalArrayWithPropertiesItem1.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E722398BCAF00983D1F /* SEGOptionalArrayWithPropertiesItem1.m */; };
+		43D78E9E2398BCAF00983D1F /* SEGOptionalArrayWithPropertiesItem1.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E722398BCAF00983D1F /* SEGOptionalArrayWithPropertiesItem1.m */; };
+		43D78E9F2398BCAF00983D1F /* SEGTypewriterUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E752398BCAF00983D1F /* SEGTypewriterUtils.m */; };
+		43D78EA02398BCAF00983D1F /* SEGTypewriterUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E752398BCAF00983D1F /* SEGTypewriterUtils.m */; };
+		43D78EA12398BCAF00983D1F /* SEGTunnel.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E762398BCAF00983D1F /* SEGTunnel.m */; };
+		43D78EA22398BCAF00983D1F /* SEGTunnel.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E762398BCAF00983D1F /* SEGTunnel.m */; };
+		43D78EA32398BCAF00983D1F /* SEGRequiredArrayWithPropertiesItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E792398BCAF00983D1F /* SEGRequiredArrayWithPropertiesItem.m */; };
+		43D78EA42398BCAF00983D1F /* SEGRequiredArrayWithPropertiesItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E792398BCAF00983D1F /* SEGRequiredArrayWithPropertiesItem.m */; };
+		43D78EA52398BCAF00983D1F /* SEGOccupantsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E7B2398BCAF00983D1F /* SEGOccupantsItem.m */; };
+		43D78EA62398BCAF00983D1F /* SEGOccupantsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E7B2398BCAF00983D1F /* SEGOccupantsItem.m */; };
+		43D78EA72398BCAF00983D1F /* SEGOccupantsItem1.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E7C2398BCAF00983D1F /* SEGOccupantsItem1.m */; };
+		43D78EA82398BCAF00983D1F /* SEGOccupantsItem1.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E7C2398BCAF00983D1F /* SEGOccupantsItem1.m */; };
+		43D78EA92398BCAF00983D1F /* SEGSubterraneanLab.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E822398BCAF00983D1F /* SEGSubterraneanLab.m */; };
+		43D78EAA2398BCAF00983D1F /* SEGSubterraneanLab.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E822398BCAF00983D1F /* SEGSubterraneanLab.m */; };
+		43D78EAB2398BCAF00983D1F /* SEGOptionalObjectWithProperties1.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E852398BCAF00983D1F /* SEGOptionalObjectWithProperties1.m */; };
+		43D78EAC2398BCAF00983D1F /* SEGOptionalObjectWithProperties1.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E852398BCAF00983D1F /* SEGOptionalObjectWithProperties1.m */; };
+		43D78EAD2398BCAF00983D1F /* SEGOptionalObjectWithProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E862398BCAF00983D1F /* SEGOptionalObjectWithProperties.m */; };
+		43D78EAE2398BCAF00983D1F /* SEGOptionalObjectWithProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E862398BCAF00983D1F /* SEGOptionalObjectWithProperties.m */; };
+		43D78EAF2398BCAF00983D1F /* SEGUniverse1.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E872398BCAF00983D1F /* SEGUniverse1.m */; };
+		43D78EB02398BCAF00983D1F /* SEGUniverse1.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E872398BCAF00983D1F /* SEGUniverse1.m */; };
+		43D78EB12398BCAF00983D1F /* SEGUniverse.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E8A2398BCAF00983D1F /* SEGUniverse.m */; };
+		43D78EB22398BCAF00983D1F /* SEGUniverse.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E8A2398BCAF00983D1F /* SEGUniverse.m */; };
+		43D78EB32398BCAF00983D1F /* SEGGarage.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E8B2398BCAF00983D1F /* SEGGarage.m */; };
+		43D78EB42398BCAF00983D1F /* SEGGarage.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E8B2398BCAF00983D1F /* SEGGarage.m */; };
+		43D78EB52398BCAF00983D1F /* SEGRequiredArrayWithPropertiesItem1.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E8E2398BCAF00983D1F /* SEGRequiredArrayWithPropertiesItem1.m */; };
+		43D78EB62398BCAF00983D1F /* SEGRequiredArrayWithPropertiesItem1.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E8E2398BCAF00983D1F /* SEGRequiredArrayWithPropertiesItem1.m */; };
+		43D78EB72398BCAF00983D1F /* SEGRequiredObjectWithProperties1.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E902398BCAF00983D1F /* SEGRequiredObjectWithProperties1.m */; };
+		43D78EB82398BCAF00983D1F /* SEGRequiredObjectWithProperties1.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D78E902398BCAF00983D1F /* SEGRequiredObjectWithProperties1.m */; };
 		57F6B112497BAF790349772B /* Pods_TypewriterSwiftExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20800A0272E9E354FFED335A /* Pods_TypewriterSwiftExampleTests.framework */; };
 		61F35AA1863F08EAD82D5344 /* Pods_TypewriterSwiftExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C36E1C93CB6886F486D05D24 /* Pods_TypewriterSwiftExample.framework */; };
 /* End PBXBuildFile section */
@@ -63,29 +81,46 @@
 		430293F122D5A7650029A05D /* TypewriterSwiftExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypewriterSwiftExampleTests.swift; sourceTree = "<group>"; };
 		430293F322D5A7650029A05D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43AAA3E622D64138001E9C1B /* TypewriterSwiftExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TypewriterSwiftExample-Bridging-Header.h"; sourceTree = "<group>"; };
-		43B1D4DC235E12B40009E6FF /* SEGTypewriterSerializable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGTypewriterSerializable.h; sourceTree = "<group>"; };
-		43B1D4DD235E12B40009E6FF /* SEGSubterraneanLab.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGSubterraneanLab.m; sourceTree = "<group>"; };
-		43B1D4DE235E12B40009E6FF /* SEGOccupantsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGOccupantsItem.h; sourceTree = "<group>"; };
-		43B1D4DF235E12B40009E6FF /* SEGTypewriterAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGTypewriterAnalytics.h; sourceTree = "<group>"; };
-		43B1D4E0235E12B40009E6FF /* SEGTypewriterUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGTypewriterUtils.h; sourceTree = "<group>"; };
-		43B1D4E1235E12B40009E6FF /* SEGUniverseCharactersItemItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGUniverseCharactersItemItem.h; sourceTree = "<group>"; };
-		43B1D4E2235E12B40009E6FF /* SEGOccupantsItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGOccupantsItem.m; sourceTree = "<group>"; };
-		43B1D4E3235E12B40009E6FF /* SEGTypewriterUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGTypewriterUtils.m; sourceTree = "<group>"; };
-		43B1D4E4235E12B40009E6FF /* SEGOccupantsItem1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGOccupantsItem1.m; sourceTree = "<group>"; };
-		43B1D4E5235E12B40009E6FF /* SEGTypewriterAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGTypewriterAnalytics.m; sourceTree = "<group>"; };
-		43B1D4E6235E12B40009E6FF /* SEGObjectItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGObjectItem.h; sourceTree = "<group>"; };
-		43B1D4E7235E12B40009E6FF /* SEGGarage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGGarage.m; sourceTree = "<group>"; };
-		43B1D4E8235E12B40009E6FF /* SEGUniverse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGUniverse.h; sourceTree = "<group>"; };
-		43B1D4E9235E12B40009E6FF /* SEGUniverse1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGUniverse1.h; sourceTree = "<group>"; };
-		43B1D4EA235E12B40009E6FF /* SEGTunnel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGTunnel.m; sourceTree = "<group>"; };
-		43B1D4EB235E12B40009E6FF /* SEGObjectItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGObjectItem.m; sourceTree = "<group>"; };
-		43B1D4EC235E12B40009E6FF /* SEGOccupantsItem1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGOccupantsItem1.h; sourceTree = "<group>"; };
-		43B1D4ED235E12B40009E6FF /* SEGSubterraneanLab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGSubterraneanLab.h; sourceTree = "<group>"; };
-		43B1D4EE235E12B50009E6FF /* SEGUniverse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGUniverse.m; sourceTree = "<group>"; };
-		43B1D4EF235E12B50009E6FF /* SEGUniverse1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGUniverse1.m; sourceTree = "<group>"; };
-		43B1D4F0235E12B50009E6FF /* SEGUniverseCharactersItemItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGUniverseCharactersItemItem.m; sourceTree = "<group>"; };
-		43B1D4F1235E12B50009E6FF /* SEGTunnel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGTunnel.h; sourceTree = "<group>"; };
-		43B1D4F2235E12B50009E6FF /* SEGGarage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGGarage.h; sourceTree = "<group>"; };
+		43D78E692398BCAF00983D1F /* SEGRequiredObjectWithProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGRequiredObjectWithProperties.m; sourceTree = "<group>"; };
+		43D78E6A2398BCAF00983D1F /* SEGUniverseCharactersItemItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGUniverseCharactersItemItem.m; sourceTree = "<group>"; };
+		43D78E6B2398BCAF00983D1F /* SEGObjectItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGObjectItem.m; sourceTree = "<group>"; };
+		43D78E6C2398BCAF00983D1F /* SEGOptionalArrayWithPropertiesItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGOptionalArrayWithPropertiesItem.m; sourceTree = "<group>"; };
+		43D78E6D2398BCAF00983D1F /* SEGUniverse1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGUniverse1.h; sourceTree = "<group>"; };
+		43D78E6E2398BCAF00983D1F /* SEGOptionalObjectWithProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGOptionalObjectWithProperties.h; sourceTree = "<group>"; };
+		43D78E6F2398BCAF00983D1F /* plan.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = plan.json; sourceTree = "<group>"; };
+		43D78E702398BCAF00983D1F /* SEGOptionalObjectWithProperties1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGOptionalObjectWithProperties1.h; sourceTree = "<group>"; };
+		43D78E712398BCAF00983D1F /* SEGTypewriterAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGTypewriterAnalytics.m; sourceTree = "<group>"; };
+		43D78E722398BCAF00983D1F /* SEGOptionalArrayWithPropertiesItem1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGOptionalArrayWithPropertiesItem1.m; sourceTree = "<group>"; };
+		43D78E732398BCAF00983D1F /* SEGSubterraneanLab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGSubterraneanLab.h; sourceTree = "<group>"; };
+		43D78E742398BCAF00983D1F /* SEGUniverse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGUniverse.h; sourceTree = "<group>"; };
+		43D78E752398BCAF00983D1F /* SEGTypewriterUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGTypewriterUtils.m; sourceTree = "<group>"; };
+		43D78E762398BCAF00983D1F /* SEGTunnel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGTunnel.m; sourceTree = "<group>"; };
+		43D78E772398BCAF00983D1F /* SEGTypewriterSerializable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGTypewriterSerializable.h; sourceTree = "<group>"; };
+		43D78E782398BCAF00983D1F /* SEGRequiredObjectWithProperties1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGRequiredObjectWithProperties1.h; sourceTree = "<group>"; };
+		43D78E792398BCAF00983D1F /* SEGRequiredArrayWithPropertiesItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGRequiredArrayWithPropertiesItem.m; sourceTree = "<group>"; };
+		43D78E7A2398BCAF00983D1F /* SEGRequiredArrayWithPropertiesItem1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGRequiredArrayWithPropertiesItem1.h; sourceTree = "<group>"; };
+		43D78E7B2398BCAF00983D1F /* SEGOccupantsItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGOccupantsItem.m; sourceTree = "<group>"; };
+		43D78E7C2398BCAF00983D1F /* SEGOccupantsItem1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGOccupantsItem1.m; sourceTree = "<group>"; };
+		43D78E7D2398BCAF00983D1F /* SEGGarage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGGarage.h; sourceTree = "<group>"; };
+		43D78E7E2398BCAF00983D1F /* SEGOptionalArrayWithPropertiesItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGOptionalArrayWithPropertiesItem.h; sourceTree = "<group>"; };
+		43D78E7F2398BCAF00983D1F /* SEGObjectItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGObjectItem.h; sourceTree = "<group>"; };
+		43D78E802398BCAF00983D1F /* SEGUniverseCharactersItemItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGUniverseCharactersItemItem.h; sourceTree = "<group>"; };
+		43D78E812398BCAF00983D1F /* SEGRequiredObjectWithProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGRequiredObjectWithProperties.h; sourceTree = "<group>"; };
+		43D78E822398BCAF00983D1F /* SEGSubterraneanLab.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGSubterraneanLab.m; sourceTree = "<group>"; };
+		43D78E832398BCAF00983D1F /* SEGOptionalArrayWithPropertiesItem1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGOptionalArrayWithPropertiesItem1.h; sourceTree = "<group>"; };
+		43D78E842398BCAF00983D1F /* SEGTypewriterAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGTypewriterAnalytics.h; sourceTree = "<group>"; };
+		43D78E852398BCAF00983D1F /* SEGOptionalObjectWithProperties1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGOptionalObjectWithProperties1.m; sourceTree = "<group>"; };
+		43D78E862398BCAF00983D1F /* SEGOptionalObjectWithProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGOptionalObjectWithProperties.m; sourceTree = "<group>"; };
+		43D78E872398BCAF00983D1F /* SEGUniverse1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGUniverse1.m; sourceTree = "<group>"; };
+		43D78E882398BCAF00983D1F /* SEGTunnel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGTunnel.h; sourceTree = "<group>"; };
+		43D78E892398BCAF00983D1F /* SEGTypewriterUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGTypewriterUtils.h; sourceTree = "<group>"; };
+		43D78E8A2398BCAF00983D1F /* SEGUniverse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGUniverse.m; sourceTree = "<group>"; };
+		43D78E8B2398BCAF00983D1F /* SEGGarage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGGarage.m; sourceTree = "<group>"; };
+		43D78E8C2398BCAF00983D1F /* SEGOccupantsItem1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGOccupantsItem1.h; sourceTree = "<group>"; };
+		43D78E8D2398BCAF00983D1F /* SEGOccupantsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGOccupantsItem.h; sourceTree = "<group>"; };
+		43D78E8E2398BCAF00983D1F /* SEGRequiredArrayWithPropertiesItem1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGRequiredArrayWithPropertiesItem1.m; sourceTree = "<group>"; };
+		43D78E8F2398BCAF00983D1F /* SEGRequiredArrayWithPropertiesItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGRequiredArrayWithPropertiesItem.h; sourceTree = "<group>"; };
+		43D78E902398BCAF00983D1F /* SEGRequiredObjectWithProperties1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGRequiredObjectWithProperties1.m; sourceTree = "<group>"; };
 		A697B27DCCCD1525F67DD71B /* Pods-TypewriterSwiftExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TypewriterSwiftExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-TypewriterSwiftExampleTests/Pods-TypewriterSwiftExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		AC0E8B7316FF43D5AECE5F3B /* Pods-TypewriterSwiftExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TypewriterSwiftExampleTests.release.xcconfig"; path = "Target Support Files/Pods-TypewriterSwiftExampleTests/Pods-TypewriterSwiftExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		C36E1C93CB6886F486D05D24 /* Pods_TypewriterSwiftExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TypewriterSwiftExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -115,6 +150,7 @@
 		430293D022D5A7640029A05D = {
 			isa = PBXGroup;
 			children = (
+				43D78E682398BCAF00983D1F /* Analytics */,
 				430293DB22D5A7640029A05D /* TypewriterSwiftExample */,
 				430293F022D5A7650029A05D /* TypewriterSwiftExampleTests */,
 				430293DA22D5A7640029A05D /* Products */,
@@ -135,7 +171,6 @@
 		430293DB22D5A7640029A05D /* TypewriterSwiftExample */ = {
 			isa = PBXGroup;
 			children = (
-				43B1D4DB235E12120009E6FF /* Analytics */,
 				43AAA3E622D64138001E9C1B /* TypewriterSwiftExample-Bridging-Header.h */,
 				430293DC22D5A7640029A05D /* AppDelegate.swift */,
 				430293DE22D5A7640029A05D /* ViewController.swift */,
@@ -156,34 +191,52 @@
 			path = TypewriterSwiftExampleTests;
 			sourceTree = "<group>";
 		};
-		43B1D4DB235E12120009E6FF /* Analytics */ = {
+		43D78E682398BCAF00983D1F /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
-				43B1D4F2235E12B50009E6FF /* SEGGarage.h */,
-				43B1D4E7235E12B40009E6FF /* SEGGarage.m */,
-				43B1D4E6235E12B40009E6FF /* SEGObjectItem.h */,
-				43B1D4EB235E12B40009E6FF /* SEGObjectItem.m */,
-				43B1D4DE235E12B40009E6FF /* SEGOccupantsItem.h */,
-				43B1D4E2235E12B40009E6FF /* SEGOccupantsItem.m */,
-				43B1D4EC235E12B40009E6FF /* SEGOccupantsItem1.h */,
-				43B1D4E4235E12B40009E6FF /* SEGOccupantsItem1.m */,
-				43B1D4ED235E12B40009E6FF /* SEGSubterraneanLab.h */,
-				43B1D4DD235E12B40009E6FF /* SEGSubterraneanLab.m */,
-				43B1D4F1235E12B50009E6FF /* SEGTunnel.h */,
-				43B1D4EA235E12B40009E6FF /* SEGTunnel.m */,
-				43B1D4DF235E12B40009E6FF /* SEGTypewriterAnalytics.h */,
-				43B1D4E5235E12B40009E6FF /* SEGTypewriterAnalytics.m */,
-				43B1D4DC235E12B40009E6FF /* SEGTypewriterSerializable.h */,
-				43B1D4E0235E12B40009E6FF /* SEGTypewriterUtils.h */,
-				43B1D4E3235E12B40009E6FF /* SEGTypewriterUtils.m */,
-				43B1D4E8235E12B40009E6FF /* SEGUniverse.h */,
-				43B1D4EE235E12B50009E6FF /* SEGUniverse.m */,
-				43B1D4E9235E12B40009E6FF /* SEGUniverse1.h */,
-				43B1D4EF235E12B50009E6FF /* SEGUniverse1.m */,
-				43B1D4E1235E12B40009E6FF /* SEGUniverseCharactersItemItem.h */,
-				43B1D4F0235E12B50009E6FF /* SEGUniverseCharactersItemItem.m */,
+				43D78E692398BCAF00983D1F /* SEGRequiredObjectWithProperties.m */,
+				43D78E6A2398BCAF00983D1F /* SEGUniverseCharactersItemItem.m */,
+				43D78E6B2398BCAF00983D1F /* SEGObjectItem.m */,
+				43D78E6C2398BCAF00983D1F /* SEGOptionalArrayWithPropertiesItem.m */,
+				43D78E6D2398BCAF00983D1F /* SEGUniverse1.h */,
+				43D78E6E2398BCAF00983D1F /* SEGOptionalObjectWithProperties.h */,
+				43D78E6F2398BCAF00983D1F /* plan.json */,
+				43D78E702398BCAF00983D1F /* SEGOptionalObjectWithProperties1.h */,
+				43D78E712398BCAF00983D1F /* SEGTypewriterAnalytics.m */,
+				43D78E722398BCAF00983D1F /* SEGOptionalArrayWithPropertiesItem1.m */,
+				43D78E732398BCAF00983D1F /* SEGSubterraneanLab.h */,
+				43D78E742398BCAF00983D1F /* SEGUniverse.h */,
+				43D78E752398BCAF00983D1F /* SEGTypewriterUtils.m */,
+				43D78E762398BCAF00983D1F /* SEGTunnel.m */,
+				43D78E772398BCAF00983D1F /* SEGTypewriterSerializable.h */,
+				43D78E782398BCAF00983D1F /* SEGRequiredObjectWithProperties1.h */,
+				43D78E792398BCAF00983D1F /* SEGRequiredArrayWithPropertiesItem.m */,
+				43D78E7A2398BCAF00983D1F /* SEGRequiredArrayWithPropertiesItem1.h */,
+				43D78E7B2398BCAF00983D1F /* SEGOccupantsItem.m */,
+				43D78E7C2398BCAF00983D1F /* SEGOccupantsItem1.m */,
+				43D78E7D2398BCAF00983D1F /* SEGGarage.h */,
+				43D78E7E2398BCAF00983D1F /* SEGOptionalArrayWithPropertiesItem.h */,
+				43D78E7F2398BCAF00983D1F /* SEGObjectItem.h */,
+				43D78E802398BCAF00983D1F /* SEGUniverseCharactersItemItem.h */,
+				43D78E812398BCAF00983D1F /* SEGRequiredObjectWithProperties.h */,
+				43D78E822398BCAF00983D1F /* SEGSubterraneanLab.m */,
+				43D78E832398BCAF00983D1F /* SEGOptionalArrayWithPropertiesItem1.h */,
+				43D78E842398BCAF00983D1F /* SEGTypewriterAnalytics.h */,
+				43D78E852398BCAF00983D1F /* SEGOptionalObjectWithProperties1.m */,
+				43D78E862398BCAF00983D1F /* SEGOptionalObjectWithProperties.m */,
+				43D78E872398BCAF00983D1F /* SEGUniverse1.m */,
+				43D78E882398BCAF00983D1F /* SEGTunnel.h */,
+				43D78E892398BCAF00983D1F /* SEGTypewriterUtils.h */,
+				43D78E8A2398BCAF00983D1F /* SEGUniverse.m */,
+				43D78E8B2398BCAF00983D1F /* SEGGarage.m */,
+				43D78E8C2398BCAF00983D1F /* SEGOccupantsItem1.h */,
+				43D78E8D2398BCAF00983D1F /* SEGOccupantsItem.h */,
+				43D78E8E2398BCAF00983D1F /* SEGRequiredArrayWithPropertiesItem1.m */,
+				43D78E8F2398BCAF00983D1F /* SEGRequiredArrayWithPropertiesItem.h */,
+				43D78E902398BCAF00983D1F /* SEGRequiredObjectWithProperties1.m */,
 			);
-			path = Analytics;
+			name = Analytics;
+			path = TypewriterSwiftExample/Analytics;
 			sourceTree = "<group>";
 		};
 		53CE29137994347DB8178B9C /* Pods */ = {
@@ -290,6 +343,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43D78E992398BCAF00983D1F /* plan.json in Resources */,
 				430293E722D5A7640029A05D /* LaunchScreen.storyboard in Resources */,
 				430293E422D5A7640029A05D /* Assets.xcassets in Resources */,
 				430293E222D5A7640029A05D /* Main.storyboard in Resources */,
@@ -300,6 +354,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43D78E9A2398BCAF00983D1F /* plan.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,19 +429,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43D78E932398BCAF00983D1F /* SEGUniverseCharactersItemItem.m in Sources */,
+				43D78EA72398BCAF00983D1F /* SEGOccupantsItem1.m in Sources */,
+				43D78EA32398BCAF00983D1F /* SEGRequiredArrayWithPropertiesItem.m in Sources */,
+				43D78EB72398BCAF00983D1F /* SEGRequiredObjectWithProperties1.m in Sources */,
+				43D78EAD2398BCAF00983D1F /* SEGOptionalObjectWithProperties.m in Sources */,
+				43D78E972398BCAF00983D1F /* SEGOptionalArrayWithPropertiesItem.m in Sources */,
+				43D78EAB2398BCAF00983D1F /* SEGOptionalObjectWithProperties1.m in Sources */,
+				43D78E9F2398BCAF00983D1F /* SEGTypewriterUtils.m in Sources */,
+				43D78EA12398BCAF00983D1F /* SEGTunnel.m in Sources */,
+				43D78EB52398BCAF00983D1F /* SEGRequiredArrayWithPropertiesItem1.m in Sources */,
 				430293DF22D5A7640029A05D /* ViewController.swift in Sources */,
-				43B1D503235E12B50009E6FF /* SEGUniverse.m in Sources */,
-				43B1D505235E12B50009E6FF /* SEGUniverse1.m in Sources */,
+				43D78EA92398BCAF00983D1F /* SEGSubterraneanLab.m in Sources */,
+				43D78EB32398BCAF00983D1F /* SEGGarage.m in Sources */,
+				43D78E912398BCAF00983D1F /* SEGRequiredObjectWithProperties.m in Sources */,
+				43D78E952398BCAF00983D1F /* SEGObjectItem.m in Sources */,
+				43D78EB12398BCAF00983D1F /* SEGUniverse.m in Sources */,
+				43D78E9D2398BCAF00983D1F /* SEGOptionalArrayWithPropertiesItem1.m in Sources */,
+				43D78E9B2398BCAF00983D1F /* SEGTypewriterAnalytics.m in Sources */,
+				43D78EAF2398BCAF00983D1F /* SEGUniverse1.m in Sources */,
 				430293DD22D5A7640029A05D /* AppDelegate.swift in Sources */,
-				43B1D4F7235E12B50009E6FF /* SEGTypewriterUtils.m in Sources */,
-				43B1D501235E12B50009E6FF /* SEGObjectItem.m in Sources */,
-				43B1D4F9235E12B50009E6FF /* SEGOccupantsItem1.m in Sources */,
-				43B1D507235E12B50009E6FF /* SEGUniverseCharactersItemItem.m in Sources */,
-				43B1D4FD235E12B50009E6FF /* SEGGarage.m in Sources */,
-				43B1D4F3235E12B50009E6FF /* SEGSubterraneanLab.m in Sources */,
-				43B1D4FF235E12B50009E6FF /* SEGTunnel.m in Sources */,
-				43B1D4FB235E12B50009E6FF /* SEGTypewriterAnalytics.m in Sources */,
-				43B1D4F5235E12B50009E6FF /* SEGOccupantsItem.m in Sources */,
+				43D78EA52398BCAF00983D1F /* SEGOccupantsItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -394,18 +457,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43D78EB22398BCAF00983D1F /* SEGUniverse.m in Sources */,
+				43D78EAE2398BCAF00983D1F /* SEGOptionalObjectWithProperties.m in Sources */,
+				43D78E922398BCAF00983D1F /* SEGRequiredObjectWithProperties.m in Sources */,
+				43D78E9C2398BCAF00983D1F /* SEGTypewriterAnalytics.m in Sources */,
 				430293F222D5A7650029A05D /* TypewriterSwiftExampleTests.swift in Sources */,
-				43B1D4FE235E12B50009E6FF /* SEGGarage.m in Sources */,
-				43B1D504235E12B50009E6FF /* SEGUniverse.m in Sources */,
-				43B1D4FC235E12B50009E6FF /* SEGTypewriterAnalytics.m in Sources */,
-				43B1D500235E12B50009E6FF /* SEGTunnel.m in Sources */,
-				43B1D4FA235E12B50009E6FF /* SEGOccupantsItem1.m in Sources */,
-				43B1D4F4235E12B50009E6FF /* SEGSubterraneanLab.m in Sources */,
-				43B1D502235E12B50009E6FF /* SEGObjectItem.m in Sources */,
-				43B1D508235E12B50009E6FF /* SEGUniverseCharactersItemItem.m in Sources */,
-				43B1D4F8235E12B50009E6FF /* SEGTypewriterUtils.m in Sources */,
-				43B1D506235E12B50009E6FF /* SEGUniverse1.m in Sources */,
-				43B1D4F6235E12B50009E6FF /* SEGOccupantsItem.m in Sources */,
+				43D78E982398BCAF00983D1F /* SEGOptionalArrayWithPropertiesItem.m in Sources */,
+				43D78EB82398BCAF00983D1F /* SEGRequiredObjectWithProperties1.m in Sources */,
+				43D78E942398BCAF00983D1F /* SEGUniverseCharactersItemItem.m in Sources */,
+				43D78EAA2398BCAF00983D1F /* SEGSubterraneanLab.m in Sources */,
+				43D78EB62398BCAF00983D1F /* SEGRequiredArrayWithPropertiesItem1.m in Sources */,
+				43D78E9E2398BCAF00983D1F /* SEGOptionalArrayWithPropertiesItem1.m in Sources */,
+				43D78EA42398BCAF00983D1F /* SEGRequiredArrayWithPropertiesItem.m in Sources */,
+				43D78EA22398BCAF00983D1F /* SEGTunnel.m in Sources */,
+				43D78EB02398BCAF00983D1F /* SEGUniverse1.m in Sources */,
+				43D78EA02398BCAF00983D1F /* SEGTypewriterUtils.m in Sources */,
+				43D78EA82398BCAF00983D1F /* SEGOccupantsItem1.m in Sources */,
+				43D78EB42398BCAF00983D1F /* SEGGarage.m in Sources */,
+				43D78E962398BCAF00983D1F /* SEGObjectItem.m in Sources */,
+				43D78EA62398BCAF00983D1F /* SEGOccupantsItem.m in Sources */,
+				43D78EAC2398BCAF00983D1F /* SEGOptionalObjectWithProperties1.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,7 +8,7 @@
 
 +(nonnull instancetype) initWithOptionalAny:(nullable id)optionalAny
 optionalArray:(nullable NSArray<id> *)optionalArray
-optionalBoolean:(nullable BOOL *)optionalBoolean
+optionalBoolean:(nullable NSNumber *)optionalBoolean
 optionalInt:(nullable NSNumber *)optionalInt
 optionalNumber:(nullable NSNumber *)optionalNumber
 optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
@@ -33,7 +33,7 @@ optionalStringWithRegex:(nullable NSString *)optionalStringWithRegex {
     properties[@"optional array"] = [SEGTypewriterUtils toSerializableArray:self.optionalArray];
   }
   if (self.optionalBoolean != nil) {
-    properties[@"optional boolean"] = [NSNumber numberWithBool:*self.optionalBoolean];
+    properties[@"optional boolean"] = self.optionalBoolean;
   }
   if (self.optionalInt != nil) {
     properties[@"optional int"] = self.optionalInt;

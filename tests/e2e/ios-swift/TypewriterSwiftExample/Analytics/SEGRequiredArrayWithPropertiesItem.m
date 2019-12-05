@@ -8,7 +8,7 @@
 
 +(nonnull instancetype) initWithRequiredAny:(nullable id)requiredAny
 requiredArray:(nullable NSArray<id> *)requiredArray
-requiredBoolean:(nullable BOOL *)requiredBoolean
+requiredBoolean:(nullable NSNumber *)requiredBoolean
 requiredInt:(nullable NSNumber *)requiredInt
 requiredNumber:(nullable NSNumber *)requiredNumber
 requiredObject:(nullable SERIALIZABLE_DICT)requiredObject
@@ -30,7 +30,7 @@ requiredStringWithRegex:(nullable NSString *)requiredStringWithRegex {
   NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
   properties[@"required any"] = self.requiredAny == nil ? [NSNull null] : self.requiredAny;
   properties[@"required array"] = self.requiredArray == nil ? [NSNull null] : [SEGTypewriterUtils toSerializableArray:self.requiredArray];
-  properties[@"required boolean"] = self.requiredBoolean == nil ? [NSNull null] : [NSNumber numberWithBool:*self.requiredBoolean];
+  properties[@"required boolean"] = self.requiredBoolean == nil ? [NSNull null] : self.requiredBoolean;
   properties[@"required int"] = self.requiredInt == nil ? [NSNull null] : self.requiredInt;
   properties[@"required number"] = self.requiredNumber == nil ? [NSNull null] : self.requiredNumber;
   properties[@"required object"] = self.requiredObject == nil ? [NSNull null] : self.requiredObject;

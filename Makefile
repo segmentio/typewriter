@@ -252,3 +252,13 @@ precommit:
 
 	@# Lint the working directory:
 	@yarn run lint-staged
+
+.PHONY: update-bridging-header
+update-bridging-header:
+	@echo "// Generated Typewriter Headers:" > \
+		tests/e2e/ios-swift/TypewriterSwiftExample/TypewriterSwiftExample-Bridging-Header.h
+	@ls -l tests/e2e/ios-swift/TypewriterSwiftExample/Analytics | \
+		grep '.h$$' | \
+		sed -e 's/^.*SEG/#import "Analytics\/SEG/' | \
+		sed -e 's/$$/"/' >> \
+		tests/e2e/ios-swift/TypewriterSwiftExample/TypewriterSwiftExample-Bridging-Header.h

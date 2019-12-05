@@ -10,17 +10,17 @@
 @interface SEGOptionalArrayWithPropertiesItem1 : NSObject<SEGTypewriterSerializable>
 
 /// Optional any property
-@property (strong, nonatomic, nullable) idoptionalAny;
+@property (strong, nonatomic, nullable) id optionalAny;
 /// Optional array property
 @property (strong, nonatomic, nullable) NSArray<id> *optionalArray;
 /// Optional boolean property
-@property (strong, nonatomic, nullable) BOOL *optionalBoolean;
+@property (strong, nonatomic, nullable) NSNumber *optionalBoolean;
 /// Optional integer property
 @property (strong, nonatomic, nullable) NSNumber *optionalInt;
 /// Optional number property
 @property (strong, nonatomic, nullable) NSNumber *optionalNumber;
 /// Optional object property
-@property (strong, nonatomic, nullable) SERIALIZABLE_DICToptionalObject;
+@property (strong, nonatomic, nullable) SERIALIZABLE_DICT optionalObject;
 /// Optional string property
 @property (strong, nonatomic, nullable) NSString *optionalString;
 /// Optional string property with a regex conditional
@@ -28,7 +28,7 @@
 
 +(nonnull instancetype) initWithOptionalAny:(nullable id)optionalAny
 optionalArray:(nullable NSArray<id> *)optionalArray
-optionalBoolean:(nullable BOOL *)optionalBoolean
+optionalBoolean:(nullable NSNumber *)optionalBoolean
 optionalInt:(nullable NSNumber *)optionalInt
 optionalNumber:(nullable NSNumber *)optionalNumber
 optionalObject:(nullable SERIALIZABLE_DICT)optionalObject

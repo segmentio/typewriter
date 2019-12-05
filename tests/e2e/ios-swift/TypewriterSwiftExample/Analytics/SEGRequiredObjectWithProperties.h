@@ -10,17 +10,17 @@
 @interface SEGRequiredObjectWithProperties : NSObject<SEGTypewriterSerializable>
 
 /// Required any property
-@property (strong, nonatomic, nonnull) idrequiredAny;
+@property (strong, nonatomic, nonnull) id requiredAny;
 /// Required array property
 @property (strong, nonatomic, nonnull) NSArray<id> *requiredArray;
 /// Required boolean property
-@property (strong, nonatomic, nonnull) BOOL *requiredBoolean;
+@property (strong, nonatomic, nonnull) NSNumber *requiredBoolean;
 /// Required integer property
 @property (strong, nonatomic, nonnull) NSNumber *requiredInt;
 /// Required number property
 @property (strong, nonatomic, nonnull) NSNumber *requiredNumber;
 /// Required object property
-@property (strong, nonatomic, nonnull) SERIALIZABLE_DICTrequiredObject;
+@property (strong, nonatomic, nonnull) SERIALIZABLE_DICT requiredObject;
 /// Required string property
 @property (strong, nonatomic, nonnull) NSString *requiredString;
 /// Required string property with a regex conditional
@@ -28,7 +28,7 @@
 
 +(nonnull instancetype) initWithRequiredAny:(nullable id)requiredAny
 requiredArray:(nullable NSArray<id> *)requiredArray
-requiredBoolean:(nullable BOOL *)requiredBoolean
+requiredBoolean:(nullable NSNumber *)requiredBoolean
 requiredInt:(nullable NSNumber *)requiredInt
 requiredNumber:(nullable NSNumber *)requiredNumber
 requiredObject:(nullable SERIALIZABLE_DICT)requiredObject
