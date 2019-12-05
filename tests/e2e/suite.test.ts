@@ -22,6 +22,7 @@ export const events: Event[] = []
 
 interface Expectation {
 	name: string
+	if?: boolean
 	properties?: Joi.SchemaMap
 }
 
@@ -79,37 +80,237 @@ describe('e2e tests', () => {
 					'required object': {},
 					'required string': 'Alpha-Betrium',
 					'required string with regex': 'Lawyer Morty',
+					'required array with properties': exactArray([
+						{
+							'required any': 'Rick Sanchez',
+							'required array': exactArray([137, 'C-137']),
+							'required boolean': false,
+							'required int': 97,
+							'required number': 3.14,
+							'required object': {},
+							'required string': 'Alpha-Betrium',
+							'required string with regex': 'Lawyer Morty',
+						},
+					]),
+					'required object with properties': {
+						'required any': 'Rick Sanchez',
+						'required array': exactArray([137, 'C-137']),
+						'required boolean': false,
+						'required int': 97,
+						'required number': 3.14,
+						'required object': {},
+						'required string': 'Alpha-Betrium',
+						'required string with regex': 'Lawyer Morty',
+					},
 				},
 			},
 		},
 		{
 			name: 'sends an event with every supported type (optional)',
-			expect: {
-				name: 'Every Optional Type',
-			},
+			expect: [
+				// Not passing any fields:
+				{
+					name: 'Every Optional Type',
+				},
+				// Passing real values for all fields:
+				{
+					name: 'Every Optional Type',
+					properties: {
+						'optional any': 'Rick Sanchez',
+						'optional array': exactArray([137, 'C-137']),
+						'optional boolean': false,
+						'optional int': 97,
+						'optional number': 3.14,
+						'optional object': {},
+						'optional string': 'Alpha-Betrium',
+						'optional string with regex': 'Lawyer Morty',
+						'optional array with properties': exactArray([
+							{
+								'optional any': 'Rick Sanchez',
+								'optional array': exactArray([137, 'C-137']),
+								'optional boolean': false,
+								'optional int': 97,
+								'optional number': 3.14,
+								'optional object': {},
+								'optional string': 'Alpha-Betrium',
+								'optional string with regex': 'Lawyer Morty',
+							},
+						]),
+						'optional object with properties': {
+							'optional any': 'Rick Sanchez',
+							'optional array': exactArray([137, 'C-137']),
+							'optional boolean': false,
+							'optional int': 97,
+							'optional number': 3.14,
+							'optional object': {},
+							'optional string': 'Alpha-Betrium',
+							'optional string with regex': 'Lawyer Morty',
+						},
+					},
+				},
+			],
 		},
 		{
 			name: 'sends an event with every supported type (nullable + required)',
-			if: sdk !== SDK.IOS,
-			expect: {
-				name: 'Every Nullable Required Type',
-				properties: {
-					'required any': null,
-					'required array': null,
-					'required boolean': null,
-					'required int': null,
-					'required number': null,
-					'required object': null,
-					'required string': null,
-					'required string with regex': null,
+			expect: [
+				// Passing null for all fields:
+				{
+					name: 'Every Nullable Required Type',
+					// analytics-ios does not serialize nulls, and instead drops those fields.
+					if: sdk !== SDK.IOS,
+					properties: {
+						'required any': null,
+						'required array': null,
+						'required boolean': null,
+						'required int': null,
+						'required number': null,
+						'required object': null,
+						'required string': null,
+						'required string with regex': null,
+						'required array with properties': exactArray([
+							{
+								'required any': null,
+								'required array': null,
+								'required boolean': null,
+								'required int': null,
+								'required number': null,
+								'required object': null,
+								'required string': null,
+								'required string with regex': null,
+							},
+						]),
+						'required object with properties': {
+							'required any': null,
+							'required array': null,
+							'required boolean': null,
+							'required int': null,
+							'required number': null,
+							'required object': null,
+							'required string': null,
+							'required string with regex': null,
+						},
+					},
 				},
-			},
+				// Passing real values for all fields:
+				{
+					name: 'Every Nullable Required Type',
+					properties: {
+						'required any': 'Rick Sanchez',
+						'required array': exactArray([137, 'C-137']),
+						'required boolean': false,
+						'required int': 97,
+						'required number': 3.14,
+						'required object': {},
+						'required string': 'Alpha-Betrium',
+						'required string with regex': 'Lawyer Morty',
+						'required array with properties': exactArray([
+							{
+								'required any': 'Rick Sanchez',
+								'required array': exactArray([137, 'C-137']),
+								'required boolean': false,
+								'required int': 97,
+								'required number': 3.14,
+								'required object': {},
+								'required string': 'Alpha-Betrium',
+								'required string with regex': 'Lawyer Morty',
+							},
+						]),
+						'required object with properties': {
+							'required any': 'Rick Sanchez',
+							'required array': exactArray([137, 'C-137']),
+							'required boolean': false,
+							'required int': 97,
+							'required number': 3.14,
+							'required object': {},
+							'required string': 'Alpha-Betrium',
+							'required string with regex': 'Lawyer Morty',
+						},
+					},
+				},
+			],
 		},
 		{
 			name: 'sends an event with every supported type (nullable + optional)',
-			expect: {
-				name: 'Every Nullable Optional Type',
-			},
+			expect: [
+				// Not passing any fields:
+				{
+					name: 'Every Nullable Optional Type',
+				},
+				// Passing null for all fields:
+				{
+					name: 'Every Nullable Optional Type',
+					// analytics-ios does not serialize nulls, and instead drops those fields.
+					if: sdk !== SDK.IOS,
+					properties: {
+						'optional any': null,
+						'optional array': null,
+						'optional boolean': null,
+						'optional int': null,
+						'optional number': null,
+						'optional object': null,
+						'optional string': null,
+						'optional string with regex': null,
+						'optional array with properties': exactArray([
+							{
+								'optional any': null,
+								'optional array': null,
+								'optional boolean': null,
+								'optional int': null,
+								'optional number': null,
+								'optional object': null,
+								'optional string': null,
+								'optional string with regex': null,
+							},
+						]),
+						'optional object with properties': {
+							'optional any': null,
+							'optional array': null,
+							'optional boolean': null,
+							'optional int': null,
+							'optional number': null,
+							'optional object': null,
+							'optional string': null,
+							'optional string with regex': null,
+						},
+					},
+				},
+				// Passing real values for all fields:
+				{
+					name: 'Every Nullable Optional Type',
+					properties: {
+						'optional any': 'Rick Sanchez',
+						'optional array': exactArray([137, 'C-137']),
+						'optional boolean': false,
+						'optional int': 97,
+						'optional number': 3.14,
+						'optional object': {},
+						'optional string': 'Alpha-Betrium',
+						'optional string with regex': 'Lawyer Morty',
+						'optional array with properties': exactArray([
+							{
+								'optional any': 'Rick Sanchez',
+								'optional array': exactArray([137, 'C-137']),
+								'optional boolean': false,
+								'optional int': 97,
+								'optional number': 3.14,
+								'optional object': {},
+								'optional string': 'Alpha-Betrium',
+								'optional string with regex': 'Lawyer Morty',
+							},
+						]),
+						'optional object with properties': {
+							'optional any': 'Rick Sanchez',
+							'optional array': exactArray([137, 'C-137']),
+							'optional boolean': false,
+							'optional int': 97,
+							'optional number': 3.14,
+							'optional object': {},
+							'optional string': 'Alpha-Betrium',
+							'optional string with regex': 'Lawyer Morty',
+						},
+					},
+				},
+			],
 		},
 		{
 			name: 'sends an event with an event name that requires sanitization',
@@ -402,15 +603,16 @@ describe('e2e tests', () => {
 		const t = testCase.if === undefined || testCase.if ? test : test.skip
 		t(testCase.name, () => {
 			const expectations = ([] as Expectation[]).concat(testCase.expect)
-			const expectationsByName = expectations.reduce<Record<string, Joi.SchemaMap[]>>(
-				(m, { name, properties }) => {
-					return {
-						...m,
-						[name]: (m[name] || []).concat(properties || {}),
-					}
-				},
-				{}
-			)
+			const expectationsByName = expectations.reduce<Record<string, Joi.SchemaMap[]>>((m, exp) => {
+				if (exp.if !== undefined && !exp.if) {
+					return m
+				}
+
+				return {
+					...m,
+					[exp.name]: (m[exp.name] || []).concat(exp.properties || {}),
+				}
+			}, {})
 
 			for (const [name, propertySchemas] of Object.entries(expectationsByName)) {
 				const matchingEvents = remove(events, v => v.type === 'track' && v.event === name)
@@ -441,7 +643,13 @@ describe('e2e tests', () => {
 					// Verify that at least one schema matched.
 					expect(
 						i >= 0,
-						JSON.stringify({ event, schemas: schemas.map(s => s.describe()), errors }, undefined, 2)
+						`Of ${
+							schemas.length
+						} schema(s), none matched. The following errors were produced by each schema:\n\n${JSON.stringify(
+							{ errors },
+							undefined,
+							2
+						)}`
 					).toBeTruthy()
 				}
 			}

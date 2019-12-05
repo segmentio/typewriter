@@ -13,11 +13,149 @@ class TypewriterSwiftExampleTests: XCTestCase {
     func testExample() {
         SEGTypewriterAnalytics.emptyEvent()
         
-        SEGTypewriterAnalytics.everyRequiredType(withRequiredAny: "Rick Sanchez", requiredArray: [137, "C-137"], requiredBoolean: false, requiredInt: 97, requiredNumber: 3.14, requiredObject: [:], requiredString: "Alpha-Betrium", requiredStringWithRegex:  "Lawyer Morty")
+        SEGTypewriterAnalytics.everyRequiredType(
+            withRequiredAny: "Rick Sanchez",
+            requiredArray: [137, "C-137"],
+            requiredArrayWithProperties: [
+                SEGRequiredArrayWithPropertiesItem1.initWithRequiredAny(
+                    "Rick Sanchez",
+                    requiredArray: [137, "C-137"],
+                    requiredBoolean: false,
+                    requiredInt: 97,
+                    requiredNumber: 3.14,
+                    requiredObject: [:],
+                    requiredString: "Alpha-Betrium",
+                    requiredStringWithRegex:  "Lawyer Morty"),
+            ],
+            requiredBoolean: false,
+            requiredInt: 97,
+            requiredNumber: 3.14,
+            requiredObject: [:],
+            requiredObjectWithProperties: SEGRequiredObjectWithProperties1.initWithRequiredAny(
+                "Rick Sanchez",
+                requiredArray: [137, "C-137"],
+                requiredBoolean: false,
+                requiredInt: 97,
+                requiredNumber: 3.14,
+                requiredObject: [:],
+                requiredString: "Alpha-Betrium",
+                requiredStringWithRegex:  "Lawyer Morty"),
+            requiredString: "Alpha-Betrium",
+            requiredStringWithRegex:  "Lawyer Morty")
+            
+        SEGTypewriterAnalytics.everyOptionalType(
+            withOptionalAny: nil,
+            optionalArray: nil,
+            optionalArrayWithProperties: nil,
+            optionalBoolean: nil,
+            optionalInt: nil,
+            optionalNumber: nil,
+            optionalObject: nil,
+            optionalObjectWithProperties: nil,
+            optionalString: nil,
+            optionalStringWithRegex:  nil)
         
-        SEGTypewriterAnalytics.everyOptionalType(withOptionalAny: nil, optionalArray: nil, optionalBoolean: nil, optionalInt: nil, optionalNumber: nil, optionalObject: nil, optionalString: nil, optionalStringWithRegex: nil)
+        SEGTypewriterAnalytics.everyOptionalType(
+            withOptionalAny: "Rick Sanchez",
+            optionalArray: [137, "C-137"],
+            optionalArrayWithProperties: [
+                SEGOptionalArrayWithPropertiesItem1.initWithOptionalAny(
+                    "Rick Sanchez",
+                    optionalArray: [137, "C-137"],
+                    optionalBoolean: false,
+                    optionalInt: 97,
+                    optionalNumber: 3.14,
+                    optionalObject: [:],
+                    optionalString: "Alpha-Betrium",
+                    optionalStringWithRegex:  "Lawyer Morty"),
+            ],
+            optionalBoolean: false,
+            optionalInt: 97,
+            optionalNumber: 3.14,
+            optionalObject: [:],
+            optionalObjectWithProperties: SEGOptionalObjectWithProperties1.initWithOptionalAny(
+                "Rick Sanchez",
+                optionalArray: [137, "C-137"],
+                optionalBoolean: false,
+                optionalInt: 97,
+                optionalNumber: 3.14,
+                optionalObject: [:],
+                optionalString: "Alpha-Betrium",
+                optionalStringWithRegex:  "Lawyer Morty"),
+            optionalString: "Alpha-Betrium",
+            optionalStringWithRegex:  "Lawyer Morty")
         
-        SEGTypewriterAnalytics.everyNullableOptionalType(withOptionalAny: nil, optionalArray: nil, optionalBoolean: nil, optionalInt: nil, optionalNumber: nil, optionalObject: nil, optionalString: nil, optionalStringWithRegex: nil)
+        SEGTypewriterAnalytics.everyNullableRequiredType(
+            withRequiredAny: "Rick Sanchez",
+            requiredArray: [137, "C-137"],
+            requiredArrayWithProperties: [
+                SEGRequiredArrayWithPropertiesItem.initWithRequiredAny(
+                    "Rick Sanchez",
+                    requiredArray: [137, "C-137"],
+                    requiredBoolean: false,
+                    requiredInt: 97,
+                    requiredNumber: 3.14,
+                    requiredObject: [:],
+                    requiredString: "Alpha-Betrium",
+                    requiredStringWithRegex:  "Lawyer Morty"),
+            ],
+            requiredBoolean: false,
+            requiredInt: 97,
+            requiredNumber: 3.14,
+            requiredObject: [:],
+            requiredObjectWithProperties: SEGRequiredObjectWithProperties.initWithRequiredAny(
+                "Rick Sanchez",
+                requiredArray: [137, "C-137"],
+                requiredBoolean: false,
+                requiredInt: 97,
+                requiredNumber: 3.14,
+                requiredObject: [:],
+                requiredString: "Alpha-Betrium",
+                requiredStringWithRegex:  "Lawyer Morty"),
+            requiredString: "Alpha-Betrium",
+            requiredStringWithRegex:  "Lawyer Morty")
+        
+        SEGTypewriterAnalytics.everyNullableOptionalType(
+            withOptionalAny: nil,
+            optionalArray: nil,
+            optionalArrayWithProperties: nil,
+            optionalBoolean: nil,
+            optionalInt: nil,
+            optionalNumber: nil,
+            optionalObject: nil,
+            optionalObjectWithProperties: nil,
+            optionalString: nil,
+            optionalStringWithRegex:  nil)
+        
+        SEGTypewriterAnalytics.everyNullableOptionalType(
+            withOptionalAny: "Rick Sanchez",
+            optionalArray: [137, "C-137"],
+            optionalArrayWithProperties: [
+                SEGOptionalArrayWithPropertiesItem.initWithOptionalAny(
+                    "Rick Sanchez",
+                    optionalArray: [137, "C-137"],
+                    optionalBoolean: false,
+                    optionalInt: 97,
+                    optionalNumber: 3.14,
+                    optionalObject: [:],
+                    optionalString: "Alpha-Betrium",
+                    optionalStringWithRegex:  "Lawyer Morty"),
+            ],
+            optionalBoolean: false,
+            optionalInt: 97,
+            optionalNumber: 3.14,
+            optionalObject: [:],
+            optionalObjectWithProperties: SEGOptionalObjectWithProperties.initWithOptionalAny(
+                "Rick Sanchez",
+                optionalArray: [137, "C-137"],
+                optionalBoolean: false,
+                optionalInt: 97,
+                optionalNumber: 3.14,
+                optionalObject: [:],
+                optionalString: "Alpha-Betrium",
+                optionalStringWithRegex:  "Lawyer Morty"),
+            optionalString: "Alpha-Betrium",
+            optionalStringWithRegex:  "Lawyer Morty")
         
         SEGTypewriterAnalytics.i42TerribleEventName3()
         

@@ -240,3 +240,14 @@ test-ios-swift-prod:
 		cd tests/e2e/ios-swift && \
 		set -o pipefail && xcodebuild test $(XC_SWIFT_ARGS) | xcpretty && \
 		SDK=analytics-ios LANGUAGE=swift IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
+
+.PHONY: update-bridging-header
+update-bridging-header:
+	@echo "// Generated Typewriter Headers:" > \
+		tests/e2e/ios-swift/TypewriterSwiftExample/TypewriterSwiftExample-Bridging-Header.h
+	@ls -l tests/e2e/ios-swift/TypewriterSwiftExample/Analytics | \
+		grep '.h$$' | \
+		sed -e 's/^.*SEG/#import "Analytics\/SEG/' | \
+		sed -e 's/$$/"/' >> \
+		tests/e2e/ios-swift/TypewriterSwiftExample/TypewriterSwiftExample-Bridging-Header.h
+

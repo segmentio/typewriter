@@ -81,6 +81,28 @@ async function run() {
 			'required object': {},
 			'required string': 'Alpha-Betrium',
 			'required string with regex': 'Lawyer Morty',
+			'required array with properties': [
+				{
+					'required any': 'Rick Sanchez',
+					'required array': [137, 'C-137'],
+					'required boolean': false,
+					'required int': 97,
+					'required number': 3.14,
+					'required object': {},
+					'required string': 'Alpha-Betrium',
+					'required string with regex': 'Lawyer Morty',
+				},
+			],
+			'required object with properties': {
+				'required any': 'Rick Sanchez',
+				'required array': [137, 'C-137'],
+				'required boolean': false,
+				'required int': 97,
+				'required number': 3.14,
+				'required object': {},
+				'required string': 'Alpha-Betrium',
+				'required string with regex': 'Lawyer Morty',
+			},
 		},
 		userId,
 	})
@@ -95,6 +117,104 @@ async function run() {
 			'required object': null,
 			'required string': null,
 			'required string with regex': null,
+			'required array with properties': [
+				{
+					'required any': null,
+					'required array': null,
+					'required boolean': null,
+					'required int': null,
+					'required number': null,
+					'required object': null,
+					'required string': null,
+					'required string with regex': null,
+				},
+			],
+			'required object with properties': {
+				'required any': null,
+				'required array': null,
+				'required boolean': null,
+				'required int': null,
+				'required number': null,
+				'required object': null,
+				'required string': null,
+				'required string with regex': null,
+			},
+		},
+		userId,
+	})
+
+	everyNullableRequiredType({
+		properties: {
+			'required any': 'Rick Sanchez',
+			'required array': [137, 'C-137'],
+			'required boolean': false,
+			'required int': 97,
+			'required number': 3.14,
+			'required object': {},
+			'required string': 'Alpha-Betrium',
+			'required string with regex': 'Lawyer Morty',
+			'required array with properties': [
+				{
+					'required any': 'Rick Sanchez',
+					'required array': [137, 'C-137'],
+					'required boolean': false,
+					'required int': 97,
+					'required number': 3.14,
+					'required object': {},
+					'required string': 'Alpha-Betrium',
+					'required string with regex': 'Lawyer Morty',
+				},
+			],
+			'required object with properties': {
+				'required any': 'Rick Sanchez',
+				'required array': [137, 'C-137'],
+				'required boolean': false,
+				'required int': 97,
+				'required number': 3.14,
+				'required object': {},
+				'required string': 'Alpha-Betrium',
+				'required string with regex': 'Lawyer Morty',
+			},
+		},
+		userId,
+	})
+
+	everyOptionalType({
+		userId,
+	})
+
+	everyOptionalType({
+		properties: {
+			'optional any': 'Rick Sanchez',
+			'optional array': [137, 'C-137'],
+			'optional boolean': false,
+			'optional int': 97,
+			'optional number': 3.14,
+			'optional object': {},
+			'optional string': 'Alpha-Betrium',
+			'optional string with regex': 'Lawyer Morty',
+			'optional array with properties': [
+				{
+					'optional any': 'Rick Sanchez',
+					'optional array': [137, 'C-137'],
+					'optional boolean': false,
+					'optional int': 97,
+					'optional number': 3.14,
+					'optional object': {},
+					'optional string': 'Alpha-Betrium',
+					'optional string with regex': 'Lawyer Morty',
+				},
+			],
+			'optional object with properties': {
+				'optional any': 'Rick Sanchez',
+				'optional array': [137, 'C-137'],
+				'optional boolean': false,
+				'optional int': 97,
+				'optional number': 3.14,
+				'optional object': {},
+				'optional string': 'Alpha-Betrium',
+				'optional string with regex': 'Lawyer Morty',
+			},
 		},
 		userId,
 	})
@@ -103,7 +223,75 @@ async function run() {
 		userId,
 	})
 
-	everyOptionalType({
+	everyNullableOptionalType({
+		properties: {
+			'optional any': null,
+			'optional array': null,
+			'optional boolean': null,
+			'optional int': null,
+			'optional number': null,
+			'optional object': null,
+			'optional string': null,
+			'optional string with regex': null,
+			'optional array with properties': [
+				{
+					'optional any': null,
+					'optional array': null,
+					'optional boolean': null,
+					'optional int': null,
+					'optional number': null,
+					'optional object': null,
+					'optional string': null,
+					'optional string with regex': null,
+				},
+			],
+			'optional object with properties': {
+				'optional any': null,
+				'optional array': null,
+				'optional boolean': null,
+				'optional int': null,
+				'optional number': null,
+				'optional object': null,
+				'optional string': null,
+				'optional string with regex': null,
+			},
+		},
+		userId,
+	})
+
+	everyNullableOptionalType({
+		properties: {
+			'optional any': 'Rick Sanchez',
+			'optional array': [137, 'C-137'],
+			'optional boolean': false,
+			'optional int': 97,
+			'optional number': 3.14,
+			'optional object': {},
+			'optional string': 'Alpha-Betrium',
+			'optional string with regex': 'Lawyer Morty',
+			'optional array with properties': [
+				{
+					'optional any': 'Rick Sanchez',
+					'optional array': [137, 'C-137'],
+					'optional boolean': false,
+					'optional int': 97,
+					'optional number': 3.14,
+					'optional object': {},
+					'optional string': 'Alpha-Betrium',
+					'optional string with regex': 'Lawyer Morty',
+				},
+			],
+			'optional object with properties': {
+				'optional any': 'Rick Sanchez',
+				'optional array': [137, 'C-137'],
+				'optional boolean': false,
+				'optional int': 97,
+				'optional number': 3.14,
+				'optional object': {},
+				'optional string': 'Alpha-Betrium',
+				'optional string with regex': 'Lawyer Morty',
+			},
+		},
 		userId,
 	})
 
