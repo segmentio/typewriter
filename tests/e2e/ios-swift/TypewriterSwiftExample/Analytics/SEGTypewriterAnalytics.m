@@ -125,22 +125,26 @@ options:(nullable SERIALIZABLE_DICT)options
 
 + (void)everyNullableOptionalTypeWithOptionalAny:(nullable id)optionalAny
 optionalArray:(nullable NSArray<id> *)optionalArray
+optionalArrayWithProperties:(nullable NSArray<SEGOptionalArrayWithPropertiesItem *> *)optionalArrayWithProperties
 optionalBoolean:(nullable BOOL *)optionalBoolean
 optionalInt:(nullable NSNumber *)optionalInt
 optionalNumber:(nullable NSNumber *)optionalNumber
 optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
+optionalObjectWithProperties:(nullable SEGOptionalObjectWithProperties *)optionalObjectWithProperties
 optionalString:(nullable NSString *)optionalString
 optionalStringWithRegex:(nullable NSString *)optionalStringWithRegex
 {
-    [SEGTypewriterAnalytics everyNullableOptionalTypeWithOptionalAny:optionalAny optionalArray:optionalArray optionalBoolean:optionalBoolean optionalInt:optionalInt optionalNumber:optionalNumber optionalObject:optionalObject optionalString:optionalString optionalStringWithRegex:optionalStringWithRegex options:@{}];
+    [SEGTypewriterAnalytics everyNullableOptionalTypeWithOptionalAny:optionalAny optionalArray:optionalArray optionalArrayWithProperties:optionalArrayWithProperties optionalBoolean:optionalBoolean optionalInt:optionalInt optionalNumber:optionalNumber optionalObject:optionalObject optionalObjectWithProperties:optionalObjectWithProperties optionalString:optionalString optionalStringWithRegex:optionalStringWithRegex options:@{}];
 }
 
 + (void)everyNullableOptionalTypeWithOptionalAny:(nullable id)optionalAny
 optionalArray:(nullable NSArray<id> *)optionalArray
+optionalArrayWithProperties:(nullable NSArray<SEGOptionalArrayWithPropertiesItem *> *)optionalArrayWithProperties
 optionalBoolean:(nullable BOOL *)optionalBoolean
 optionalInt:(nullable NSNumber *)optionalInt
 optionalNumber:(nullable NSNumber *)optionalNumber
 optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
+optionalObjectWithProperties:(nullable SEGOptionalObjectWithProperties *)optionalObjectWithProperties
 optionalString:(nullable NSString *)optionalString
 optionalStringWithRegex:(nullable NSString *)optionalStringWithRegex
 options:(nullable SERIALIZABLE_DICT)options
@@ -148,10 +152,12 @@ options:(nullable SERIALIZABLE_DICT)options
     NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
     properties[@"optional any"] = optionalAny == nil ? [NSNull null] : optionalAny;
     properties[@"optional array"] = optionalArray == nil ? [NSNull null] : [SEGTypewriterUtils toSerializableArray:optionalArray];
+    properties[@"optional array with properties"] = optionalArrayWithProperties == nil ? [NSNull null] : [SEGTypewriterUtils toSerializableArray:optionalArrayWithProperties];
     properties[@"optional boolean"] = optionalBoolean == nil ? [NSNull null] : [NSNumber numberWithBool:*optionalBoolean];
     properties[@"optional int"] = optionalInt == nil ? [NSNull null] : optionalInt;
     properties[@"optional number"] = optionalNumber == nil ? [NSNull null] : optionalNumber;
     properties[@"optional object"] = optionalObject == nil ? [NSNull null] : optionalObject;
+    properties[@"optional object with properties"] = optionalObjectWithProperties == nil ? [NSNull null] : [optionalObjectWithProperties toDictionary];
     properties[@"optional string"] = optionalString == nil ? [NSNull null] : optionalString;
     properties[@"optional string with regex"] = optionalStringWithRegex == nil ? [NSNull null] : optionalStringWithRegex;
 
@@ -160,22 +166,26 @@ options:(nullable SERIALIZABLE_DICT)options
 
 + (void)everyNullableRequiredTypeWithRequiredAny:(nullable id)requiredAny
 requiredArray:(nullable NSArray<id> *)requiredArray
+requiredArrayWithProperties:(nullable NSArray<SEGRequiredArrayWithPropertiesItem *> *)requiredArrayWithProperties
 requiredBoolean:(nullable BOOL *)requiredBoolean
 requiredInt:(nullable NSNumber *)requiredInt
 requiredNumber:(nullable NSNumber *)requiredNumber
 requiredObject:(nullable SERIALIZABLE_DICT)requiredObject
+requiredObjectWithProperties:(nullable SEGRequiredObjectWithProperties *)requiredObjectWithProperties
 requiredString:(nullable NSString *)requiredString
 requiredStringWithRegex:(nullable NSString *)requiredStringWithRegex
 {
-    [SEGTypewriterAnalytics everyNullableRequiredTypeWithRequiredAny:requiredAny requiredArray:requiredArray requiredBoolean:requiredBoolean requiredInt:requiredInt requiredNumber:requiredNumber requiredObject:requiredObject requiredString:requiredString requiredStringWithRegex:requiredStringWithRegex options:@{}];
+    [SEGTypewriterAnalytics everyNullableRequiredTypeWithRequiredAny:requiredAny requiredArray:requiredArray requiredArrayWithProperties:requiredArrayWithProperties requiredBoolean:requiredBoolean requiredInt:requiredInt requiredNumber:requiredNumber requiredObject:requiredObject requiredObjectWithProperties:requiredObjectWithProperties requiredString:requiredString requiredStringWithRegex:requiredStringWithRegex options:@{}];
 }
 
 + (void)everyNullableRequiredTypeWithRequiredAny:(nullable id)requiredAny
 requiredArray:(nullable NSArray<id> *)requiredArray
+requiredArrayWithProperties:(nullable NSArray<SEGRequiredArrayWithPropertiesItem *> *)requiredArrayWithProperties
 requiredBoolean:(nullable BOOL *)requiredBoolean
 requiredInt:(nullable NSNumber *)requiredInt
 requiredNumber:(nullable NSNumber *)requiredNumber
 requiredObject:(nullable SERIALIZABLE_DICT)requiredObject
+requiredObjectWithProperties:(nullable SEGRequiredObjectWithProperties *)requiredObjectWithProperties
 requiredString:(nullable NSString *)requiredString
 requiredStringWithRegex:(nullable NSString *)requiredStringWithRegex
 options:(nullable SERIALIZABLE_DICT)options
@@ -183,10 +193,12 @@ options:(nullable SERIALIZABLE_DICT)options
     NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
     properties[@"required any"] = requiredAny == nil ? [NSNull null] : requiredAny;
     properties[@"required array"] = requiredArray == nil ? [NSNull null] : [SEGTypewriterUtils toSerializableArray:requiredArray];
+    properties[@"required array with properties"] = requiredArrayWithProperties == nil ? [NSNull null] : [SEGTypewriterUtils toSerializableArray:requiredArrayWithProperties];
     properties[@"required boolean"] = requiredBoolean == nil ? [NSNull null] : [NSNumber numberWithBool:*requiredBoolean];
     properties[@"required int"] = requiredInt == nil ? [NSNull null] : requiredInt;
     properties[@"required number"] = requiredNumber == nil ? [NSNull null] : requiredNumber;
     properties[@"required object"] = requiredObject == nil ? [NSNull null] : requiredObject;
+    properties[@"required object with properties"] = requiredObjectWithProperties == nil ? [NSNull null] : [requiredObjectWithProperties toDictionary];
     properties[@"required string"] = requiredString == nil ? [NSNull null] : requiredString;
     properties[@"required string with regex"] = requiredStringWithRegex == nil ? [NSNull null] : requiredStringWithRegex;
 
@@ -195,22 +207,26 @@ options:(nullable SERIALIZABLE_DICT)options
 
 + (void)everyOptionalTypeWithOptionalAny:(nullable id)optionalAny
 optionalArray:(nullable NSArray<id> *)optionalArray
+optionalArrayWithProperties:(nullable NSArray<SEGOptionalArrayWithPropertiesItem1 *> *)optionalArrayWithProperties
 optionalBoolean:(nullable BOOL *)optionalBoolean
 optionalInt:(nullable NSNumber *)optionalInt
 optionalNumber:(nullable NSNumber *)optionalNumber
 optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
+optionalObjectWithProperties:(nullable SEGOptionalObjectWithProperties1 *)optionalObjectWithProperties
 optionalString:(nullable NSString *)optionalString
 optionalStringWithRegex:(nullable NSString *)optionalStringWithRegex
 {
-    [SEGTypewriterAnalytics everyOptionalTypeWithOptionalAny:optionalAny optionalArray:optionalArray optionalBoolean:optionalBoolean optionalInt:optionalInt optionalNumber:optionalNumber optionalObject:optionalObject optionalString:optionalString optionalStringWithRegex:optionalStringWithRegex options:@{}];
+    [SEGTypewriterAnalytics everyOptionalTypeWithOptionalAny:optionalAny optionalArray:optionalArray optionalArrayWithProperties:optionalArrayWithProperties optionalBoolean:optionalBoolean optionalInt:optionalInt optionalNumber:optionalNumber optionalObject:optionalObject optionalObjectWithProperties:optionalObjectWithProperties optionalString:optionalString optionalStringWithRegex:optionalStringWithRegex options:@{}];
 }
 
 + (void)everyOptionalTypeWithOptionalAny:(nullable id)optionalAny
 optionalArray:(nullable NSArray<id> *)optionalArray
+optionalArrayWithProperties:(nullable NSArray<SEGOptionalArrayWithPropertiesItem1 *> *)optionalArrayWithProperties
 optionalBoolean:(nullable BOOL *)optionalBoolean
 optionalInt:(nullable NSNumber *)optionalInt
 optionalNumber:(nullable NSNumber *)optionalNumber
 optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
+optionalObjectWithProperties:(nullable SEGOptionalObjectWithProperties1 *)optionalObjectWithProperties
 optionalString:(nullable NSString *)optionalString
 optionalStringWithRegex:(nullable NSString *)optionalStringWithRegex
 options:(nullable SERIALIZABLE_DICT)options
@@ -219,6 +235,9 @@ options:(nullable SERIALIZABLE_DICT)options
     properties[@"optional any"] = optionalAny == nil ? [NSNull null] : optionalAny;
     if (optionalArray != nil) {
       properties[@"optional array"] = [SEGTypewriterUtils toSerializableArray:optionalArray];
+    }
+    if (optionalArrayWithProperties != nil) {
+      properties[@"optional array with properties"] = [SEGTypewriterUtils toSerializableArray:optionalArrayWithProperties];
     }
     if (optionalBoolean != nil) {
       properties[@"optional boolean"] = [NSNumber numberWithBool:*optionalBoolean];
@@ -232,6 +251,9 @@ options:(nullable SERIALIZABLE_DICT)options
     if (optionalObject != nil) {
       properties[@"optional object"] = optionalObject;
     }
+    if (optionalObjectWithProperties != nil) {
+      properties[@"optional object with properties"] = [optionalObjectWithProperties toDictionary];
+    }
     if (optionalString != nil) {
       properties[@"optional string"] = optionalString;
     }
@@ -244,22 +266,26 @@ options:(nullable SERIALIZABLE_DICT)options
 
 + (void)everyRequiredTypeWithRequiredAny:(nullable id)requiredAny
 requiredArray:(nonnull NSArray<id> *)requiredArray
+requiredArrayWithProperties:(nonnull NSArray<SEGRequiredArrayWithPropertiesItem1 *> *)requiredArrayWithProperties
 requiredBoolean:(BOOL)requiredBoolean
 requiredInt:(NSInteger)requiredInt
 requiredNumber:(nonnull NSNumber *)requiredNumber
 requiredObject:(nonnull SERIALIZABLE_DICT)requiredObject
+requiredObjectWithProperties:(nonnull SEGRequiredObjectWithProperties1 *)requiredObjectWithProperties
 requiredString:(nonnull NSString *)requiredString
 requiredStringWithRegex:(nonnull NSString *)requiredStringWithRegex
 {
-    [SEGTypewriterAnalytics everyRequiredTypeWithRequiredAny:requiredAny requiredArray:requiredArray requiredBoolean:requiredBoolean requiredInt:requiredInt requiredNumber:requiredNumber requiredObject:requiredObject requiredString:requiredString requiredStringWithRegex:requiredStringWithRegex options:@{}];
+    [SEGTypewriterAnalytics everyRequiredTypeWithRequiredAny:requiredAny requiredArray:requiredArray requiredArrayWithProperties:requiredArrayWithProperties requiredBoolean:requiredBoolean requiredInt:requiredInt requiredNumber:requiredNumber requiredObject:requiredObject requiredObjectWithProperties:requiredObjectWithProperties requiredString:requiredString requiredStringWithRegex:requiredStringWithRegex options:@{}];
 }
 
 + (void)everyRequiredTypeWithRequiredAny:(nullable id)requiredAny
 requiredArray:(nonnull NSArray<id> *)requiredArray
+requiredArrayWithProperties:(nonnull NSArray<SEGRequiredArrayWithPropertiesItem1 *> *)requiredArrayWithProperties
 requiredBoolean:(BOOL)requiredBoolean
 requiredInt:(NSInteger)requiredInt
 requiredNumber:(nonnull NSNumber *)requiredNumber
 requiredObject:(nonnull SERIALIZABLE_DICT)requiredObject
+requiredObjectWithProperties:(nonnull SEGRequiredObjectWithProperties1 *)requiredObjectWithProperties
 requiredString:(nonnull NSString *)requiredString
 requiredStringWithRegex:(nonnull NSString *)requiredStringWithRegex
 options:(nullable SERIALIZABLE_DICT)options
@@ -269,6 +295,9 @@ options:(nullable SERIALIZABLE_DICT)options
     if (requiredArray != nil) {
       properties[@"required array"] = [SEGTypewriterUtils toSerializableArray:requiredArray];
     }
+    if (requiredArrayWithProperties != nil) {
+      properties[@"required array with properties"] = [SEGTypewriterUtils toSerializableArray:requiredArrayWithProperties];
+    }
     properties[@"required boolean"] = [NSNumber numberWithBool:requiredBoolean];
     properties[@"required int"] = [NSNumber numberWithInteger:requiredInt];
     if (requiredNumber != nil) {
@@ -276,6 +305,9 @@ options:(nullable SERIALIZABLE_DICT)options
     }
     if (requiredObject != nil) {
       properties[@"required object"] = requiredObject;
+    }
+    if (requiredObjectWithProperties != nil) {
+      properties[@"required object with properties"] = [requiredObjectWithProperties toDictionary];
     }
     if (requiredString != nil) {
       properties[@"required string"] = requiredString;

@@ -4,6 +4,14 @@
 #import <Foundation/Foundation.h>
 #import <Analytics/SEGAnalytics.h>
 #import <Analytics/SEGSerializableValue.h>
+#import "SEGOptionalArrayWithPropertiesItem.h"
+#import "SEGOptionalObjectWithProperties.h"
+#import "SEGRequiredArrayWithPropertiesItem.h"
+#import "SEGRequiredObjectWithProperties.h"
+#import "SEGOptionalArrayWithPropertiesItem1.h"
+#import "SEGOptionalObjectWithProperties1.h"
+#import "SEGRequiredArrayWithPropertiesItem1.h"
+#import "SEGRequiredObjectWithProperties1.h"
 #import "SEGUniverseCharactersItemItem.h"
 #import "SEGSubterraneanLab.h"
 #import "SEGTunnel.h"
@@ -56,76 +64,92 @@ options:(nullable SERIALIZABLE_DICT)options;
 
 + (void)everyNullableOptionalTypeWithOptionalAny:(nullable id)optionalAny
 optionalArray:(nullable NSArray<id> *)optionalArray
+optionalArrayWithProperties:(nullable NSArray<SEGOptionalArrayWithPropertiesItem *> *)optionalArrayWithProperties
 optionalBoolean:(nullable BOOL *)optionalBoolean
 optionalInt:(nullable NSNumber *)optionalInt
 optionalNumber:(nullable NSNumber *)optionalNumber
 optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
+optionalObjectWithProperties:(nullable SEGOptionalObjectWithProperties *)optionalObjectWithProperties
 optionalString:(nullable NSString *)optionalString
 optionalStringWithRegex:(nullable NSString *)optionalStringWithRegex;
 
 + (void)everyNullableOptionalTypeWithOptionalAny:(nullable id)optionalAny
 optionalArray:(nullable NSArray<id> *)optionalArray
+optionalArrayWithProperties:(nullable NSArray<SEGOptionalArrayWithPropertiesItem *> *)optionalArrayWithProperties
 optionalBoolean:(nullable BOOL *)optionalBoolean
 optionalInt:(nullable NSNumber *)optionalInt
 optionalNumber:(nullable NSNumber *)optionalNumber
 optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
+optionalObjectWithProperties:(nullable SEGOptionalObjectWithProperties *)optionalObjectWithProperties
 optionalString:(nullable NSString *)optionalString
 optionalStringWithRegex:(nullable NSString *)optionalStringWithRegex
 options:(nullable SERIALIZABLE_DICT)options;
 
 + (void)everyNullableRequiredTypeWithRequiredAny:(nullable id)requiredAny
 requiredArray:(nullable NSArray<id> *)requiredArray
+requiredArrayWithProperties:(nullable NSArray<SEGRequiredArrayWithPropertiesItem *> *)requiredArrayWithProperties
 requiredBoolean:(nullable BOOL *)requiredBoolean
 requiredInt:(nullable NSNumber *)requiredInt
 requiredNumber:(nullable NSNumber *)requiredNumber
 requiredObject:(nullable SERIALIZABLE_DICT)requiredObject
+requiredObjectWithProperties:(nullable SEGRequiredObjectWithProperties *)requiredObjectWithProperties
 requiredString:(nullable NSString *)requiredString
 requiredStringWithRegex:(nullable NSString *)requiredStringWithRegex;
 
 + (void)everyNullableRequiredTypeWithRequiredAny:(nullable id)requiredAny
 requiredArray:(nullable NSArray<id> *)requiredArray
+requiredArrayWithProperties:(nullable NSArray<SEGRequiredArrayWithPropertiesItem *> *)requiredArrayWithProperties
 requiredBoolean:(nullable BOOL *)requiredBoolean
 requiredInt:(nullable NSNumber *)requiredInt
 requiredNumber:(nullable NSNumber *)requiredNumber
 requiredObject:(nullable SERIALIZABLE_DICT)requiredObject
+requiredObjectWithProperties:(nullable SEGRequiredObjectWithProperties *)requiredObjectWithProperties
 requiredString:(nullable NSString *)requiredString
 requiredStringWithRegex:(nullable NSString *)requiredStringWithRegex
 options:(nullable SERIALIZABLE_DICT)options;
 
 + (void)everyOptionalTypeWithOptionalAny:(nullable id)optionalAny
 optionalArray:(nullable NSArray<id> *)optionalArray
+optionalArrayWithProperties:(nullable NSArray<SEGOptionalArrayWithPropertiesItem1 *> *)optionalArrayWithProperties
 optionalBoolean:(nullable BOOL *)optionalBoolean
 optionalInt:(nullable NSNumber *)optionalInt
 optionalNumber:(nullable NSNumber *)optionalNumber
 optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
+optionalObjectWithProperties:(nullable SEGOptionalObjectWithProperties1 *)optionalObjectWithProperties
 optionalString:(nullable NSString *)optionalString
 optionalStringWithRegex:(nullable NSString *)optionalStringWithRegex;
 
 + (void)everyOptionalTypeWithOptionalAny:(nullable id)optionalAny
 optionalArray:(nullable NSArray<id> *)optionalArray
+optionalArrayWithProperties:(nullable NSArray<SEGOptionalArrayWithPropertiesItem1 *> *)optionalArrayWithProperties
 optionalBoolean:(nullable BOOL *)optionalBoolean
 optionalInt:(nullable NSNumber *)optionalInt
 optionalNumber:(nullable NSNumber *)optionalNumber
 optionalObject:(nullable SERIALIZABLE_DICT)optionalObject
+optionalObjectWithProperties:(nullable SEGOptionalObjectWithProperties1 *)optionalObjectWithProperties
 optionalString:(nullable NSString *)optionalString
 optionalStringWithRegex:(nullable NSString *)optionalStringWithRegex
 options:(nullable SERIALIZABLE_DICT)options;
 
 + (void)everyRequiredTypeWithRequiredAny:(nullable id)requiredAny
 requiredArray:(nonnull NSArray<id> *)requiredArray
+requiredArrayWithProperties:(nonnull NSArray<SEGRequiredArrayWithPropertiesItem1 *> *)requiredArrayWithProperties
 requiredBoolean:(BOOL)requiredBoolean
 requiredInt:(NSInteger)requiredInt
 requiredNumber:(nonnull NSNumber *)requiredNumber
 requiredObject:(nonnull SERIALIZABLE_DICT)requiredObject
+requiredObjectWithProperties:(nonnull SEGRequiredObjectWithProperties1 *)requiredObjectWithProperties
 requiredString:(nonnull NSString *)requiredString
 requiredStringWithRegex:(nonnull NSString *)requiredStringWithRegex;
 
 + (void)everyRequiredTypeWithRequiredAny:(nullable id)requiredAny
 requiredArray:(nonnull NSArray<id> *)requiredArray
+requiredArrayWithProperties:(nonnull NSArray<SEGRequiredArrayWithPropertiesItem1 *> *)requiredArrayWithProperties
 requiredBoolean:(BOOL)requiredBoolean
 requiredInt:(NSInteger)requiredInt
 requiredNumber:(nonnull NSNumber *)requiredNumber
 requiredObject:(nonnull SERIALIZABLE_DICT)requiredObject
+requiredObjectWithProperties:(nonnull SEGRequiredObjectWithProperties1 *)requiredObjectWithProperties
 requiredString:(nonnull NSString *)requiredString
 requiredStringWithRegex:(nonnull NSString *)requiredStringWithRegex
 options:(nullable SERIALIZABLE_DICT)options;
