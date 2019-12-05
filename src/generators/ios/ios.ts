@@ -61,24 +61,29 @@ export const ios: Generator<{}, IOSTrackCallContext, IOSObjectContext, IOSProper
 		Handlebars.registerHelper('propertiesDictionary', generatePropertiesDictionary)
 		Handlebars.registerHelper('functionCall', generateFunctionCall)
 		Handlebars.registerHelper('functionSignature', generateFunctionSignature)
+		Handlebars.registerHelper('variableSeparator', variableSeparator)
 		return {}
 	},
 	generatePrimitive: async (client, schema, parentPath) => {
-		const p = defaultPropertyContext(client, schema, 'id', parentPath)
+		let type = 'id'
+		let isPointerType = !schema.isRequired || !!schema.isNullable
 
 		if (schema.type === Type.STRING) {
-			p.type = 'NSString *'
+			type = 'NSString *'
+			isPointerType = true
 		} else if (schema.type === Type.BOOLEAN) {
-			p.type = p.isVariableNullable ? 'BOOL *' : 'BOOL'
-			p.isPointerType = p.isVariableNullable
+			// BOOLs cannot nullable in Objective-C. Instead, use an NSNumber which can be
+			// initialized like a boolean like so: [NSNumber numberWithBool:YES]
+			// This is what is done behind the scenes by typewriter if this boolean is nonnull.
+			type = isPointerType ? 'NSNumber *' : 'BOOL'
 		} else if (schema.type === Type.INTEGER) {
-			p.type = p.isVariableNullable ? 'NSNumber *' : 'NSInteger'
-			p.isPointerType = p.isVariableNullable
+			type = isPointerType ? 'NSNumber *' : 'NSInteger'
 		} else if (schema.type === Type.NUMBER) {
-			p.type = 'NSNumber *'
+			type = 'NSNumber *'
+			isPointerType = true
 		}
 
-		return p
+		return defaultPropertyContext(client, schema, type, parentPath, isPointerType)
 	},
 	generateArray: async (client, schema, items, parentPath) => {
 		// Objective-C doesn't support NSArray's of primitives. Therefore, we
@@ -88,12 +93,12 @@ export const ios: Generator<{}, IOSTrackCallContext, IOSObjectContext, IOSProper
 			: items.type
 
 		return {
-			...defaultPropertyContext(client, schema, `NSArray<${itemsType}> *`, parentPath),
+			...defaultPropertyContext(client, schema, `NSArray<${itemsType}> *`, parentPath, true),
 			importName: items.importName,
 		}
 	},
 	generateObject: async (client, schema, properties, parentPath) => {
-		const property = defaultPropertyContext(client, schema, 'SERIALIZABLE_DICT', parentPath)
+		const property = defaultPropertyContext(client, schema, 'SERIALIZABLE_DICT', parentPath, true)
 		let object: IOSObjectContext | undefined = undefined
 
 		if (properties.length > 0) {
@@ -116,7 +121,7 @@ export const ios: Generator<{}, IOSTrackCallContext, IOSObjectContext, IOSProper
 	},
 	generateUnion: async (client, schema, _, parentPath) => {
 		// TODO: support unions in iOS
-		return defaultPropertyContext(client, schema, 'id', parentPath)
+		return defaultPropertyContext(client, schema, 'id', parentPath, true)
 	},
 	generateTrackCall: async (client, schema) => ({
 		functionName: client.namer.register(schema.name, 'function->track', { transform: camelCase }),
@@ -162,17 +167,22 @@ function defaultPropertyContext(
 	client: GeneratorClient,
 	schema: Schema,
 	type: string,
-	namespace: string
+	namespace: string,
+	isPointerType: boolean
 ): IOSPropertyContext {
 	return {
 		name: client.namer.register(schema.name, namespace, {
 			transform: camelCase,
 		}),
 		type,
-		modifiers: 'strong, nonatomic',
+		modifiers: isPointerType
+			? schema.isRequired
+				? 'strong, nonatomic, nonnull'
+				: 'strong, nonatomic, nullable'
+			: 'nonatomic',
 		isVariableNullable: !schema.isRequired || !!schema.isNullable,
 		isPayloadFieldNullable: !!schema.isNullable,
-		isPointerType: true,
+		isPointerType,
 	}
 }
 
@@ -260,7 +270,7 @@ function generatePropertiesDictionary(
 		const serializableName =
 			property.schemaType === Type.BOOLEAN
 				? property.isPointerType
-					? `[NSNumber numberWithBool:*${name}]`
+					? name
 					: `[NSNumber numberWithBool:${name}]`
 				: property.schemaType === Type.INTEGER
 				? property.isPointerType
@@ -295,4 +305,10 @@ function generatePropertiesDictionary(
 	}
 
 	return out
+}
+
+// Render `NSString *foo` not `NSString * foo` and `BOOL foo` not `BOOLfoo` or `BOOL  foo` by doing:
+// `{{type}}{{variableSeparator type}}{{name}}`
+function variableSeparator(type: string): string {
+	return type.endsWith('*') ? '' : ' '
 }
