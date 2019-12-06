@@ -122,6 +122,7 @@ jobs:
           command: |
             sudo gem install xcpretty
             sudo gem install cocoapods-check -v 1.1.0
+            pod --version
       - restore_cache:
           key: objc-deps-v10-{{ checksum "tests/e2e/ios-objc/Podfile.lock" }}
       - run:
@@ -151,6 +152,7 @@ jobs:
           command: |
             sudo gem install xcpretty
             sudo gem install cocoapods-check -v 1.1.0
+            pod --version
       - restore_cache:
           key: objc-deps-v10-{{ checksum "tests/e2e/ios-objc/Podfile.lock" }}
       - run:
@@ -180,6 +182,7 @@ jobs:
           command: |
             sudo gem install xcpretty
             sudo gem install cocoapods-check -v 1.1.0
+            pod --version
       - restore_cache:
           key: swift-deps-v10-{{ checksum "tests/e2e/ios-swift/Podfile.lock" }}
       - run:
@@ -209,6 +212,7 @@ jobs:
           command: |
             sudo gem install xcpretty
             sudo gem install cocoapods-check -v 1.1.0
+            pod --version
       - restore_cache:
           key: swift-deps-v10-{{ checksum "tests/e2e/ios-swift/Podfile.lock" }}
       - run:
