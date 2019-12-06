@@ -125,7 +125,7 @@ jobs:
             sudo gem install cocoapods -v $(var=$(tail -1 tests/e2e/ios-objc/Podfile.lock); echo ${var##COCOAPODS:})
             sudo gem install cocoapods-check
       - restore_cache:
-          key: objc-deps-v2-{{ checksum "tests/e2e/ios-objc/Podfile.lock" }}
+          key: objc-deps-v3-{{ checksum "tests/e2e/ios-objc/Podfile.lock" }}
       - run:
           name: Run iOS Objective-C Tests
           command: |
@@ -150,7 +150,7 @@ jobs:
       - save_cache:
           paths:
             - Pods
-          key: objc-deps-v2-{{ checksum "tests/e2e/ios-objc/Podfile.lock" }}
+          key: objc-deps-v3-{{ checksum "tests/e2e/ios-objc/Podfile.lock" }}
   test-ios-objc-prod:
     macos:
       xcode: "11.0.0"
