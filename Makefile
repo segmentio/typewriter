@@ -252,13 +252,3 @@ update-bridging-header:
 		sed -e 's/^.*SEG/#import "Analytics\/SEG/' | \
 		sed -e 's/$$/"/' >> \
 		tests/e2e/ios-swift/TypewriterSwiftExample/TypewriterSwiftExample-Bridging-Header.h
-
-# Used by CI to run mock on macos executor.
-.PHONY: start-mock-bg
-start-mock-bg:
-	git clone https://github.com/segmentio/mock.git
-	cd mock
-	yarn
-	yarn dev &
-	cd ..
-	sleep 5
