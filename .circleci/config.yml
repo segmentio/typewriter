@@ -125,44 +125,44 @@ jobs:
             sudo gem install cocoapods -v $(var=$(tail -1 tests/e2e/ios-objc/Podfile.lock); echo ${var##COCOAPODS:})
             sudo gem install cocoapods-check
       - restore_cache:
-          key: objc-deps-v5-{{ checksum "tests/e2e/ios-objc/Podfile.lock" }}
-      - run:
-          name: Run iOS Objective-C Tests
-          command: |
-            ls -la || echo "failed"
-            ls -la tests/e2e/ios-objc || echo "failed"
-            ls -la tests/e2e/ios-objc/Pods || echo "failed"
-            cd tests/e2e/ios-objc
-            mkdir Pods
-            touch "test" > Pods/test.txt
-            ls -la || echo "failed"
-            ls -la tests/e2e/ios-objc || echo "failed"
-            ls -la tests/e2e/ios-objc/Pods || echo "failed"
+          key: objc-deps-v6-{{ checksum "tests/e2e/ios-objc/Podfile.lock" }}
       # - run:
       #     name: Run iOS Objective-C Tests
       #     command: |
       #       ls -la || echo "failed"
       #       ls -la tests/e2e/ios-objc || echo "failed"
       #       ls -la tests/e2e/ios-objc/Pods || echo "failed"
-      #       git clone https://github.com/segmentio/mock.git
-      #       cd mock
-      #       yarn
-      #       yarn dev &
-      #       cd ..
-      #       sleep 5
-      #       make clear-mock
-      #       yarn run -s dev build --config=./tests/e2e/ios-objc
       #       cd tests/e2e/ios-objc
-      #       pod check --verbose || pod install
-      #       set -o pipefail && xcodebuild test -workspace TypewriterExample.xcworkspace -scheme TypewriterExample -destination "platform=iOS Simulator,name=iPhone 11" | xcpretty
-      #       SDK=analytics-ios LANGUAGE=objective-c IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
+      #       mkdir -p Pods
+      #       touch "test" > Pods/test.txt
       #       ls -la || echo "failed"
       #       ls -la tests/e2e/ios-objc || echo "failed"
       #       ls -la tests/e2e/ios-objc/Pods || echo "failed"
+      - run:
+          name: Run iOS Objective-C Tests
+          command: |
+            ls -la || echo "failed"
+            ls -la tests/e2e/ios-objc || echo "failed"
+            ls -la tests/e2e/ios-objc/Pods || echo "failed"
+            git clone https://github.com/segmentio/mock.git
+            cd mock
+            yarn
+            yarn dev &
+            cd ..
+            sleep 5
+            make clear-mock
+            yarn run -s dev build --config=./tests/e2e/ios-objc
+            cd tests/e2e/ios-objc
+            pod check --verbose || pod install
+            set -o pipefail && xcodebuild test -workspace TypewriterExample.xcworkspace -scheme TypewriterExample -destination "platform=iOS Simulator,name=iPhone 11" | xcpretty
+            SDK=analytics-ios LANGUAGE=objective-c IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
+            ls -la || echo "failed"
+            ls -la tests/e2e/ios-objc || echo "failed"
+            ls -la tests/e2e/ios-objc/Pods || echo "failed"
       - save_cache:
           paths:
             - tests/e2e/ios-objc/Pods
-          key: objc-deps-v5-{{ checksum "tests/e2e/ios-objc/Podfile.lock" }}
+          key: objc-deps-v6-{{ checksum "tests/e2e/ios-objc/Podfile.lock" }}
   test-ios-objc-prod:
     macos:
       xcode: "11.0.0"
