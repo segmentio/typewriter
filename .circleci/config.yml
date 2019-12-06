@@ -149,7 +149,7 @@ jobs:
             ls -la tests/e2e/ios-objc/Pods || echo "failed"
       - save_cache:
           paths:
-            - tests/e2e/ios-objc/Pods
+            - Pods
           key: objc-deps-v2-{{ checksum "tests/e2e/ios-objc/Podfile.lock" }}
   test-ios-objc-prod:
     macos:
