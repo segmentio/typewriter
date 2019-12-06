@@ -193,58 +193,48 @@ test-web-typescript-prod:
 		SDK=analytics.js LANGUAGE=typescript IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
 
 .PHONY: test-ios-objc
-test-ios-objc: test-ios-objc-dev test-ios-objc-prod
-
-.PHONY: test-ios-objc-dev
-test-ios-objc-dev:
-	@echo "\n>>>	🏃 Running dev iOS Objective-C client test suite...\n"
+test-ios-objc:
 	@# TODO: verify that xcodebuild and xcpretty are available
-	@cd tests/e2e/ios-objc && \
-		pod install
-	@make clear-mock && \
-		yarn run -s dev build --config=./tests/e2e/ios-objc && \
-		cd tests/e2e/ios-objc && \
-		set -o pipefail && xcodebuild test $(XC_OBJECTIVE_C_ARGS) | xcpretty && \
-		SDK=analytics-ios LANGUAGE=objective-c IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
-
-.PHONY: test-ios-objc-prod
-test-ios-objc-prod:
-	@echo "\n>>>	🏃 Running prod iOS Objective-C client test suite...\n"
-	@# TODO: verify that xcodebuild and xcpretty are available
-	@cd tests/e2e/ios-objc && \
-		pod install
-	@make clear-mock && \
-		yarn run -s dev prod --config=./tests/e2e/ios-objc && \
-		cd tests/e2e/ios-objc && \
-		set -o pipefail && xcodebuild test $(XC_OBJECTIVE_C_ARGS) | xcpretty && \
-		SDK=analytics-ios LANGUAGE=objective-c IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
+	@cd tests/e2e/ios-objc && pod install
+	@make test-ios-objc-dev test-ios-objc-prod
 
 .PHONY: test-ios-swift
-test-ios-swift: test-ios-swift-dev test-ios-swift-prod
-
-.PHONY: test-ios-swift-dev
-test-ios-swift-dev:
-	@echo "\n>>>	🏃 Running dev iOS Swift client test suite...\n"
+test-ios-swift:
 	@# TODO: verify that xcodebuild and xcpretty are available
-	@cd tests/e2e/ios-swift && \
-		pod install
-	@make clear-mock && \
-		yarn run -s dev build --config=./tests/e2e/ios-swift && \
-		cd tests/e2e/ios-swift && \
-		set -o pipefail && xcodebuild test $(XC_SWIFT_ARGS) | xcpretty && \
-		SDK=analytics-ios LANGUAGE=swift IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
+	@cd tests/e2e/ios-swift && pod install
+	@make test-ios-swift-dev test-ios-swift-prod
 
-.PHONY: test-ios-swift-prod
-test-ios-swift-prod:
-	@echo "\n>>>	🏃 Running prod iOS Swift client test suite...\n"
-	@# TODO: verify that xcodebuild and xcpretty are available
-	@cd tests/e2e/ios-swift && \
-		pod install
-	@make clear-mock && \
-		yarn run -s dev prod --config=./tests/e2e/ios-swift && \
-		cd tests/e2e/ios-swift && \
-		set -o pipefail && xcodebuild test $(XC_SWIFT_ARGS) | xcpretty && \
-		SDK=analytics-ios LANGUAGE=swift IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
+.PHONY: test-ios-objc-dev test-ios-objc-prod test-ios-objc-runner test-ios-swift-dev test-ios-swift-prod test-ios-swift-runner test-ios-runner
+test-ios-objc-dev: IS_DEVELOPMENT=true
+test-ios-objc-dev: TYPEWRITER_COMMAND=build
+test-ios-objc-dev: test-ios-objc-runner
+
+test-ios-objc-prod: IS_DEVELOPMENT=false
+test-ios-objc-prod: TYPEWRITER_COMMAND=prod
+test-ios-objc-prod: test-ios-objc-runner
+
+test-ios-objc-runner: LANGUAGE=objc
+test-ios-objc-runner: XC_ARGS=$(XC_OBJECTIVE_C_ARGS)
+test-ios-objc-runner: test-ios-runner
+
+test-ios-swift-dev: IS_DEVELOPMENT=true
+test-ios-swift-dev: TYPEWRITER_COMMAND=build
+test-ios-swift-dev: test-ios-swift-runner
+
+test-ios-swift-prod: IS_DEVELOPMENT=false
+test-ios-swift-prod: TYPEWRITER_COMMAND=prod
+test-ios-swift-prod: test-ios-swift-runner
+
+test-ios-swift-runner: LANGUAGE=swift
+test-ios-swift-runner: XC_ARGS=$(XC_SWIFT_ARGS)
+test-ios-swift-runner: test-ios-runner
+
+test-ios-runner:
+	@echo "\n>>>	🏃 Running iOS client test suite ($(TYPEWRITER_COMMAND), $(LANGUAGE))...\n"
+	@make clear-mock
+	@yarn run -s dev $(TYPEWRITER_COMMAND) --config=./tests/e2e/ios-$(LANGUAGE)
+	@cd tests/e2e/ios-$(LANGUAGE) && set -o pipefail && xcodebuild test $(XC_ARGS) | xcpretty
+	@SDK=analytics-ios LANGUAGE=$(LANGUAGE) IS_DEVELOPMENT=$(IS_DEVELOPMENT) yarn run -s jest ./tests/e2e/suite.test.ts
 
 .PHONY: precommit
 precommit:
@@ -262,3 +252,13 @@ update-bridging-header:
 		sed -e 's/^.*SEG/#import "Analytics\/SEG/' | \
 		sed -e 's/$$/"/' >> \
 		tests/e2e/ios-swift/TypewriterSwiftExample/TypewriterSwiftExample-Bridging-Header.h
+
+# Used by CI to run mock on macos executor.
+.PHONY: start-mock-bg
+start-mock-bg:
+	git clone https://github.com/segmentio/mock.git
+	cd mock
+	yarn
+	yarn dev &
+	cd ..
+	sleep 5

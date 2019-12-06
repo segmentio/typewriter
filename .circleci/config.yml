@@ -111,7 +111,6 @@ jobs:
       - attach_workspace: { at: . }
       - run: make test-web-typescript-prod
 
-  # TODO: speed me up!
   test-ios-objc-dev:
     macos:
       xcode: "11.0.0"
@@ -121,44 +120,24 @@ jobs:
       - run:
           name: Install build dependencies
           command: |
-            pod --version
             sudo gem install xcpretty
-            pod --version
-            # TODO: investigate locking the cocoapods version
-            sudo gem install cocoapods-check
-            pod --version
+            sudo gem install cocoapods-check -v 1.1.0
       - restore_cache:
-          key: objc-deps-v9-{{ checksum "tests/e2e/ios-objc/Podfile.lock" }}
+          key: objc-deps-v10-{{ checksum "tests/e2e/ios-objc/Podfile.lock" }}
       - run:
-          name: Run iOS Objective-C Tests
+          name: Install Cocoapods
           command: |
-            pod --version
-            ls -la || echo "failed"
-            ls -la tests/e2e/ios-objc || echo "failed"
-            ls -la tests/e2e/ios-objc/Pods || echo "failed"
-            cat tests/e2e/ios-objc/Podfile.lock || echo "failed"
-            git clone https://github.com/segmentio/mock.git
-            cd mock
-            yarn
-            yarn dev &
-            cd ..
-            sleep 5
-            make clear-mock
-            yarn run -s dev build --config=./tests/e2e/ios-objc
             cd tests/e2e/ios-objc
-            pod --version
             pod check --verbose || pod install --deployment
-            pod --version
-            set -o pipefail && xcodebuild test -workspace TypewriterExample.xcworkspace -scheme TypewriterExample -destination "platform=iOS Simulator,name=iPhone 11" | xcpretty
-            pod --version
-            SDK=analytics-ios LANGUAGE=objective-c IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
-            pod --version
-            ls -la || echo "failed"
-            cat Podfile.lock || echo "failed"
       - save_cache:
           paths:
             - tests/e2e/ios-objc/Pods
-          key: objc-deps-v9-{{ checksum "tests/e2e/ios-objc/Podfile.lock" }}
+          key: objc-deps-v10-{{ checksum "tests/e2e/ios-objc/Podfile.lock" }}
+      - run:
+          name: Run iOS Objective-C Tests
+          command: |
+            make start-mock-bg
+            make test-ios-objc-dev
   test-ios-objc-prod:
     macos:
       xcode: "11.0.0"
@@ -169,19 +148,22 @@ jobs:
           name: Install build dependencies
           command: |
             sudo gem install xcpretty
-            sudo gem install cocoapods -v $(var=$(tail -1 tests/e2e/ios-objc/Podfile.lock); echo ${var##COCOAPODS:})
+            sudo gem install cocoapods-check -v 1.1.0
+      - restore_cache:
+          key: objc-deps-v10-{{ checksum "tests/e2e/ios-objc/Podfile.lock" }}
       - run:
-          name: Fetch Cocoapods specs
-          command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+          name: Install Cocoapods
+          command: |
+            cd tests/e2e/ios-objc
+            pod check --verbose || pod install --deployment
+      - save_cache:
+          paths:
+            - tests/e2e/ios-objc/Pods
+          key: objc-deps-v10-{{ checksum "tests/e2e/ios-objc/Podfile.lock" }}
       - run:
           name: Run iOS Objective-C Tests
           command: |
-            git clone https://github.com/segmentio/mock.git
-            cd mock
-            yarn
-            yarn dev &
-            cd ..
-            sleep 5
+            make start-mock-bg
             make test-ios-objc-prod
   test-ios-swift-dev:
     macos:
@@ -193,19 +175,22 @@ jobs:
           name: Install build dependencies
           command: |
             sudo gem install xcpretty
-            sudo gem install cocoapods -v $(var=$(tail -1 tests/e2e/ios-objc/Podfile.lock); echo ${var##COCOAPODS:})
+            sudo gem install cocoapods-check -v 1.1.0
+      - restore_cache:
+          key: swift-deps-v10-{{ checksum "tests/e2e/ios-swift/Podfile.lock" }}
       - run:
-          name: Fetch Cocoapods specs
-          command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+          name: Install Cocoapods
+          command: |
+            cd tests/e2e/ios-swift
+            pod check --verbose || pod install --deployment
+      - save_cache:
+          paths:
+            - tests/e2e/ios-swift/Pods
+          key: swift-deps-v10-{{ checksum "tests/e2e/ios-swift/Podfile.lock" }}
       - run:
           name: Run iOS Swift Tests
           command: |
-            git clone https://github.com/segmentio/mock.git
-            cd mock
-            yarn
-            yarn dev &
-            cd ..
-            sleep 5
+            make start-mock-bg
             make test-ios-swift-dev
   test-ios-swift-prod:
     macos:
@@ -217,19 +202,22 @@ jobs:
           name: Install build dependencies
           command: |
             sudo gem install xcpretty
-            sudo gem install cocoapods -v $(var=$(tail -1 tests/e2e/ios-objc/Podfile.lock); echo ${var##COCOAPODS:})
+            sudo gem install cocoapods-check -v 1.1.0
+      - restore_cache:
+          key: swift-deps-v10-{{ checksum "tests/e2e/ios-swift/Podfile.lock" }}
       - run:
-          name: Fetch Cocoapods specs
-          command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+          name: Install Cocoapods
+          command: |
+            cd tests/e2e/ios-swift
+            pod check --verbose || pod install --deployment
+      - save_cache:
+          paths:
+            - tests/e2e/ios-swift/Pods
+          key: swift-deps-v10-{{ checksum "tests/e2e/ios-swift/Podfile.lock" }}
       - run:
           name: Run iOS Swift Tests
           command: |
-            git clone https://github.com/segmentio/mock.git
-            cd mock
-            yarn
-            yarn dev &
-            cd ..
-            sleep 5
+            make start-mock-bg
             make test-ios-swift-prod
 
 workflows:
