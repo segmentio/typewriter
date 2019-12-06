@@ -124,6 +124,7 @@ jobs:
             pod --version
             sudo gem install xcpretty
             pod --version
+            # TODO: investigate locking the cocoapods version
             sudo gem install cocoapods-check
             pod --version
       - restore_cache:
