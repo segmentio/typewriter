@@ -137,9 +137,9 @@ jobs:
       - run:
           name: Run iOS Objective-C Tests
           command: |
-            git clone https://github.com/segmentio/mock.git && cd mock && yarn && \
-              yarn dev & && \
-              cd .. && sleep 5
+            git clone https://github.com/segmentio/mock.git && cd mock && yarn && cd ..
+            cd mock && yarn dev &
+            sleep 5
             make test-ios-objc-dev
   test-ios-objc-prod:
     macos:
@@ -167,9 +167,9 @@ jobs:
       - run:
           name: Run iOS Objective-C Tests
           command: |
-            git clone https://github.com/segmentio/mock.git && cd mock && yarn && \
-              yarn dev & && \
-              cd .. && sleep 5
+            git clone https://github.com/segmentio/mock.git && cd mock && yarn && cd ..
+            cd mock && yarn dev &
+            sleep 5
             make test-ios-objc-prod
   test-ios-swift-dev:
     macos:
@@ -197,9 +197,9 @@ jobs:
       - run:
           name: Run iOS Swift Tests
           command: |
-            git clone https://github.com/segmentio/mock.git && cd mock && yarn && \
-              yarn dev & && \
-              cd .. && sleep 5
+            git clone https://github.com/segmentio/mock.git && cd mock && yarn && cd ..
+            cd mock && yarn dev &
+            sleep 5
             make test-ios-swift-dev
   test-ios-swift-prod:
     macos:
@@ -227,9 +227,9 @@ jobs:
       - run:
           name: Run iOS Swift Tests
           command: |
-            git clone https://github.com/segmentio/mock.git && cd mock && yarn && \
-              yarn dev & && \
-              cd .. && sleep 5
+            git clone https://github.com/segmentio/mock.git && cd mock && yarn && cd ..
+            cd mock && yarn dev &
+            sleep 5
             make test-ios-swift-prod
 
 workflows:
