@@ -122,27 +122,12 @@ jobs:
           name: Install build dependencies
           command: |
             pod --version
-            cd tests/e2e/ios-objc
-            bundle check || bundle install
-            pod --version
             sudo gem install xcpretty
             pod --version
             sudo gem install cocoapods-check
             pod --version
       - restore_cache:
-          key: objc-deps-v8-{{ checksum "tests/e2e/ios-objc/Podfile.lock" }}
-      # - run:
-      #     name: Run iOS Objective-C Tests
-      #     command: |
-      #       ls -la || echo "failed"
-      #       ls -la tests/e2e/ios-objc || echo "failed"
-      #       ls -la tests/e2e/ios-objc/Pods || echo "failed"
-      #       cd tests/e2e/ios-objc
-      #       mkdir -p Pods
-      #       touch "test" > Pods/test.txt
-      #       ls -la || echo "failed"
-      #       ls -la tests/e2e/ios-objc || echo "failed"
-      #       ls -la tests/e2e/ios-objc/Pods || echo "failed"
+          key: objc-deps-v9-{{ checksum "tests/e2e/ios-objc/Podfile.lock" }}
       - run:
           name: Run iOS Objective-C Tests
           command: |
@@ -172,7 +157,7 @@ jobs:
       - save_cache:
           paths:
             - tests/e2e/ios-objc/Pods
-          key: objc-deps-v8-{{ checksum "tests/e2e/ios-objc/Podfile.lock" }}
+          key: objc-deps-v9-{{ checksum "tests/e2e/ios-objc/Podfile.lock" }}
   test-ios-objc-prod:
     macos:
       xcode: "11.0.0"
