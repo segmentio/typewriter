@@ -16,7 +16,7 @@
     "e2e": "make e2e",
     "update": "make update",
     "lint": "eslint './src/**/*.{ts,tsx}'",
-    "release": "yarn run build && np",
+    "release": "yarn run build && np --any-branch",
     "release:pre": "yarn run build && np prerelease --any-branch --tag next --no-release-draft"
   },
   "engines": {
