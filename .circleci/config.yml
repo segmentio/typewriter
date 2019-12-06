@@ -111,6 +111,7 @@ jobs:
       - attach_workspace: { at: . }
       - run: make test-web-typescript-prod
 
+  # TODO: speed me up!
   test-ios-objc-dev:
     macos:
       xcode: "11.0.0"
@@ -122,9 +123,9 @@ jobs:
           command: |
             sudo gem install xcpretty
             sudo gem install cocoapods -v $(var=$(tail -1 tests/e2e/ios-objc/Podfile.lock); echo ${var##COCOAPODS:})
-      - run:
-          name: Fetch Cocoapods specs
-          command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+      # - run:
+      #     name: Fetch Cocoapods specs
+      #     command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
       - run:
           name: Run iOS Objective-C Tests
           command: |
@@ -134,7 +135,12 @@ jobs:
             yarn dev &
             cd ..
             sleep 5
-            make test-ios-objc-dev
+            make clear-mock && \
+              yarn run -s dev build --config=./tests/e2e/ios-objc && \
+              cd tests/e2e/ios-objc && \
+              pod install && \
+              set -o pipefail && xcodebuild test $(XC_OBJECTIVE_C_ARGS) | xcpretty && \
+              SDK=analytics-ios LANGUAGE=objective-c IS_DEVELOPMENT=true yarn run -s jest ./tests/e2e/suite.test.ts
   test-ios-objc-prod:
     macos:
       xcode: "11.0.0"
