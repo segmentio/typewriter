@@ -5,7 +5,7 @@ DEPENDENCIES:
   - Analytics (= 3.6.9)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - Analytics
 
 SPEC CHECKSUMS:
