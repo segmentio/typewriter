@@ -61,8 +61,8 @@ e2e:
 
 .PHONY: lint
 lint:
-	@yarn run eslint --fix 'src/**/*.ts' 'src/**/*.tsx'
 	@yarn run -s prettier --write --loglevel warn '**/*.json' '**/*.yml'
+	@yarn run eslint --fix 'src/**/*.ts' 'src/**/*.tsx'
 
 # docker: launches segmentio/mock which we use to mock the Segment API for e2e testing.
 .PHONY: docker
@@ -89,7 +89,7 @@ build-example:
 		yarn build
 
 .PHONY: test-node-javascript
-test-node-javascript: test-node-javascript-dev test-node-javascript-prod
+test-node-javascript: test-node-javascript-prod test-node-javascript-dev
 
 .PHONY: test-node-javascript-dev
 test-node-javascript-dev:
@@ -114,7 +114,7 @@ test-node-javascript-prod:
 		SDK=analytics-node LANGUAGE=javascript IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
 
 .PHONY: test-node-typescript
-test-node-typescript: test-node-typescript-dev test-node-typescript-prod
+test-node-typescript: test-node-typescript-prod test-node-typescript-dev
 
 .PHONY: test-node-typescript-dev
 test-node-typescript-dev:
@@ -139,7 +139,7 @@ test-node-typescript-prod:
 		SDK=analytics-node LANGUAGE=typescript IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
 
 .PHONY: test-web-javascript
-test-web-javascript: test-web-javascript-dev test-web-javascript-prod
+test-web-javascript: test-web-javascript-prod test-web-javascript-dev
 
 .PHONY: test-web-javascript-dev
 test-web-javascript-dev:
@@ -166,7 +166,7 @@ test-web-javascript-prod:
 		SDK=analytics.js LANGUAGE=javascript IS_DEVELOPMENT=false yarn run -s jest ./tests/e2e/suite.test.ts
 
 .PHONY: test-web-typescript
-test-web-typescript: test-web-typescript-dev test-web-typescript-prod
+test-web-typescript: test-web-typescript-prod test-web-typescript-dev
 
 .PHONY: test-web-typescript-dev
 test-web-typescript-dev:
@@ -196,13 +196,13 @@ test-web-typescript-prod:
 test-ios-objc:
 	@# TODO: verify that xcodebuild and xcpretty are available
 	@cd tests/e2e/ios-objc && pod install
-	@make test-ios-objc-dev test-ios-objc-prod
+	@make test-ios-objc-prod test-ios-objc-dev
 
 .PHONY: test-ios-swift
 test-ios-swift:
 	@# TODO: verify that xcodebuild and xcpretty are available
 	@cd tests/e2e/ios-swift && pod install
-	@make test-ios-swift-dev test-ios-swift-prod
+	@make test-ios-swift-prod test-ios-swift-dev
 
 .PHONY: test-ios-objc-dev test-ios-objc-prod test-ios-objc-runner test-ios-swift-dev test-ios-swift-prod test-ios-swift-runner test-ios-runner
 test-ios-objc-dev: IS_DEVELOPMENT=true
