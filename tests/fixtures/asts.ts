@@ -58,29 +58,9 @@ export const enums: Schema = {
 			enum: ['boggs', 'rob', 'anastassia', 'evan', 'marc', 'nick'],
 		},
 		{
-			name: 'number-enum',
-			type: Type.ANY,
-			enum: [8997, 8998, 8999],
-		},
-		{
 			name: 'typed-enum',
 			type: Type.STRING,
 			enum: ['personas', 'protocols', 'connections', '<redacted>'],
-		},
-		{
-			name: 'typed-union-enum',
-			type: Type.UNION,
-			types: [
-				{
-					type: Type.STRING,
-					enum: ['yes', 'no', true, false],
-				},
-				{
-					type: Type.BOOLEAN,
-					enum: ['yes', 'no', true, false],
-				},
-			],
-			enum: ['yes', 'no', true, false],
 		},
 	],
 }
@@ -156,26 +136,16 @@ export const nulls: Schema = {
 			enum: [null],
 		},
 		{
-			name: 'multi-value-null-enum',
+			name: 'nullable-any-enum',
 			type: Type.ANY,
 			isNullable: true,
-			enum: [true, false, null],
+			enum: ['yes', 'no', null],
 		},
 		{
 			name: 'nullable-string-enum',
 			type: Type.STRING,
 			isNullable: true,
 			enum: ['yes', 'no', null],
-		},
-		{
-			name: 'null-enum-union',
-			type: Type.UNION,
-			types: [
-				{ type: Type.STRING, enum: [true, false, 'yes', 'no', null] },
-				{ type: Type.BOOLEAN, enum: [true, false, 'yes', 'no', null] },
-			],
-			isNullable: true,
-			enum: [true, false, 'yes', 'no', null],
 		},
 	],
 }

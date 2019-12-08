@@ -34,8 +34,9 @@ export interface Enumable {
 	enum?: EnumValue[]
 }
 
-// Note: we don't support objects or arrays as enums, for simplification purposes.
-export type EnumValue = string | number | boolean | null
+// Note: the Tracking Plan editor supports string and null enum values, so we focus on those.
+// Not sure if there are many use-cases for boolean/number/etc. enums.
+export type EnumValue = string | null
 
 export interface PrimitiveTypeFields extends Enumable {
 	type: Type.STRING | Type.INTEGER | Type.NUMBER | Type.BOOLEAN | Type.ANY
@@ -209,7 +210,6 @@ function parseTypeSpecificFields(raw: JSONSchema7, type: Type): TypeSpecificFiel
 	} else {
 		const fields: PrimitiveTypeFields = { type }
 
-		// TODO: Per above comment, consider filtering the enum values to just the matching type (string, boolean, etc.).
 		if (raw.enum) {
 			fields.enum = getEnum(raw)
 		}
@@ -269,9 +269,23 @@ function getEnum(raw: JSONSchema7): EnumValue[] | undefined {
 		return undefined
 	}
 
-	const enm = raw.enum.filter(
-		val => ['boolean', 'number', 'string'].includes(typeof val) || val === null
-	) as EnumValue[]
+	const enm = raw.enum.filter(val => typeof val === 'string' || val === null) as EnumValue[]
 
 	return enm
+}
+
+export function isPrimitiveType(schema: Schema): schema is PrimitiveTypeSchema {
+	return [Type.ANY, Type.STRING, Type.BOOLEAN, Type.INTEGER, Type.NUMBER].includes(schema.type)
+}
+
+export function isArrayTypeSchema(schema: Schema): schema is ArrayTypeSchema {
+	return [Type.ARRAY].includes(schema.type)
+}
+
+export function isObjectTypeSchema(schema: Schema): schema is ObjectTypeSchema {
+	return [Type.OBJECT].includes(schema.type)
+}
+
+export function isUnionTypeSchema(schema: Schema): schema is UnionTypeSchema {
+	return [Type.UNION].includes(schema.type)
 }

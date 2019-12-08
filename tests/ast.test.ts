@@ -8,18 +8,17 @@ import { map } from 'lodash'
 const readFile = promisify(fs.readFile)
 
 describe('AST', () => {
-	const foobar = map(astFixtures, (ast, name) => ({ ast, name }))
-	test.each(foobar)('parses %s', async ({ ast, name }) => {
-		expect.assertions(1)
+	const tests = map(astFixtures, (ast, name) => ({ ast, name }))
+	for (const t of tests) {
+		test(`parses ${t.name}`, async () => {
+			expect.assertions(1)
 
-		const schemaJSON = await readFile(
-			resolve(__dirname, `./fixtures/schemas/${name}.json`),
-			{
+			const schemaJSON = await readFile(resolve(__dirname, `./fixtures/schemas/${t.name}.json`), {
 				encoding: 'utf-8',
-			}
-		)
-		const schema = JSON.parse(schemaJSON)
+			})
+			const schema = JSON.parse(schemaJSON)
 
-		expect(parse(schema)).toEqual(ast)
-	})
+			expect(parse(schema)).toEqual(t.ast)
+		})
+	}
 })

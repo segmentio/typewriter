@@ -6,16 +6,9 @@
     "string-enum": {
       "enum": ["boggs", "rob", "anastassia", "evan", "marc", "nick"]
     },
-    "number-enum": {
-      "enum": [8997, 8998, 8999]
-    },
     "typed-enum": {
       "type": "string",
       "enum": ["personas", "protocols", "connections", "<redacted>"]
-    },
-    "typed-union-enum": {
-      "type": ["string", "boolean"],
-      "enum": ["yes", "no", true, false]
     }
   }
 }
