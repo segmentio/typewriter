@@ -552,6 +552,18 @@ describe('e2e tests', () => {
 				},
 			},
 		},
+		{
+			name: 'enums are serialized correctly',
+			// We haven't yet added support for enums to the iOS client.
+			if: sdk != SDK.IOS,
+			expect: {
+				name: 'Enum Types',
+				properties: {
+					'string const': 'Rick Sanchez',
+					'string enum': 'Lawyer Morty',
+				},
+			},
+		},
 		// TODO: can we add tests to validate the behavior of the default violation handler
 		// outside of test mode (NODE_ENV!=test)?
 		// TODO: add test of supplying custom context fields

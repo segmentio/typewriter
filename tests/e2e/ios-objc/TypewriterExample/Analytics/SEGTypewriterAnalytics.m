@@ -111,6 +111,27 @@ options:(nullable SERIALIZABLE_DICT)options
     [[SEGAnalytics sharedAnalytics] track:@"Empty Event" properties:properties options:[SEGTypewriterUtils withTypewriterContextFields:options]];
 }
 
++ (void)enumTypesWithStringConst:(nullable NSString *)stringConst
+stringEnum:(nullable NSString *)stringEnum
+{
+    [SEGTypewriterAnalytics enumTypesWithStringConst:stringConst stringEnum:stringEnum options:@{}];
+}
+
++ (void)enumTypesWithStringConst:(nullable NSString *)stringConst
+stringEnum:(nullable NSString *)stringEnum
+options:(nullable SERIALIZABLE_DICT)options
+{
+    NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
+    if (stringConst != nil) {
+      properties[@"string const"] = stringConst;
+    }
+    if (stringEnum != nil) {
+      properties[@"string enum"] = stringEnum;
+    }
+
+    [[SEGAnalytics sharedAnalytics] track:@"Enum Types" properties:properties options:[SEGTypewriterUtils withTypewriterContextFields:options]];
+}
+
 + (void)eventCollided
 {
     [SEGTypewriterAnalytics eventCollidedWithOptions:@{}];

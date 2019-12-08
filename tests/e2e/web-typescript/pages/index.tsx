@@ -23,6 +23,9 @@ import typewriter, {
 	customViolationHandlerCalled,
 	propertySanitized,
 	largeNumbersEvent,
+	enumTypes,
+	StringConst,
+	StringEnum,
 } from '../analytics'
 
 export default class HomePage extends React.Component {
@@ -387,6 +390,11 @@ export default class HomePage extends React.Component {
 			'large optional number': 1280007112658965944331.0,
 			'large required integer': 1290007112658965944,
 			'large required number': 1300007112658965944331.0,
+		})
+
+		enumTypes({
+			'string const': StringConst.RickSanchez,
+			'string enum': StringEnum.LawyerMorty,
 		})
 	}
 }

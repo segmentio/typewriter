@@ -24,9 +24,12 @@ import typewriter, {
 	analyticsInstanceMissingThrewError,
 	propertySanitized,
 	largeNumbersEvent,
+	StringConst,
+	StringEnum,
 } from './analytics'
 import SegmentAnalytics from 'analytics-node'
 import { promisify } from 'util'
+import { enumTypes } from './analytics/index'
 
 const SIDECAR_ADDRESS = 'http://localhost:8765'
 
@@ -494,6 +497,14 @@ async function run() {
 			'large optional number': 1280007112658965944331.0,
 			'large required integer': 1290007112658965944,
 			'large required number': 1300007112658965944331.0,
+		},
+		userId,
+	})
+
+	enumTypes({
+		properties: {
+			'string const': StringConst.RickSanchez,
+			'string enum': StringEnum.LawyerMorty,
 		},
 		userId,
 	})

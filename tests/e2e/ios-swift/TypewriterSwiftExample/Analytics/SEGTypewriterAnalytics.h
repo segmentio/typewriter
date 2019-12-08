@@ -58,6 +58,13 @@ options:(nullable SERIALIZABLE_DICT)options;
 
 + (void)emptyEventWithOptions:(nullable SERIALIZABLE_DICT)options;
 
++ (void)enumTypesWithStringConst:(nullable NSString *)stringConst
+stringEnum:(nullable NSString *)stringEnum;
+
++ (void)enumTypesWithStringConst:(nullable NSString *)stringConst
+stringEnum:(nullable NSString *)stringEnum
+options:(nullable SERIALIZABLE_DICT)options;
+
 + (void)eventCollided;
 
 + (void)eventCollidedWithOptions:(nullable SERIALIZABLE_DICT)options;

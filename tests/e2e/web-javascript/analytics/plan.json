@@ -175,6 +175,37 @@
         "version": 1
       },
       {
+        "description": "Validates that client property sanitize enums.",
+        "name": "Enum Types",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "labels": {},
+          "properties": {
+            "context": {},
+            "properties": {
+              "properties": {
+                "string const": {
+                  "description": "A string property that only accepts a single enum value.",
+                  "enum": ["Rick Sanchez"],
+                  "type": "string"
+                },
+                "string enum": {
+                  "description": "A string property that accepts multiple enum values.",
+                  "enum": ["Evil Morty", "Lawyer Morty"],
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "traits": {
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "version": 1
+      },
+      {
         "description": "Validates that a generated client handles even naming collisions.",
         "name": "Event Collided",
         "rules": {
@@ -1246,5 +1277,5 @@
     "group_traits": [],
     "identify_traits": []
   },
-  "update_time": "2019-12-05T01:01:39.000Z"
+  "update_time": "2019-12-08T20:36:46.000Z"
 }

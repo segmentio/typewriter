@@ -32,6 +32,15 @@ Object.defineProperty(exports, '__esModule', { value: true })
  * You can install it with: `npm install --save-dev ajv`.
  */
 var ajv_1 = __importDefault(require('ajv'))
+var StringConst
+;(function(StringConst) {
+	StringConst['RickSanchez'] = 'Rick Sanchez'
+})((StringConst = exports.StringConst || (exports.StringConst = {})))
+var StringEnum
+;(function(StringEnum) {
+	StringEnum['EvilMorty'] = 'Evil Morty'
+	StringEnum['LawyerMorty'] = 'Lawyer Morty'
+})((StringEnum = exports.StringEnum || (exports.StringEnum = {})))
 /**
  * The default handler that is fired if none is supplied with setTypewriterOptions.
  * If NODE_ENV="test", this handler will throw an error. Otherwise, it will log
@@ -137,6 +146,11 @@ function withTypewriterContext(message) {
 /**
  * @typedef DefaultViolationHandler
  * @property {string} regex property -
+ */
+/**
+ * @typedef EnumTypes
+ * @property {StringConst} [string const] - A string property that only accepts a single enum value.
+ * @property {StringEnum} [string enum] - A string property that accepts multiple enum values.
  */
 /**
  * @typedef OptionalArrayWithPropertiesItem
@@ -693,6 +707,55 @@ function emptyEvent(message, callback) {
 	}
 }
 exports.emptyEvent = emptyEvent
+/**
+ * Validates that client property sanitize enums.
+ *
+ * @param {TrackMessage<EnumTypes>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
+ */
+function enumTypes(message, callback) {
+	var msg = withTypewriterContext(
+		__assign({ properties: {} }, message, { event: 'Enum Types' })
+	)
+	var schema = {
+		$schema: 'http://json-schema.org/draft-07/schema#',
+		description: 'Validates that client property sanitize enums.',
+		labels: {},
+		properties: {
+			context: {},
+			properties: {
+				properties: {
+					'string const': {
+						description:
+							'A string property that only accepts a single enum value.',
+						enum: ['Rick Sanchez'],
+						type: 'string',
+					},
+					'string enum': {
+						description: 'A string property that accepts multiple enum values.',
+						enum: ['Evil Morty', 'Lawyer Morty'],
+						type: 'string',
+					},
+				},
+				type: 'object',
+			},
+			traits: {
+				type: 'object',
+			},
+		},
+		title: 'Enum Types',
+		type: 'object',
+	}
+	validateAgainstSchema(msg, schema)
+	var a = analytics()
+	if (a) {
+		a.track(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
+	}
+}
+exports.enumTypes = enumTypes
 /**
  * Validates that a generated client handles even naming collisions.
  *
@@ -2126,6 +2189,14 @@ var clientAPI = {
 	 * 		call is fired.
 	 */
 	emptyEvent: emptyEvent,
+	/**
+	 * Validates that client property sanitize enums.
+	 *
+	 * @param {TrackMessage<EnumTypes>} message - The analytics properties that will be sent to Segment.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
+	enumTypes: enumTypes,
 	/**
 	 * Validates that a generated client handles even naming collisions.
 	 *

@@ -19,6 +19,16 @@ export interface CustomViolationHandler {
 export interface DefaultViolationHandler {
 	'regex property': string
 }
+export interface EnumTypes {
+	/**
+	 * A string property that only accepts a single enum value.
+	 */
+	'string const'?: StringConst
+	/**
+	 * A string property that accepts multiple enum values.
+	 */
+	'string enum'?: StringEnum
+}
 export interface OptionalArrayWithPropertiesItem {
 	/**
 	 * Optional any property
@@ -556,6 +566,14 @@ export interface UnionType {
 	universe_name: string | number | null
 }
 
+export enum StringConst {
+	RickSanchez = 'Rick Sanchez',
+}
+export enum StringEnum {
+	EvilMorty = 'Evil Morty',
+	LawyerMorty = 'Lawyer Morty',
+}
+
 export type ViolationHandler = (
 	message: Record<string, any>,
 	violations: Ajv.ErrorObject[]
@@ -667,6 +685,11 @@ function withTypewriterContext(message: Segment.Options = {}): Segment.Options {
 /**
  * @typedef DefaultViolationHandler
  * @property {string} regex property -
+ */
+/**
+ * @typedef EnumTypes
+ * @property {StringConst} [string const] - A string property that only accepts a single enum value.
+ * @property {StringEnum} [string enum] - A string property that accepts multiple enum values.
  */
 /**
  * @typedef OptionalArrayWithPropertiesItem
@@ -1290,6 +1313,60 @@ export function emptyEvent(
 			withTypewriterContext(options),
 			callback
 		)
+	}
+}
+/**
+ * Validates that client property sanitize enums.
+ *
+ * @param {EnumTypes} [props] - The analytics properties that will be sent to Segment.
+ * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
+ */
+export function enumTypes(
+	props?: EnumTypes,
+	options?: Segment.Options,
+	callback?: Segment.Callback
+): void {
+	const schema = {
+		$schema: 'http://json-schema.org/draft-07/schema#',
+		description: 'Validates that client property sanitize enums.',
+		labels: {},
+		properties: {
+			context: {},
+			properties: {
+				properties: {
+					'string const': {
+						description:
+							'A string property that only accepts a single enum value.',
+						enum: ['Rick Sanchez'],
+						type: 'string',
+					},
+					'string enum': {
+						description: 'A string property that accepts multiple enum values.',
+						enum: ['Evil Morty', 'Lawyer Morty'],
+						type: 'string',
+					},
+				},
+				type: 'object',
+			},
+			traits: {
+				type: 'object',
+			},
+		},
+		title: 'Enum Types',
+		type: 'object',
+	}
+	const message = {
+		event: 'Enum Types',
+		properties: props || {},
+		options,
+	}
+	validateAgainstSchema(message, schema)
+
+	const a = analytics()
+	if (a) {
+		a.track('Enum Types', props || {}, withTypewriterContext(options), callback)
 	}
 }
 /**
@@ -2869,6 +2946,15 @@ const clientAPI = {
 	 * 		call is fired.
 	 */
 	emptyEvent,
+	/**
+	 * Validates that client property sanitize enums.
+	 *
+	 * @param {EnumTypes} [props] - The analytics properties that will be sent to Segment.
+	 * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+	 * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+	 * 		call is fired.
+	 */
+	enumTypes,
 	/**
 	 * Validates that a generated client handles even naming collisions.
 	 *

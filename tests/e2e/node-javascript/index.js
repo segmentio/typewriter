@@ -25,6 +25,9 @@ const {
 	analyticsInstanceMissingThrewError,
 	propertySanitized,
 	largeNumbersEvent,
+	enumTypes,
+	StringConst,
+	StringEnum,
 } = require('./analytics')
 const typewriter = require('./analytics').default
 const SegmentAnalytics = require('analytics-node')
@@ -492,6 +495,14 @@ async function run() {
 			'large optional number': 1280007112658965944331.0,
 			'large required integer': 1290007112658965944,
 			'large required number': 1300007112658965944331.0,
+		},
+		userId,
+	})
+
+	enumTypes({
+		properties: {
+			'string const': StringConst.RickSanchez,
+			'string enum': StringEnum.LawyerMorty,
 		},
 		userId,
 	})
