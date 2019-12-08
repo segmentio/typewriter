@@ -14,7 +14,6 @@ import { Config, getConfig, getTokenMethod } from './config'
 import { machineId } from 'node-machine-id'
 import { version } from '../../package.json'
 import { loadTrackingPlan } from './api'
-import { TokenMethod } from '../analytics/index'
 
 export interface StandardProps extends AnalyticsProps {
 	configPath: string
@@ -275,7 +274,7 @@ async function typewriterLibraryProperties(
 ) {
 	// In CI environments, or if there is no internet, we may not be able to execute the
 	// the token script.
-	let tokenMethod: TokenMethod | undefined = undefined
+	let tokenMethod: string | undefined = undefined
 	try {
 		tokenMethod = await getTokenMethod(cfg, args.config)
 	} catch {}
