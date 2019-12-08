@@ -1,11 +1,26 @@
 import { JSONSchema7 } from 'json-schema'
-import { parse, Schema, getPropertiesSchema, Type } from './ast'
+import {
+	parse,
+	Schema,
+	getPropertiesSchema,
+	Type,
+	isPrimitiveType,
+	isArrayTypeSchema,
+	isObjectTypeSchema,
+	isUnionTypeSchema,
+	PrimitiveTypeSchema,
+	ArrayTypeSchema,
+	ObjectTypeSchema,
+	UnionTypeSchema,
+	Enumable,
+} from './ast'
 import { javascript } from './javascript'
 import { ios } from './ios'
 import { Options, SDK } from './options'
 import { registerStandardHelpers, generateFromTemplate } from '../templates'
 import { Namer, Options as NamerOptions } from './namer'
 import stringify from 'json-stable-stringify'
+import hash from 'object-hash'
 
 export interface File {
 	path: string
@@ -27,16 +42,26 @@ export interface TrackingPlan {
 	}[]
 }
 
-export interface BaseRootContext<T extends object, O extends object, P extends object> {
+export interface BaseRootContext<
+	T extends object,
+	O extends object,
+	P extends object,
+	E extends object
+> {
 	isDevelopment: boolean
 	language: string
 	typewriterVersion: string
 	trackingPlanURL: string
 	tracks: (T & BaseTrackCallContext<P>)[]
 	objects: (O & BaseObjectContext<P>)[]
+	enums: (E & BaseEnumContext)[]
 }
 
-export interface BaseTrackCallContext<P extends object> {
+export interface ExpectedTrackCallContext {
+	// The formatted function name, ex: "orderCompleted".
+	functionName: string
+}
+export interface BaseTrackCallContext<P extends object> extends ExpectedTrackCallContext {
 	// The optional function description.
 	functionDescription?: string
 	// The raw JSON Schema for this event.
@@ -47,12 +72,22 @@ export interface BaseTrackCallContext<P extends object> {
 	properties?: (P & BasePropertyContext)[]
 }
 
-export interface BaseObjectContext<P extends object> {
+export interface ExpectedObjectContext {
+	// The formatted name for this object, ex: "Planet"
+	name: string
+}
+export interface BaseObjectContext<P extends object> extends ExpectedObjectContext {
 	description?: string
 	properties: (P & BasePropertyContext)[]
 }
 
-export interface BasePropertyContext {
+export interface ExpectedPropertyContext {
+	// The formatted name for this property, ex: "numAvocados".
+	name: string
+	// The type of this property. ex: "number".
+	type: string
+}
+export interface BasePropertyContext extends ExpectedPropertyContext {
 	// The raw name of this property. ex: "user id"
 	rawName: string
 	// The AST type of this property. ex: Type.INTEGER
@@ -61,6 +96,13 @@ export interface BasePropertyContext {
 	description?: string
 	isRequired: boolean
 }
+
+export interface ExpectedEnumContext {
+	// The name of this enum. ex: "AvocadoType".
+	name: string
+	values: { name: string; value: string }[]
+}
+export interface BaseEnumContext extends ExpectedEnumContext {}
 
 export interface GeneratorClient {
 	options: GenOptions
@@ -80,33 +122,43 @@ export interface GeneratorClient {
  * as parameters to each function. You can toggle this behavior with `generatePropertiesObject`.
  */
 export declare type Generator<
-	R extends object,
-	T extends object,
-	O extends object,
-	P extends object
+	R extends object = {},
+	T extends object = {},
+	O extends object = {},
+	P extends object = {},
+	E extends object = {}
 > = {
 	namer: NamerOptions
 	setup: (options: GenOptions) => Promise<R>
-	generatePrimitive: (client: GeneratorClient, schema: Schema, parentPath: string) => Promise<P>
+	generatePrimitive: (
+		client: GeneratorClient,
+		schema: PrimitiveTypeSchema,
+		parentPath: string
+	) => Promise<P & ExpectedPropertyContext>
+	generateEnum?: (
+		client: GeneratorClient,
+		schema: Schema & Enumable,
+		parentPath: string
+	) => Promise<E & ExpectedEnumContext>
 	generateArray: (
 		client: GeneratorClient,
-		schema: Schema,
+		schema: ArrayTypeSchema,
 		items: P & BasePropertyContext,
 		parentPath: string
-	) => Promise<P>
+	) => Promise<P & ExpectedPropertyContext>
 	generateObject: (
 		client: GeneratorClient,
-		schema: Schema,
+		schema: ObjectTypeSchema,
 		properties: (P & BasePropertyContext)[],
 		parentPath: string
-	) => Promise<{ property: P; object?: O }>
+	) => Promise<{ property: P & ExpectedPropertyContext; object?: O & ExpectedObjectContext }>
 	generateUnion: (
 		client: GeneratorClient,
-		schema: Schema,
+		schema: UnionTypeSchema,
 		types: (P & BasePropertyContext)[],
 		parentPath: string
-	) => Promise<P>
-	generateRoot: (client: GeneratorClient, context: R & BaseRootContext<T, O, P>) => Promise<void>
+	) => Promise<P & ExpectedPropertyContext>
+	generateRoot: (client: GeneratorClient, context: R & BaseRootContext<T, O, P, E>) => Promise<void>
 	formatFile?: (client: GeneratorClient, file: File) => File
 } & (
 	| {
@@ -115,7 +167,7 @@ export declare type Generator<
 				client: GeneratorClient,
 				schema: Schema,
 				propertiesObject: P & BasePropertyContext
-			) => Promise<T>
+			) => Promise<T & ExpectedTrackCallContext>
 	  }
 	| {
 			generatePropertiesObject: false
@@ -123,7 +175,7 @@ export declare type Generator<
 				client: GeneratorClient,
 				schema: Schema,
 				properties: (P & BasePropertyContext)[]
-			) => Promise<T>
+			) => Promise<T & ExpectedTrackCallContext>
 	  })
 
 export interface GenOptions {
@@ -163,15 +215,21 @@ export async function gen(trackingPlan: RawTrackingPlan, options: GenOptions): P
 	}
 }
 
-async function runGenerator<R extends object, T extends object, O extends object, P extends object>(
-	generator: Generator<R, T, O, P>,
+async function runGenerator<
+	R extends object,
+	T extends object,
+	O extends object,
+	P extends object,
+	E extends object
+>(
+	generator: Generator<R, T, O, P, E>,
 	trackingPlan: TrackingPlan,
 	options: GenOptions
 ): Promise<File[]> {
 	// One-time setup.
 	registerStandardHelpers()
 	const rootContext = await generator.setup(options)
-	const context: R & BaseRootContext<T, O, P> = {
+	const context: R & BaseRootContext<T, O, P, E> = {
 		...rootContext,
 		isDevelopment: options.isDevelopment,
 		language: options.client.language,
@@ -179,6 +237,7 @@ async function runGenerator<R extends object, T extends object, O extends object
 		trackingPlanURL: trackingPlan.url,
 		tracks: [],
 		objects: [],
+		enums: [],
 	}
 
 	// File output.
@@ -190,7 +249,7 @@ async function runGenerator<R extends object, T extends object, O extends object
 	) => {
 		files.push({
 			path: outputPath,
-			contents: await generateFromTemplate<C & BaseRootContext<T, O, P>>(templatePath, {
+			contents: await generateFromTemplate<C & BaseRootContext<T, O, P, E>>(templatePath, {
 				...context,
 				...fileContext,
 			}),
@@ -202,6 +261,11 @@ async function runGenerator<R extends object, T extends object, O extends object
 		namer: new Namer(generator.namer),
 		generateFile,
 	}
+
+	// We "cache" generated enums, so that if we see the same enum in multiple
+	// locations, we'll just re-use that enum. This prevents generating multiple
+	// copies of the same enum (FooBar, FooBar1, FooBar2, ...).
+	const enumCache: Record<string, E & ExpectedEnumContext> = {}
 
 	// Core generator logic. This logic involves traversing over the underlying JSON Schema
 	// and calling out to the supplied generator with each "node" in the JSON Schema that,
@@ -221,11 +285,30 @@ async function runGenerator<R extends object, T extends object, O extends object
 			isRequired: !!schema.isRequired,
 		}
 
-		let p: P
-		if ([Type.ANY, Type.STRING, Type.BOOLEAN, Type.INTEGER, Type.NUMBER].includes(schema.type)) {
+		let p: P & ExpectedPropertyContext
+		if (isPrimitiveType(schema)) {
 			// Primitives are any type that doesn't require generating a "subtype".
 			p = await generator.generatePrimitive(client, schema, parentPath)
-		} else if (schema.type === Type.OBJECT) {
+
+			// If this property is limited to a set of enum values, then generate an enum
+			// to represent that and override the primitives type.
+			// Note: some generators may not support enums, and if so, we skip this.
+			if (schema.enum && generator.generateEnum) {
+				const id = hash(schema.enum, {
+					// Two enums with a different ordering of enum values should
+					// still map to the same generated enum:
+					unorderedArrays: true,
+				})
+				let e = enumCache[id]
+				if (!e) {
+					e = await generator.generateEnum(client, schema, parentPath)
+					enumCache[id] = e
+					context.enums.push(e)
+				}
+
+				p.type = e.name
+			}
+		} else if (isObjectTypeSchema(schema)) {
 			// For objects, we need to recursively generate each property first.
 			const properties: (P & BasePropertyContext)[] = []
 			for (const property of schema.properties) {
@@ -245,7 +328,7 @@ async function runGenerator<R extends object, T extends object, O extends object
 				})
 			}
 			p = property
-		} else if (schema.type === Type.ARRAY) {
+		} else if (isArrayTypeSchema(schema)) {
 			// Arrays are another special case, because we need to generate a type to represent
 			// the items allowed in this array.
 			const itemsSchema: Schema = {
@@ -255,7 +338,7 @@ async function runGenerator<R extends object, T extends object, O extends object
 			}
 			const items = await traverseSchema(itemsSchema, path)
 			p = await generator.generateArray(client, schema, items, parentPath)
-		} else if (schema.type === Type.UNION) {
+		} else if (isUnionTypeSchema(schema)) {
 			// For unions, we generate a property type to represent each of the possible types
 			// then use that list of possible property types to generate a union.
 			const types = await Promise.all(
@@ -271,7 +354,7 @@ async function runGenerator<R extends object, T extends object, O extends object
 			)
 			p = await generator.generateUnion(client, schema, types, parentPath)
 		} else {
-			throw new Error(`Invalid Schema Type: ${schema.type}`)
+			throw new Error(`Invalid Schema Type: ${schema}`)
 		}
 
 		return {
@@ -282,7 +365,7 @@ async function runGenerator<R extends object, T extends object, O extends object
 
 	// Generate Track Calls.
 	for (const { raw, schema } of trackingPlan.trackCalls) {
-		let t: T
+		let t: T & ExpectedTrackCallContext
 		if (generator.generatePropertiesObject) {
 			const p = await traverseSchema(getPropertiesSchema(schema), '')
 			t = await generator.generateTrackCall(client, schema, p)
@@ -312,19 +395,4 @@ async function runGenerator<R extends object, T extends object, O extends object
 
 	// Format and output all generated files.
 	return files.map(f => (generator.formatFile ? generator.formatFile(client, f) : f))
-}
-
-// Legacy Code:
-export interface TemplateBaseContext {
-	isDevelopment: boolean
-	language: string
-	typewriterVersion: string
-}
-
-export function baseContext(options: GenOptions): TemplateBaseContext {
-	return {
-		isDevelopment: options.isDevelopment,
-		language: options.client.language,
-		typewriterVersion: options.typewriterVersion,
-	}
 }

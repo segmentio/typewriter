@@ -8,6 +8,7 @@ import { Config, validateConfig } from './schema'
 import { validateToken, SegmentAPI } from '../api'
 import { wrapError } from '../commands/error'
 import { runScript, Scripts } from './scripts'
+import { TokenMethod } from '../../analytics/index'
 
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
@@ -99,7 +100,7 @@ export async function getToken(
 export async function getTokenMethod(
 	cfg: Partial<Config> | undefined,
 	configPath: string
-): Promise<string | undefined> {
+): Promise<TokenMethod | undefined> {
 	const token = await getTokenMetadata(cfg, configPath)
 	return token ? token.method : undefined
 }
@@ -126,7 +127,7 @@ export interface ListTokensOutput {
 
 export interface TokenMetadata {
 	token?: string
-	method: 'script' | 'file'
+	method: TokenMethod
 	isValidToken: boolean
 	workspace?: SegmentAPI.Workspace
 }
@@ -140,8 +141,8 @@ export async function listTokens(
 	configPath: string
 ): Promise<ListTokensOutput> {
 	const output: ListTokensOutput = {
-		script: { method: 'script', isValidToken: false },
-		file: { method: 'file', isValidToken: false },
+		script: { method: TokenMethod.Script, isValidToken: false },
+		file: { method: TokenMethod.File, isValidToken: false },
 	}
 
 	// Attempt to read a token from the ~/.typewriter token file.

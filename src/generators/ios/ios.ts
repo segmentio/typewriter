@@ -1,23 +1,23 @@
 import { camelCase, upperFirst } from 'lodash'
 import { Type, Schema } from '../ast'
 import * as Handlebars from 'handlebars'
-import { Generator, BasePropertyContext, GeneratorClient } from '../gen'
+import {
+	Generator,
+	BasePropertyContext,
+	GeneratorClient,
+	ExpectedPropertyContext,
+	ExpectedObjectContext,
+} from '../gen'
 
 // These contexts are what will be passed to Handlebars to perform rendering.
 // Everything in these contexts should be properly sanitized.
 
 interface IOSObjectContext {
-	// The formatted name for this object, ex: "numAvocados
-	name: string
 	// Set of files that need to be imported in this file.
 	imports: string[]
 }
 
 interface IOSPropertyContext {
-	// The formatted name for this property, ex: "numAvocados".
-	name: string
-	// The type of this property. ex: "NSNumber".
-	type: string
 	// Stringified property modifiers. ex: "nonatomic, copy".
 	modifiers: string
 	// Whether the property is nullable (nonnull vs nullable modifier).
@@ -31,12 +31,7 @@ interface IOSPropertyContext {
 	importName?: string
 }
 
-interface IOSTrackCallContext {
-	// The formatted function name, ex: "orderCompleted".
-	functionName: string
-}
-
-export const ios: Generator<{}, IOSTrackCallContext, IOSObjectContext, IOSPropertyContext> = {
+export const ios: Generator<{}, {}, IOSObjectContext, IOSPropertyContext> = {
 	generatePropertiesObject: false,
 	namer: {
 		// See: https://github.com/AnanthaRajuCprojects/Reserved-Key-Words-list-of-various-programming-languages/blob/master/Objective-C%20Reserved%20Words.md
@@ -99,7 +94,7 @@ export const ios: Generator<{}, IOSTrackCallContext, IOSObjectContext, IOSProper
 	},
 	generateObject: async (client, schema, properties, parentPath) => {
 		const property = defaultPropertyContext(client, schema, 'SERIALIZABLE_DICT', parentPath, true)
-		let object: IOSObjectContext | undefined = undefined
+		let object: IOSObjectContext & ExpectedObjectContext | undefined = undefined
 
 		if (properties.length > 0) {
 			// If at least one property is set, generate a class that only allows the explicitely
@@ -171,7 +166,7 @@ function defaultPropertyContext(
 	type: string,
 	namespace: string,
 	isPointerType: boolean
-): IOSPropertyContext {
+): IOSPropertyContext & ExpectedPropertyContext {
 	return {
 		name: client.namer.register(schema.name, namespace, {
 			transform: camelCase,

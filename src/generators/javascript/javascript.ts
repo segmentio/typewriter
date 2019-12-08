@@ -3,7 +3,7 @@ import { camelCase, upperFirst } from 'lodash'
 import * as prettier from 'prettier'
 import { transpileModule } from 'typescript'
 import { Language, SDK } from '../options'
-import { Generator } from '../gen'
+import { Generator, ExpectedPropertyContext, ExpectedEnumContext } from '../gen'
 import { toTarget, toModule } from './targets'
 import { registerPartial } from '../../templates'
 
@@ -17,8 +17,6 @@ interface JavaScriptRootContext {
 
 // Represents a single exposed track() call.
 interface JavaScriptTrackCallContext {
-	// The formatted function name, ex: "orderCompleted".
-	functionName: string
 	// The type of the analytics properties object.
 	propertiesType: string
 	// The properties field is only optional in analytics.js environments where
@@ -26,24 +24,7 @@ interface JavaScriptTrackCallContext {
 	isPropertiesOptional: boolean
 }
 
-interface JavaScriptObjectContext {
-	// The formatted name for this object, ex: "Planet"
-	name: string
-}
-
-interface JavaScriptPropertyContext {
-	// The formatted name for this property, ex: "numAvocados".
-	name: string
-	// The type of this property. ex: "number".
-	type: string
-}
-
-export const javascript: Generator<
-	JavaScriptRootContext,
-	JavaScriptTrackCallContext,
-	JavaScriptObjectContext,
-	JavaScriptPropertyContext
-> = {
+export const javascript: Generator<JavaScriptRootContext, JavaScriptTrackCallContext> = {
 	generatePropertiesObject: true,
 	namer: {
 		// See: https://mathiasbynens.be/notes/reserved-keywords#ecmascript-6
@@ -91,6 +72,27 @@ export const javascript: Generator<
 			name: client.namer.escapeString(schema.name),
 			type,
 		})
+	},
+	generateEnum: async (client, schema) => {
+		const enumTypeName = client.namer.register(schema.name, 'enum', {
+			transform: (name: string) => upperFirst(camelCase(name)),
+		})
+
+		const e: ExpectedEnumContext = {
+			name: enumTypeName,
+			values: [],
+		}
+
+		for (const ev of schema.enum || []) {
+			const value = typeof ev === 'string' ? ev : 'null'
+			const name = client.namer.register(value, schema.name, {
+				transform: (name: string) => upperFirst(camelCase(name)),
+			})
+
+			e.values.push({ name, value })
+		}
+
+		return e
 	},
 	generateArray: async (client, schema, items) =>
 		conditionallyNullable(schema, {
@@ -191,8 +193,8 @@ export const javascript: Generator<
 
 function conditionallyNullable(
 	schema: Schema,
-	property: JavaScriptPropertyContext
-): JavaScriptPropertyContext {
+	property: ExpectedPropertyContext
+): ExpectedPropertyContext {
 	return {
 		...property,
 		type: !!schema.isNullable ? `${property.type} | null` : property.type,

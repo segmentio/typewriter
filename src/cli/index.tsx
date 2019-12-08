@@ -6,7 +6,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'production'
 
 import React, { createContext } from 'react'
 import { render } from 'ink'
-import { Token, Version, Build, Help, Init, ErrorBoundary, wrapError } from './commands'
+import { Token, Version, Build, Help, Init, ErrorBoundary } from './commands'
 import { CLIArguments } from './index'
 import Analytics from 'analytics-node'
 import typewriter from '../analytics'
@@ -14,6 +14,7 @@ import { Config, getConfig, getTokenMethod } from './config'
 import { machineId } from 'node-machine-id'
 import { version } from '../../package.json'
 import { loadTrackingPlan } from './api'
+import { TokenMethod } from '../analytics/index'
 
 export interface StandardProps extends AnalyticsProps {
 	configPath: string
@@ -274,7 +275,7 @@ async function typewriterLibraryProperties(
 ) {
 	// In CI environments, or if there is no internet, we may not be able to execute the
 	// the token script.
-	let tokenMethod = undefined
+	let tokenMethod: TokenMethod | undefined = undefined
 	try {
 		tokenMethod = await getTokenMethod(cfg, args.config)
 	} catch {}

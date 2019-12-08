@@ -33,6 +33,14 @@ export interface {{name}} {
 }
 {{/each}}
 
+{{#each enums}}
+export enum {{name}} {
+	{{#each values}}
+	{{name}} = '{{value}}',
+	{{/each}}
+}
+{{/each}}
+
 export type ViolationHandler = (
 	message: {{#if isBrowser}}Record<string, any>{{else}}Segment.TrackMessage<Record<string, any>>{{/if}},
 	{{!-- Swap the type definitions here so we don't want depend on ajv in production just for this type definition. --}}
