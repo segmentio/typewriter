@@ -33,6 +33,7 @@ export interface JavaScriptOptions {
 export interface TypeScriptOptions {
 	sdk: SDK.WEB | SDK.NODE
 	language: Language.TYPESCRIPT
+	typesOnly?: boolean
 }
 
 export interface ObjectiveCOptions {

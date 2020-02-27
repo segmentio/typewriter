@@ -13,6 +13,7 @@ import { registerPartial } from '../../templates'
 interface JavaScriptRootContext {
 	isBrowser: boolean
 	useProxy: boolean
+	typesOnly: boolean
 }
 
 // Represents a single exposed track() call.
@@ -75,6 +76,9 @@ export const javascript: Generator<
 		return {
 			isBrowser: options.client.sdk === SDK.WEB,
 			useProxy: true,
+			typesOnly: Boolean(
+				options.client.language === Language.TYPESCRIPT && options.client.typesOnly
+			),
 		}
 	},
 	generatePrimitive: async (client, schema) => {
@@ -134,16 +138,27 @@ export const javascript: Generator<
 		isPropertiesOptional: client.options.client.sdk === SDK.WEB && !propertiesObject.isRequired,
 	}),
 	generateRoot: async (client, context) => {
+		const clientOptions = client.options.client
+
+		if (clientOptions.language === Language.TYPESCRIPT && clientOptions.typesOnly === true) {
+			await client.generateFile<JavaScriptRootContext>(
+				'segment.d.ts',
+				'generators/javascript/templates/ambientTypes.hbs',
+				context
+			)
+			return
+		}
+
 		// index.hbs contains all JavaScript client logic.
 		await client.generateFile<JavaScriptRootContext>(
-			client.options.client.language === Language.TYPESCRIPT ? 'index.ts' : 'index.js',
+			clientOptions.language === Language.TYPESCRIPT ? 'index.ts' : 'index.js',
 			'generators/javascript/templates/index.hbs',
 			context
 		)
 
 		// segment.hbs contains the TypeScript definitions for the Segment API.
 		// It becomes an empty file for JavaScript after being transpiled.
-		if (client.options.client.language === Language.TYPESCRIPT) {
+		if (clientOptions.language === Language.TYPESCRIPT) {
 			await client.generateFile<JavaScriptRootContext>(
 				'segment.ts',
 				'generators/javascript/templates/segment.hbs',

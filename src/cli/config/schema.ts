@@ -54,6 +54,7 @@ const ConfigSchema = Joi.object().required().keys({
 	client: Joi.object().required().keys({
 		sdk: Joi.string().required().valid('analytics.js', 'analytics-node', 'analytics-android', 'analytics-ios'),
 		language: Joi.string().required().valid('javascript', 'typescript', 'java', 'swift', 'objective-c'),
+		typesOnly: Joi.boolean().optional()
 	})
 		.when('sdk', {
 			is: Joi.string().valid('analytics.js', 'analytics-node'),
