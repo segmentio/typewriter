@@ -8,11 +8,34 @@
         "description": "Fired after a user's signin attempt fails to pass validation.",
         "name": "Sign In Failed",
         "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "labels": {},
           "properties": {
             "context": {},
-            "properties": {},
-            "traits": {}
-          }
+            "properties": {
+              "properties": {
+                "id": {
+                  "description": "The user's ID.",
+                  "type": "string"
+                },
+                "numAttempts": {
+                  "description": "How many times the user has attempted to sign-in.",
+                  "type": "integer"
+                },
+                "rememberMe": {
+                  "description": "Whether the user has indicated that the browser should store their login credentials.",
+                  "type": "boolean"
+                }
+              },
+              "required": ["id"],
+              "type": "object"
+            },
+            "traits": {
+              "type": "object"
+            }
+          },
+          "required": ["properties"],
+          "type": "object"
         },
         "version": 1
       },
@@ -20,11 +43,33 @@
         "description": "Fired when a user submits a sign in, prior to validating that user's login.",
         "name": "Sign In Submitted",
         "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "labels": {},
           "properties": {
             "context": {},
-            "properties": {},
-            "traits": {}
-          }
+            "properties": {
+              "properties": {
+                "id": {
+                  "description": "The user's ID.",
+                  "type": "string"
+                },
+                "numAttempts": {
+                  "description": "How many times the user has attempted to sign-in.",
+                  "type": "integer"
+                },
+                "rememberMe": {
+                  "description": "Whether the user has indicated that the browser should store their login credentials.",
+                  "type": "boolean"
+                }
+              },
+              "required": ["id"],
+              "type": "object"
+            },
+            "traits": {
+              "type": "object"
+            }
+          },
+          "type": "object"
         },
         "version": 1
       },
@@ -32,11 +77,33 @@
         "description": "Fired when a user successfully submits a sign in, prior to redirecting into the app.",
         "name": "Sign In Succeeded",
         "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "labels": {},
           "properties": {
             "context": {},
-            "properties": {},
-            "traits": {}
-          }
+            "properties": {
+              "properties": {
+                "id": {
+                  "description": "The user's ID.",
+                  "type": "string"
+                },
+                "numAttempts": {
+                  "description": "How many times the user has attempted to sign-in.",
+                  "type": "integer"
+                },
+                "rememberMe": {
+                  "description": "Whether the user has indicated that the browser should store their login credentials.",
+                  "type": "boolean"
+                }
+              },
+              "required": ["id"],
+              "type": "object"
+            },
+            "traits": {
+              "type": "object"
+            }
+          },
+          "type": "object"
         },
         "version": 1
       },
@@ -44,11 +111,33 @@
         "description": "Fired when a user successfully submits a sign in, prior to redirecting into the app.",
         "name": "User Signed Out",
         "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "labels": {},
           "properties": {
             "context": {},
-            "properties": {},
-            "traits": {}
-          }
+            "properties": {
+              "properties": {
+                "id": {
+                  "description": "The user's ID.",
+                  "type": "string"
+                },
+                "numAttempts": {
+                  "description": "How many times the user has attempted to sign-in.",
+                  "type": "integer"
+                },
+                "rememberMe": {
+                  "description": "Whether the user has indicated that the browser should store their login credentials.",
+                  "type": "boolean"
+                }
+              },
+              "required": ["id"],
+              "type": "object"
+            },
+            "traits": {
+              "type": "object"
+            }
+          },
+          "type": "object"
         },
         "version": 1
       }
@@ -56,5 +145,5 @@
     "group_traits": [],
     "identify_traits": []
   },
-  "update_time": "2019-10-21T17:17:16.000Z"
+  "update_time": "2020-03-04T18:20:43.000Z"
 }
