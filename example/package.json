@@ -14,34 +14,26 @@
   },
   "dependencies": {
     "@segment/snippet": "^4.4.0",
-    "@zeit/next-typescript": "1.1.0",
     "evergreen-ui": "^4.17.0",
-    "next": "^7.0.1",
+    "next": "^9.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "request": "^2.88.0",
     "typescript": "^3.0.1"
   },
   "devDependencies": {
-    "@types/next": "^8.0.5",
     "@types/react": "^16.0.36",
     "@types/segment-analytics": "^0.0.31",
     "@types/styled-jsx": "^2.2.3",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.13.1",
-    "jest": "^24.8.0",
     "fork-ts-checker-webpack-plugin": "^0.4.3",
-    "typewriter": "7.0.0-25"
+    "jest": "^24.8.0",
+    "typewriter": "7.0.1"
   },
   "jest": {
     "setupFilesAfterEnv": [
       "<rootDir>tests/setup-tests.js"
-    ]
-  },
-  "babel": {
-    "presets": [
-      "next/babel",
-      "@zeit/next-typescript/babel"
     ]
   }
 }

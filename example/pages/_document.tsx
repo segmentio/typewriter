@@ -1,5 +1,11 @@
 import React from 'react'
-import Document, { Head, Main, NextScript, NextDocumentContext } from 'next/document'
+import Document, {
+	Head,
+	Main,
+	NextScript,
+	DocumentContext,
+	DocumentInitialProps,
+} from 'next/document'
 import { extractStyles } from 'evergreen-ui'
 import * as snippet from '@segment/snippet'
 
@@ -10,7 +16,7 @@ interface Props extends Document {
 
 export default class SSRDoc extends Document<Props> {
 	// Inject Evergreen's styles so that Next can perform SSR with it.
-	public static getInitialProps({ renderPage }: NextDocumentContext) {
+	public static getInitialProps({ renderPage }: DocumentContext): Promise<DocumentInitialProps> {
 		const page = renderPage()
 		const { css, hydrationScript } = extractStyles()
 
@@ -18,7 +24,7 @@ export default class SSRDoc extends Document<Props> {
 			...page,
 			css,
 			hydrationScript,
-		}
+		} as any
 	}
 
 	public render() {

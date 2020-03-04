@@ -55,4 +55,5 @@ class HomeComponent extends React.Component<Props> {
 	}
 }
 
-export const Home = withRouter(HomeComponent)
+// HOCs are a pain. any = temporary fix.
+export const Home: React.FC<Props> = withRouter(HomeComponent as any) as any
