@@ -1,3 +1,12 @@
+## [6.1.6](https://github.com/segmentio/typewriter/compare/6.1.5...6.1.6) (2020-03-18)
+
+
+### Bug Fixes
+
+* import com.segment.analytics.Properties in generated Android… ([#58](https://github.com/segmentio/typewriter/issues/58)) ([0f27886](https://github.com/segmentio/typewriter/commit/0f27886))
+
+
+
 ## [6.1.5](https://github.com/segmentio/typewriter/compare/6.1.4...6.1.5) (2019-08-15)
 
 
