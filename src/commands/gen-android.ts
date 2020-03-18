@@ -130,18 +130,13 @@ class AnalyticsJavaWrapperRenderer extends JavaRenderer {
         // TODO: there may be a more elegant way to do this, s.t. T satisfies Properties and
         // therefore does not need to be type-cast. Doing so may unlock a more elegant way to
         // support List<List<...>> which won't currently work but are extremely rare in practice.
-        if (p.type instanceof ArrayType) {
+        if (p.type instanceof ArrayType && type !== 'List<Properties>') {
           const innerType = this.javaType(false, p.type.items, true)
-          if (innerType !== 'Object') {
-            // In this case, it's already a List<Properties>
-            this.emitLine(['List<Properties> p = new ArrayList<>();'])
-            this.emitBlock(['for (', innerType, ' elem : ', name, ')'], () => {
-              this.emitLine(['p.add(elem.toProperties());'])
-            })
-            this.emitLine(['properties.putValue("', jsonName, '", p);'])
-          } else {
-            this.emitLine(['properties.putValue("', jsonName, '", ', name, ');'])
-          }
+          this.emitLine(['List<Properties> p = new ArrayList<>();'])
+          this.emitBlock(['for (', innerType, ' elem : ', name, ')'], () => {
+            this.emitLine(['p.add(elem.toProperties());'])
+          })
+          this.emitLine(['properties.putValue("', jsonName, '", p);'])
         } else {
           this.emitLine(['properties.putValue("', jsonName, '", ', name, ');'])
         }

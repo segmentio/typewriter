@@ -43,7 +43,11 @@ public final class ExampleEvent {
          * This property is optional and not required to generate a valid ExampleEvent object
          */
         public Builder optionalArray(final @NonNull List<OptionalArray> optionalArray) {
-            properties.putValue("optional array", optionalArray);
+            List<Properties> p = new ArrayList<>();
+            for (OptionalArray elem : optionalArray) {
+                p.add(elem.toProperties());
+            }
+            properties.putValue("optional array", p);
             return this;
         }
 
@@ -149,7 +153,11 @@ public final class ExampleEvent {
          * This property is required to generate a valid ExampleEvent object
          */
         public Builder requiredArray(final @NonNull List<RequiredArray> requiredArray) {
-            properties.putValue("required array", requiredArray);
+            List<Properties> p = new ArrayList<>();
+            for (RequiredArray elem : requiredArray) {
+                p.add(elem.toProperties());
+            }
+            properties.putValue("required array", p);
             return this;
         }
 
