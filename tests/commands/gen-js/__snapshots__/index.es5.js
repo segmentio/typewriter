@@ -48,7 +48,7 @@ var Analytics = /** @class */ (function() {
     return __assign({}, context, {
       typewriter: {
         name: "gen-js",
-        version: "6.1.5"
+        version: "6.1.6"
       }
     });
   };
