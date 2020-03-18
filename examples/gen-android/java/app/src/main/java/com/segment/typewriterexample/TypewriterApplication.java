@@ -5,7 +5,7 @@ import android.app.Application;
 import com.segment.analytics.Analytics;
 
 public class TypewriterApplication extends Application {
-    private static final String SEGMENT_WRITE_KEY = "51GMfJ49iiQQPmzj227krjW9ch9gKpMx";
+    private static final String SEGMENT_WRITE_KEY = "pEs0uKdfjusnFHnTuJyZhV9oX7BqqVeW";
 
     @Override
     public void onCreate() {

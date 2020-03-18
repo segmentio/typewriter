@@ -7,9 +7,9 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.segment.analytics.Analytics;
-import com.segment.analytics.KicksAppAnalytics;
-import com.segment.analytics.OrderCompleted;
-import com.segment.analytics.Product;
+import com.segment.generated.KicksAppAnalytics;
+import com.segment.generated.OrderCompleted;
+import com.segment.generated.Product;
 
 import java.util.ArrayList;
 import java.util.List;

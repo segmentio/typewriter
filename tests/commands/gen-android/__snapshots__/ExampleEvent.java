@@ -2,6 +2,7 @@
 package com.segment.analytics;
 
 import java.util.*;
+import com.segment.analytics.Properties;
 import android.support.annotation.NonNull;
 
 public final class ExampleEvent {
@@ -42,7 +43,11 @@ public final class ExampleEvent {
          * This property is optional and not required to generate a valid ExampleEvent object
          */
         public Builder optionalArray(final @NonNull List<OptionalArray> optionalArray) {
-            properties.putValue("optional array", optionalArray);
+            List<Properties> p = new ArrayList<>();
+            for (OptionalArray elem : optionalArray) {
+                p.add(elem.toProperties());
+            }
+            properties.putValue("optional array", p);
             return this;
         }
 
@@ -50,7 +55,7 @@ public final class ExampleEvent {
          * Optional array (empty) property
          * This property is optional and not required to generate a valid ExampleEvent object
          */
-        public Builder optionalArrayEmpty(final @NonNull List<Object> optionalArrayEmpty) {
+        public Builder optionalArrayEmpty(final @NonNull List<Properties> optionalArrayEmpty) {
             properties.putValue("optional array (empty)", optionalArrayEmpty);
             return this;
         }
@@ -148,7 +153,11 @@ public final class ExampleEvent {
          * This property is required to generate a valid ExampleEvent object
          */
         public Builder requiredArray(final @NonNull List<RequiredArray> requiredArray) {
-            properties.putValue("required array", requiredArray);
+            List<Properties> p = new ArrayList<>();
+            for (RequiredArray elem : requiredArray) {
+                p.add(elem.toProperties());
+            }
+            properties.putValue("required array", p);
             return this;
         }
 
@@ -156,7 +165,7 @@ public final class ExampleEvent {
          * Required array (empty) property
          * This property is required to generate a valid ExampleEvent object
          */
-        public Builder requiredArrayEmpty(final @NonNull List<Object> requiredArrayEmpty) {
+        public Builder requiredArrayEmpty(final @NonNull List<Properties> requiredArrayEmpty) {
             properties.putValue("required array (empty)", requiredArrayEmpty);
             return this;
         }

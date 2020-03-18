@@ -11,9 +11,9 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "yarn.lock" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
       - run: yarn install --frozen-lockfile
       - save_cache:
           paths:
@@ -22,22 +22,13 @@ jobs:
       - persist_to_workspace:
           root: .
           paths: [.]
-  
+
   build:
     docker:
       - image: circleci/node:8.11
     steps:
       - attach_workspace: { at: . }
       - run: yarn build
-
-  snyk:
-    docker:
-      - image: circleci/node:8.11
-    steps:
-      - attach_workspace: { at: . }
-      - run:
-          name: Snyk Setup
-          command: curl -sL https://raw.githubusercontent.com/segmentio/snyk_helpers/master/initialization/snyk.sh | sh
 
   lint:
     docker:
@@ -59,9 +50,6 @@ workflows:
     jobs:
       - setup
       - build:
-          requires: [setup]
-      - snyk:
-          context: snyk
           requires: [setup]
       - lint:
           requires: [setup]

@@ -7,7 +7,9 @@ import {
   Name,
   TargetLanguage,
   Sourcelike,
-  ObjectType
+  ObjectType,
+  Type,
+  ArrayType
 } from 'quicktype-core'
 
 import { modifySource, SerializedRenderResult } from 'quicktype-core/dist/Source'
@@ -122,7 +124,23 @@ class AnalyticsJavaWrapperRenderer extends JavaRenderer {
       ])
       const type = this.javaType(true, p.type)
       this.emitBlock(['public Builder ', name, '(final @NonNull ', type, ' ', name, ')'], () => {
-        this.emitLine(['properties.putValue("', jsonName, '", ', name, ');'])
+        // We need to convert 'List<T>' -> `List<Properties>` so that they will be serialized
+        // as objects rather than just toString-ed (aka "com.segment.generated.Product@ab42ba").
+        //
+        // TODO: there may be a more elegant way to do this, s.t. T satisfies Properties and
+        // therefore does not need to be type-cast. Doing so may unlock a more elegant way to
+        // support List<List<...>> which won't currently work but are extremely rare in practice.
+        if (p.type instanceof ArrayType && type !== 'List<Properties>') {
+          const innerType = this.javaType(false, p.type.items, true)
+          this.emitLine(['List<Properties> p = new ArrayList<>();'])
+          this.emitBlock(['for (', innerType, ' elem : ', name, ')'], () => {
+            this.emitLine(['p.add(elem.toProperties());'])
+          })
+          this.emitLine(['properties.putValue("', jsonName, '", p);'])
+        } else {
+          this.emitLine(['properties.putValue("', jsonName, '", ', name, ');'])
+        }
+
         this.emitLine('return this;')
       })
     })
@@ -195,7 +213,10 @@ class AnalyticsJavaWrapperRenderer extends JavaRenderer {
   }
 
   protected emitClassDefinition(c: ClassType, className: Name): void {
-    this.emitFileHeader(className, ['android.support.annotation.NonNull'])
+    this.emitFileHeader(className, [
+      'com.segment.analytics.Properties',
+      'android.support.annotation.NonNull'
+    ])
     // TODO: Emit class description, once we support top-level event descriptions in JSON Schema
     // this.emitDescription(this.descriptionForType(c));
     this.emitClassAttributes(c, className)
@@ -205,6 +226,25 @@ class AnalyticsJavaWrapperRenderer extends JavaRenderer {
       this.emitClassBuilderDefinition(c, className)
     })
     this.finishFile()
+  }
+
+  /**
+   * Note: we override javaType in order to handle the special case of converting a
+   * `List<Object>` -> `List<Properties>`. We need this because Properties will serialize a List<Object>
+   * using the toString method on each Object, so it prevents users from supplying nested objects.
+   * By forcing users to use Properties, we force them to serialize subproperties as Strings.
+   *
+   * This also handles Objects that appear as properties, or recursively as List<List<...<Object>...>>.
+   */
+  protected javaType(reference: boolean, t: Type, withIssues: boolean = false): Sourcelike {
+    if (t instanceof ArrayType) {
+      const javaType = this.javaType(false, t.items, withIssues)
+      if (javaType === 'Object') {
+        return 'List<Properties>'
+      }
+    }
+
+    return super.javaType(reference, t, withIssues)
   }
 
   protected emitAnalyticsEventWrapper(
@@ -254,6 +294,7 @@ class AnalyticsJavaWrapperRenderer extends JavaRenderer {
     this.emitFileHeader(className, [
       'com.segment.analytics.Analytics',
       'com.segment.analytics.Options',
+      'com.segment.analytics.Properties',
       'android.content.Context',
       'android.support.annotation.NonNull',
       'android.support.annotation.Nullable'

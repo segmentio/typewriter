@@ -81,3 +81,5 @@ package-lock.json
 examples/local-tracking-plans/*
 !examples/local-tracking-plans/tracking-plan.json
 !examples/local-tracking-plans/tracking-plan-slothgram.json
+
+tmp
