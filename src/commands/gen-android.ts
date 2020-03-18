@@ -124,7 +124,24 @@ class AnalyticsJavaWrapperRenderer extends JavaRenderer {
       ])
       const type = this.javaType(true, p.type)
       this.emitBlock(['public Builder ', name, '(final @NonNull ', type, ' ', name, ')'], () => {
-        this.emitLine(['properties.putValue("', jsonName, '", ', name, ');'])
+        // We need to convert 'List<T>' -> `List<Properties>` so that they will be serialized
+        // as objects rather than just toString-ed (aka "com.segment.generated.Product@ab42ba").
+        //
+        // TODO: there may be a more elegant way to do this, s.t. T satisfies Properties and
+        // therefore does not need to be type-cast. Doing so may unlock a more elegant way to
+        // support List<List<...>> which won't currently work but are extremely rare in practice.
+        if (p.type instanceof ArrayType) {
+          const innerType = this.javaType(false, p.type.items, true)
+
+          this.emitLine(['List<Properties> p = new ArrayList<>();'])
+          this.emitBlock(['for (', innerType, ' elem : ', name, ')'], () => {
+            this.emitLine(['p.add(elem.toProperties());'])
+          })
+          this.emitLine(['properties.putValue("', jsonName, '", p);'])
+        } else {
+          this.emitLine(['properties.putValue("', jsonName, '", ', name, ');'])
+        }
+
         this.emitLine('return this;')
       })
     })

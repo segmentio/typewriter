@@ -88,7 +88,11 @@ public final class OrderCompleted {
          * This property is optional and not required to generate a valid OrderCompleted object
          */
         public Builder products(final @NonNull List<Product> products) {
-            properties.putValue("products", products);
+            List<Properties> p = new ArrayList<>();
+            for (Product elem : products) {
+                p.add(elem.toProperties());
+            }
+            properties.putValue("products", p);
             return this;
         }
 
