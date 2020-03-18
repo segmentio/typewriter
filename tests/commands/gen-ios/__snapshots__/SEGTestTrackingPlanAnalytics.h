@@ -53,11 +53,11 @@ typedef void (^ SEGThe42_TerribleEventName3BuilderBlock)(SEGThe42_TerribleEventN
 /// Optional boolean property
 @property (nonatomic, nullable, assign) NSNumber *isOptionalBoolean;
 /// Optional integer property
-@property (nonatomic, nullable, assign) NSNumber *optionalInt;
-@property (nonatomic, nullable, copy)   NSString *optionalNullableString;
+@property (nonatomic, nullable, copy) NSNumber *optionalInt;
+@property (nonatomic, nullable, copy) NSString *optionalNullableString;
 /// Optional number property
-@property (nonatomic, nullable, assign) NSNumber *optionalNumber;
-@property (nonatomic, nullable, copy)   id optionalNumberOrString;
+@property (nonatomic, nullable, copy) NSNumber *optionalNumber;
+@property (nonatomic, nullable, copy) id optionalNumberOrString;
 /// Optional object property
 @property (nonatomic, nullable, strong) SEGOptionalObject *optionalObject;
 /// Optional object (empty) property
@@ -75,11 +75,11 @@ typedef void (^ SEGThe42_TerribleEventName3BuilderBlock)(SEGThe42_TerribleEventN
 /// Required boolean property
 @property (nonatomic, assign) NSNumber *isRequiredBoolean;
 /// Required integer property
-@property (nonatomic, assign) NSNumber *requiredInt;
-@property (nonatomic, copy)   NSString *requiredNullableString;
+@property (nonatomic, copy) NSNumber *requiredInt;
+@property (nonatomic, copy) NSString *requiredNullableString;
 /// Required number property
-@property (nonatomic, assign) NSNumber *requiredNumber;
-@property (nonatomic, copy)   id requiredNumberOrString;
+@property (nonatomic, copy) NSNumber *requiredNumber;
+@property (nonatomic, copy) id requiredNumberOrString;
 /// Required object property
 @property (nonatomic, strong) SEGRequiredObject *requiredObject;
 /// Required object (empty) property
@@ -102,11 +102,11 @@ typedef void (^ SEGExampleEventBuilderBlock)(SEGExampleEventBuilder *);
 /// Optional boolean property
 @property (nonatomic, nullable, assign) NSNumber *isOptionalBoolean;
 /// Optional integer property
-@property (nonatomic, nullable, assign) NSNumber *optionalInt;
-@property (nonatomic, nullable, copy)   NSString *optionalNullableString;
+@property (nonatomic, nullable, copy) NSNumber *optionalInt;
+@property (nonatomic, nullable, copy) NSString *optionalNullableString;
 /// Optional number property
-@property (nonatomic, nullable, assign) NSNumber *optionalNumber;
-@property (nonatomic, nullable, copy)   id optionalNumberOrString;
+@property (nonatomic, nullable, copy) NSNumber *optionalNumber;
+@property (nonatomic, nullable, copy) id optionalNumberOrString;
 /// Optional object property
 @property (nonatomic, nullable, strong) SEGOptionalObject *optionalObject;
 /// Optional object (empty) property
@@ -124,11 +124,11 @@ typedef void (^ SEGExampleEventBuilderBlock)(SEGExampleEventBuilder *);
 /// Required boolean property
 @property (nonatomic, assign) NSNumber *isRequiredBoolean;
 /// Required integer property
-@property (nonatomic, assign) NSNumber *requiredInt;
-@property (nonatomic, copy)   NSString *requiredNullableString;
+@property (nonatomic, copy) NSNumber *requiredInt;
+@property (nonatomic, copy) NSString *requiredNullableString;
 /// Required number property
-@property (nonatomic, assign) NSNumber *requiredNumber;
-@property (nonatomic, copy)   id requiredNumberOrString;
+@property (nonatomic, copy) NSNumber *requiredNumber;
+@property (nonatomic, copy) id requiredNumberOrString;
 /// Required object property
 @property (nonatomic, strong) SEGRequiredObject *requiredObject;
 /// Required object (empty) property

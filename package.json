@@ -1,6 +1,6 @@
 {
   "name": "typewriter",
-  "version": "6.1.3",
+  "version": "6.1.5",
   "description": "A compiler for generating strongly typed analytics clients from JSON Schema",
   "keywords": [
     "analytics",
@@ -39,7 +39,6 @@
   "scripts": {
     "start": "node ./dist/src/index.js",
     "test": "jest",
-    "update-snapshots": "jest -u",
     "watch": "tsc -w",
     "build": "rm -rf dist && tsc",
     "prepare": "yarn run build",
