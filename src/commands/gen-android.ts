@@ -215,7 +215,7 @@ class AnalyticsJavaWrapperRenderer extends JavaRenderer {
   protected emitClassDefinition(c: ClassType, className: Name): void {
     this.emitFileHeader(className, [
       'com.segment.analytics.Properties',
-      'android.support.annotation.NonNull'
+      'androidx.annotation.NonNull'
     ])
     // TODO: Emit class description, once we support top-level event descriptions in JSON Schema
     // this.emitDescription(this.descriptionForType(c));
@@ -296,8 +296,8 @@ class AnalyticsJavaWrapperRenderer extends JavaRenderer {
       'com.segment.analytics.Options',
       'com.segment.analytics.Properties',
       'android.content.Context',
-      'android.support.annotation.NonNull',
-      'android.support.annotation.Nullable'
+      'androidx.annotation.NonNull',
+      'androidx.annotation.Nullable'
     ])
     this.emitBlock(['public class ', className], () => {
       this.emitLine('private Analytics analytics;')

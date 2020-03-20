@@ -3,7 +3,7 @@ package com.segment.generated;
 
 import java.util.*;
 import com.segment.analytics.Properties;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public final class OrderCompleted {
     private Properties properties;
