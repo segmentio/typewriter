@@ -14,7 +14,7 @@ export default class Analytics {
       ...context,
       typewriter: {
         name: "gen-js",
-        version: "6.1.7"
+        version: "6.1.8"
       }
     };
   }
