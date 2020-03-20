@@ -9,7 +9,6 @@
 /build
 /captures
 .externalNativeBuild
-gradle.properties
 build/
 .classpath
 .project
