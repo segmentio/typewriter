@@ -10,7 +10,6 @@ interface AndroidObjectContext {
 	// The formatted name for this object, ex: "numAvocados
 	name: string
 	// Set of files that need to be imported in this file.
-	imports: string[]
 }
 
 interface AndroidPropertyContext {
@@ -67,13 +66,30 @@ export const android: Generator<
 
 		return defaultPropertyContext(client, schema, type, parentPath)
 	},
-	generateArray: async (client, schema, items, _parentPath) => {
-		console.log('GENERATE_ARRAY', [schema, items])
-		return ({} as unknown) as Promise<AndroidPropertyContext>
+	generateArray: async (client, schema, items, parentPath) => {
+		return {
+			...defaultPropertyContext(client, schema, `List<${items.type}>`, parentPath),
+		}
 	},
-	// @ts-ignore
-	generateObject: async (client, schema, properties, _parentPath) => {
-		console.log('GENERATE_OBJECT', [schema, properties])
+	generateObject: async (client, schema, properties, parentPath) => {
+		const property = defaultPropertyContext(client, schema, 'Object', parentPath)
+		let object: AndroidObjectContext | undefined = undefined
+
+		if (properties.length > 0) {
+			// If at least one property is set, generate a class that only allows the explicitely
+			// allowed properties.
+			const className = client.namer.register(schema.name, 'class', {
+				transform: (name: string) => {
+					return `SEG${upperFirst(camelCase(name))}`
+				},
+			})
+			property.type = className
+			object = {
+				name: className,
+			}
+		}
+
+		return { property, object }
 	},
 	generateUnion: async (client, schema, _, parentPath) => {
 		// TODO: support unions in iOS
@@ -99,7 +115,6 @@ function defaultPropertyContext(
 	type: string,
 	namespace: string
 ): AndroidPropertyContext {
-	console.log('in default property context', [schema, type, namespace])
 	return {
 		name: client.namer.register(schema.name, namespace, {
 			transform: camelCase,
@@ -112,25 +127,6 @@ function defaultPropertyContext(
 }
 
 // Handlebars partials
-
-// function generateFunctionSignature(
-// 	functionName: string,
-// 	properties: (BasePropertyContext & AndroidPropertyContext)[],
-// 	withOptions: boolean,
-// ): string {
-// 	let signature = functionName
-// 	const parameters: {
-// 		type: string
-// 		name: string
-// 		isVariableNullable: boolean
-// 	}[] = [...properties]
-// 	if (withOptions) {
-// 		parameters.push({
-// 			name: 'options',
-// 			type: 'SERIALIZABLE_DICT',
-// 			isVariableNullable: true,
-// 		})
-// 	}
 
 // 	const withNullability = (property: {
 // 		type: string
@@ -187,56 +183,6 @@ function defaultPropertyContext(
 // 	}
 
 // 	return `[${caller} ${functionCall.trim()}];`
-// }
-
-// function generatePropertiesDictionary(
-// 	properties: (BasePropertyContext & IOSPropertyContext)[],
-// 	prefix?: string,
-// ): string {
-// 	let out =
-// 		'NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];\n'
-// 	for (let property of properties) {
-// 		const name =
-// 			prefix && prefix.length > 0 ? `${prefix}${property.name}` : property.name
-// 		const serializableName =
-// 			property.schemaType === Type.BOOLEAN
-// 				? property.isPointerType
-// 					? name
-// 					: `[NSNumber numberWithBool:${name}]`
-// 				: property.schemaType === Type.INTEGER
-// 				? property.isPointerType
-// 					? name
-// 					: `[NSNumber numberWithInteger:${name}]`
-// 				: property.schemaType === Type.OBJECT &&
-// 				  !property.type.includes('SERIALIZABLE_DICT')
-// 				? `[${name} toDictionary]`
-// 				: property.schemaType === Type.ARRAY
-// 				? `[SEGTypewriterUtils toSerializableArray:${name}]`
-// 				: name
-
-// 		let setter: string
-// 		if (property.isPointerType) {
-// 			if (property.isPayloadFieldNullable) {
-// 				// If the value is nil, we need to convert it from a primitive nil to NSNull (an object).
-// 				setter = `properties[@"${
-// 					property.rawName
-// 				}"] = ${name} == nil ? [NSNull null] : ${serializableName};\n`
-// 			} else {
-// 				// If the property is not nullable, but is a pointer, then we need to guard on nil
-// 				// values. In that case, we don't set any value to the field.
-// 				// TODO: do we need these guards if we've already set a field as nonnull? TBD
-// 				setter = `if (${name} != nil) {\n  properties[@"${
-// 					property.rawName
-// 				}"] = ${serializableName};\n}\n`
-// 			}
-// 		} else {
-// 			setter = `properties[@"${property.rawName}"] = ${serializableName};\n`
-// 		}
-
-// 		out += setter
-// 	}
-
-// 	return out
 // }
 
 // // Render `NSString *foo` not `NSString * foo` and `BOOL foo` not `BOOLfoo` or `BOOL  foo` by doing:

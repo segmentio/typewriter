@@ -37,8 +37,8 @@ properties = new Properties();
 *{{description}}
 */
 {{/if}}
-public Builder {{name}}({{modifiers}} {{type}} props) {
-properties.putValue({{name}}, props)
+public Builder {{name}}({{modifiers}} {{type}} {{name}}) {
+properties.putValue({{name}}, props);
 }
 {{/each}}
 
