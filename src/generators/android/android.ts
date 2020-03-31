@@ -34,7 +34,7 @@ interface AndroidTrackCallContext {
 	functionName: string
 }
 
-export const ios: Generator<
+export const android: Generator<
 	{},
 	AndroidTrackCallContext,
 	AndroidObjectContext,
@@ -49,15 +49,35 @@ export const ios: Generator<
 		allowedIdentifierStartingChars: 'A-Za-z_$',
 		allowedIdentifierChars: 'A-Za-z0-9_$',
 	},
-	setup: async () => {
-		return {}
+	setup: () => {
+		return Promise.resolve({})
 	},
-	generatePrimitive: async (client, schema, parentPath) => {},
-	generateArray: async (client, schema, items, parentPath) => {},
-	generateObject: async (client, schema, properties, parentPath) => {},
+	generatePrimitive: async (client, schema, parentPath) => {
+		let type = 'id'
+
+		if (schema.type === Type.STRING) {
+			type = 'String'
+		} else if (schema.type === Type.BOOLEAN) {
+			type = 'boolean'
+		} else if (schema.type === Type.INTEGER) {
+			type = 'int'
+		} else if (schema.type === Type.NUMBER) {
+			type = 'double'
+		}
+
+		return defaultPropertyContext(client, schema, type, parentPath)
+	},
+	generateArray: async (client, schema, items, _parentPath) => {
+		console.log('GENERATE_ARRAY', [schema, items])
+		return ({} as unknown) as Promise<AndroidPropertyContext>
+	},
+	// @ts-ignore
+	generateObject: async (client, schema, properties, _parentPath) => {
+		console.log('GENERATE_OBJECT', [schema, properties])
+	},
 	generateUnion: async (client, schema, _, parentPath) => {
 		// TODO: support unions in iOS
-		return defaultPropertyContext(client, schema, 'id', parentPath, true)
+		return defaultPropertyContext(client, schema, 'id', parentPath)
 	},
 	generateTrackCall: async (client, schema) => ({
 		functionName: client.namer.register(schema.name, 'function->track', {
@@ -67,11 +87,7 @@ export const ios: Generator<
 	generateRoot: async (client, context) => {
 		await Promise.all([
 			...context.objects.map(o =>
-				client.generateFile(
-					`${o.name}.java`,
-					'generators/android/templates/class.java.hbs',
-					o,
-				),
+				client.generateFile(`${o.name}.java`, 'generators/android/templates/class.java.hbs', o)
 			),
 		])
 	},
@@ -81,8 +97,9 @@ function defaultPropertyContext(
 	client: GeneratorClient,
 	schema: Schema,
 	type: string,
-	namespace: string,
+	namespace: string
 ): AndroidPropertyContext {
+	console.log('in default property context', [schema, type, namespace])
 	return {
 		name: client.namer.register(schema.name, namespace, {
 			transform: camelCase,

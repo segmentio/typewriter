@@ -2,6 +2,7 @@ import { JSONSchema7 } from 'json-schema'
 import { parse, Schema, getPropertiesSchema, Type } from './ast'
 import { javascript } from './javascript'
 import { ios } from './ios'
+import { android } from './android'
 import { Options, SDK } from './options'
 import { registerStandardHelpers, generateFromTemplate } from '../templates'
 import { Namer, Options as NamerOptions } from './namer'
@@ -146,7 +147,6 @@ export async function gen(trackingPlan: RawTrackingPlan, options: GenOptions): P
 				$schema: 'http://json-schema.org/draft-07/schema#',
 				...s,
 			}
-
 			return {
 				raw: sanitizedSchema,
 				schema: parse(sanitizedSchema),
@@ -158,6 +158,8 @@ export async function gen(trackingPlan: RawTrackingPlan, options: GenOptions): P
 		return await runGenerator(javascript, parsedTrackingPlan, options)
 	} else if (options.client.sdk === SDK.IOS) {
 		return await runGenerator(ios, parsedTrackingPlan, options)
+	} else if (options.client.sdk === SDK.ANDROID) {
+		return await runGenerator(android, parsedTrackingPlan, options)
 	} else {
 		throw new Error(`Invalid SDK: ${options.client.sdk}`)
 	}
@@ -220,7 +222,6 @@ async function runGenerator<R extends object, T extends object, O extends object
 			description: schema.description,
 			isRequired: !!schema.isRequired,
 		}
-
 		let p: P
 		if ([Type.ANY, Type.STRING, Type.BOOLEAN, Type.INTEGER, Type.NUMBER].includes(schema.type)) {
 			// Primitives are any type that doesn't require generating a "subtype".
@@ -279,7 +280,6 @@ async function runGenerator<R extends object, T extends object, O extends object
 			...p,
 		}
 	}
-
 	// Generate Track Calls.
 	for (const { raw, schema } of trackingPlan.trackCalls) {
 		let t: T
@@ -306,7 +306,6 @@ async function runGenerator<R extends object, T extends object, O extends object
 			...t,
 		})
 	}
-
 	// Perform any root-level generation.
 	await generator.generateRoot(client, context)
 

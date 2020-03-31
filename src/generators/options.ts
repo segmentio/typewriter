@@ -3,6 +3,7 @@ export enum SDK {
 	WEB = 'analytics.js',
 	NODE = 'analytics-node',
 	IOS = 'analytics-ios',
+	ANDROID = 'analytics-android',
 }
 
 // Which language to generate clients for.
@@ -11,6 +12,7 @@ export enum Language {
 	TYPESCRIPT = 'typescript',
 	OBJECTIVE_C = 'objective-c',
 	SWIFT = 'swift',
+	JAVA = 'java',
 }
 
 export interface JavaScriptOptions {
@@ -45,4 +47,14 @@ export interface SwiftOptions {
 	language: Language.SWIFT
 }
 
-export type Options = JavaScriptOptions | TypeScriptOptions | ObjectiveCOptions | SwiftOptions
+export interface JavaOptions {
+	sdk: SDK.ANDROID
+	language: Language.JAVA
+}
+
+export type Options =
+	| JavaScriptOptions
+	| TypeScriptOptions
+	| ObjectiveCOptions
+	| SwiftOptions
+	| JavaOptions
