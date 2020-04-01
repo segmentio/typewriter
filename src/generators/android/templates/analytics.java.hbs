@@ -12,21 +12,25 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
-public class {{name}}Analytics {
-private Analytics analytics;
+public class SEGTypewriterAnalytics {
+  private Analytics analytics;
+
+  public SEGTypewriterAnalytics(final @NonNull Analytics analytics) {
+    this.analytics = analytics;
+  }
 
 {{#each tracks}}
 {{!-- TODO: add callsite with no props --}}
-{{#if description}}
-/// {{description}}
-{{/if}}
-+ (void){{functionSignature functionName properties false}};
+  {{#if functionDescription}}
+  // {{functionDescription}}
+  {{/if}}
+  {{functionSignature this false}} {{functionExecution this false}};
 
-{{#if description}}
-/// {{description}}
-{{!-- TODO: description of what options are --}}
-{{/if}}
-+ (void){{functionSignature functionName properties true}};
-
+  {{#if functionDescription}}
+  // {{functionDescription}}
+  {{!-- TODO: description of what options are --}}
+  {{/if}}
+  {{functionSignature this true}} {{functionExecution this true}};
+  
 {{/each}}
 }

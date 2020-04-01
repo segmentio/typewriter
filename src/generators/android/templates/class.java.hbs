@@ -6,47 +6,52 @@ package com.segment.generated;
 import java.util.*;
 import com.segment.analytics.Properties;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public final class {{name}} {
-private Properties properties;
+  private Properties properties;
 
-private {{name}}(Properties properties) {
-this.properties = properties;
-}
+  private {{name}}(Properties properties) {
+    this.properties = properties;
+  }
 
-protected Properties toProperties() {
-return properties;
-}
+  protected Properties toProperties() {
+    return properties;
+  }
 
-/**
-* Builder for {@link {{name}}}
-*/
-public static class Builder {
-private Properties properties;
+  /**
+  * Builder for {@link {{name ~}} }
+  */
+  public static class Builder {
+    private Properties properties;
 
-/**
-* Builder for {@link {{name}}}
-*/
-public Builder() {
-properties = new Properties();
-}
+    /**
+    * Builder for {@link {{name ~}} }
+    */
+    public Builder() {
+      properties = new Properties();
+    }
 
-{{#each properties}}
-{{#if description}}
-/**
-*{{description}}
-*/
-{{/if}}
-public Builder {{name}}({{modifiers}} {{type}} {{name}}) {
-properties.putValue({{name}}, props);
-}
-{{/each}}
+  {{#each properties}}
+    {{#if description}}
+    /**
+     * {{description}}
+     */
+    {{/if}}
+    {{builderSignature name modifiers type}} {{builderExecution name rawName modifiers type}}
+    
+  {{/each}}
 
-/**
-* Build an instance of {@link {{name}}}
-*/
-public {{name}} build() {
-return new {{name}}(properties);
-}
-}
+    /**
+    * Build an instance of {@link {{name ~}} }
+    */
+    public {{name}} build() {
+      {{#each required}}
+      if (properties.get("{{rawName}}") == null) {
+        throw new IllegalArgumentException("{{../name}} missing required property: {{rawName}}");
+      }
+      {{/each}}
+      return new {{name}}(properties);
+    }
+  }
 }

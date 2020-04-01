@@ -9,6 +9,7 @@ import { Generator, BasePropertyContext, GeneratorClient } from '../gen'
 interface AndroidObjectContext {
 	// The formatted name for this object, ex: "numAvocados
 	name: string
+	required: (AndroidPropertyContext & BasePropertyContext)[] | []
 	// Set of files that need to be imported in this file.
 }
 
@@ -33,13 +34,22 @@ interface AndroidTrackCallContext {
 	functionName: string
 }
 
+enum StringifiedType {
+	Properties = 'Properties',
+}
+
+enum Modifier {
+	FinalNullable = 'final @Nullable',
+	FinalNonNullable = 'final @NonNull',
+}
+
 export const android: Generator<
 	{},
 	AndroidTrackCallContext,
 	AndroidObjectContext,
 	AndroidPropertyContext
 > = {
-	generatePropertiesObject: false,
+	generatePropertiesObject: true,
 	namer: {
 		// See: https://github.com/AnanthaRajuCprojects/Reserved-Key-Words-list-of-various-programming-languages/blob/master/Objective-C%20Reserved%20Words.md
 		// prettier-ignore
@@ -48,8 +58,12 @@ export const android: Generator<
 		allowedIdentifierStartingChars: 'A-Za-z_$',
 		allowedIdentifierChars: 'A-Za-z0-9_$',
 	},
-	setup: () => {
-		return Promise.resolve({})
+	setup: async () => {
+		Handlebars.registerHelper('functionSignature', generateFunctionSignature)
+		Handlebars.registerHelper('functionExecution', generateFunctionExecution)
+		Handlebars.registerHelper('builderSignature', generateBuilderFunctionSignature)
+		Handlebars.registerHelper('builderExecution', generateBuilderFunctionBody)
+		return {}
 	},
 	generatePrimitive: async (client, schema, parentPath) => {
 		let type = 'id'
@@ -57,11 +71,11 @@ export const android: Generator<
 		if (schema.type === Type.STRING) {
 			type = 'String'
 		} else if (schema.type === Type.BOOLEAN) {
-			type = 'boolean'
+			type = 'Boolean'
 		} else if (schema.type === Type.INTEGER) {
-			type = 'int'
+			type = 'Integer'
 		} else if (schema.type === Type.NUMBER) {
-			type = 'double'
+			type = 'Double'
 		}
 
 		return defaultPropertyContext(client, schema, type, parentPath)
@@ -73,26 +87,28 @@ export const android: Generator<
 	},
 	generateObject: async (client, schema, properties, parentPath) => {
 		const property = defaultPropertyContext(client, schema, 'Object', parentPath)
+
+		const className = client.namer.register(schema.name, 'class', {
+			transform: (name: string) => {
+				const match = name.match(/^(.*)s item/i)
+				return `SEG${upperFirst(camelCase(match ? match[1] : name))}`
+			},
+		})
+
 		let object: AndroidObjectContext | undefined = undefined
 
 		if (properties.length > 0) {
-			// If at least one property is set, generate a class that only allows the explicitely
-			// allowed properties.
-			const className = client.namer.register(schema.name, 'class', {
-				transform: (name: string) => {
-					return `SEG${upperFirst(camelCase(name))}`
-				},
-			})
 			property.type = className
 			object = {
 				name: className,
+				required: properties.filter(p => p.isRequired),
 			}
 		}
 
 		return { property, object }
 	},
 	generateUnion: async (client, schema, _, parentPath) => {
-		// TODO: support unions in iOS
+		// TODO: support unions
 		return defaultPropertyContext(client, schema, 'id', parentPath)
 	},
 	generateTrackCall: async (client, schema) => ({
@@ -102,6 +118,11 @@ export const android: Generator<
 	}),
 	generateRoot: async (client, context) => {
 		await Promise.all([
+			client.generateFile(
+				'SEGTypewriterAnalytics.java',
+				'generators/android/templates/analytics.java.hbs',
+				context
+			),
 			...context.objects.map(o =>
 				client.generateFile(`${o.name}.java`, 'generators/android/templates/class.java.hbs', o)
 			),
@@ -120,73 +141,54 @@ function defaultPropertyContext(
 			transform: camelCase,
 		}),
 		type,
-		modifiers: schema.isRequired ? 'final, @Nonnull' : 'final, @Nullable',
+		modifiers:
+			!schema.isRequired || !!schema.isNullable
+				? Modifier.FinalNullable
+				: Modifier.FinalNonNullable,
 		isVariableNullable: !schema.isRequired || !!schema.isNullable,
 		isPayloadFieldNullable: !!schema.isNullable,
 	}
 }
 
-// Handlebars partials
+function generateBuilderFunctionSignature(name: string, modifiers: string, type: string): string {
+	return `public Builder ${name}(${modifiers} ${type} ${name})`
+}
 
-// 	const withNullability = (property: {
-// 		type: string
-// 		isPointerType: boolean
-// 		isVariableNullable: boolean
-// 	}) => {
-// 		const { isPointerType, type, isVariableNullable } = property
-// 		return isPointerType
-// 			? `${isVariableNullable ? 'nullable' : 'nonnull'} ${type}`
-// 			: type
-// 	}
+function generateBuilderFunctionBody(
+	name: string,
+	rawName: string,
+	modifiers: string,
+	type: string
+): string {
+	const isArrayType = type.match(/List\<(.*)\>/)
+	const makeArraySerializableSnippet =
+		isArrayType && isArrayType[1] !== StringifiedType.Properties
+			? `
+      List<Properties> p = new ArrayList<>();
+      for(${isArrayType && isArrayType[1]} elem : ${name}) {
+        p.add(elem.toProperties());
+      }`
+			: ''
 
-// 	// Mutate the function name to match standard Objective-C naming standards (FooBar vs. FooBarWithSparkles:sparkles).
-// 	if (parameters.length > 0) {
-// 		const first = parameters[0]
-// 		signature += `With${upperFirst(first.name)}:(${withNullability(first)})${
-// 			first.name
-// 		}\n`
-// 	}
-// 	for (var parameter of parameters.slice(1)) {
-// 		signature += `${parameter.name}:(${withNullability(parameter)})${
-// 			parameter.name
-// 		}\n`
-// 	}
+	return `{${makeArraySerializableSnippet}
+      properties.putValue("${rawName}", ${name});
+      return this;
+    }`
+}
 
-// 	return signature.trim()
-// }
+function generateFunctionSignature(
+	{ functionName }: { functionName: string },
+	withOptions: boolean
+): string {
+	// prettier-ignore
+	return `public void ${functionName}(final @Nullable SEG${upperFirst(functionName)} props${withOptions ? ', final @Nullable Options options': ''})`;
+}
 
-// function generateFunctionCall(
-// 	caller: string,
-// 	functionName: string,
-// 	properties: (BasePropertyContext & IOSPropertyContext)[],
-// 	extraParameterName?: string,
-// 	extraParameterValue?: string,
-// ): string {
-// 	let functionCall = functionName
-// 	const parameters: { name: string; value: string }[] = properties.map(p => ({
-// 		name: p.name,
-// 		value: p.name,
-// 	}))
-// 	if (extraParameterName && extraParameterValue) {
-// 		parameters.push({
-// 			name: extraParameterName,
-// 			value: extraParameterValue,
-// 		})
-// 	}
-
-// 	if (parameters.length > 0) {
-// 		const { name, value } = parameters[0]
-// 		functionCall += `With${upperFirst(name)}:${value}`
-// 	}
-// 	for (var { name, value } of parameters.slice(1)) {
-// 		functionCall += ` ${name}:${value}`
-// 	}
-
-// 	return `[${caller} ${functionCall.trim()}];`
-// }
-
-// // Render `NSString *foo` not `NSString * foo` and `BOOL foo` not `BOOLfoo` or `BOOL  foo` by doing:
-// // `{{type}}{{variableSeparator type}}{{name}}`
-// function variableSeparator(type: string): string {
-// 	return type.endsWith('*') ? '' : ' '
-// }
+function generateFunctionExecution(
+	{ rawEventName }: { rawEventName: string },
+	withOptions: boolean
+): string {
+	return `{
+    this.analytics.track("${rawEventName}", props.toProperties()${withOptions ? ', options' : ''});
+  }`
+}
