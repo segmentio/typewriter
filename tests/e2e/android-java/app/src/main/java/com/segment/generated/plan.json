@@ -1,0 +1,305 @@
+{
+  "create_time": "2019-06-25T22:44:43.000Z",
+  "display_name": "Phase 1 Android Typewriter Tracking Plan",
+  "name": "workspaces/segment_prod/tracking-plans/rs_1N9oTnc5O8cv1peY65iXsSPnzGP",
+  "rules": {
+    "events": [
+      {
+        "description": "User added product",
+        "name": "Product Added",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "type": "object",
+          "description": "User added product",
+          "properties": {
+            "context": {
+              "id": "/properties/context"
+            },
+            "traits": {
+              "id": "/properties/traits"
+            },
+            "properties": {
+              "type": "object",
+              "properties": {
+                "brand": {
+                  "description": "Brand associated with the product",
+                  "type": ["string"],
+                  "id": "/properties/properties/properties/brand"
+                },
+                "cart_id": {
+                  "description": "Cart ID to which the producg was added to",
+                  "type": ["string"],
+                  "id": "/properties/properties/properties/cart_id"
+                },
+                "category": {
+                  "description": "Product category being viewed",
+                  "type": ["string"],
+                  "id": "/properties/properties/properties/category"
+                },
+                "coupon": {
+                  "description": "Coupon code associated with a product",
+                  "type": ["string"],
+                  "id": "/properties/properties/properties/coupon"
+                },
+                "image_url": {
+                  "description": "Image url of the product",
+                  "type": ["string"],
+                  "id": "/properties/properties/properties/image_url"
+                },
+                "name": {
+                  "description": "Name of the product being viewed",
+                  "type": ["string"],
+                  "id": "/properties/properties/properties/name"
+                },
+                "position": {
+                  "description": "Position in the product list",
+                  "type": ["number"],
+                  "id": "/properties/properties/properties/position"
+                },
+                "price": {
+                  "description": "Price of the product being viewed",
+                  "type": ["number"],
+                  "id": "/properties/properties/properties/price"
+                },
+                "product_id": {
+                  "description": "Database id of the product being viewed",
+                  "type": ["string"],
+                  "id": "/properties/properties/properties/product_id"
+                },
+                "quantity": {
+                  "description": "Quantity of the product being viewed",
+                  "type": ["number"],
+                  "id": "/properties/properties/properties/quantity"
+                },
+                "sku": {
+                  "description": "Sku of the product being viewed",
+                  "type": ["string"],
+                  "id": "/properties/properties/properties/sku"
+                },
+                "url": {
+                  "description": "URL of the product page",
+                  "type": ["string"],
+                  "id": "/properties/properties/properties/url"
+                },
+                "variant": {
+                  "description": "Variant of the product",
+                  "type": ["string"],
+                  "id": "/properties/properties/properties/variant"
+                }
+              },
+              "required": ["product_id"],
+              "id": "/properties/properties"
+            }
+          },
+          "required": ["properties"]
+        }
+      },
+      {
+        "description": "User clicked on product",
+        "name": "Product Clicked",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "type": "object",
+          "description": "User clicked on product",
+          "properties": {
+            "context": {
+              "id": "/properties/context"
+            },
+            "traits": {
+              "id": "/properties/traits"
+            },
+            "properties": {
+              "type": "object",
+              "properties": {
+                "brand": {
+                  "description": "Brand associated with the product",
+                  "type": ["string"],
+                  "id": "/properties/properties/properties/brand"
+                },
+                "category": {
+                  "description": "Product category being viewed",
+                  "type": ["string"],
+                  "id": "/properties/properties/properties/category"
+                },
+                "coupon": {
+                  "description": "Coupon code associated with a product",
+                  "type": ["string"],
+                  "id": "/properties/properties/properties/coupon"
+                },
+                "image_url": {
+                  "description": "Image url of the product",
+                  "type": ["string"],
+                  "id": "/properties/properties/properties/image_url"
+                },
+                "name": {
+                  "description": "Name of the product being viewed",
+                  "type": ["string"],
+                  "id": "/properties/properties/properties/name"
+                },
+                "position": {
+                  "description": "Position in the product list",
+                  "type": ["number"],
+                  "id": "/properties/properties/properties/position"
+                },
+                "price": {
+                  "description": "Price of the product being viewed",
+                  "type": ["number"],
+                  "id": "/properties/properties/properties/price"
+                },
+                "product_id": {
+                  "description": "Database id of the product being viewed",
+                  "type": ["string"],
+                  "id": "/properties/properties/properties/product_id"
+                },
+                "quantity": {
+                  "description": "Quantity of the product being viewed",
+                  "type": ["number"],
+                  "id": "/properties/properties/properties/quantity"
+                },
+                "sku": {
+                  "description": "Sku of the product being viewed",
+                  "type": ["string"],
+                  "id": "/properties/properties/properties/sku"
+                },
+                "url": {
+                  "description": "URL of the product page",
+                  "type": ["string"],
+                  "id": "/properties/properties/properties/url"
+                },
+                "variant": {
+                  "description": "Variant of the product",
+                  "type": ["string"],
+                  "id": "/properties/properties/properties/variant"
+                },
+                "promoted": {
+                  "description": "Whether the product was a promoted result",
+                  "type": ["boolean"],
+                  "id": "/properties/properties/properties/promoted"
+                }
+              },
+              "required": ["product_id"],
+              "id": "/properties/properties"
+            }
+          },
+          "required": ["properties"]
+        }
+      },
+      {
+        "description": "Fire this event whenever an order/transaction was successfully completed by the customer. Include all items in the cart as event properties, with the same properties from the previous calls.",
+        "name": "Order Completed",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "properties": {
+            "context": {},
+            "properties": {
+              "properties": {
+                "affiliation": {
+                  "description": "Store or affiliation from which this transaction occurred (e.g. Google Store)",
+                  "type": ["string"]
+                },
+                "checkout_id": {
+                  "description": "Checkout ID",
+                  "type": ["string"]
+                },
+                "coupon": {
+                  "description": "Transaction coupon redeemed with the transaction",
+                  "type": "string"
+                },
+                "currency": {
+                  "description": "Currency code associated with the transaction",
+                  "type": "string"
+                },
+                "discount": {
+                  "description": "Total discount associated with the transaction",
+                  "type": "number"
+                },
+                "order_id": {
+                  "description": "Order/transaction ID",
+                  "type": ["string"]
+                },
+                "products": {
+                  "description": "Products in the order",
+                  "items": {
+                    "properties": {
+                      "brand": {
+                        "description": "Brand associated with the product",
+                        "type": ["string"]
+                      },
+                      "category": {
+                        "description": "Product category being viewed",
+                        "type": "string"
+                      },
+                      "coupon": {
+                        "description": "Coupon code associated with a product (e.g MAY_DEALS_3)",
+                        "type": ["string"]
+                      },
+                      "image_url": {
+                        "description": "Image url of the product",
+                        "type": ["string"]
+                      },
+                      "name": {
+                        "description": "Name of the product being viewed",
+                        "type": ["string"]
+                      },
+                      "position": {
+                        "description": "Position in the product list (ex. 3)",
+                        "type": ["integer"]
+                      },
+                      "price": {
+                        "description": "Price of the product being viewed",
+                        "type": ["number"]
+                      },
+                      "product_id": {
+                        "description": "Database id of the product being viewed",
+                        "type": ["string"]
+                      },
+                      "quantity": {
+                        "description": "Quantity of a product",
+                        "type": ["number"]
+                      },
+                      "sku": {
+                        "description": "Sku of the product being viewed",
+                        "type": ["string"]
+                      },
+                      "url": {
+                        "description": "URL of the product page",
+                        "type": ["string"]
+                      },
+                      "variant": {
+                        "description": "Variant of the product (e.g. Black)",
+                        "type": ["string"]
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": ["array"]
+                },
+                "revenue": {
+                  "description": "Revenue associated with the transaction (excluding shipping and tax)",
+                  "type": "number"
+                },
+                "shipping": {
+                  "description": "Shipping cost associated with the transaction",
+                  "type": "number"
+                },
+                "tax": {
+                  "description": "Total tax associated with the transaction",
+                  "type": ["number"]
+                },
+                "total": {
+                  "description": "Revenue with discounts and coupons added in. Note that our Google Analytics Ecommerce destination accepts total or revenue, but not both. For better flexibility and total control over tracking, we let you decide how to calculate how coupons and discounts are applied",
+                  "type": ["number"]
+                }
+              },
+              "required": ["order_id"],
+              "type": "object"
+            },
+            "traits": {}
+          },
+          "required": ["properties"],
+          "type": "object"
+        }
+      }
+    ]
+  }
+}
