@@ -114,8 +114,13 @@ export const android: Generator<
 				context
 			),
 			client.generateFile(
-				'TypewriterArraySerializer.java',
+				'ArraySerializer.java',
 				'generators/android/templates/serializeArray.java.hbs',
+				context
+			),
+			client.generateFile(
+				'Serializable.java',
+				'generators/android/templates/abstractSerializableClass.java.hbs',
 				context
 			),
 			...context.objects.map(o =>
@@ -255,7 +260,7 @@ function generatePropertiesGetterSetter(name: string): string {
 	return `
   private ${name}(Properties properties) {
     this.properties = properties;
-  }
+	}
 
   protected Properties toProperties() {
     return properties;
