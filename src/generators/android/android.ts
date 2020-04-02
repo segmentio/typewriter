@@ -1,5 +1,5 @@
 import { camelCase, upperFirst } from 'lodash'
-import { Type, Schema } from '../ast'
+import { Type, Schema, getPropertiesSchema } from '../ast'
 import * as Handlebars from 'handlebars'
 import { Generator, BasePropertyContext, GeneratorClient } from '../gen'
 
@@ -7,10 +7,9 @@ import { Generator, BasePropertyContext, GeneratorClient } from '../gen'
 // Everything in these contexts should be properly sanitized.
 
 interface AndroidObjectContext {
-	// The formatted name for this object, ex: "numAvocados
+	// The formatted name for this object, ex: "ProductClicked"
 	name: string
-	required: (AndroidPropertyContext & BasePropertyContext)[] | []
-	// Set of files that need to be imported in this file.
+	hasArrayProp: boolean
 }
 
 interface AndroidPropertyContext {
@@ -19,28 +18,17 @@ interface AndroidPropertyContext {
 	// The type of this property. ex: "String".
 	type: string
 	// Stringified property modifiers. ex: "final, @Nonnull".
-	modifiers: string
+	modifiers: Modifier
 	// Whether the property is nullable (@Nonnull vs @Nullable modifier).
 	isVariableNullable: boolean
 	// Whether null is a valid value for this property when sent to Segment.
 	isPayloadFieldNullable: boolean
-	// Note: only set if this is a class.
-	// The header file containing the interface for this class.
-	importName?: string
 }
 
 interface AndroidTrackCallContext {
 	// The formatted function name, ex: "orderCompleted".
 	functionName: string
-}
-
-enum StringifiedType {
-	Properties = 'Properties',
-}
-
-enum Modifier {
-	FinalNullable = 'final @Nullable',
-	FinalNonNullable = 'final @NonNull',
+	propsParam: boolean
 }
 
 export const android: Generator<
@@ -63,10 +51,11 @@ export const android: Generator<
 		Handlebars.registerHelper('functionExecution', generateFunctionExecution)
 		Handlebars.registerHelper('builderSignature', generateBuilderFunctionSignature)
 		Handlebars.registerHelper('builderExecution', generateBuilderFunctionBody)
+		Handlebars.registerHelper('propertiesGetterSetter', generatePropertiesGetterSetter)
 		return {}
 	},
 	generatePrimitive: async (client, schema, parentPath) => {
-		let type = 'id'
+		let type = '?'
 
 		if (schema.type === Type.STRING) {
 			type = 'String'
@@ -88,20 +77,19 @@ export const android: Generator<
 	generateObject: async (client, schema, properties, parentPath) => {
 		const property = defaultPropertyContext(client, schema, 'Object', parentPath)
 
-		const className = client.namer.register(schema.name, 'class', {
-			transform: (name: string) => {
-				const match = name.match(/^(.*)s item/i)
-				return `SEG${upperFirst(camelCase(match ? match[1] : name))}`
-			},
-		})
-
-		let object: AndroidObjectContext | undefined = undefined
+		let object: AndroidObjectContext | undefined
 
 		if (properties.length > 0) {
+			const className = client.namer.register(schema.name, 'class', {
+				transform: (name: string) => {
+					return upperFirst(camelCase(name))
+				},
+			})
+
 			property.type = className
 			object = {
 				name: className,
-				required: properties.filter(p => p.isRequired),
+				hasArrayProp: properties.some(({ type }) => /List/.test(type)),
 			}
 		}
 
@@ -109,13 +97,17 @@ export const android: Generator<
 	},
 	generateUnion: async (client, schema, _, parentPath) => {
 		// TODO: support unions
-		return defaultPropertyContext(client, schema, 'id', parentPath)
+		return defaultPropertyContext(client, schema, '?', parentPath)
 	},
-	generateTrackCall: async (client, schema) => ({
-		functionName: client.namer.register(schema.name, 'function->track', {
-			transform: camelCase,
-		}),
-	}),
+	generateTrackCall: async (client, schema) => {
+		const { properties } = getPropertiesSchema(schema)
+		return {
+			functionName: client.namer.register(schema.name, 'function->track', {
+				transform: camelCase,
+			}),
+			propsParam: !!properties.length,
+		}
+	},
 	generateRoot: async (client, context) => {
 		await Promise.all([
 			client.generateFile(
@@ -123,11 +115,43 @@ export const android: Generator<
 				'generators/android/templates/analytics.java.hbs',
 				context
 			),
+			// client.generateFile(
+			// 	'TypewriterArraySerializer.java',
+			// 	'generators/android/templates/serializeArray.java.hbs',
+			// 	context
+			// ),
 			...context.objects.map(o =>
 				client.generateFile(`${o.name}.java`, 'generators/android/templates/class.java.hbs', o)
 			),
 		])
 	},
+}
+
+interface Param {
+	hasParam: boolean
+	name: string
+	type: string
+}
+
+interface Arg {
+	inUse: boolean
+	execution: string
+	fallback?: string
+}
+
+enum Modifier {
+	FinalNullable = 'final @Nullable',
+	FinalNonNullable = 'final @NonNull',
+}
+
+enum Separator {
+	Comma = ', ',
+	Indent = '  ',
+}
+
+enum Properties {
+	ToProperties = 'props.toProperties()',
+	Create = 'new Properties()',
 }
 
 function defaultPropertyContext(
@@ -154,41 +178,92 @@ function generateBuilderFunctionSignature(name: string, modifiers: string, type:
 	return `public Builder ${name}(${modifiers} ${type} ${name})`
 }
 
-function generateBuilderFunctionBody(
-	name: string,
-	rawName: string,
-	modifiers: string,
-	type: string
-): string {
+function generateBuilderFunctionBody(name: string, rawName: string, type: string): string {
 	const isArrayType = type.match(/List\<(.*)\>/)
-	const makeArraySerializableSnippet =
-		isArrayType && isArrayType[1] !== StringifiedType.Properties
-			? `
-      List<Properties> p = new ArrayList<>();
-      for(${isArrayType && isArrayType[1]} elem : ${name}) {
-        p.add(elem.toProperties());
-      }`
-			: ''
+	const defaultHandler = (raw = rawName, n = name) => {
+		return `${Separator.Indent}properties.putValue("${raw}", ${n});
+    ${Separator.Indent}return this;`
+	}
 
-	return `{${makeArraySerializableSnippet}
-      properties.putValue("${rawName}", ${name});
-      return this;
+	const serializeArray = `${Separator.Indent}List<Properties> p = new ArrayList<>();
+    ${Separator.Indent}for(${isArrayType && isArrayType[1]} elem: ${name}){
+      ${Separator.Indent}p.add(elem.toProperties());
+    ${Separator.Indent}}
+    ${defaultHandler(rawName, 'p')}`
+
+	return isArrayType && isArrayType[1] !== 'Properties'
+		? `{
+    ${serializeArray}
+    }`
+		: `{
+    ${defaultHandler()}
     }`
 }
 
+const getValidParams = (potentialParams: Param[]) =>
+	potentialParams.reduce((acc: string[], { hasParam, name, type }) => {
+		if (hasParam) {
+			acc.push(`${Modifier.FinalNullable} ${type} ${name}`)
+		}
+		return acc
+	}, [])
+
+const getValidArgs = (potentialParams: Arg[], defaultArg?: string[]) =>
+	potentialParams.reduce((acc: string[], { inUse, execution, fallback }) => {
+		if (inUse) {
+			acc.push(execution)
+		} else if (fallback) {
+			acc.push(fallback)
+		}
+		return acc
+	}, defaultArg || [])
+
+const intersperse = (values: string[], char: string) => {
+	let joined = values[0] || ''
+	if (values.length) {
+		for (let i = 1; i < values.length; i++) {
+			joined += `${char}${values[i]}`
+		}
+	}
+	return joined
+}
+
 function generateFunctionSignature(
-	{ functionName }: { functionName: string },
+	{ functionName, propsParam }: { functionName: string; propsParam: boolean },
 	withOptions: boolean
 ): string {
-	// prettier-ignore
-	return `public void ${functionName}(final @Nullable SEG${upperFirst(functionName)} props${withOptions ? ', final @Nullable Options options': ''})`;
+	const params = getValidParams([
+		{ hasParam: propsParam, name: 'props', type: upperFirst(functionName) },
+		{ hasParam: withOptions, name: 'options', type: 'Options' },
+	])
+
+	return `public void ${functionName}(${intersperse(params, Separator.Comma)})`
 }
 
 function generateFunctionExecution(
-	{ rawEventName }: { rawEventName: string },
+	{ rawEventName, propsParam }: { rawEventName: string; propsParam: boolean },
 	withOptions: boolean
 ): string {
+	const args = getValidArgs(
+		[
+			{ inUse: propsParam, execution: Properties.ToProperties, fallback: Properties.Create },
+			{ inUse: withOptions, execution: 'options' },
+		],
+		[`"${rawEventName}"`]
+	)
 	return `{
-    this.analytics.track("${rawEventName}", props.toProperties()${withOptions ? ', options' : ''});
+    this.analytics.track(${intersperse(args, Separator.Comma)});
   }`
+}
+
+function generatePropertiesGetterSetter(name: string): string {
+	return `
+  private ${name}(Properties properties) {
+    this.properties = properties;
+  }
+
+  protected Properties toProperties() {
+    return properties;
+  }
+  `
 }

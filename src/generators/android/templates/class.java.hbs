@@ -11,13 +11,7 @@ import androidx.annotation.Nullable;
 public final class {{name}} {
   private Properties properties;
 
-  private {{name}}(Properties properties) {
-    this.properties = properties;
-  }
-
-  protected Properties toProperties() {
-    return properties;
-  }
+  {{propertiesGetterSetter name}}
 
   /**
   * Builder for {@link {{name ~}} }
@@ -33,12 +27,16 @@ public final class {{name}} {
     }
 
   {{#each properties}}
-    {{#if description}}
+
     /**
+     {{#if description}}
      * {{description}}
+     {{/if}}
+     {{#if isRequired}}
+     * This property is required to generate a valid {{../name}} object
+     {{/if}}
      */
-    {{/if}}
-    {{builderSignature name modifiers type}} {{builderExecution name rawName modifiers type}}
+    {{builderSignature name modifiers type}} {{builderExecution name rawName type}}
     
   {{/each}}
 
@@ -46,10 +44,12 @@ public final class {{name}} {
     * Build an instance of {@link {{name ~}} }
     */
     public {{name}} build() {
-      {{#each required}}
+      {{#each properties}}
+      {{#if isRequired}}
       if (properties.get("{{rawName}}") == null) {
         throw new IllegalArgumentException("{{../name}} missing required property: {{rawName}}");
       }
+      {{/if}}
       {{/each}}
       return new {{name}}(properties);
     }
