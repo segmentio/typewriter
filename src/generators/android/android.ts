@@ -9,7 +9,6 @@ import { Generator, BasePropertyContext, GeneratorClient } from '../gen'
 interface AndroidObjectContext {
 	// The formatted name for this object, ex: "ProductClicked"
 	name: string
-	hasArrayProp: boolean
 }
 
 interface AndroidPropertyContext {
@@ -89,7 +88,6 @@ export const android: Generator<
 			property.type = className
 			object = {
 				name: className,
-				hasArrayProp: properties.some(({ type }) => /List/.test(type)),
 			}
 		}
 
@@ -115,11 +113,11 @@ export const android: Generator<
 				'generators/android/templates/analytics.java.hbs',
 				context
 			),
-			// client.generateFile(
-			// 	'TypewriterArraySerializer.java',
-			// 	'generators/android/templates/serializeArray.java.hbs',
-			// 	context
-			// ),
+			client.generateFile(
+				'TypewriterArraySerializer.java',
+				'generators/android/templates/serializeArray.java.hbs',
+				context
+			),
 			...context.objects.map(o =>
 				client.generateFile(`${o.name}.java`, 'generators/android/templates/class.java.hbs', o)
 			),
@@ -185,10 +183,7 @@ function generateBuilderFunctionBody(name: string, rawName: string, type: string
     ${Separator.Indent}return this;`
 	}
 
-	const serializeArray = `${Separator.Indent}List<Properties> p = new ArrayList<>();
-    ${Separator.Indent}for(${isArrayType && isArrayType[1]} elem: ${name}){
-      ${Separator.Indent}p.add(elem.toProperties());
-    ${Separator.Indent}}
+	const serializeArray = `${Separator.Indent}List<?> p = ArraySerializer.serialize(${name});
     ${defaultHandler(rawName, 'p')}`
 
 	return isArrayType && isArrayType[1] !== 'Properties'
