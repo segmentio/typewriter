@@ -36,7 +36,9 @@ public final class {{name}} extends Serializable {
      * This property is required to generate a valid {{../name}} object
      {{/if}}
      */
-    {{builderSignature name modifiers type}} {{builderExecution name rawName type}}
+    {{builderFunctionSignature name modifiers type}} {
+      {{builderFunctionBody name rawName type}}
+    } 
     
   {{/each}}
 

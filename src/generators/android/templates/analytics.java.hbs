@@ -24,13 +24,13 @@ public class SEGTypewriterAnalytics {
   {{#if functionDescription}}
   // {{functionDescription}}
   {{/if}}
-  {{functionSignature this false}} {{functionExecution this false}};
+  {{trackCallFunctionSignature this false}} {{trackCallFunctionExecution this false}};
 
   {{#if functionDescription}}
   // {{functionDescription}}
   {{!-- TODO: description of what options are --}}
   {{/if}}
-  {{functionSignature this true}} {{functionExecution this true}};
+  {{trackCallFunctionSignature this true}} {{trackCallFunctionExecution this true}};
   
 {{/each}}
 }

@@ -46,10 +46,10 @@ export const android: Generator<
 		allowedIdentifierChars: 'A-Za-z0-9_$',
 	},
 	setup: async () => {
-		Handlebars.registerHelper('functionSignature', generateFunctionSignature)
-		Handlebars.registerHelper('functionExecution', generateFunctionExecution)
-		Handlebars.registerHelper('builderSignature', generateBuilderFunctionSignature)
-		Handlebars.registerHelper('builderExecution', generateBuilderFunctionBody)
+		Handlebars.registerHelper('trackCallFunctionSignature', generateFunctionSignature)
+		Handlebars.registerHelper('trackCallFunctionExecution', generateFunctionExecution)
+		Handlebars.registerHelper('builderFunctionSignature', generateBuilderFunctionSignature)
+		Handlebars.registerHelper('builderFunctionBody', generateBuilderFunctionBody)
 		Handlebars.registerHelper('propertiesGetterSetter', generatePropertiesGetterSetter)
 		return {}
 	},
@@ -150,6 +150,7 @@ enum Modifier {
 enum Separator {
 	Comma = ', ',
 	Indent = '  ',
+	NewLineIndent = '      ',
 }
 
 enum Properties {
@@ -184,20 +185,14 @@ function generateBuilderFunctionSignature(name: string, modifiers: string, type:
 function generateBuilderFunctionBody(name: string, rawName: string, type: string): string {
 	const isArrayType = type.match(/List\<(.*)\>/)
 	const defaultHandler = (raw = rawName, n = name) => {
-		return `${Separator.Indent}properties.putValue("${raw}", ${n});
-    ${Separator.Indent}return this;`
+		return `properties.putValue("${raw}", ${n});\n` + `${Separator.NewLineIndent}return this;`
 	}
 
-	const serializeArray = `${Separator.Indent}List<?> p = ArraySerializer.serialize(${name});
-    ${defaultHandler(rawName, 'p')}`
+	const serializeArray =
+		`List<?> p = ArraySerializer.serialize(${name});\n` +
+		`${Separator.NewLineIndent}${defaultHandler(rawName, 'p')}`
 
-	return isArrayType && isArrayType[1] !== 'Properties'
-		? `{
-    ${serializeArray}
-    }`
-		: `{
-    ${defaultHandler()}
-    }`
+	return isArrayType && isArrayType[1] !== 'Properties' ? serializeArray : defaultHandler()
 }
 
 const getValidParams = (potentialParams: Param[]) =>
@@ -264,6 +259,6 @@ function generatePropertiesGetterSetter(name: string): string {
 
   protected Properties toProperties() {
     return properties;
-  }
+	}
   `
 }
