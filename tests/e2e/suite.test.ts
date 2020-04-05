@@ -156,8 +156,6 @@ describe('e2e tests', () => {
 				// Passing null for all fields:
 				{
 					name: 'Every Nullable Required Type',
-					// analytics-ios does not serialize nulls, and instead drops those fields.
-					if: sdk !== SDK.IOS,
 					properties: {
 						'required any': null,
 						'required array': null,
