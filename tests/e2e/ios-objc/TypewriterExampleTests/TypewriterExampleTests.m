@@ -88,14 +88,32 @@
                                               optionalString:@"Alpha-Betrium"
                                      optionalStringWithRegex:@"Lawyer Morty"];
 
+    SEGRequiredArrayWithPropertiesItem *nullableRequiredArrayWithNilPropertiesItem =
+        [SEGRequiredArrayWithPropertiesItem initWithRequiredAny:nil
+                                                  requiredArray:nil
+                                                requiredBoolean:nil
+                                                    requiredInt:nil
+                                                 requiredNumber:nil
+                                                 requiredObject:nil
+                                                 requiredString:nil
+                                        requiredStringWithRegex:nil];
+    SEGRequiredObjectWithProperties *nullableRequiredObjectWithNilProperties =
+        [SEGRequiredObjectWithProperties initWithRequiredAny:nil
+                                               requiredArray:nil
+                                             requiredBoolean:nil
+                                                 requiredInt:nil
+                                              requiredNumber:nil
+                                              requiredObject:nil
+                                              requiredString:nil
+                                     requiredStringWithRegex:nil];
     [SEGTypewriterAnalytics everyNullableRequiredTypeWithRequiredAny:nil
                                                        requiredArray:nil
-                                         requiredArrayWithProperties:nil
+                                         requiredArrayWithProperties:@[nullableRequiredArrayWithNilPropertiesItem]
                                                      requiredBoolean:nil
                                                          requiredInt:nil
                                                       requiredNumber:nil
                                                       requiredObject:nil
-                                        requiredObjectWithProperties:nil
+                                        requiredObjectWithProperties:nullableRequiredObjectWithNilProperties
                                                       requiredString:nil
                                              requiredStringWithRegex:nil];
 
@@ -136,6 +154,35 @@
                                                       optionalNumber:nil
                                                       optionalObject:nil
                                         optionalObjectWithProperties:nil
+                                                      optionalString:nil
+                                             optionalStringWithRegex:nil];
+
+    SEGOptionalArrayWithPropertiesItem *nullableOptionalArrayWithNilProperties =
+        [SEGOptionalArrayWithPropertiesItem initWithOptionalAny:nil
+                                                  optionalArray:nil
+                                                optionalBoolean:nil
+                                                    optionalInt:nil
+                                                 optionalNumber:nil
+                                                 optionalObject:nil
+                                                 optionalString:nil
+                                        optionalStringWithRegex:nil];
+    SEGOptionalObjectWithProperties *nullableOptionalObjectWithNilProperties =
+        [SEGOptionalObjectWithProperties initWithOptionalAny:nil
+                                               optionalArray:nil
+                                             optionalBoolean:nil
+                                                 optionalInt:nil
+                                              optionalNumber:nil
+                                              optionalObject:nil
+                                              optionalString:nil
+                                     optionalStringWithRegex:nil];
+    [SEGTypewriterAnalytics everyNullableOptionalTypeWithOptionalAny:nil
+                                                       optionalArray:nil
+                                         optionalArrayWithProperties:@[nullableOptionalArrayWithNilProperties]
+                                                     optionalBoolean:nil
+                                                         optionalInt:nil
+                                                      optionalNumber:nil
+                                                      optionalObject:nil
+                                        optionalObjectWithProperties:nullableOptionalObjectWithNilProperties
                                                       optionalString:nil
                                              optionalStringWithRegex:nil];
     
