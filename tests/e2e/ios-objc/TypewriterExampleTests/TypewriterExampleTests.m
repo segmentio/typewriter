@@ -156,35 +156,6 @@
                                         optionalObjectWithProperties:nil
                                                       optionalString:nil
                                              optionalStringWithRegex:nil];
-
-    SEGOptionalArrayWithPropertiesItem *nullableOptionalArrayWithNilProperties =
-        [SEGOptionalArrayWithPropertiesItem initWithOptionalAny:nil
-                                                  optionalArray:nil
-                                                optionalBoolean:nil
-                                                    optionalInt:nil
-                                                 optionalNumber:nil
-                                                 optionalObject:nil
-                                                 optionalString:nil
-                                        optionalStringWithRegex:nil];
-    SEGOptionalObjectWithProperties *nullableOptionalObjectWithNilProperties =
-        [SEGOptionalObjectWithProperties initWithOptionalAny:nil
-                                               optionalArray:nil
-                                             optionalBoolean:nil
-                                                 optionalInt:nil
-                                              optionalNumber:nil
-                                              optionalObject:nil
-                                              optionalString:nil
-                                     optionalStringWithRegex:nil];
-    [SEGTypewriterAnalytics everyNullableOptionalTypeWithOptionalAny:nil
-                                                       optionalArray:nil
-                                         optionalArrayWithProperties:@[nullableOptionalArrayWithNilProperties]
-                                                     optionalBoolean:nil
-                                                         optionalInt:nil
-                                                      optionalNumber:nil
-                                                      optionalObject:nil
-                                        optionalObjectWithProperties:nullableOptionalObjectWithNilProperties
-                                                      optionalString:nil
-                                             optionalStringWithRegex:nil];
     
     SEGOptionalArrayWithPropertiesItem *nullableOptionalArrayWithProperties =
         [SEGOptionalArrayWithPropertiesItem initWithOptionalAny:@"Rick Sanchez"

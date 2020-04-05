@@ -237,6 +237,11 @@ describe('e2e tests', () => {
 				// Passing null for all fields:
 				{
 					name: 'Every Nullable Optional Type',
+					// Unlike in JSON, there's no way to distinguish between a field not set, a field set to null,
+					// and a field set to a non-null value in Objective-C. For nullable optional fields, we choose
+					// to avoid serializing the field. For required fields, we serialize the value set to null.
+					// Therefore, we can't support this case on iOS.
+					if: sdk !== SDK.IOS,
 					properties: {
 						'optional any': null,
 						'optional array': null,
