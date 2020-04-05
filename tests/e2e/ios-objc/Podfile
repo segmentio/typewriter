@@ -1,12 +1,12 @@
 use_frameworks!
 
 target 'TypewriterExample' do
-  pod "Analytics", "3.6.9"
+  pod "Analytics", "3.8.0-beta.1"
   platform :ios, "10.1"
 end
 
 target 'TypewriterExampleTests' do
-  pod "Analytics", "3.6.9"
+  pod "Analytics", "3.8.0-beta.1"
   platform :ios, "10.1"
 end
 

@@ -150,16 +150,36 @@ optionalStringWithRegex:(nullable NSString *)optionalStringWithRegex
 options:(nullable SERIALIZABLE_DICT)options
 {
     NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
-    properties[@"optional any"] = optionalAny == nil ? [NSNull null] : optionalAny;
-    properties[@"optional array"] = optionalArray == nil ? [NSNull null] : [SEGTypewriterUtils toSerializableArray:optionalArray];
-    properties[@"optional array with properties"] = optionalArrayWithProperties == nil ? [NSNull null] : [SEGTypewriterUtils toSerializableArray:optionalArrayWithProperties];
-    properties[@"optional boolean"] = optionalBoolean == nil ? [NSNull null] : optionalBoolean;
-    properties[@"optional int"] = optionalInt == nil ? [NSNull null] : optionalInt;
-    properties[@"optional number"] = optionalNumber == nil ? [NSNull null] : optionalNumber;
-    properties[@"optional object"] = optionalObject == nil ? [NSNull null] : optionalObject;
-    properties[@"optional object with properties"] = optionalObjectWithProperties == nil ? [NSNull null] : [optionalObjectWithProperties toDictionary];
-    properties[@"optional string"] = optionalString == nil ? [NSNull null] : optionalString;
-    properties[@"optional string with regex"] = optionalStringWithRegex == nil ? [NSNull null] : optionalStringWithRegex;
+    if (optionalAny != nil) {
+      properties[@"optional any"] = optionalAny;
+    }
+    if (optionalArray != nil) {
+      properties[@"optional array"] = [SEGTypewriterUtils toSerializableArray:optionalArray];
+    }
+    if (optionalArrayWithProperties != nil) {
+      properties[@"optional array with properties"] = [SEGTypewriterUtils toSerializableArray:optionalArrayWithProperties];
+    }
+    if (optionalBoolean != nil) {
+      properties[@"optional boolean"] = optionalBoolean;
+    }
+    if (optionalInt != nil) {
+      properties[@"optional int"] = optionalInt;
+    }
+    if (optionalNumber != nil) {
+      properties[@"optional number"] = optionalNumber;
+    }
+    if (optionalObject != nil) {
+      properties[@"optional object"] = optionalObject;
+    }
+    if (optionalObjectWithProperties != nil) {
+      properties[@"optional object with properties"] = [optionalObjectWithProperties toDictionary];
+    }
+    if (optionalString != nil) {
+      properties[@"optional string"] = optionalString;
+    }
+    if (optionalStringWithRegex != nil) {
+      properties[@"optional string with regex"] = optionalStringWithRegex;
+    }
 
     [[SEGAnalytics sharedAnalytics] track:@"Every Nullable Optional Type" properties:properties options:[SEGTypewriterUtils withTypewriterContextFields:options]];
 }
@@ -232,7 +252,9 @@ optionalStringWithRegex:(nullable NSString *)optionalStringWithRegex
 options:(nullable SERIALIZABLE_DICT)options
 {
     NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
-    properties[@"optional any"] = optionalAny == nil ? [NSNull null] : optionalAny;
+    if (optionalAny != nil) {
+      properties[@"optional any"] = optionalAny;
+    }
     if (optionalArray != nil) {
       properties[@"optional array"] = [SEGTypewriterUtils toSerializableArray:optionalArray];
     }
@@ -342,8 +364,12 @@ largeRequiredNumber:(nonnull NSNumber *)largeRequiredNumber
 options:(nullable SERIALIZABLE_DICT)options
 {
     NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
-    properties[@"large nullable optional integer"] = largeNullableOptionalInteger == nil ? [NSNull null] : largeNullableOptionalInteger;
-    properties[@"large nullable optional number"] = largeNullableOptionalNumber == nil ? [NSNull null] : largeNullableOptionalNumber;
+    if (largeNullableOptionalInteger != nil) {
+      properties[@"large nullable optional integer"] = largeNullableOptionalInteger;
+    }
+    if (largeNullableOptionalNumber != nil) {
+      properties[@"large nullable optional number"] = largeNullableOptionalNumber;
+    }
     properties[@"large nullable required integer"] = largeNullableRequiredInteger == nil ? [NSNull null] : largeNullableRequiredInteger;
     properties[@"large nullable required number"] = largeNullableRequiredNumber == nil ? [NSNull null] : largeNullableRequiredNumber;
     if (largeOptionalInteger != nil) {
