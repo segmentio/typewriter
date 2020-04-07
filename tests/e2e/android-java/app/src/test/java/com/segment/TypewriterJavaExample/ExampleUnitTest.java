@@ -5,6 +5,7 @@ import com.segment.analytics.Analytics;
 
 import android.content.Context;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +26,8 @@ public class ExampleUnitTest {
   @Test
   public void exampleTests() {
     Context context = ApplicationProvider.getApplicationContext();
-    SEGTypewriterAnalytics segAnalytics = new SEGTypewriterAnalytics(Analytics.with(context));
+    final Analytics analytics = Analytics.with(context);
+    SEGTypewriterAnalytics segAnalytics = new SEGTypewriterAnalytics(analytics);
 
     List defaultArray = Arrays.asList(137, "C-137");
     Object defaultObject = new Object();
@@ -197,5 +199,17 @@ public class ExampleUnitTest {
 
     segAnalytics.largeNumbersEvent(largeNumberEvent);
 
+    CompletableFuture<Void> flushingFuture = CompletableFuture.runAsync(new Runnable() {
+      @Override
+      public void run(){
+        analytics.flush();
+      }
+    });
+
+    try{
+      flushingFuture.get();
+    }catch(Throwable e){
+
+    }
   }
 }

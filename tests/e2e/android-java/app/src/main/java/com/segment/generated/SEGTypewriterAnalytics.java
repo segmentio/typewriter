@@ -3,18 +3,16 @@
 */
 package com.segment.generated;
 
-import java.util.*;
-import android.util.Log;
 import com.segment.analytics.Analytics;
 import com.segment.analytics.Options;
 import com.segment.analytics.Properties;
-import android.content.Context;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
 public class SEGTypewriterAnalytics {
-  private Analytics analytics;
+  public Analytics analytics;
 
   public SEGTypewriterAnalytics(final @NonNull Analytics analytics) {
     this.analytics = analytics;
@@ -92,7 +90,6 @@ public class SEGTypewriterAnalytics {
   
   // Validates that a generated client supports events with no explicit properties. It is expected that this event accepts ANY properties.
   public void emptyEvent() {
-    Log.i("_", "in empty");
     this.analytics.track("Empty Event", new Properties());
   };
 
@@ -143,6 +140,7 @@ public class SEGTypewriterAnalytics {
   
   // Validates that clients handle all of the supported field types, as required fields. 
   public void everyRequiredType(final @Nullable EveryRequiredType props) {
+    Log.i("props", props.toProperties().toString());
     this.analytics.track("Every Required Type", props.toProperties());
   };
 

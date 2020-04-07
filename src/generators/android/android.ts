@@ -30,6 +30,14 @@ interface AndroidTrackCallContext {
 	propsParam: boolean
 }
 
+enum JavaType {
+	String = 'String',
+	Long = 'Long',
+	Double = 'Double',
+	Boolean = 'Boolean',
+	Object = 'Object',
+}
+
 export const android: Generator<
 	{},
 	AndroidTrackCallContext,
@@ -38,9 +46,15 @@ export const android: Generator<
 > = {
 	generatePropertiesObject: true,
 	namer: {
-		// See: https://github.com/AnanthaRajuCprojects/Reserved-Key-Words-list-of-various-programming-languages/blob/master/Objective-C%20Reserved%20Words.md
+		// See: https://github.com/AnanthaRajuCprojects/Reserved-Key-Words-list-of-various-programming-languages/blob/master/Java%20Keywords%20List.md
 		// prettier-ignore
-		reservedWords: [],
+		reservedWords: [
+      "abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class", "const",
+      "continue", "default", "do", "double", "else", "enum", "extends", "final", "finally", "float",
+      "for", "goto", "if", "implement", "imports", "instanceof", "int", "interface", "long", "native",
+      "new", "package", "private", "protected", "public", "return", "short", "static", "strictfp", "super",
+      "switch", "synchronized", "this", "throw", "throws", "transient", "try", "void", "volatile", "while"
+    ],
 		quoteChar: '"',
 		allowedIdentifierStartingChars: 'A-Za-z_$',
 		allowedIdentifierChars: 'A-Za-z0-9_$',
@@ -54,16 +68,16 @@ export const android: Generator<
 		return {}
 	},
 	generatePrimitive: async (client, schema, parentPath) => {
-		let type = '?'
+		let type = JavaType.Object
 
 		if (schema.type === Type.STRING) {
-			type = 'String'
+			type = JavaType.String
 		} else if (schema.type === Type.BOOLEAN) {
-			type = 'Boolean'
+			type = JavaType.Boolean
 		} else if (schema.type === Type.INTEGER) {
-			type = 'Integer'
+			type = JavaType.Long
 		} else if (schema.type === Type.NUMBER) {
-			type = 'Double'
+			type = JavaType.Double
 		}
 
 		return defaultPropertyContext(client, schema, type, parentPath)
@@ -74,7 +88,7 @@ export const android: Generator<
 		}
 	},
 	generateObject: async (client, schema, properties, parentPath) => {
-		const property = defaultPropertyContext(client, schema, 'Object', parentPath)
+		const property = defaultPropertyContext(client, schema, JavaType.Object, parentPath)
 
 		let object: AndroidObjectContext | undefined
 
@@ -95,7 +109,7 @@ export const android: Generator<
 	},
 	generateUnion: async (client, schema, _, parentPath) => {
 		// TODO: support unions
-		return defaultPropertyContext(client, schema, '?', parentPath)
+		return defaultPropertyContext(client, schema, 'Object', parentPath)
 	},
 	generateTrackCall: async (client, schema) => {
 		const { properties } = getPropertiesSchema(schema)
@@ -184,15 +198,31 @@ function generateBuilderFunctionSignature(name: string, modifiers: string, type:
 
 function generateBuilderFunctionBody(name: string, rawName: string, type: string): string {
 	const isArrayType = type.match(/List\<(.*)\>/)
-	const defaultHandler = (raw = rawName, n = name) => {
-		return `properties.putValue("${raw}", ${n});\n` + `${Separator.NewLineIndent}return this;`
-	}
+	const isSerializable = Object.values(JavaType).every(t => t !== type)
+
+	const defaultHandler = (raw = rawName, n = name, indentFirstLine = true) =>
+		`${indentFirstLine ? Separator.Indent : ''}properties.putValue("${raw}", ${n});\n` +
+		`${Separator.NewLineIndent}return this;`
+
+	const serializeObject =
+		`${Separator.Indent}if(${name} instanceof Serializable){\n` +
+		`${Separator.NewLineIndent}${
+			Separator.Indent
+		}properties.putValue("${rawName}", ((Serializable) ${name}).toProperties());\n` +
+		`${Separator.NewLineIndent}}else{\n` +
+		`${Separator.NewLineIndent}${Separator.Indent}properties.putValue("${rawName}", ${name});\n` +
+		`${Separator.NewLineIndent}}\n` +
+		`${Separator.NewLineIndent}return this;`
 
 	const serializeArray =
-		`List<?> p = ArraySerializer.serialize(${name});\n` +
-		`${Separator.NewLineIndent}${defaultHandler(rawName, 'p')}`
+		`${Separator.Indent}List<?> p = ArraySerializer.serialize(${name});\n` +
+		`${Separator.NewLineIndent}${defaultHandler(rawName, 'p', false)}`
 
-	return isArrayType && isArrayType[1] !== 'Properties' ? serializeArray : defaultHandler()
+	return isArrayType && isArrayType[1] !== 'Properties'
+		? serializeArray
+		: isSerializable
+		? serializeObject
+		: defaultHandler()
 }
 
 const getValidParams = (potentialParams: Param[]) =>
@@ -203,8 +233,8 @@ const getValidParams = (potentialParams: Param[]) =>
 		return acc
 	}, [])
 
-const getValidArgs = (potentialParams: Arg[], defaultArg?: string[]) =>
-	potentialParams.reduce((acc: string[], { inUse, execution, fallback }) => {
+const getValidArgs = (potentialArgs: Arg[], defaultArg?: string[]) =>
+	potentialArgs.reduce((acc: string[], { inUse, execution, fallback }) => {
 		if (inUse) {
 			acc.push(execution)
 		} else if (fallback) {

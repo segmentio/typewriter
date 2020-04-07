@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.segment.generated.SEGTypewriterAnalytics;
+import com.segment.generated.*;
 import com.segment.analytics.Analytics;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,5 +35,25 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void onOrderCompleted(String productName) {
+    List defaultArray = Arrays.asList(137, "C-137");
+    Object defaultObject = new Object();
+
+    RequiredArrayWithPropertiesItem1 requiredArrayWithPropertiesItem = new RequiredArrayWithPropertiesItem1.Builder()
+        .requiredAny("Rick Sanchez").requiredArray(defaultArray).requiredBoolean(false).requiredInt(97L)
+        .requiredNumber(3.14).requiredObject(defaultObject).requiredString("Alpha-Betrium")
+        .requiredStringWithRegex("Lawyer Mort").build();
+
+    RequiredObjectWithProperties1 requiredObjectWithProperties = new RequiredObjectWithProperties1.Builder()
+        .requiredAny("Rick Sanchez").requiredArray(defaultArray).requiredBoolean(false).requiredInt(97L)
+        .requiredNumber(3.14).requiredObject(defaultObject).requiredString("Alpha-Betrium")
+        .requiredStringWithRegex("Lawyer Mort").build();
+
+    EveryRequiredType everyRequiredType = new EveryRequiredType.Builder().requiredAny("Rick Sanchez")
+        .requiredArray(defaultArray).requiredArrayWithProperties(Arrays.asList(requiredArrayWithPropertiesItem))
+        .requiredBoolean(false).requiredInt(97L).requiredNumber(3.14).requiredObject(defaultObject)
+        .requiredObjectWithProperties(requiredObjectWithProperties).requiredString("Alpha-Betrium")
+        .requiredStringWithRegex("Lawyer Morty").build();
+    
+    this.segAnalytics.everyRequiredType(everyRequiredType);
   }
 }

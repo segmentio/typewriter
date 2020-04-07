@@ -8,10 +8,9 @@ public class TypewriterApplication extends android.app.Application {
   public void onCreate() {
     super.onCreate();
 
-    // Analytics analytics = new Analytics.Builder(getApplicationContext(),
-    // "yGatIsoMfwLE4mTp7xky916C45uMfWF0")
-    // .trackApplicationLifecycleEvents().recordScreenViews().build();
+    Analytics analytics = new Analytics.Builder(this, "yGatIsoMfwLE4mTp7xky916C45uMfWF0")
+        .trackApplicationLifecycleEvents().recordScreenViews().build();
 
-    // Analytics.setSingletonInstance(analytics);
+    Analytics.setSingletonInstance(analytics);
   }
 }
