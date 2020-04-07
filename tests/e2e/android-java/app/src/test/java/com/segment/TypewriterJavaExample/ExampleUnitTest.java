@@ -150,13 +150,20 @@ public class ExampleUnitTest {
 
     ObjectItem objectItem = new ObjectItem.Builder().name("Beth Smith").build();
 
+    List<Object> nullable = new ArrayList();
+
+    nullable.add(null);
+
     SimpleArrayTypes simpleArrayTypes = new SimpleArrayTypes.Builder().any(defaultArray)
-        .boolean_(Arrays.asList(true, false)).integer(Arrays.asList(97L)).nullable(Arrays.asList(null))
+        .boolean_(Arrays.asList(true, false)).integer(Arrays.asList(97L)).nullable(nullable)
         .number(Arrays.asList(3.14)).object(Arrays.asList(objectItem)).string(Arrays.asList("Alpha-Betrium")).build();
 
     segAnalytics.simpleArrayTypes(simpleArrayTypes);
 
-    SubterraneanLab lab = new SubterraneanLab.Builder().jerrysMemories(new ArrayList()).mortysMemories(new ArrayList())
+    List jMem = new ArrayList();
+    List mMem = new ArrayList();
+
+    SubterraneanLab lab = new SubterraneanLab.Builder().jerrysMemories(jMem).mortysMemories(mMem)
         .summersContingencyPlan("Oh, man, it’s a scenario four.").build();
 
     Tunnel tunnel = new Tunnel.Builder().subterraneanLab(lab).build();
