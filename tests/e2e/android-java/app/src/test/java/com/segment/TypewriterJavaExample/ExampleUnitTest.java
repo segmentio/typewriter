@@ -1,5 +1,6 @@
 package com.segment.TypewriterJavaExample;
 
+import android.os.Build;
 import com.segment.generated.*;
 import com.segment.analytics.Analytics;
 
@@ -17,7 +18,7 @@ import org.robolectric.annotation.Config;
 import androidx.test.core.app.ApplicationProvider;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = 27, application = TestApp.class)
+@Config(sdk = Build.VERSION_CODES.O_MR1, application = TestApp.class)
 public class ExampleUnitTest {
 
   @Test
