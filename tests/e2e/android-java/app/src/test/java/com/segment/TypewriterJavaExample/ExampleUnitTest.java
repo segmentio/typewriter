@@ -5,7 +5,10 @@ import com.segment.analytics.Analytics;
 
 import android.content.Context;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import android.util.Log;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,20 +16,14 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import androidx.test.core.app.ApplicationProvider;
 
-/**
- * Example local unit test, which will execute on the development machine
- * (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 27, application = TestApp.class)
 public class ExampleUnitTest {
 
   @Test
   public void exampleTests() {
-    Context context = ApplicationProvider.getApplicationContext();
-    final Analytics analytics = Analytics.with(context);
+    Context ctx = ApplicationProvider.getApplicationContext();
+    final Analytics analytics = Analytics.with(ctx);
     SEGTypewriterAnalytics segAnalytics = new SEGTypewriterAnalytics(analytics);
 
     List defaultArray = Arrays.asList(137, "C-137");
@@ -157,8 +154,8 @@ public class ExampleUnitTest {
     nullable.add(null);
 
     SimpleArrayTypes simpleArrayTypes = new SimpleArrayTypes.Builder().any(defaultArray)
-        .boolean_(Arrays.asList(true, false)).integer(Arrays.asList(97L)).nullable(nullable)
-        .number(Arrays.asList(3.14)).object(Arrays.asList(objectItem)).string(Arrays.asList("Alpha-Betrium")).build();
+        .boolean_(Arrays.asList(true, false)).integer(Arrays.asList(97L)).nullable(nullable).number(Arrays.asList(3.14))
+        .object(Arrays.asList(objectItem)).string(Arrays.asList("Alpha-Betrium")).build();
 
     segAnalytics.simpleArrayTypes(simpleArrayTypes);
 
@@ -199,17 +196,13 @@ public class ExampleUnitTest {
 
     segAnalytics.largeNumbersEvent(largeNumberEvent);
 
-    CompletableFuture<Void> flushingFuture = CompletableFuture.runAsync(new Runnable() {
-      @Override
-      public void run(){
+    ExecutorService executor = Executors.newFixedThreadPool(1);
+    Runnable task = new Runnable(){
+      public void run() {
         analytics.flush();
       }
-    });
+    };
 
-    try{
-      flushingFuture.get();
-    }catch(Throwable e){
-
-    }
+    executor.submit(task);
   }
 }

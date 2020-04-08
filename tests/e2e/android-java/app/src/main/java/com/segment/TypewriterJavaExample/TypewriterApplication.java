@@ -7,10 +7,5 @@ public class TypewriterApplication extends android.app.Application {
   @Override
   public void onCreate() {
     super.onCreate();
-
-    Analytics analytics = new Analytics.Builder(this, "yGatIsoMfwLE4mTp7xky916C45uMfWF0")
-        .trackApplicationLifecycleEvents().recordScreenViews().build();
-
-    Analytics.setSingletonInstance(analytics);
   }
 }
