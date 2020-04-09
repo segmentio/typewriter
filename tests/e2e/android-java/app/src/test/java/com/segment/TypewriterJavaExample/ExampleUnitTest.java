@@ -1,30 +1,65 @@
 package com.segment.TypewriterJavaExample;
 
+import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.HandlerThread;
+import com.segment.analytics.ConnectionFactory;
+import com.segment.analytics.internal.Utils;
 import com.segment.generated.*;
 import com.segment.analytics.Analytics;
 
 import android.content.Context;
+
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.net.HttpURLConnection;
+import java.sql.Time;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 import android.util.Log;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import androidx.test.core.app.ApplicationProvider;
+import org.robolectric.shadow.api.Shadow;
+import org.robolectric.shadows.ShadowLooper;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = Build.VERSION_CODES.O_MR1, application = TestApp.class)
 public class ExampleUnitTest {
+  final String REMOTE_HOST = "http://10.0.2.2:8765";
+  Utils.AnalyticsNetworkExecutorService networkExecutorService;
+
+  Analytics analytics;
+
+  @Before
+  public void setUp() {
+    networkExecutorService = new Utils.AnalyticsNetworkExecutorService();
+
+
+    Context ctx = ApplicationProvider.getApplicationContext();
+    analytics = new Analytics.Builder(ctx, "123456")
+        .networkExecutor(networkExecutorService)
+        .connectionFactory(new ConnectionFactory() {
+          @Override
+          protected HttpURLConnection openConnection(String url) throws IOException {
+            String path = Uri.parse(url).getPath();
+            return super.openConnection(REMOTE_HOST + path);
+          }
+        }).build();
+
+    Analytics.setSingletonInstance(analytics);
+  }
 
   @Test
   public void exampleTests() {
     Context ctx = ApplicationProvider.getApplicationContext();
-    final Analytics analytics = Analytics.with(ctx);
     SEGTypewriterAnalytics segAnalytics = new SEGTypewriterAnalytics(analytics);
 
     List defaultArray = Arrays.asList(137, "C-137");
@@ -197,13 +232,40 @@ public class ExampleUnitTest {
 
     segAnalytics.largeNumbersEvent(largeNumberEvent);
 
-    ExecutorService executor = Executors.newFixedThreadPool(1);
-    Runnable task = new Runnable(){
-      public void run() {
-        analytics.flush();
-      }
-    };
+    analytics.flush();
 
-    executor.submit(task);
+
+    for (int i = 0; i < 10; i++) {
+      try {
+        Thread.sleep(i * 1000);
+        ShadowLooper looper = ShadowLooper.shadowMainLooper();
+        looper.runToEndOfTasks();
+
+        Field statsField = Analytics.class.getDeclaredField("stats");
+        statsField.setAccessible(true);
+        Object statsObject = statsField.get(analytics);
+
+        Field integrationsField = Analytics.class.getDeclaredField("integrations");
+        integrationsField.setAccessible(true);
+        Map integrationsObject = (Map)integrationsField.get(analytics);
+
+        if (integrationsObject != null && integrationsObject.containsKey("Segment.io")) {
+          Object segmentIntegration = integrationsObject.get("Segment.io");
+          Field segmentThreadField = segmentIntegration.getClass().getDeclaredField("segmentThread");
+          segmentThreadField.setAccessible(true);
+          HandlerThread segmentThread = (HandlerThread) segmentThreadField.get(segmentIntegration);
+          Shadows.shadowOf(segmentThread.getLooper()).getScheduler().advanceToNextPostedRunnable();
+        }
+
+        Field handlerField = statsObject.getClass().getDeclaredField("handler");
+        handlerField.setAccessible(true);
+        Handler handlerThread = (Handler) handlerField.get(statsObject);
+        Shadows.shadowOf(handlerThread.getLooper()).getScheduler().advanceToNextPostedRunnable();
+
+      } catch (Exception ignored) {
+        // Catch and ignore so that we can retry.
+      }
+    }
+
   }
 }
