@@ -237,7 +237,7 @@ jobs:
             make test-ios-swift-prod
   test-android-dev:
     docker: # run the steps with Docker
-      - image: circleci/android:api-29-node8-alpha
+      - image: circleci/android:api-29-node
     environment:
       JVM_OPTS: -Xmx3200m
     steps: # a collection of executable commands
@@ -258,7 +258,7 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
   test-android-prod:
     docker: # run the steps with Docker
-      - image: circleci/android:api-29-node8-alpha
+      - image: circleci/android:api-29-node
     environment:
       JVM_OPTS: -Xmx3200m
     steps: # a collection of executable commands
