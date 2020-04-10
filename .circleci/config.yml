@@ -242,6 +242,8 @@ jobs:
       JVM_OPTS: -Xmx3200m
     steps: # a collection of executable commands
       - attach_workspace: { at: . }
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Download Dependencies
           command: cd tests/e2e/android-java && ./gradlew androidDependencies && cd ../../..
@@ -254,7 +256,7 @@ jobs:
             make test-android-dev
       - save_cache:
           paths:
-            - ~/.gradle
+            - ~/typewriter/tests/e2e/android-java/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
   test-android-prod:
     docker: # run the steps with Docker
@@ -277,7 +279,7 @@ jobs:
             make test-android-prod
       - save_cache:
           paths:
-            - ~/.gradle
+            - ~/typewriter/tests/e2e/android-java/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
 
 workflows:
