@@ -28,7 +28,9 @@ optionalStringWithRegex:(nullable NSString *)optionalStringWithRegex {
 
 -(nonnull SERIALIZABLE_DICT) toDictionary {
   NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
-  properties[@"optional any"] = self.optionalAny == nil ? [NSNull null] : self.optionalAny;
+  if (self.optionalAny != nil) {
+    properties[@"optional any"] = self.optionalAny;
+  }
   if (self.optionalArray != nil) {
     properties[@"optional array"] = [SEGTypewriterUtils toSerializableArray:self.optionalArray];
   }

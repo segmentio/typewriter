@@ -87,10 +87,36 @@
                                 optionalObjectWithProperties:optionalObjectWithProperties
                                               optionalString:@"Alpha-Betrium"
                                      optionalStringWithRegex:@"Lawyer Morty"];
-    
-    // NOTE: It turns out analytics-ios does not support serializing null values: https://github.com/segmentio/analytics-ios/pull/706
-    // They are just removed from the object before submitting. Therefore, you cannot set a null + required field as null without
-    // it generating a violation in Protocols. If this becomes an issue, we can investigate a change to analytics-ios.
+
+    SEGRequiredArrayWithPropertiesItem *nullableRequiredArrayWithNilPropertiesItem =
+        [SEGRequiredArrayWithPropertiesItem initWithRequiredAny:nil
+                                                  requiredArray:nil
+                                                requiredBoolean:nil
+                                                    requiredInt:nil
+                                                 requiredNumber:nil
+                                                 requiredObject:nil
+                                                 requiredString:nil
+                                        requiredStringWithRegex:nil];
+    SEGRequiredObjectWithProperties *nullableRequiredObjectWithNilProperties =
+        [SEGRequiredObjectWithProperties initWithRequiredAny:nil
+                                               requiredArray:nil
+                                             requiredBoolean:nil
+                                                 requiredInt:nil
+                                              requiredNumber:nil
+                                              requiredObject:nil
+                                              requiredString:nil
+                                     requiredStringWithRegex:nil];
+    [SEGTypewriterAnalytics everyNullableRequiredTypeWithRequiredAny:nil
+                                                       requiredArray:nil
+                                         requiredArrayWithProperties:@[nullableRequiredArrayWithNilPropertiesItem]
+                                                     requiredBoolean:nil
+                                                         requiredInt:nil
+                                                      requiredNumber:nil
+                                                      requiredObject:nil
+                                        requiredObjectWithProperties:nullableRequiredObjectWithNilProperties
+                                                      requiredString:nil
+                                             requiredStringWithRegex:nil];
+
     SEGRequiredArrayWithPropertiesItem *nullableRequiredArrayWithPropertiesItem =
         [SEGRequiredArrayWithPropertiesItem initWithRequiredAny:@"Rick Sanchez"
                                                   requiredArray:@[@137, @"C-137"]

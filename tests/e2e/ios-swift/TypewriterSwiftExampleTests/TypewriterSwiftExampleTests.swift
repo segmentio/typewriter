@@ -86,6 +86,36 @@ class TypewriterSwiftExampleTests: XCTestCase {
             optionalStringWithRegex:  "Lawyer Morty")
         
         SEGTypewriterAnalytics.everyNullableRequiredType(
+            withRequiredAny: nil,
+            requiredArray: nil,
+            requiredArrayWithProperties: [
+                SEGRequiredArrayWithPropertiesItem.initWithRequiredAny(
+                    nil,
+                    requiredArray: nil,
+                    requiredBoolean: nil,
+                    requiredInt: nil,
+                    requiredNumber: nil,
+                    requiredObject: nil,
+                    requiredString: nil,
+                    requiredStringWithRegex: nil),
+            ],
+            requiredBoolean: nil,
+            requiredInt: nil,
+            requiredNumber: nil,
+            requiredObject: nil,
+            requiredObjectWithProperties: SEGRequiredObjectWithProperties.initWithRequiredAny(
+                nil,
+                requiredArray: nil,
+                requiredBoolean: nil,
+                requiredInt: nil,
+                requiredNumber: nil,
+                requiredObject: nil,
+                requiredString: nil,
+                requiredStringWithRegex: nil),
+            requiredString: nil,
+            requiredStringWithRegex: nil)
+
+        SEGTypewriterAnalytics.everyNullableRequiredType(
             withRequiredAny: "Rick Sanchez",
             requiredArray: [137, "C-137"],
             requiredArrayWithProperties: [
@@ -207,7 +237,7 @@ class TypewriterSwiftExampleTests: XCTestCase {
             finishedFlushing = true
         }
         
-        SEGAnalytics.shared().flush()
+        SEGAnalytics.shared()!.flush()
         
         while(!finishedFlushing) {
             RunLoop.current.run(until: Date.init(timeIntervalSinceNow: 0.1))

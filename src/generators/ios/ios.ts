@@ -102,7 +102,7 @@ export const ios: Generator<{}, IOSTrackCallContext, IOSObjectContext, IOSProper
 		let object: IOSObjectContext | undefined = undefined
 
 		if (properties.length > 0) {
-			// If at least one property is set, generate a class that only allows the explicitely
+			// If at least one property is set, generate a class that only allows the explicitly
 			// allowed properties.
 			const className = client.namer.register(schema.name, 'class', {
 				transform: (name: string) => {
@@ -183,7 +183,7 @@ function defaultPropertyContext(
 				: 'strong, nonatomic, nullable'
 			: 'nonatomic',
 		isVariableNullable: !schema.isRequired || !!schema.isNullable,
-		isPayloadFieldNullable: !!schema.isNullable,
+		isPayloadFieldNullable: !!schema.isNullable && !!schema.isRequired,
 		isPointerType,
 	}
 }
