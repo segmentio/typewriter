@@ -225,7 +225,7 @@ test-android-runner:
 	@echo "\n>>>	🏃 Running Android client test suite ($(TYPEWRITER_COMMAND), $(LANGUAGE))...\n"
 	@make clear-mock
 	@yarn run -s dev $(TYPEWRITER_COMMAND) --config=./tests/e2e/android-java
-	@cd tests/e2e/android-java && set -eo pipefail && ./gradlew testDebugUnitTest
+	@cd tests/e2e/android-java && ./gradlew testDebugUnitTest
 	@SDK=analytics-android LANGUAGE=$(LANGUAGE) IS_DEVELOPMENT=$(IS_DEVELOPMENT) yarn run -s jest ./tests/e2e/suite.test.ts
 
 .PHONY: test-ios-objc-dev test-ios-objc-prod test-ios-objc-runner test-ios-swift-dev test-ios-swift-prod test-ios-swift-runner test-ios-runner
