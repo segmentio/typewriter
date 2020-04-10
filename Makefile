@@ -207,16 +207,16 @@ test-ios-swift:
 .PHONY: test-android-java
 test-android-java:
 	@cd tests/e2e/android-java
-	@make test-android-java-dev test-android-java-prod
+	@make test-android-dev test-android-prod
 
 .PHONY: test-android-java-dev test-android-java-prod
-test-android-java-dev: IS_DEVELOPMENT=true
-test-android-java-dev: TYPEWRITER_COMMAND=build
-test-android-java-dev: test-android-java-runner
+test-android-dev: IS_DEVELOPMENT=true
+test-android-dev: TYPEWRITER_COMMAND=build
+test-android-dev: test-android-java-runner
 
-test-android-java-prod: IS_DEVELOPMENT=false
-test-android-java-prod: TYPEWRITER_COMMAND=build
-test-android-java-prod: test-android-java-runner
+test-android-prod: IS_DEVELOPMENT=false
+test-android-prod: TYPEWRITER_COMMAND=build
+test-android-prod: test-android-java-runner
 
 test-android-java-runner: LANGUAGE=java
 test-android-java-runner: test-android-runner
