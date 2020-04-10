@@ -50,7 +50,7 @@ public final class RequiredObjectWithProperties1 extends Serializable {
      * This property is required to generate a valid RequiredObjectWithProperties1 object
      */
     public Builder requiredArray(final @NonNull List<Object> requiredArray) {
-      List<?> p = ArraySerializer.serialize(requiredArray);
+      List<?> p = TypewriterUtils.serialize(requiredArray);
       properties.putValue("required array", p);
       return this;
     } 
@@ -120,30 +120,34 @@ public final class RequiredObjectWithProperties1 extends Serializable {
     * Build an instance of {@link RequiredObjectWithProperties1}
     */
     public RequiredObjectWithProperties1 build() {
-      if (properties.get("required any") == null) {
-        throw new IllegalArgumentException("RequiredObjectWithProperties1 missing required property: required any");
-      }
-      if (properties.get("required array") == null) {
+      if(properties.get("required array") == null){
         throw new IllegalArgumentException("RequiredObjectWithProperties1 missing required property: required array");
       }
-      if (properties.get("required boolean") == null) {
+  
+      if(properties.get("required boolean") == null){
         throw new IllegalArgumentException("RequiredObjectWithProperties1 missing required property: required boolean");
       }
-      if (properties.get("required int") == null) {
+  
+      if(properties.get("required int") == null){
         throw new IllegalArgumentException("RequiredObjectWithProperties1 missing required property: required int");
       }
-      if (properties.get("required number") == null) {
+  
+      if(properties.get("required number") == null){
         throw new IllegalArgumentException("RequiredObjectWithProperties1 missing required property: required number");
       }
-      if (properties.get("required object") == null) {
+  
+      if(properties.get("required object") == null){
         throw new IllegalArgumentException("RequiredObjectWithProperties1 missing required property: required object");
       }
-      if (properties.get("required string") == null) {
+  
+      if(properties.get("required string") == null){
         throw new IllegalArgumentException("RequiredObjectWithProperties1 missing required property: required string");
       }
-      if (properties.get("required string with regex") == null) {
+  
+      if(properties.get("required string with regex") == null){
         throw new IllegalArgumentException("RequiredObjectWithProperties1 missing required property: required string with regex");
       }
+  
       return new RequiredObjectWithProperties1(properties);
     }
   }

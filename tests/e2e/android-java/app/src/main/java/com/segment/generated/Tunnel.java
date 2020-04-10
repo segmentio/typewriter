@@ -52,9 +52,10 @@ public final class Tunnel extends Serializable {
     * Build an instance of {@link Tunnel}
     */
     public Tunnel build() {
-      if (properties.get("subterranean lab") == null) {
+      if(properties.get("subterranean lab") == null){
         throw new IllegalArgumentException("Tunnel missing required property: subterranean lab");
       }
+  
       return new Tunnel(properties);
     }
   }

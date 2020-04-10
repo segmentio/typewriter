@@ -107,18 +107,14 @@ public final class LargeNumbersEvent extends Serializable {
     * Build an instance of {@link LargeNumbersEvent}
     */
     public LargeNumbersEvent build() {
-      if (properties.get("large nullable required integer") == null) {
-        throw new IllegalArgumentException("LargeNumbersEvent missing required property: large nullable required integer");
-      }
-      if (properties.get("large nullable required number") == null) {
-        throw new IllegalArgumentException("LargeNumbersEvent missing required property: large nullable required number");
-      }
-      if (properties.get("large required integer") == null) {
+      if(properties.get("large required integer") == null){
         throw new IllegalArgumentException("LargeNumbersEvent missing required property: large required integer");
       }
-      if (properties.get("large required number") == null) {
+  
+      if(properties.get("large required number") == null){
         throw new IllegalArgumentException("LargeNumbersEvent missing required property: large required number");
       }
+  
       return new LargeNumbersEvent(properties);
     }
   }

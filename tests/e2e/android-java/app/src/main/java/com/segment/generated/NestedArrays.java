@@ -40,7 +40,7 @@ public final class NestedArrays extends Serializable {
      * This property is required to generate a valid NestedArrays object
      */
     public Builder universeCharacters(final @NonNull List<List<UniverseCharactersItemItem>> universeCharacters) {
-      List<?> p = ArraySerializer.serialize(universeCharacters);
+      List<?> p = TypewriterUtils.serialize(universeCharacters);
       properties.putValue("universeCharacters", p);
       return this;
     } 
@@ -50,9 +50,10 @@ public final class NestedArrays extends Serializable {
     * Build an instance of {@link NestedArrays}
     */
     public NestedArrays build() {
-      if (properties.get("universeCharacters") == null) {
+      if(properties.get("universeCharacters") == null){
         throw new IllegalArgumentException("NestedArrays missing required property: universeCharacters");
       }
+  
       return new NestedArrays(properties);
     }
   }

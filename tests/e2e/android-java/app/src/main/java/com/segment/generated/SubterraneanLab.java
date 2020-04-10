@@ -38,7 +38,7 @@ public final class SubterraneanLab extends Serializable {
     /**
      */
     public Builder jerrysMemories(final @Nullable List<Object> jerrysMemories) {
-      List<?> p = ArraySerializer.serialize(jerrysMemories);
+      List<?> p = TypewriterUtils.serialize(jerrysMemories);
       properties.putValue("jerry's memories", p);
       return this;
     } 
@@ -47,7 +47,7 @@ public final class SubterraneanLab extends Serializable {
     /**
      */
     public Builder mortysMemories(final @Nullable List<Object> mortysMemories) {
-      List<?> p = ArraySerializer.serialize(mortysMemories);
+      List<?> p = TypewriterUtils.serialize(mortysMemories);
       properties.putValue("morty's memories", p);
       return this;
     } 

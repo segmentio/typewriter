@@ -48,9 +48,10 @@ public final class PropertySanitized extends Serializable {
     * Build an instance of {@link PropertySanitized}
     */
     public PropertySanitized build() {
-      if (properties.get("0000---terrible-property-name~!3") == null) {
+      if(properties.get("0000---terrible-property-name~!3") == null){
         throw new IllegalArgumentException("PropertySanitized missing required property: 0000---terrible-property-name~!3");
       }
+  
       return new PropertySanitized(properties);
     }
   }

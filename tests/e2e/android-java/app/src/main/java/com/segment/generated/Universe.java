@@ -50,7 +50,7 @@ public final class Universe extends Serializable {
      * This property is required to generate a valid Universe object
      */
     public Builder occupants(final @NonNull List<OccupantsItem> occupants) {
-      List<?> p = ArraySerializer.serialize(occupants);
+      List<?> p = TypewriterUtils.serialize(occupants);
       properties.putValue("occupants", p);
       return this;
     } 
@@ -60,12 +60,14 @@ public final class Universe extends Serializable {
     * Build an instance of {@link Universe}
     */
     public Universe build() {
-      if (properties.get("name") == null) {
+      if(properties.get("name") == null){
         throw new IllegalArgumentException("Universe missing required property: name");
       }
-      if (properties.get("occupants") == null) {
+  
+      if(properties.get("occupants") == null){
         throw new IllegalArgumentException("Universe missing required property: occupants");
       }
+  
       return new Universe(properties);
     }
   }

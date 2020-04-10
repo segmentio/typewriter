@@ -2,34 +2,27 @@ package com.segment.generated;
 
 import com.segment.analytics.Options;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.lang.String;
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 
 public final class TypewriterUtils {
+  protected static Map<String, String> typewriterCtx;
 
-
-  protected static ConcurrentHashMap getTypewriterInfo(){
-    ConcurrentHashMap<String, String> typewriterInfo = new ConcurrentHashMap<>();
-    try{
-      typewriterInfo.put("version", "7.0.1");
-      typewriterInfo.put("language", "java");
-      return typewriterInfo;
-    }catch(Throwable e){
-      return typewriterInfo;
-    }
+  static {
+    typewriterCtx = new HashMap<String, String>();
+    typewriterCtx.put("version", "7.0.1");
+    typewriterCtx.put("language", "java");
   }
 
-  protected static Options mergeOptions(final @NonNull Options options){
-    options.putContext("typewriter", getTypewriterInfo());
+  protected static Options addTypewriterContext(final @NonNull Options options){
+    options.putContext("typewriter", typewriterCtx);
     return options;
   }
 
-  protected static Options mergeOptions(){
-    
+  protected static Options addTypewriterContext(){
     Options typewriterContext = new Options();
-    typewriterContext.putContext("typewriter", getTypewriterInfo());
+    typewriterContext.putContext("typewriter", typewriterCtx);
     return typewriterContext;
   }
 

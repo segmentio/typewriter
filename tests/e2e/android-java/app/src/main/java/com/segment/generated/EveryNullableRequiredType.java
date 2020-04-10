@@ -50,7 +50,7 @@ public final class EveryNullableRequiredType extends Serializable {
      * This property is required to generate a valid EveryNullableRequiredType object
      */
     public Builder requiredArray(final @Nullable List<Object> requiredArray) {
-      List<?> p = ArraySerializer.serialize(requiredArray);
+      List<?> p = TypewriterUtils.serialize(requiredArray);
       properties.putValue("required array", p);
       return this;
     } 
@@ -61,7 +61,7 @@ public final class EveryNullableRequiredType extends Serializable {
      * This property is required to generate a valid EveryNullableRequiredType object
      */
     public Builder requiredArrayWithProperties(final @Nullable List<RequiredArrayWithPropertiesItem> requiredArrayWithProperties) {
-      List<?> p = ArraySerializer.serialize(requiredArrayWithProperties);
+      List<?> p = TypewriterUtils.serialize(requiredArrayWithProperties);
       properties.putValue("required array with properties", p);
       return this;
     } 
@@ -145,36 +145,6 @@ public final class EveryNullableRequiredType extends Serializable {
     * Build an instance of {@link EveryNullableRequiredType}
     */
     public EveryNullableRequiredType build() {
-      if (properties.get("required any") == null) {
-        throw new IllegalArgumentException("EveryNullableRequiredType missing required property: required any");
-      }
-      if (properties.get("required array") == null) {
-        throw new IllegalArgumentException("EveryNullableRequiredType missing required property: required array");
-      }
-      if (properties.get("required array with properties") == null) {
-        throw new IllegalArgumentException("EveryNullableRequiredType missing required property: required array with properties");
-      }
-      if (properties.get("required boolean") == null) {
-        throw new IllegalArgumentException("EveryNullableRequiredType missing required property: required boolean");
-      }
-      if (properties.get("required int") == null) {
-        throw new IllegalArgumentException("EveryNullableRequiredType missing required property: required int");
-      }
-      if (properties.get("required number") == null) {
-        throw new IllegalArgumentException("EveryNullableRequiredType missing required property: required number");
-      }
-      if (properties.get("required object") == null) {
-        throw new IllegalArgumentException("EveryNullableRequiredType missing required property: required object");
-      }
-      if (properties.get("required object with properties") == null) {
-        throw new IllegalArgumentException("EveryNullableRequiredType missing required property: required object with properties");
-      }
-      if (properties.get("required string") == null) {
-        throw new IllegalArgumentException("EveryNullableRequiredType missing required property: required string");
-      }
-      if (properties.get("required string with regex") == null) {
-        throw new IllegalArgumentException("EveryNullableRequiredType missing required property: required string with regex");
-      }
       return new EveryNullableRequiredType(properties);
     }
   }

@@ -46,6 +46,13 @@ public final class {{name}} extends Serializable {
     * Build an instance of {@link {{name ~}} }
     */
     public {{name}} build() {
+  {{#each properties ~}}
+    {{#if isRequired}}
+    {{#if nonNullPayload}}
+      {{runtimeRequiredCheck ../name this}}
+    {{/if}}
+    {{/if}}
+  {{/each}}
       return new {{name}}(properties);
     }
   }

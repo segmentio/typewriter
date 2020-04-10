@@ -48,9 +48,6 @@ public final class UnionType extends Serializable {
     * Build an instance of {@link UnionType}
     */
     public UnionType build() {
-      if (properties.get("universe_name") == null) {
-        throw new IllegalArgumentException("UnionType missing required property: universe_name");
-      }
       return new UnionType(properties);
     }
   }

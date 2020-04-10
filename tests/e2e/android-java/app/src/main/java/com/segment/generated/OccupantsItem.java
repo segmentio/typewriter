@@ -49,9 +49,10 @@ public final class OccupantsItem extends Serializable {
     * Build an instance of {@link OccupantsItem}
     */
     public OccupantsItem build() {
-      if (properties.get("name") == null) {
+      if(properties.get("name") == null){
         throw new IllegalArgumentException("OccupantsItem missing required property: name");
       }
+  
       return new OccupantsItem(properties);
     }
   }

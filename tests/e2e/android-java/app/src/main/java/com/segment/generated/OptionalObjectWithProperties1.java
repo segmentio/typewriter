@@ -48,7 +48,7 @@ public final class OptionalObjectWithProperties1 extends Serializable {
      * Optional array property
      */
     public Builder optionalArray(final @Nullable List<Object> optionalArray) {
-      List<?> p = ArraySerializer.serialize(optionalArray);
+      List<?> p = TypewriterUtils.serialize(optionalArray);
       properties.putValue("optional array", p);
       return this;
     } 

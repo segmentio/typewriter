@@ -48,9 +48,10 @@ public final class CustomViolationHandler extends Serializable {
     * Build an instance of {@link CustomViolationHandler}
     */
     public CustomViolationHandler build() {
-      if (properties.get("regex property") == null) {
+      if(properties.get("regex property") == null){
         throw new IllegalArgumentException("CustomViolationHandler missing required property: regex property");
       }
+  
       return new CustomViolationHandler(properties);
     }
   }

@@ -48,7 +48,7 @@ public final class EveryNullableOptionalType extends Serializable {
      * Optional array property
      */
     public Builder optionalArray(final @Nullable List<Object> optionalArray) {
-      List<?> p = ArraySerializer.serialize(optionalArray);
+      List<?> p = TypewriterUtils.serialize(optionalArray);
       properties.putValue("optional array", p);
       return this;
     } 
@@ -58,7 +58,7 @@ public final class EveryNullableOptionalType extends Serializable {
      * Optional array with properties
      */
     public Builder optionalArrayWithProperties(final @Nullable List<OptionalArrayWithPropertiesItem> optionalArrayWithProperties) {
-      List<?> p = ArraySerializer.serialize(optionalArrayWithProperties);
+      List<?> p = TypewriterUtils.serialize(optionalArrayWithProperties);
       properties.putValue("optional array with properties", p);
       return this;
     } 

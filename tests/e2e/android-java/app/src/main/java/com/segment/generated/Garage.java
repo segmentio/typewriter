@@ -52,9 +52,10 @@ public final class Garage extends Serializable {
     * Build an instance of {@link Garage}
     */
     public Garage build() {
-      if (properties.get("tunnel") == null) {
+      if(properties.get("tunnel") == null){
         throw new IllegalArgumentException("Garage missing required property: tunnel");
       }
+  
       return new Garage(properties);
     }
   }

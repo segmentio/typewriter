@@ -48,9 +48,10 @@ public final class DefaultViolationHandler extends Serializable {
     * Build an instance of {@link DefaultViolationHandler}
     */
     public DefaultViolationHandler build() {
-      if (properties.get("regex property") == null) {
+      if(properties.get("regex property") == null){
         throw new IllegalArgumentException("DefaultViolationHandler missing required property: regex property");
       }
+  
       return new DefaultViolationHandler(properties);
     }
   }

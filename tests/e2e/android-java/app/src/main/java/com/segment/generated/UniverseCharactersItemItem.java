@@ -49,9 +49,10 @@ public final class UniverseCharactersItemItem extends Serializable {
     * Build an instance of {@link UniverseCharactersItemItem}
     */
     public UniverseCharactersItemItem build() {
-      if (properties.get("name") == null) {
+      if(properties.get("name") == null){
         throw new IllegalArgumentException("UniverseCharactersItemItem missing required property: name");
       }
+  
       return new UniverseCharactersItemItem(properties);
     }
   }

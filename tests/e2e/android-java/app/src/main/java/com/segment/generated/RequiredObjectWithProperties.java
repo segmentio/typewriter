@@ -50,7 +50,7 @@ public final class RequiredObjectWithProperties extends Serializable {
      * This property is required to generate a valid RequiredObjectWithProperties object
      */
     public Builder requiredArray(final @Nullable List<Object> requiredArray) {
-      List<?> p = ArraySerializer.serialize(requiredArray);
+      List<?> p = TypewriterUtils.serialize(requiredArray);
       properties.putValue("required array", p);
       return this;
     } 
@@ -120,30 +120,6 @@ public final class RequiredObjectWithProperties extends Serializable {
     * Build an instance of {@link RequiredObjectWithProperties}
     */
     public RequiredObjectWithProperties build() {
-      if (properties.get("required any") == null) {
-        throw new IllegalArgumentException("RequiredObjectWithProperties missing required property: required any");
-      }
-      if (properties.get("required array") == null) {
-        throw new IllegalArgumentException("RequiredObjectWithProperties missing required property: required array");
-      }
-      if (properties.get("required boolean") == null) {
-        throw new IllegalArgumentException("RequiredObjectWithProperties missing required property: required boolean");
-      }
-      if (properties.get("required int") == null) {
-        throw new IllegalArgumentException("RequiredObjectWithProperties missing required property: required int");
-      }
-      if (properties.get("required number") == null) {
-        throw new IllegalArgumentException("RequiredObjectWithProperties missing required property: required number");
-      }
-      if (properties.get("required object") == null) {
-        throw new IllegalArgumentException("RequiredObjectWithProperties missing required property: required object");
-      }
-      if (properties.get("required string") == null) {
-        throw new IllegalArgumentException("RequiredObjectWithProperties missing required property: required string");
-      }
-      if (properties.get("required string with regex") == null) {
-        throw new IllegalArgumentException("RequiredObjectWithProperties missing required property: required string with regex");
-      }
       return new RequiredObjectWithProperties(properties);
     }
   }

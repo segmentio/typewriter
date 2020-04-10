@@ -1,7 +1,7 @@
 import { camelCase, upperFirst } from 'lodash'
 import { Type, Schema, getPropertiesSchema } from '../ast'
 import * as Handlebars from 'handlebars'
-import { Generator, BasePropertyContext, GeneratorClient } from '../gen'
+import { Generator, GeneratorClient } from '../gen'
 
 // These contexts are what will be passed to Handlebars to perform rendering.
 // Everything in these contexts should be properly sanitized.
@@ -21,7 +21,7 @@ interface AndroidPropertyContext {
 	// Whether the property is nullable (@Nonnull vs @Nullable modifier).
 	isVariableNullable: boolean
 	// Whether null is a valid value for this property when sent to Segment.
-	isPayloadFieldNullable: boolean
+	nonNullPayload: boolean
 }
 
 interface AndroidTrackCallContext {
@@ -65,6 +65,7 @@ export const android: Generator<
 		Handlebars.registerHelper('builderFunctionSignature', generateBuilderFunctionSignature)
 		Handlebars.registerHelper('builderFunctionBody', generateBuilderFunctionBody)
 		Handlebars.registerHelper('propertiesGetterSetter', generatePropertiesGetterSetter)
+		Handlebars.registerHelper('runtimeRequiredCheck', generateRequiredPropertyRuntimeError)
 		return {}
 	},
 	generatePrimitive: async (client, schema, parentPath) => {
@@ -172,8 +173,8 @@ enum Properties {
 }
 
 enum Options {
-	MergeOptions = 'TypewriterUtils.mergeOptions(options)',
-	Create = 'TypewriterUtils.mergeOptions()',
+	MergeOptions = 'TypewriterUtils.addTypewriterContext(options)',
+	Create = 'TypewriterUtils.addTypewriterContext()',
 }
 
 function defaultPropertyContext(
@@ -192,7 +193,7 @@ function defaultPropertyContext(
 				? Modifier.FinalNullable
 				: Modifier.FinalNonNullable,
 		isVariableNullable: !schema.isRequired || !!schema.isNullable,
-		isPayloadFieldNullable: !!schema.isNullable,
+		nonNullPayload: !schema.isNullable,
 	}
 }
 
@@ -294,5 +295,19 @@ function generatePropertiesGetterSetter(name: string): string {
   protected Properties toProperties() {
     return properties;
 	}
+  `
+}
+
+function generateRequiredPropertyRuntimeError(
+	className: string,
+	property: { rawName: string; isPayloadFieldNullable: boolean }
+): string | undefined {
+	return `if(properties.get("${property.rawName}") == null){
+    ${Separator.Indent}${
+		Separator.Indent
+	}throw new IllegalArgumentException("${className} missing required property: ${
+		property.rawName
+	}");
+    ${Separator.Indent}}
   `
 }
