@@ -245,7 +245,10 @@ jobs:
     steps: # a collection of executable commands
       - attach_workspace: { at: . }
       - run:
-          name: Run tests
+          name: Install Yarn
+          command: curl -o- -L https://yarnpkg.com/install.sh | bash
+      - run:
+          name: Run Android Java Tests
           command: |
             git clone https://github.com/segmentio/mock.git && cd mock && yarn && cd..
             cd mock && yarn dev & 
@@ -269,7 +272,10 @@ jobs:
     steps: # a collection of executable commands
       - attach_workspace: { at: . }
       - run:
-          name: Run tests
+        name: Install Yarn
+        command: curl -o- -L https://yarnpkg.com/install.sh | bash
+      - run:
+          name: Run Android Java Tests
           command: |
             git clone https://github.com/segmentio/mock.git && cd mock && yarn && cd..
             cd mock && yarn dev & 
