@@ -28,14 +28,30 @@ optionalStringWithRegex:(nullable NSString *)optionalStringWithRegex {
 
 -(nonnull SERIALIZABLE_DICT) toDictionary {
   NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
-  properties[@"optional any"] = self.optionalAny == nil ? [NSNull null] : self.optionalAny;
-  properties[@"optional array"] = self.optionalArray == nil ? [NSNull null] : [SEGTypewriterUtils toSerializableArray:self.optionalArray];
-  properties[@"optional boolean"] = self.optionalBoolean == nil ? [NSNull null] : self.optionalBoolean;
-  properties[@"optional int"] = self.optionalInt == nil ? [NSNull null] : self.optionalInt;
-  properties[@"optional number"] = self.optionalNumber == nil ? [NSNull null] : self.optionalNumber;
-  properties[@"optional object"] = self.optionalObject == nil ? [NSNull null] : self.optionalObject;
-  properties[@"optional string"] = self.optionalString == nil ? [NSNull null] : self.optionalString;
-  properties[@"optional string with regex"] = self.optionalStringWithRegex == nil ? [NSNull null] : self.optionalStringWithRegex;
+  if (self.optionalAny != nil) {
+    properties[@"optional any"] = self.optionalAny;
+  }
+  if (self.optionalArray != nil) {
+    properties[@"optional array"] = [SEGTypewriterUtils toSerializableArray:self.optionalArray];
+  }
+  if (self.optionalBoolean != nil) {
+    properties[@"optional boolean"] = self.optionalBoolean;
+  }
+  if (self.optionalInt != nil) {
+    properties[@"optional int"] = self.optionalInt;
+  }
+  if (self.optionalNumber != nil) {
+    properties[@"optional number"] = self.optionalNumber;
+  }
+  if (self.optionalObject != nil) {
+    properties[@"optional object"] = self.optionalObject;
+  }
+  if (self.optionalString != nil) {
+    properties[@"optional string"] = self.optionalString;
+  }
+  if (self.optionalStringWithRegex != nil) {
+    properties[@"optional string with regex"] = self.optionalStringWithRegex;
+  }
 
   return properties;
 }
