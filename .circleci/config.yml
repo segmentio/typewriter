@@ -244,11 +244,11 @@ jobs:
       - attach_workspace: { at: . }
       - run:
           name: Download Dependencies
-          command: cd tests/e2e/android-java && ./gradlew androidDependencies && cd ..
+          command: cd tests/e2e/android-java && ./gradlew androidDependencies && cd ../../..
       - run:
           name: Run Android Java Tests
           command: |
-            git clone https://github.com/segmentio/mock.git && cd mock && yarn && cd..
+            git clone https://github.com/segmentio/mock.git && cd mock && yarn && cd ..
             cd mock && yarn dev & 
             sleep 5
             make test-android-dev
@@ -267,11 +267,11 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Download Dependencies
-          command: cd tests/e2e/android-java && ./gradlew androidDependencies && cd ..
+          command: cd tests/e2e/android-java && ./gradlew androidDependencies && cd ../../..
       - run:
           name: Run Android Java Tests
           command: |
-            git clone https://github.com/segmentio/mock.git && cd mock && yarn && cd..
+            git clone https://github.com/segmentio/mock.git && cd mock && yarn && cd ..
             cd mock && yarn dev & 
             sleep 5
             make test-android-prod
