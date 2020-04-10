@@ -89,7 +89,6 @@ export const android: Generator<
 	},
 	generateObject: async (client, schema, properties, parentPath) => {
 		const property = defaultPropertyContext(client, schema, JavaType.Object, parentPath)
-
 		let object: AndroidObjectContext | undefined
 
 		if (properties.length > 0) {
@@ -128,8 +127,8 @@ export const android: Generator<
 				context
 			),
 			client.generateFile(
-				'ArraySerializer.java',
-				'generators/android/templates/serializeArray.java.hbs',
+				'TypewriterUtils.java',
+				'generators/android/templates/typewriterUtils.java.hbs',
 				context
 			),
 			client.generateFile(
@@ -170,6 +169,11 @@ enum Separator {
 enum Properties {
 	ToProperties = 'props.toProperties()',
 	Create = 'new Properties()',
+}
+
+enum Options {
+	MergeOptions = 'TypewriterUtils.mergeOptions(options)',
+	Create = 'TypewriterUtils.mergeOptions()',
 }
 
 function defaultPropertyContext(
@@ -215,7 +219,7 @@ function generateBuilderFunctionBody(name: string, rawName: string, type: string
 		`${Separator.NewLineIndent}return this;`
 
 	const serializeArray =
-		`${Separator.Indent}List<?> p = ArraySerializer.serialize(${name});\n` +
+		`${Separator.Indent}List<?> p = TypewriterUtils.serialize(${name});\n` +
 		`${Separator.NewLineIndent}${defaultHandler(rawName, 'p', false)}`
 
 	return isArrayType && isArrayType[1] !== 'Properties'
@@ -272,7 +276,7 @@ function generateFunctionExecution(
 	const args = getValidArgs(
 		[
 			{ inUse: propsParam, execution: Properties.ToProperties, fallback: Properties.Create },
-			{ inUse: withOptions, execution: 'options' },
+			{ inUse: withOptions, execution: Options.MergeOptions, fallback: Options.Create },
 		],
 		[`"${rawEventName}"`]
 	)

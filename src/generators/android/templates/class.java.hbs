@@ -46,13 +46,6 @@ public final class {{name}} extends Serializable {
     * Build an instance of {@link {{name ~}} }
     */
     public {{name}} build() {
-      {{#each properties}}
-      {{#if isRequired}}
-      if (properties.get("{{rawName}}") == null) {
-        throw new IllegalArgumentException("{{../name}} missing required property: {{rawName}}");
-      }
-      {{/if}}
-      {{/each}}
       return new {{name}}(properties);
     }
   }

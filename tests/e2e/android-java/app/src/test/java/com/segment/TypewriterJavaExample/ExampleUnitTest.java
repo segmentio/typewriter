@@ -8,17 +8,17 @@ import com.segment.analytics.ConnectionFactory;
 import com.segment.analytics.internal.Utils;
 import com.segment.generated.*;
 import com.segment.analytics.Analytics;
+import com.segment.analytics.Properties;
 
 import android.content.Context;
+import android.os.Looper;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
-import java.sql.Time;
 import java.util.*;
 import java.util.concurrent.*;
 
-import android.util.Log;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,13 +27,12 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import androidx.test.core.app.ApplicationProvider;
-import org.robolectric.shadow.api.Shadow;
 import org.robolectric.shadows.ShadowLooper;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = Build.VERSION_CODES.O_MR1, application = TestApp.class)
 public class ExampleUnitTest {
-  final String REMOTE_HOST = "http://10.0.2.2:8765";
+  final String REMOTE_HOST = "http://localhost:8765";
   Utils.AnalyticsNetworkExecutorService networkExecutorService;
 
   Analytics analytics;
@@ -63,19 +62,19 @@ public class ExampleUnitTest {
     SEGTypewriterAnalytics segAnalytics = new SEGTypewriterAnalytics(analytics);
 
     List defaultArray = Arrays.asList(137, "C-137");
-    Object defaultObject = new Object();
+    Object defaultObject = new Properties();
 
     segAnalytics.emptyEvent();
 
     RequiredArrayWithPropertiesItem1 requiredArrayWithPropertiesItem = new RequiredArrayWithPropertiesItem1.Builder()
         .requiredAny("Rick Sanchez").requiredArray(defaultArray).requiredBoolean(false).requiredInt(97L)
         .requiredNumber(3.14).requiredObject(defaultObject).requiredString("Alpha-Betrium")
-        .requiredStringWithRegex("Lawyer Mort").build();
+        .requiredStringWithRegex("Lawyer Morty").build();
 
     RequiredObjectWithProperties1 requiredObjectWithProperties = new RequiredObjectWithProperties1.Builder()
         .requiredAny("Rick Sanchez").requiredArray(defaultArray).requiredBoolean(false).requiredInt(97L)
         .requiredNumber(3.14).requiredObject(defaultObject).requiredString("Alpha-Betrium")
-        .requiredStringWithRegex("Lawyer Mort").build();
+        .requiredStringWithRegex("Lawyer Morty").build();
 
     EveryRequiredType everyRequiredType = new EveryRequiredType.Builder().requiredAny("Rick Sanchez")
         .requiredArray(defaultArray).requiredArrayWithProperties(Arrays.asList(requiredArrayWithPropertiesItem))
@@ -86,6 +85,7 @@ public class ExampleUnitTest {
     segAnalytics.everyRequiredType(everyRequiredType);
 
     OptionalArrayWithPropertiesItem1 optionalArrayWithProperties = new OptionalArrayWithPropertiesItem1.Builder()
+        .optionalAny("Rick Sanchez")
         .optionalArray(defaultArray).optionalBoolean(false).optionalInt(97L).optionalNumber(3.14)
         .optionalObject(defaultObject).optionalString("Alpha-Betrium").optionalStringWithRegex("Lawyer Morty").build();
 
@@ -100,35 +100,71 @@ public class ExampleUnitTest {
         .optionalObjectWithProperties(optionalObjectWithProperties).optionalString("Alpha-Betrium")
         .optionalStringWithRegex("Lawyer Morty").build();
 
+    // no properties
+    segAnalytics.everyOptionalType(new EveryOptionalType.Builder().build());
+    // all properties
     segAnalytics.everyOptionalType(everyOptionalType);
 
     RequiredArrayWithPropertiesItem nullableRequiredArrayWithPropertiesItem = new RequiredArrayWithPropertiesItem.Builder()
-        .requiredAny("RickSanchez").requiredArray(defaultArray).requiredBoolean(false).requiredInt(97L)
+        .requiredAny("Rick Sanchez").requiredArray(defaultArray).requiredBoolean(false).requiredInt(97L)
         .requiredNumber(3.14).requiredObject(defaultObject).requiredString("Alpha-Betrium")
         .requiredStringWithRegex("Lawyer Morty").build();
 
     RequiredObjectWithProperties nullableRequiredObjectWithProperties = new RequiredObjectWithProperties.Builder()
-        .requiredAny("RickSanchez").requiredArray(defaultArray).requiredBoolean(false).requiredInt(97L)
+        .requiredAny("Rick Sanchez").requiredArray(defaultArray).requiredBoolean(false).requiredInt(97L)
         .requiredNumber(3.14).requiredObject(defaultObject).requiredString("Alpha-Betrium")
         .requiredStringWithRegex("Lawyer Morty").build();
 
     EveryNullableRequiredType everyNullableRequiredType = new EveryNullableRequiredType.Builder()
-        .requiredAny("RickSanchez").requiredArray(defaultArray)
+        .requiredAny("Rick Sanchez").requiredArray(defaultArray)
         .requiredArrayWithProperties(Arrays.asList(nullableRequiredArrayWithPropertiesItem)).requiredBoolean(false)
         .requiredInt(97L).requiredNumber(3.14).requiredObject(defaultObject)
         .requiredObjectWithProperties(nullableRequiredObjectWithProperties).requiredString("Alpha-Betrium")
         .requiredStringWithRegex("Lawyer Morty").build();
-
+    
+    // complete
     segAnalytics.everyNullableRequiredType(everyNullableRequiredType);
 
+    RequiredArrayWithPropertiesItem nullableRequiredArrayWithPropertiesItemNull = new RequiredArrayWithPropertiesItem.Builder()
+        .requiredAny(null).requiredArray(null).requiredBoolean(null).requiredInt(null)
+        .requiredNumber(null).requiredObject(null).requiredString(null)
+        .requiredStringWithRegex(null).build();
+
+RequiredObjectWithProperties nullableRequiredObjectWithPropertiesNull = new RequiredObjectWithProperties.Builder()
+        .requiredAny(null).requiredArray(null).requiredBoolean(null).requiredInt(null)
+        .requiredNumber(null).requiredObject(null).requiredString(null)
+        .requiredStringWithRegex(null).build();
+
+    EveryNullableRequiredType everyNullableRequiredTypeNull = new EveryNullableRequiredType.Builder().requiredAny(null).requiredArray(null)
+        .requiredArrayWithProperties(Arrays.asList(nullableRequiredArrayWithPropertiesItemNull)).requiredBoolean(null)
+        .requiredInt(null).requiredNumber(null).requiredObject(null)
+        .requiredObjectWithProperties(nullableRequiredObjectWithPropertiesNull).requiredString(null)
+        .requiredStringWithRegex(null).build();
+
+    // all null
+    segAnalytics.everyNullableRequiredType(everyNullableRequiredTypeNull);
+
+    // no properties
+    segAnalytics.everyNullableOptionalType(new EveryNullableOptionalType.Builder().build());
+
+    OptionalArrayWithPropertiesItem optionalArrayWithPropertiesItemNull = new OptionalArrayWithPropertiesItem.Builder().optionalAny(null)
+      .optionalArray(null).optionalBoolean(null).optionalInt(null).optionalNumber(null).optionalObject(null).optionalString(null)
+      .optionalStringWithRegex(null).build();
+
+    OptionalObjectWithProperties optionalObjectWithPropertiesNull = new OptionalObjectWithProperties.Builder().optionalAny(null)
+      .optionalArray(null).optionalBoolean(null).optionalInt(null).optionalNumber(null).optionalObject(null).optionalString(null)
+      .optionalStringWithRegex(null).build();
+
     EveryNullableOptionalType everyNullableOptionalType = new EveryNullableOptionalType.Builder().optionalAny(null)
-        .optionalArray(null).optionalArrayWithProperties(null).optionalBoolean(null).optionalInt(null)
-        .optionalNumber(null).optionalObject(null).optionalObjectWithProperties(null).optionalString(null)
+        .optionalArray(null).optionalArrayWithProperties(Arrays.asList(optionalArrayWithPropertiesItemNull)).optionalBoolean(null).optionalInt(null)
+        .optionalNumber(null).optionalObject(null).optionalObjectWithProperties(optionalObjectWithPropertiesNull).optionalString(null)
         .optionalStringWithRegex(null).build();
 
+    // all null
     segAnalytics.everyNullableOptionalType(everyNullableOptionalType);
 
     OptionalArrayWithPropertiesItem nullableOptionalArrayWithProperties = new OptionalArrayWithPropertiesItem.Builder()
+        .optionalAny("Rick Sanchez")
         .optionalArray(defaultArray).optionalBoolean(false).optionalInt(97L).optionalNumber(3.14)
         .optionalObject(defaultObject).optionalString("Alpha-Betrium").optionalStringWithRegex("Lawyer Morty").build();
 
@@ -138,12 +174,14 @@ public class ExampleUnitTest {
         .optionalStringWithRegex("Lawyer Morty").build();
 
     EveryNullableOptionalType everyNullableOptionalTypeComplete = new EveryNullableOptionalType.Builder()
-        .optionalAny(null).optionalArray(null)
-        .optionalArrayWithProperties(Arrays.asList(nullableOptionalArrayWithProperties)).optionalBoolean(null)
-        .optionalInt(null).optionalNumber(null).optionalObject(null)
-        .optionalObjectWithProperties(nullableOptionalObjectWithProperties).optionalString(null)
-        .optionalStringWithRegex(null).build();
+        .optionalAny("Rick Sanchez").optionalArray(defaultArray)
+        .optionalArrayWithProperties(Arrays.asList(nullableOptionalArrayWithProperties)).optionalBoolean(false)
+        .optionalInt(97L).optionalNumber(3.14).optionalObject(defaultObject)
+        .optionalObjectWithProperties(nullableOptionalObjectWithProperties).optionalString("Alpha-Betrium")
+        .optionalStringWithRegex("Lawyer Morty").build();
 
+        
+    // all complete
     segAnalytics.everyNullableOptionalType(everyNullableOptionalTypeComplete);
 
     segAnalytics.I42TerribleEventName3();
@@ -190,7 +228,7 @@ public class ExampleUnitTest {
     nullable.add(null);
 
     SimpleArrayTypes simpleArrayTypes = new SimpleArrayTypes.Builder().any(defaultArray)
-        .boolean_(Arrays.asList(true, false)).integer(Arrays.asList(97L)).nullable(nullable).number(Arrays.asList(3.14))
+        .boolean_(Arrays.asList(true, false)).integer(Arrays.asList(97L)).number(Arrays.asList(3.14))
         .object(Arrays.asList(objectItem)).string(Arrays.asList("Alpha-Betrium")).build();
 
     segAnalytics.simpleArrayTypes(simpleArrayTypes);
@@ -234,11 +272,10 @@ public class ExampleUnitTest {
 
     analytics.flush();
 
-
     for (int i = 0; i < 10; i++) {
       try {
         Thread.sleep(i * 1000);
-        ShadowLooper looper = ShadowLooper.shadowMainLooper();
+        ShadowLooper looper = Shadows.shadowOf(Looper.getMainLooper());
         looper.runToEndOfTasks();
 
         Field statsField = Analytics.class.getDeclaredField("stats");
@@ -266,6 +303,5 @@ public class ExampleUnitTest {
         // Catch and ignore so that we can retry.
       }
     }
-
   }
 }
