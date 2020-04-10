@@ -244,7 +244,7 @@ jobs:
       - attach_workspace: { at: . }
       - run:
           name: Download Dependencies
-          command: ./gradlew androidDependencies
+          command: cd tests/e2e/android-java && ./gradlew androidDependencies && cd ..
       - run:
           name: Run Android Java Tests
           command: |
@@ -267,7 +267,7 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Download Dependencies
-          command: ./gradlew androidDependencies
+          command: cd tests/e2e/android-java && ./gradlew androidDependencies && cd ..
       - run:
           name: Run Android Java Tests
           command: |
