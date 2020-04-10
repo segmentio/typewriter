@@ -209,7 +209,7 @@ test-android-java:
 	@cd tests/e2e/android-java
 	@make test-android-dev test-android-prod
 
-.PHONY: test-android-java-dev test-android-java-prod
+.PHONY: test-android-dev test-android-prod
 test-android-dev: IS_DEVELOPMENT=true
 test-android-dev: TYPEWRITER_COMMAND=build
 test-android-dev: test-android-java-runner
