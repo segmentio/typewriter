@@ -272,8 +272,8 @@ jobs:
     steps: # a collection of executable commands
       - attach_workspace: { at: . }
       - run:
-        name: Install Yarn
-        command: curl -o- -L https://yarnpkg.com/install.sh | bash
+          name: Install Yarn
+          command: curl -o- -L https://yarnpkg.com/install.sh | bash
       - run:
           name: Run Android Java Tests
           command: |
