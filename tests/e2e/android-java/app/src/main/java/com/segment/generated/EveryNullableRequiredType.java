@@ -8,7 +8,7 @@ import com.segment.analytics.Properties;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public final class EveryNullableRequiredType extends Serializable {
+public final class EveryNullableRequiredType extends SEGSerializable {
   private Properties properties;
 
   
@@ -112,8 +112,8 @@ public final class EveryNullableRequiredType extends Serializable {
      * This property is required to generate a valid EveryNullableRequiredType object
      */
     public Builder requiredObjectWithProperties(final @Nullable RequiredObjectWithProperties requiredObjectWithProperties) {
-      if(requiredObjectWithProperties instanceof Serializable){
-        properties.putValue("required object with properties", ((Serializable) requiredObjectWithProperties).toProperties());
+      if(requiredObjectWithProperties instanceof SEGSerializable){
+        properties.putValue("required object with properties", ((SEGSerializable) requiredObjectWithProperties).toProperties());
       }else{
         properties.putValue("required object with properties", requiredObjectWithProperties);
       }

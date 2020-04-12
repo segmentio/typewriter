@@ -8,7 +8,7 @@ import com.segment.analytics.Properties;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public final class LargeNumbersEvent extends Serializable {
+public final class LargeNumbersEvent extends SEGSerializable {
   private Properties properties;
 
   

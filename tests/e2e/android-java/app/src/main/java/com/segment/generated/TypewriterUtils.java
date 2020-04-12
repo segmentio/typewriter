@@ -10,7 +10,7 @@ public final class TypewriterUtils {
   protected static Map<String, String> typewriterCtx;
 
   static {
-    typewriterCtx = new HashMap<String, String>();
+    typewriterCtx = new HashMap<>();
     typewriterCtx.put("version", "7.0.1");
     typewriterCtx.put("language", "java");
   }
@@ -32,8 +32,8 @@ public final class TypewriterUtils {
       for(Object item : props) {
         if(item instanceof List) {
           p.add(serialize((List) item));
-        } else if(item instanceof Serializable){
-          p.add(((Serializable) item).toProperties());
+        } else if(item instanceof SEGSerializable){
+          p.add(((SEGSerializable) item).toProperties());
         }else{
           p.add(item);
         }

@@ -210,10 +210,10 @@ function generateBuilderFunctionBody(name: string, rawName: string, type: string
 		`${Separator.NewLineIndent}return this;`
 
 	const serializeObject =
-		`${Separator.Indent}if(${name} instanceof Serializable){\n` +
+		`${Separator.Indent}if(${name} instanceof SEGSerializable){\n` +
 		`${Separator.NewLineIndent}${
 			Separator.Indent
-		}properties.putValue("${rawName}", ((Serializable) ${name}).toProperties());\n` +
+		}properties.putValue("${rawName}", ((SEGSerializable) ${name}).toProperties());\n` +
 		`${Separator.NewLineIndent}}else{\n` +
 		`${Separator.NewLineIndent}${Separator.Indent}properties.putValue("${rawName}", ${name});\n` +
 		`${Separator.NewLineIndent}}\n` +

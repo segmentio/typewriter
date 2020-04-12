@@ -8,7 +8,7 @@ import com.segment.analytics.Properties;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public final class RequiredObjectWithProperties extends Serializable {
+public final class RequiredObjectWithProperties extends SEGSerializable {
   private Properties properties;
 
   

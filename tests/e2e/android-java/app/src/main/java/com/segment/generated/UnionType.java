@@ -8,7 +8,7 @@ import com.segment.analytics.Properties;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public final class UnionType extends Serializable {
+public final class UnionType extends SEGSerializable {
   private Properties properties;
 
   

@@ -8,7 +8,7 @@ import com.segment.analytics.Properties;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public final class Tunnel extends Serializable {
+public final class Tunnel extends SEGSerializable {
   private Properties properties;
 
   
@@ -39,8 +39,8 @@ public final class Tunnel extends Serializable {
      * This property is required to generate a valid Tunnel object
      */
     public Builder subterraneanLab(final @NonNull SubterraneanLab subterraneanLab) {
-      if(subterraneanLab instanceof Serializable){
-        properties.putValue("subterranean lab", ((Serializable) subterraneanLab).toProperties());
+      if(subterraneanLab instanceof SEGSerializable){
+        properties.putValue("subterranean lab", ((SEGSerializable) subterraneanLab).toProperties());
       }else{
         properties.putValue("subterranean lab", subterraneanLab);
       }

@@ -8,7 +8,6 @@ import com.segment.analytics.ConnectionFactory;
 import com.segment.analytics.internal.Utils;
 import com.segment.generated.*;
 import com.segment.analytics.Analytics;
-import com.segment.analytics.Properties;
 
 import android.content.Context;
 import android.os.Looper;
@@ -60,7 +59,7 @@ public class ExampleUnitTest {
 
     List defaultArray = Arrays.asList(137, "C-137");
 
-    Object defaultObject = new Properties();
+    HashMap defaultObject = new HashMap<>();
 
     segAnalytics.emptyEvent();
 
@@ -428,7 +427,7 @@ public class ExampleUnitTest {
       .build();
 
     segAnalytics.largeNumbersEvent(largeNumberEvent);
-
+    
     analytics.flush();
 
     for (int i = 0; i < 10; i++) {

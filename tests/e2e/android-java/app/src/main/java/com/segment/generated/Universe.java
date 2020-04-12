@@ -8,7 +8,7 @@ import com.segment.analytics.Properties;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public final class Universe extends Serializable {
+public final class Universe extends SEGSerializable {
   private Properties properties;
 
   
