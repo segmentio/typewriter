@@ -243,7 +243,7 @@ jobs:
     steps: # a collection of executable commands
       - attach_workspace: { at: . }
       - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-{{ checksum "tests/e2e/android-java/build.gradle" }}-{{ checksum  "tests/e2e/android-java/app/build.gradle" }}
       - run:
           name: Download Dependencies
           command: cd tests/e2e/android-java && ./gradlew androidDependencies && cd ../../..
@@ -257,7 +257,7 @@ jobs:
       - save_cache:
           paths:
             - ~/typewriter/tests/e2e/android-java/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-{{ checksum "tests/e2e/android-java/build.gradle" }}-{{ checksum  "tests/e2e/android-java/app/build.gradle" }}
   test-android-prod:
     docker: # run the steps with Docker
       - image: circleci/android:api-29-node
@@ -266,7 +266,7 @@ jobs:
     steps: # a collection of executable commands
       - attach_workspace: { at: . }
       - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-{{ checksum "tests/e2e/android-java/build.gradle" }}-{{ checksum  "tests/e2e/android-java/app/build.gradle" }}
       - run:
           name: Download Dependencies
           command: cd tests/e2e/android-java && ./gradlew androidDependencies && cd ../../..
@@ -280,7 +280,7 @@ jobs:
       - save_cache:
           paths:
             - ~/typewriter/tests/e2e/android-java/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-{{ checksum "tests/e2e/android-java/build.gradle" }}-{{ checksum  "tests/e2e/android-java/app/build.gradle" }}
 
 workflows:
   version: 2
