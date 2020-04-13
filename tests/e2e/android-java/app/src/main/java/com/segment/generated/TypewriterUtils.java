@@ -26,14 +26,14 @@ public final class TypewriterUtils {
     return typewriterContext;
   }
 
-  protected static List<?> serialize(final @NonNull List<?> props){
+  protected static List<?> serialize(final @Nullable List<?> props){
     List p = new ArrayList<>();
     if(props instanceof List){
       for(Object item : props) {
         if(item instanceof List) {
           p.add(serialize((List) item));
-        } else if(item instanceof SEGSerializable){
-          p.add(((SEGSerializable) item).toProperties());
+        } else if(item instanceof SerializableProperties){
+          p.add(((SerializableProperties) item).toProperties());
         }else{
           p.add(item);
         }

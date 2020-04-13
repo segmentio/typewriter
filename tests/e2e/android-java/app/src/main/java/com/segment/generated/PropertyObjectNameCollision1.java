@@ -8,7 +8,7 @@ import com.segment.analytics.Properties;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public final class PropertyObjectNameCollision1 extends SEGSerializable {
+public final class PropertyObjectNameCollision1 extends SerializableProperties {
   private Properties properties;
 
   
@@ -38,8 +38,8 @@ public final class PropertyObjectNameCollision1 extends SEGSerializable {
     /**
      */
     public Builder universe(final @Nullable Universe universe) {
-      if(universe instanceof SEGSerializable){
-        properties.putValue("universe", ((SEGSerializable) universe).toProperties());
+      if(universe instanceof SerializableProperties){
+        properties.putValue("universe", ((SerializableProperties) universe).toProperties());
       }else{
         properties.putValue("universe", universe);
       }

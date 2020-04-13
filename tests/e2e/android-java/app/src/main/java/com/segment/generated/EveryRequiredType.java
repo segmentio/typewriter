@@ -8,7 +8,7 @@ import com.segment.analytics.Properties;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public final class EveryRequiredType extends SEGSerializable {
+public final class EveryRequiredType extends SerializableProperties {
   private Properties properties;
 
   
@@ -112,8 +112,8 @@ public final class EveryRequiredType extends SEGSerializable {
      * This property is required to generate a valid EveryRequiredType object
      */
     public Builder requiredObjectWithProperties(final @NonNull RequiredObjectWithProperties1 requiredObjectWithProperties) {
-      if(requiredObjectWithProperties instanceof SEGSerializable){
-        properties.putValue("required object with properties", ((SEGSerializable) requiredObjectWithProperties).toProperties());
+      if(requiredObjectWithProperties instanceof SerializableProperties){
+        properties.putValue("required object with properties", ((SerializableProperties) requiredObjectWithProperties).toProperties());
       }else{
         properties.putValue("required object with properties", requiredObjectWithProperties);
       }

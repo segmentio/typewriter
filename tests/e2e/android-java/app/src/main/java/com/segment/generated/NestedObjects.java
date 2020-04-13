@@ -8,7 +8,7 @@ import com.segment.analytics.Properties;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public final class NestedObjects extends SEGSerializable {
+public final class NestedObjects extends SerializableProperties {
   private Properties properties;
 
   
@@ -39,8 +39,8 @@ public final class NestedObjects extends SEGSerializable {
      * This property is required to generate a valid NestedObjects object
      */
     public Builder garage(final @NonNull Garage garage) {
-      if(garage instanceof SEGSerializable){
-        properties.putValue("garage", ((SEGSerializable) garage).toProperties());
+      if(garage instanceof SerializableProperties){
+        properties.putValue("garage", ((SerializableProperties) garage).toProperties());
       }else{
         properties.putValue("garage", garage);
       }

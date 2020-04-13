@@ -3,6 +3,6 @@ package com.segment.generated;
 import java.util.*;
 import com.segment.analytics.Properties;
 
-abstract class SEGSerializable {
+abstract class SerializableProperties {
   protected abstract Properties toProperties();
 }

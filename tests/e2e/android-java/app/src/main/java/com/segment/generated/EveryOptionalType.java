@@ -8,7 +8,7 @@ import com.segment.analytics.Properties;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public final class EveryOptionalType extends SEGSerializable {
+public final class EveryOptionalType extends SerializableProperties {
   private Properties properties;
 
   
@@ -104,8 +104,8 @@ public final class EveryOptionalType extends SEGSerializable {
      * Optional object with properties
      */
     public Builder optionalObjectWithProperties(final @Nullable OptionalObjectWithProperties1 optionalObjectWithProperties) {
-      if(optionalObjectWithProperties instanceof SEGSerializable){
-        properties.putValue("optional object with properties", ((SEGSerializable) optionalObjectWithProperties).toProperties());
+      if(optionalObjectWithProperties instanceof SerializableProperties){
+        properties.putValue("optional object with properties", ((SerializableProperties) optionalObjectWithProperties).toProperties());
       }else{
         properties.putValue("optional object with properties", optionalObjectWithProperties);
       }

@@ -8,7 +8,7 @@ import com.segment.analytics.Properties;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public final class NestedArrays extends SEGSerializable {
+public final class NestedArrays extends SerializableProperties {
   private Properties properties;
 
   

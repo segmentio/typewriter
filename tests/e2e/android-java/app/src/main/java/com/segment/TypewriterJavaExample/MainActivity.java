@@ -13,14 +13,14 @@ import com.segment.analytics.Analytics;
 
 public class MainActivity extends AppCompatActivity {
   public static final String EXTRA_MESSAGE = "com.segment.PRODUCT_NAME";
-  private SEGTypewriterAnalytics segAnalytics;
+  private TypewriterAnalytics segAnalytics;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    this.segAnalytics = new SEGTypewriterAnalytics(Analytics.with(this));
+    this.segAnalytics = new TypewriterAnalytics(Analytics.with(this));
   }
 
   public void sendMessageButtonSelected(View view) {
@@ -36,23 +36,42 @@ public class MainActivity extends AppCompatActivity {
 
   private void onOrderCompleted(String productName) {
     List defaultArray = Arrays.asList(137, "C-137");
-    Object defaultObject = new Object();
+    HashMap defaultObject = new HashMap<>();
 
     RequiredArrayWithPropertiesItem1 requiredArrayWithPropertiesItem = new RequiredArrayWithPropertiesItem1.Builder()
-        .requiredAny("Rick Sanchez").requiredArray(defaultArray).requiredBoolean(false).requiredInt(97L)
-        .requiredNumber(3.14).requiredObject(defaultObject).requiredString("Alpha-Betrium")
-        .requiredStringWithRegex("Lawyer Mort").build();
+      .requiredAny("Rick Sanchez")
+      .requiredArray(defaultArray)
+      .requiredBoolean(false)
+      .requiredInt(97L)
+      .requiredNumber(3.14)
+      .requiredObject(defaultObject)
+      .requiredString("Alpha-Betrium")
+      .requiredStringWithRegex("Lawyer Mort")
+      .build();
 
     RequiredObjectWithProperties1 requiredObjectWithProperties = new RequiredObjectWithProperties1.Builder()
-        .requiredAny("Rick Sanchez").requiredArray(defaultArray).requiredBoolean(false).requiredInt(97L)
-        .requiredNumber(3.14).requiredObject(defaultObject).requiredString("Alpha-Betrium")
-        .requiredStringWithRegex("Lawyer Mort").build();
+      .requiredAny("Rick Sanchez")
+      .requiredArray(defaultArray)
+      .requiredBoolean(false)
+      .requiredInt(97L)
+      .requiredNumber(3.14)
+      .requiredObject(defaultObject)
+      .requiredString("Alpha-Betrium")
+      .requiredStringWithRegex("Lawyer Mort")
+      .build();
 
-    EveryRequiredType everyRequiredType = new EveryRequiredType.Builder().requiredAny("Rick Sanchez")
-        .requiredArray(defaultArray).requiredArrayWithProperties(Arrays.asList(requiredArrayWithPropertiesItem))
-        .requiredBoolean(false).requiredInt(97L).requiredNumber(3.14).requiredObject(defaultObject)
-        .requiredObjectWithProperties(requiredObjectWithProperties).requiredString("Alpha-Betrium")
-        .requiredStringWithRegex("Lawyer Morty").build();
+    EveryRequiredType everyRequiredType = new EveryRequiredType.Builder()
+      .requiredAny("Rick Sanchez")
+      .requiredArray(defaultArray)
+      .requiredArrayWithProperties(Arrays.asList(requiredArrayWithPropertiesItem))
+      .requiredBoolean(false)
+      .requiredInt(97L)
+      .requiredNumber(3.14)
+      .requiredObject(defaultObject)
+      .requiredObjectWithProperties(requiredObjectWithProperties)
+      .requiredString("Alpha-Betrium")
+      .requiredStringWithRegex("Lawyer Morty")
+      .build();
     
     this.segAnalytics.everyRequiredType(everyRequiredType);
   }

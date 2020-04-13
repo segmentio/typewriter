@@ -55,10 +55,9 @@ public class ExampleUnitTest {
   @Test
   public void exampleTests() {
     Context ctx = ApplicationProvider.getApplicationContext();
-    SEGTypewriterAnalytics segAnalytics = new SEGTypewriterAnalytics(analytics);
+    TypewriterAnalytics segAnalytics = new TypewriterAnalytics(analytics);
 
     List defaultArray = Arrays.asList(137, "C-137");
-
     HashMap defaultObject = new HashMap<>();
 
     segAnalytics.emptyEvent();

@@ -12,10 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
-public class SEGTypewriterAnalytics {
+public class TypewriterAnalytics {
   private Analytics analytics;
 
-  public SEGTypewriterAnalytics(final @NonNull Analytics analytics) {
+  public TypewriterAnalytics(final @NonNull Analytics analytics) {
     this.analytics = analytics;
   }
 
