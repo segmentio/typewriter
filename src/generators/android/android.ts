@@ -133,7 +133,7 @@ export const android: Generator<
 				context
 			),
 			client.generateFile(
-				'Serializable.java',
+				'SEGSerializable.java',
 				'generators/android/templates/abstractSerializableClass.java.hbs',
 				context
 			),
