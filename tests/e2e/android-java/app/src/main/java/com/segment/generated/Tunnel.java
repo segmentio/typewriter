@@ -36,10 +36,10 @@ public final class Tunnel extends SerializableProperties {
          * This property is required to generate a valid Tunnel object
          */
         public Builder subterraneanLab(final @NonNull SubterraneanLab subterraneanLab) {
-            if(subterraneanLab != null){
-        properties.putValue("subterranean lab", subterraneanLab.toProperties());
+              if(subterraneanLab != null){
+          properties.putValue("subterranean lab", subterraneanLab.toProperties());
       }else{
-        properties.putValue("subterranean lab", subterraneanLab);
+          properties.putValue("subterranean lab", subterraneanLab);
       }
       return this;
         } 

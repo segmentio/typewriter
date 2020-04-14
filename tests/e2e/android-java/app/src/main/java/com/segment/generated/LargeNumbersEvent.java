@@ -36,7 +36,7 @@ public final class LargeNumbersEvent extends SerializableProperties {
          * This property is optional and not required to generate a valid LargeNumbersEvent object
          */
         public Builder largeNullableOptionalInteger(final @Nullable Long largeNullableOptionalInteger) {
-            properties.putValue("large nullable optional integer", largeNullableOptionalInteger);
+              properties.putValue("large nullable optional integer", largeNullableOptionalInteger);
       return this;
         } 
 
@@ -44,7 +44,7 @@ public final class LargeNumbersEvent extends SerializableProperties {
          * This property is optional and not required to generate a valid LargeNumbersEvent object
          */
         public Builder largeNullableOptionalNumber(final @Nullable Double largeNullableOptionalNumber) {
-            properties.putValue("large nullable optional number", largeNullableOptionalNumber);
+              properties.putValue("large nullable optional number", largeNullableOptionalNumber);
       return this;
         } 
 
@@ -52,7 +52,7 @@ public final class LargeNumbersEvent extends SerializableProperties {
          * This property is required to generate a valid LargeNumbersEvent object
          */
         public Builder largeNullableRequiredInteger(final @Nullable Long largeNullableRequiredInteger) {
-            properties.putValue("large nullable required integer", largeNullableRequiredInteger);
+              properties.putValue("large nullable required integer", largeNullableRequiredInteger);
       return this;
         } 
 
@@ -60,7 +60,7 @@ public final class LargeNumbersEvent extends SerializableProperties {
          * This property is required to generate a valid LargeNumbersEvent object
          */
         public Builder largeNullableRequiredNumber(final @Nullable Double largeNullableRequiredNumber) {
-            properties.putValue("large nullable required number", largeNullableRequiredNumber);
+              properties.putValue("large nullable required number", largeNullableRequiredNumber);
       return this;
         } 
 
@@ -68,7 +68,7 @@ public final class LargeNumbersEvent extends SerializableProperties {
          * This property is optional and not required to generate a valid LargeNumbersEvent object
          */
         public Builder largeOptionalInteger(final @Nullable Long largeOptionalInteger) {
-            properties.putValue("large optional integer", largeOptionalInteger);
+              properties.putValue("large optional integer", largeOptionalInteger);
       return this;
         } 
 
@@ -76,7 +76,7 @@ public final class LargeNumbersEvent extends SerializableProperties {
          * This property is optional and not required to generate a valid LargeNumbersEvent object
          */
         public Builder largeOptionalNumber(final @Nullable Double largeOptionalNumber) {
-            properties.putValue("large optional number", largeOptionalNumber);
+              properties.putValue("large optional number", largeOptionalNumber);
       return this;
         } 
 
@@ -84,7 +84,7 @@ public final class LargeNumbersEvent extends SerializableProperties {
          * This property is required to generate a valid LargeNumbersEvent object
          */
         public Builder largeRequiredInteger(final @NonNull Long largeRequiredInteger) {
-            properties.putValue("large required integer", largeRequiredInteger);
+              properties.putValue("large required integer", largeRequiredInteger);
       return this;
         } 
 
@@ -92,7 +92,7 @@ public final class LargeNumbersEvent extends SerializableProperties {
          * This property is required to generate a valid LargeNumbersEvent object
          */
         public Builder largeRequiredNumber(final @NonNull Double largeRequiredNumber) {
-            properties.putValue("large required number", largeRequiredNumber);
+              properties.putValue("large required number", largeRequiredNumber);
       return this;
         } 
 

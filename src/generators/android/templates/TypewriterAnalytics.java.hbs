@@ -41,26 +41,40 @@ public class TypewriterAnalytics {
     }
 
     {{#each tracks}}
+    {{#if propsParam}}
     /**
      {{#if functionDescription}}
      *{{functionDescription}}
      {{/if}}
-     {{#if propsParam}}
      * @param props {@link {{class ~}} } to add extra information to this call.
      * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
-     {{/if}}
      */
-    {{trackCallFunctionSignature this false}} {{trackCallFunctionExecution this false}};
+    public void {{functionName}}(final @Nullable {{propsType}} props) {{trackCallFunctionExecution this false}};
 
     /**
      {{#if functionDescription}}
      * {{functionDescription}}
      {{/if}}
-     {{#if propsParm}}
      * @param props {@link {{class ~}} } to add extra information to this call.
      * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
-     {{/if}}
      */
-    {{trackCallFunctionSignature this true}} {{trackCallFunctionExecution this true}};
+    public void {{functionName}}(final @Nullable {{propsType}} props, final @Nullable Options options) {{trackCallFunctionExecution this true}};
+    {{else}}
+    /**
+     {{#if functionDescription}}
+     *{{functionDescription}}
+     {{/if}}
+     * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
+     */
+    public void {{functionName}}() {{trackCallFunctionExecution this false}};
+
+    /**
+     {{#if functionDescription}}
+     * {{functionDescription}}
+     {{/if}}
+     * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
+     */
+    public void {{functionName}}(final @Nullable Options options) {{trackCallFunctionExecution this true}};
+    {{/if}}
     {{/each}}
 }

@@ -37,7 +37,7 @@ public final class OptionalArrayWithPropertiesItem extends SerializablePropertie
          * This property is optional and not required to generate a valid OptionalArrayWithPropertiesItem object
          */
         public Builder optionalAny(final @Nullable Object optionalAny) {
-            properties.putValue("optional any", optionalAny);
+              properties.putValue("optional any", optionalAny);
       return this;
         } 
 
@@ -46,7 +46,7 @@ public final class OptionalArrayWithPropertiesItem extends SerializablePropertie
          * This property is optional and not required to generate a valid OptionalArrayWithPropertiesItem object
          */
         public Builder optionalArray(final @Nullable List<Object> optionalArray) {
-            List<?> p = TypewriterUtils.serialize(optionalArray);
+              List<?> p = TypewriterUtils.serialize(optionalArray);
       properties.putValue("optional array", p);
       return this;
         } 
@@ -56,7 +56,7 @@ public final class OptionalArrayWithPropertiesItem extends SerializablePropertie
          * This property is optional and not required to generate a valid OptionalArrayWithPropertiesItem object
          */
         public Builder optionalBoolean(final @Nullable Boolean optionalBoolean) {
-            properties.putValue("optional boolean", optionalBoolean);
+              properties.putValue("optional boolean", optionalBoolean);
       return this;
         } 
 
@@ -65,7 +65,7 @@ public final class OptionalArrayWithPropertiesItem extends SerializablePropertie
          * This property is optional and not required to generate a valid OptionalArrayWithPropertiesItem object
          */
         public Builder optionalInt(final @Nullable Long optionalInt) {
-            properties.putValue("optional int", optionalInt);
+              properties.putValue("optional int", optionalInt);
       return this;
         } 
 
@@ -74,7 +74,7 @@ public final class OptionalArrayWithPropertiesItem extends SerializablePropertie
          * This property is optional and not required to generate a valid OptionalArrayWithPropertiesItem object
          */
         public Builder optionalNumber(final @Nullable Double optionalNumber) {
-            properties.putValue("optional number", optionalNumber);
+              properties.putValue("optional number", optionalNumber);
       return this;
         } 
 
@@ -83,7 +83,7 @@ public final class OptionalArrayWithPropertiesItem extends SerializablePropertie
          * This property is optional and not required to generate a valid OptionalArrayWithPropertiesItem object
          */
         public Builder optionalObject(final @Nullable Object optionalObject) {
-            properties.putValue("optional object", optionalObject);
+              properties.putValue("optional object", optionalObject);
       return this;
         } 
 
@@ -92,7 +92,7 @@ public final class OptionalArrayWithPropertiesItem extends SerializablePropertie
          * This property is optional and not required to generate a valid OptionalArrayWithPropertiesItem object
          */
         public Builder optionalString(final @Nullable String optionalString) {
-            properties.putValue("optional string", optionalString);
+              properties.putValue("optional string", optionalString);
       return this;
         } 
 
@@ -101,7 +101,7 @@ public final class OptionalArrayWithPropertiesItem extends SerializablePropertie
          * This property is optional and not required to generate a valid OptionalArrayWithPropertiesItem object
          */
         public Builder optionalStringWithRegex(final @Nullable String optionalStringWithRegex) {
-            properties.putValue("optional string with regex", optionalStringWithRegex);
+              properties.putValue("optional string with regex", optionalStringWithRegex);
       return this;
         } 
 

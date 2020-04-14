@@ -36,10 +36,10 @@ public final class NestedObjects extends SerializableProperties {
          * This property is required to generate a valid NestedObjects object
          */
         public Builder garage(final @NonNull Garage garage) {
-            if(garage != null){
-        properties.putValue("garage", garage.toProperties());
+              if(garage != null){
+          properties.putValue("garage", garage.toProperties());
       }else{
-        properties.putValue("garage", garage);
+          properties.putValue("garage", garage);
       }
       return this;
         } 

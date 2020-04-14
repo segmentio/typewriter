@@ -37,7 +37,7 @@ public final class Universe extends SerializableProperties {
          * This property is required to generate a valid Universe object
          */
         public Builder name(final @NonNull String name) {
-            properties.putValue("name", name);
+              properties.putValue("name", name);
       return this;
         } 
 
@@ -46,7 +46,7 @@ public final class Universe extends SerializableProperties {
          * This property is required to generate a valid Universe object
          */
         public Builder occupants(final @NonNull List<OccupantsItem> occupants) {
-            List<?> p = TypewriterUtils.serialize(occupants);
+              List<?> p = TypewriterUtils.serialize(occupants);
       properties.putValue("occupants", p);
       return this;
         } 

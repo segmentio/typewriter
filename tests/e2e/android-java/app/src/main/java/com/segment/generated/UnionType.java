@@ -36,7 +36,7 @@ public final class UnionType extends SerializableProperties {
          * This property is required to generate a valid UnionType object
          */
         public Builder universeName(final @Nullable Object universeName) {
-            properties.putValue("universe_name", universeName);
+              properties.putValue("universe_name", universeName);
       return this;
         } 
 

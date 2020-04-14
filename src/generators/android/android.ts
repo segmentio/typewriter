@@ -1,7 +1,7 @@
 import { camelCase, upperFirst } from 'lodash'
 import { Type, Schema, getPropertiesSchema } from '../ast'
 import * as Handlebars from 'handlebars'
-import { Generator, GeneratorClient, BasePropertyContext } from '../gen'
+import { Generator, GeneratorClient } from '../gen'
 
 // These contexts are what will be passed to Handlebars to perform rendering.
 // Everything in these contexts should be properly sanitized.
@@ -27,6 +27,7 @@ interface AndroidPropertyContext {
 interface AndroidTrackCallContext {
 	// The formatted function name, ex: "orderCompleted".
 	functionName: string
+	propsType: string
 	propsParam: boolean
 }
 
@@ -60,7 +61,6 @@ export const android: Generator<
 		allowedIdentifierChars: 'A-Za-z0-9_',
 	},
 	setup: async () => {
-		Handlebars.registerHelper('trackCallFunctionSignature', generateFunctionSignature)
 		Handlebars.registerHelper('trackCallFunctionExecution', generateFunctionExecution)
 		Handlebars.registerHelper('builderFunctionBody', generateBuilderFunctionBody)
 		return {}
@@ -106,13 +106,14 @@ export const android: Generator<
 		// TODO: support unions
 		return defaultPropertyContext(client, schema, 'Object', parentPath)
 	},
-	generateTrackCall: async (client, schema) => {
+	generateTrackCall: async (client, schema, propertiesObject) => {
 		const { properties } = getPropertiesSchema(schema)
 		return {
 			class: schema.name.replace(/\s/g, ''),
 			functionName: client.namer.register(schema.name, 'function->track', {
 				transform: camelCase,
 			}),
+			propsType: propertiesObject.type,
 			propsParam: !!properties.length,
 		}
 	},
@@ -120,17 +121,17 @@ export const android: Generator<
 		await Promise.all([
 			client.generateFile(
 				'TypewriterAnalytics.java',
-				'generators/android/templates/analytics.java.hbs',
+				'generators/android/templates/TypewriterAnalytics.java.hbs',
 				context
 			),
 			client.generateFile(
 				'TypewriterUtils.java',
-				'generators/android/templates/typewriterUtils.java.hbs',
+				'generators/android/templates/TypewriterUtils.java.hbs',
 				context
 			),
 			client.generateFile(
 				'SerializableProperties.java',
-				'generators/android/templates/abstractSerializableClass.java.hbs',
+				'generators/android/templates/SerializableProperties.java.hbs',
 				context
 			),
 			...context.objects.map(o =>
@@ -138,12 +139,6 @@ export const android: Generator<
 			),
 		])
 	},
-}
-
-interface Param {
-	hasParam: boolean
-	name: string
-	type: string
 }
 
 interface Arg {
@@ -159,7 +154,7 @@ enum Modifier {
 
 enum Separator {
 	Comma = ', ',
-	Indent = '  ',
+	Indent = '    ',
 	NewLineIndent = '      ',
 }
 
@@ -222,14 +217,6 @@ function generateBuilderFunctionBody(name: string, rawName: string, type: string
 		: defaultHandler()
 }
 
-const getValidParams = (potentialParams: Param[]) =>
-	potentialParams.reduce((acc: string[], { hasParam, name, type }) => {
-		if (hasParam) {
-			acc.push(`${Modifier.FinalNullable} ${type} ${name}`)
-		}
-		return acc
-	}, [])
-
 const getValidArgs = (potentialArgs: Arg[], defaultArg?: string[]) =>
 	potentialArgs.reduce((acc: string[], { inUse, execution, fallback }) => {
 		if (inUse) {
@@ -239,18 +226,6 @@ const getValidArgs = (potentialArgs: Arg[], defaultArg?: string[]) =>
 		}
 		return acc
 	}, defaultArg || [])
-
-function generateFunctionSignature(
-	{ functionName, propsParam }: { functionName: string; propsParam: boolean },
-	withOptions: boolean
-): string {
-	const params = getValidParams([
-		{ hasParam: propsParam, name: 'props', type: upperFirst(functionName) },
-		{ hasParam: withOptions, name: 'options', type: 'Options' },
-	])
-
-	return `public void ${functionName}(${params.join(Separator.Comma)})`
-}
 
 function generateFunctionExecution(
 	{ rawEventName, propsParam }: { rawEventName: string; propsParam: boolean },

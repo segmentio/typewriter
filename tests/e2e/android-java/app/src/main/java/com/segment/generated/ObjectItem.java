@@ -36,7 +36,7 @@ public final class ObjectItem extends SerializableProperties {
          * This property is optional and not required to generate a valid ObjectItem object
          */
         public Builder name(final @Nullable String name) {
-            properties.putValue("name", name);
+              properties.putValue("name", name);
       return this;
         } 
 

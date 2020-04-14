@@ -37,7 +37,7 @@ public final class EnumTypes extends SerializableProperties {
          * This property is optional and not required to generate a valid EnumTypes object
          */
         public Builder stringConst(final @Nullable String stringConst) {
-            properties.putValue("string const", stringConst);
+              properties.putValue("string const", stringConst);
       return this;
         } 
 
@@ -46,7 +46,7 @@ public final class EnumTypes extends SerializableProperties {
          * This property is optional and not required to generate a valid EnumTypes object
          */
         public Builder stringEnum(final @Nullable String stringEnum) {
-            properties.putValue("string enum", stringEnum);
+              properties.putValue("string enum", stringEnum);
       return this;
         } 
 

@@ -36,10 +36,10 @@ public final class Garage extends SerializableProperties {
          * This property is required to generate a valid Garage object
          */
         public Builder tunnel(final @NonNull Tunnel tunnel) {
-            if(tunnel != null){
-        properties.putValue("tunnel", tunnel.toProperties());
+              if(tunnel != null){
+          properties.putValue("tunnel", tunnel.toProperties());
       }else{
-        properties.putValue("tunnel", tunnel);
+          properties.putValue("tunnel", tunnel);
       }
       return this;
         } 

@@ -36,7 +36,7 @@ public final class DefaultViolationHandler extends SerializableProperties {
          * This property is required to generate a valid DefaultViolationHandler object
          */
         public Builder regexProperty(final @NonNull String regexProperty) {
-            properties.putValue("regex property", regexProperty);
+              properties.putValue("regex property", regexProperty);
       return this;
         } 
 

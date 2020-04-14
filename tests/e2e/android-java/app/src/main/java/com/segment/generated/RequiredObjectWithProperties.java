@@ -37,7 +37,7 @@ public final class RequiredObjectWithProperties extends SerializableProperties {
          * This property is required to generate a valid RequiredObjectWithProperties object
          */
         public Builder requiredAny(final @Nullable Object requiredAny) {
-            properties.putValue("required any", requiredAny);
+              properties.putValue("required any", requiredAny);
       return this;
         } 
 
@@ -46,7 +46,7 @@ public final class RequiredObjectWithProperties extends SerializableProperties {
          * This property is required to generate a valid RequiredObjectWithProperties object
          */
         public Builder requiredArray(final @Nullable List<Object> requiredArray) {
-            List<?> p = TypewriterUtils.serialize(requiredArray);
+              List<?> p = TypewriterUtils.serialize(requiredArray);
       properties.putValue("required array", p);
       return this;
         } 
@@ -56,7 +56,7 @@ public final class RequiredObjectWithProperties extends SerializableProperties {
          * This property is required to generate a valid RequiredObjectWithProperties object
          */
         public Builder requiredBoolean(final @Nullable Boolean requiredBoolean) {
-            properties.putValue("required boolean", requiredBoolean);
+              properties.putValue("required boolean", requiredBoolean);
       return this;
         } 
 
@@ -65,7 +65,7 @@ public final class RequiredObjectWithProperties extends SerializableProperties {
          * This property is required to generate a valid RequiredObjectWithProperties object
          */
         public Builder requiredInt(final @Nullable Long requiredInt) {
-            properties.putValue("required int", requiredInt);
+              properties.putValue("required int", requiredInt);
       return this;
         } 
 
@@ -74,7 +74,7 @@ public final class RequiredObjectWithProperties extends SerializableProperties {
          * This property is required to generate a valid RequiredObjectWithProperties object
          */
         public Builder requiredNumber(final @Nullable Double requiredNumber) {
-            properties.putValue("required number", requiredNumber);
+              properties.putValue("required number", requiredNumber);
       return this;
         } 
 
@@ -83,7 +83,7 @@ public final class RequiredObjectWithProperties extends SerializableProperties {
          * This property is required to generate a valid RequiredObjectWithProperties object
          */
         public Builder requiredObject(final @Nullable Object requiredObject) {
-            properties.putValue("required object", requiredObject);
+              properties.putValue("required object", requiredObject);
       return this;
         } 
 
@@ -92,7 +92,7 @@ public final class RequiredObjectWithProperties extends SerializableProperties {
          * This property is required to generate a valid RequiredObjectWithProperties object
          */
         public Builder requiredString(final @Nullable String requiredString) {
-            properties.putValue("required string", requiredString);
+              properties.putValue("required string", requiredString);
       return this;
         } 
 
@@ -101,7 +101,7 @@ public final class RequiredObjectWithProperties extends SerializableProperties {
          * This property is required to generate a valid RequiredObjectWithProperties object
          */
         public Builder requiredStringWithRegex(final @Nullable String requiredStringWithRegex) {
-            properties.putValue("required string with regex", requiredStringWithRegex);
+              properties.putValue("required string with regex", requiredStringWithRegex);
       return this;
         } 
 
