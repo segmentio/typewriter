@@ -34,7 +34,7 @@ public final class TypewriterUtils {
   */
   protected static List<?> serialize(final @Nullable List<?> props){
     List p = new ArrayList<>();
-    if(props instanceof List){
+    if(props != null){
       for(Object item : props) {
         if(item instanceof List) {
           p.add(serialize((List) item));
