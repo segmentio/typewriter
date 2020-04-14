@@ -113,6 +113,7 @@ export const android: Generator<
 	generateTrackCall: async (client, schema) => {
 		const { properties } = getPropertiesSchema(schema)
 		return {
+			class: schema.name.replace(' ', ''),
 			functionName: client.namer.register(schema.name, 'function->track', {
 				transform: camelCase,
 			}),
