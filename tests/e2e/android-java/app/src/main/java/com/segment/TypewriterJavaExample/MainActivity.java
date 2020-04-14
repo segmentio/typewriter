@@ -13,14 +13,11 @@ import com.segment.analytics.Analytics;
 
 public class MainActivity extends AppCompatActivity {
   public static final String EXTRA_MESSAGE = "com.segment.PRODUCT_NAME";
-  private TypewriterAnalytics segAnalytics;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-
-    this.segAnalytics = new TypewriterAnalytics(Analytics.with(this));
   }
 
   public void sendMessageButtonSelected(View view) {
@@ -73,6 +70,6 @@ public class MainActivity extends AppCompatActivity {
       .requiredStringWithRegex("Lawyer Morty")
       .build();
     
-    this.segAnalytics.everyRequiredType(everyRequiredType);
+    TypewriterAnalytics.with(this).everyRequiredType(everyRequiredType);
   }
 }
