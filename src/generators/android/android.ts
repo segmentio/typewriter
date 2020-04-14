@@ -309,8 +309,8 @@ function shouldThrowRuntimeError({
 
 function generateRequiredPropertyRuntimeError(
 	className: string,
-	property: { rawName: string; isPayloadFieldNullable: boolean }
-): string | undefined {
+	property: BasePropertyContext & AndroidPropertyContext
+): string {
 	return `if(properties.get("${property.rawName}") == null){
     ${Separator.Indent}${
 		Separator.Indent
