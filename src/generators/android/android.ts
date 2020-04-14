@@ -83,9 +83,7 @@ export const android: Generator<
 		return defaultPropertyContext(client, schema, type, parentPath)
 	},
 	generateArray: async (client, schema, items, parentPath) => {
-		return {
-			...defaultPropertyContext(client, schema, `List<${items.type}>`, parentPath),
-		}
+		return defaultPropertyContext(client, schema, `List<${items.type}>`, parentPath)
 	},
 	generateObject: async (client, schema, properties, parentPath) => {
 		const property = defaultPropertyContext(client, schema, JavaType.Object, parentPath)
@@ -113,7 +111,7 @@ export const android: Generator<
 	generateTrackCall: async (client, schema) => {
 		const { properties } = getPropertiesSchema(schema)
 		return {
-			class: schema.name.replace(' ', ''),
+			class: schema.name.replace(/\s/g, ''),
 			functionName: client.namer.register(schema.name, 'function->track', {
 				transform: camelCase,
 			}),
