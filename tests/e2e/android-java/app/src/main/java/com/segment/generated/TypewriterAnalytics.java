@@ -16,10 +16,26 @@ public class TypewriterAnalytics {
   private Analytics analytics;
 
   /**
-  * Initializes a new TypewriterAnalytics client wrapping the provided Segment Analytics client.
-  * @param analytics {@link Analytics} configured Segment analytics instance
-  * @see <a href="https://segment.com/docs/sources/mobile/android/#getting-started">Android Getting Started</a>
-  */
+   * Return a reference to the global default {@link TypewriterAnalytics} instance.
+   *
+   * This will use your the global default {@link Analytics} instance.
+   *
+   * If you want to use a different {@link Analytics} instance instance, see the
+   * {@link TypewriterAnalytics} constructor below.
+   */
+  public static TypewriterAnalytics with(final Context context) {
+    return new TypewriterAnalytics(Analytics.with(context));
+  }
+
+  /**
+   * Initializes a new TypewriterAnalytics client wrapping the provided Segment Analytics client.
+   *
+   * You very likely want to use TypewriterAnalytics.with(context) method above instead, which
+   * will utilize your existing singleton Segment {@link Analytics} instance.
+   *
+   * @param analytics {@link Analytics} configured Segment analytics instance
+   * @see <a href="https://segment.com/docs/sources/mobile/android/#getting-started">Android Getting Started</a>
+   */
   public TypewriterAnalytics(final @NonNull Analytics analytics) {
     this.analytics = analytics;
   }
