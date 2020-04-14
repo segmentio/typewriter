@@ -118,6 +118,27 @@ public final class RequiredArrayWithPropertiesItem1 extends SerializableProperti
     * Build an instance of {@link RequiredArrayWithPropertiesItem1}
     */
     public RequiredArrayWithPropertiesItem1 build() {
+      if(properties.get("required array") == null){
+        throw new IllegalArgumentException("RequiredArrayWithPropertiesItem1 missing required property: required array");
+      }
+      if(properties.get("required boolean") == null){
+        throw new IllegalArgumentException("RequiredArrayWithPropertiesItem1 missing required property: required boolean");
+      }
+      if(properties.get("required int") == null){
+        throw new IllegalArgumentException("RequiredArrayWithPropertiesItem1 missing required property: required int");
+      }
+      if(properties.get("required number") == null){
+        throw new IllegalArgumentException("RequiredArrayWithPropertiesItem1 missing required property: required number");
+      }
+      if(properties.get("required object") == null){
+        throw new IllegalArgumentException("RequiredArrayWithPropertiesItem1 missing required property: required object");
+      }
+      if(properties.get("required string") == null){
+        throw new IllegalArgumentException("RequiredArrayWithPropertiesItem1 missing required property: required string");
+      }
+      if(properties.get("required string with regex") == null){
+        throw new IllegalArgumentException("RequiredArrayWithPropertiesItem1 missing required property: required string with regex");
+      }
       return new RequiredArrayWithPropertiesItem1(properties);
     }
   }

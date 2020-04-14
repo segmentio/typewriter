@@ -55,6 +55,12 @@ public final class PropertiesCollided extends SerializableProperties {
     * Build an instance of {@link PropertiesCollided}
     */
     public PropertiesCollided build() {
+      if(properties.get("Property Collided") == null){
+        throw new IllegalArgumentException("PropertiesCollided missing required property: Property Collided");
+      }
+      if(properties.get("property_collided") == null){
+        throw new IllegalArgumentException("PropertiesCollided missing required property: property_collided");
+      }
       return new PropertiesCollided(properties);
     }
   }

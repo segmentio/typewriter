@@ -50,6 +50,9 @@ public final class NestedObjects extends SerializableProperties {
     * Build an instance of {@link NestedObjects}
     */
     public NestedObjects build() {
+      if(properties.get("garage") == null){
+        throw new IllegalArgumentException("NestedObjects missing required property: garage");
+      }
       return new NestedObjects(properties);
     }
   }

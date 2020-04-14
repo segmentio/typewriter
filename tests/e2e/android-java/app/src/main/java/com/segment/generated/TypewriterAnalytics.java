@@ -68,7 +68,7 @@ public class TypewriterAnalytics {
   
   /**
   *This event is fired in order to trigger a custom violation handler. It should be called with a JSON Schema violation.
-  * @param props {@link CustomViolationHandler to add extra information to this call.
+  * @param props {@link CustomViolationHandler} to add extra information to this call.
   * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
   */
   public void customViolationHandler(final @Nullable CustomViolationHandler props) {
@@ -98,7 +98,7 @@ public class TypewriterAnalytics {
   
   /**
   *This event is fired in order to trigger the default violation handler. It should be called with a JSON Schema violation.
-  * @param props {@link DefaultViolationHandler to add extra information to this call.
+  * @param props {@link DefaultViolationHandler} to add extra information to this call.
   * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
   */
   public void defaultViolationHandler(final @Nullable DefaultViolationHandler props) {
@@ -156,7 +156,7 @@ public class TypewriterAnalytics {
   
   /**
   *Validates that clients handle all of the supported field types, as nullable optional fields. If a field is null, it is expected to be NOT sent through.
-  * @param props {@link EveryNullableOptionalType to add extra information to this call.
+  * @param props {@link EveryNullableOptionalType} to add extra information to this call.
   * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
   */
   public void everyNullableOptionalType(final @Nullable EveryNullableOptionalType props) {
@@ -172,7 +172,7 @@ public class TypewriterAnalytics {
   
   /**
   *Validates that clients handle all of the supported field types, as nullable required fields. If a field is null, it is expected to be sent through.
-  * @param props {@link EveryNullableRequiredType to add extra information to this call.
+  * @param props {@link EveryNullableRequiredType} to add extra information to this call.
   * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
   */
   public void everyNullableRequiredType(final @Nullable EveryNullableRequiredType props) {
@@ -188,7 +188,7 @@ public class TypewriterAnalytics {
   
   /**
   *Validates that clients handle all of the supported field types, as optional fields.
-  * @param props {@link EveryOptionalType to add extra information to this call.
+  * @param props {@link EveryOptionalType} to add extra information to this call.
   * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
   */
   public void everyOptionalType(final @Nullable EveryOptionalType props) {
@@ -204,7 +204,7 @@ public class TypewriterAnalytics {
   
   /**
   *Validates that clients handle all of the supported field types, as required fields. 
-  * @param props {@link EveryRequiredType to add extra information to this call.
+  * @param props {@link EveryRequiredType} to add extra information to this call.
   * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
   */
   public void everyRequiredType(final @Nullable EveryRequiredType props) {
@@ -220,7 +220,7 @@ public class TypewriterAnalytics {
   
   /**
   *Validates that clients correctly serialize large numbers (integers and floats).
-  * @param props {@link LargeNumbersEvent to add extra information to this call.
+  * @param props {@link LargeNumbersEvent} to add extra information to this call.
   * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
   */
   public void largeNumbersEvent(final @Nullable LargeNumbersEvent props) {
@@ -236,7 +236,7 @@ public class TypewriterAnalytics {
   
   /**
   *Validates that clients handle arrays-within-arrays.
-  * @param props {@link NestedArrays to add extra information to this call.
+  * @param props {@link NestedArrays} to add extra information to this call.
   * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
   */
   public void nestedArrays(final @Nullable NestedArrays props) {
@@ -252,7 +252,7 @@ public class TypewriterAnalytics {
   
   /**
   *Validates that clients handle objects-within-objects.
-  * @param props {@link NestedObjects to add extra information to this call.
+  * @param props {@link NestedObjects} to add extra information to this call.
   * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
   */
   public void nestedObjects(final @Nullable NestedObjects props) {
@@ -268,7 +268,7 @@ public class TypewriterAnalytics {
   
   /**
   *Validates that clients handle collisions in property names within a single event.
-  * @param props {@link PropertiesCollided to add extra information to this call.
+  * @param props {@link PropertiesCollided} to add extra information to this call.
   * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
   */
   public void propertiesCollided(final @Nullable PropertiesCollided props) {
@@ -284,7 +284,7 @@ public class TypewriterAnalytics {
   
   /**
   *Validates that clients handle collisions in object names across multiple events.
-  * @param props {@link PropertyObjectNameCollision#1 to add extra information to this call.
+  * @param props {@link PropertyObjectNameCollision#1} to add extra information to this call.
   * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
   */
   public void propertyObjectNameCollision1(final @Nullable PropertyObjectNameCollision1 props) {
@@ -300,7 +300,7 @@ public class TypewriterAnalytics {
   
   /**
   *Validates that clients handle collisions in object names across multiple events.
-  * @param props {@link PropertyObjectNameCollision#2 to add extra information to this call.
+  * @param props {@link PropertyObjectNameCollision#2} to add extra information to this call.
   * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
   */
   public void propertyObjectNameCollision2(final @Nullable PropertyObjectNameCollision2 props) {
@@ -316,7 +316,7 @@ public class TypewriterAnalytics {
   
   /**
   *Validates that clients sanitize property names that contain invalid identifier characters.
-  * @param props {@link PropertySanitized to add extra information to this call.
+  * @param props {@link PropertySanitized} to add extra information to this call.
   * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
   */
   public void propertySanitized(final @Nullable PropertySanitized props) {
@@ -332,7 +332,7 @@ public class TypewriterAnalytics {
   
   /**
   *Validates that clients support fields with various types of arrays.
-  * @param props {@link SimpleArrayTypes to add extra information to this call.
+  * @param props {@link SimpleArrayTypes} to add extra information to this call.
   * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
   */
   public void simpleArrayTypes(final @Nullable SimpleArrayTypes props) {
@@ -348,7 +348,7 @@ public class TypewriterAnalytics {
   
   /**
   *Validates that clients support fields with multiple (union) types.
-  * @param props {@link UnionType to add extra information to this call.
+  * @param props {@link UnionType} to add extra information to this call.
   * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
   */
   public void unionType(final @Nullable UnionType props) {

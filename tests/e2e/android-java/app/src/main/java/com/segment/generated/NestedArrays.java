@@ -48,6 +48,9 @@ public final class NestedArrays extends SerializableProperties {
     * Build an instance of {@link NestedArrays}
     */
     public NestedArrays build() {
+      if(properties.get("universeCharacters") == null){
+        throw new IllegalArgumentException("NestedArrays missing required property: universeCharacters");
+      }
       return new NestedArrays(properties);
     }
   }

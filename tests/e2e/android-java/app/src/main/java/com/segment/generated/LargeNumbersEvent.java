@@ -109,6 +109,12 @@ public final class LargeNumbersEvent extends SerializableProperties {
     * Build an instance of {@link LargeNumbersEvent}
     */
     public LargeNumbersEvent build() {
+      if(properties.get("large required integer") == null){
+        throw new IllegalArgumentException("LargeNumbersEvent missing required property: large required integer");
+      }
+      if(properties.get("large required number") == null){
+        throw new IllegalArgumentException("LargeNumbersEvent missing required property: large required number");
+      }
       return new LargeNumbersEvent(properties);
     }
   }
