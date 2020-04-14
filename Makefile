@@ -209,21 +209,21 @@ test-ios-swift:
 .PHONY: test-android-java
 test-android-java:
 	@cd tests/e2e/android-java
-	@make test-android-dev test-android-prod
+	@make test-android-java-dev test-android-java-prod
 
-.PHONY: test-android-dev test-android-prod test-android-java-runner test-android-runner
-test-android-dev: IS_DEVELOPMENT=true
-test-android-dev: TYPEWRITER_COMMAND=build
-test-android-dev: test-android-java-runner
+.PHONY: test-android-java-dev test-android-java-prod test-android-java-runner test-android-java-runner
+test-android-java-dev: IS_DEVELOPMENT=true
+test-android-java-dev: TYPEWRITER_COMMAND=build
+test-android-java-dev: test-android-java-runner
 
-test-android-prod: IS_DEVELOPMENT=false
-test-android-prod: TYPEWRITER_COMMAND=prod
-test-android-prod: test-android-java-runner
+test-android-java-prod: IS_DEVELOPMENT=false
+test-android-java-prod: TYPEWRITER_COMMAND=prod
+test-android-java-prod: test-android-java-runner
 
 test-android-java-runner: LANGUAGE=java
-test-android-java-runner: test-android-runner
+test-android-java-runner: test-android-java-runner
 
-test-android-runner:
+test-android-java-runner:
 	@echo "\n>>>	🏃 Running Android client test suite ($(TYPEWRITER_COMMAND), $(LANGUAGE))...\n"
 	@make clear-mock
 	@yarn run -s dev $(TYPEWRITER_COMMAND) --config=./tests/e2e/android-java

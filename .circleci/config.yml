@@ -235,7 +235,7 @@ jobs:
             cd mock && yarn dev &
             sleep 5
             make test-ios-swift-prod
-  test-android-dev:
+  test-android-java-dev:
     docker: # run the steps with Docker
       - image: circleci/android:api-29-node
     environment:
@@ -253,12 +253,12 @@ jobs:
             git clone https://github.com/segmentio/mock.git && cd mock && yarn && cd ..
             cd mock && yarn dev & 
             sleep 5
-            make test-android-dev
+            make test-android-java-dev
       - save_cache:
           paths:
             - ~/typewriter/tests/e2e/android-java/.gradle
           key: jars-{{ checksum "tests/e2e/android-java/build.gradle" }}-{{ checksum  "tests/e2e/android-java/app/build.gradle" }}
-  test-android-prod:
+  test-android-java-prod:
     docker: # run the steps with Docker
       - image: circleci/android:api-29-node
     environment:
@@ -276,7 +276,7 @@ jobs:
             git clone https://github.com/segmentio/mock.git && cd mock && yarn && cd ..
             cd mock && yarn dev & 
             sleep 5
-            make test-android-prod
+            make test-android-java-prod
       - save_cache:
           paths:
             - ~/typewriter/tests/e2e/android-java/.gradle
@@ -319,7 +319,7 @@ workflows:
           requires: [setup]
       - test-ios-swift-prod:
           requires: [setup]
-      - test-android-dev:
+      - test-android-java-dev:
           requires: [setup]
-      - test-android-prod:
+      - test-android-java-prod:
           requires: [setup]
