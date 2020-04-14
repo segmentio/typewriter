@@ -1,0 +1,12 @@
+# You can find more documentation on configuring this client in the Segment docs.
+# See: https://segment.com/docs/protocols/typewriter
+client:
+  sdk: analytics-android
+  language: java
+
+trackingPlans:
+  # Tracking Plan: Typewriter Tracking Plan
+  # https://app.segment.com/segment_prod/protocols/tracking-plans/rs_1LMmY55PRAqJrqPrGzyk2nlYuZ3
+  - id: rs_1N9oTnc5O8cv1peY65iXsSPnzGP
+    workspaceSlug: segment_prod
+    path: ./app/src/main/java/com/segment/generated

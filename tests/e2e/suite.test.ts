@@ -450,7 +450,7 @@ describe('e2e tests', () => {
 		{
 			name: 'sends an event with unions',
 			// We have not yet added support for unions to the iOS client.
-			if: sdk !== SDK.IOS,
+			if: sdk !== SDK.IOS && sdk !== SDK.ANDROID,
 			expect: [
 				{
 					name: 'Union Type',
@@ -510,7 +510,7 @@ describe('e2e tests', () => {
 			// environments where we can detect if you are running tests.
 			// Note: we have not yet added support for run-time validation to the iOS client,
 			// so we cannot detect violations.
-			if: !((isDevelopment && sdk === SDK.NODE) || sdk === SDK.IOS),
+			if: !((isDevelopment && sdk === SDK.NODE) || sdk === SDK.IOS || sdk === SDK.ANDROID),
 			expect: {
 				name: 'Default Violation Handler',
 				properties: {
@@ -521,7 +521,7 @@ describe('e2e tests', () => {
 		{
 			name: 'when set, a custom violation handler is called upon a violation',
 			// We have not yet added support for run-time validation to the iOS client.
-			if: isDevelopment && sdk !== SDK.IOS,
+			if: isDevelopment && sdk !== SDK.IOS && sdk !== SDK.ANDROID,
 			expect: {
 				name: 'Custom Violation Handler Called',
 			},
@@ -529,7 +529,7 @@ describe('e2e tests', () => {
 		{
 			name: 'when set, a custom violation handler fires events upon a violation',
 			// We have not yet added support for run-time validation to the iOS client.
-			if: sdk !== SDK.IOS,
+			if: sdk !== SDK.IOS && sdk !== SDK.ANDROID,
 			expect: {
 				name: 'Custom Violation Handler',
 				properties: {

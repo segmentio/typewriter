@@ -57,7 +57,7 @@ e2e:
 	@make test-ios-swift
 
 	@### Android
-	@# TODO
+	@make test-android-java
 
 .PHONY: lint
 lint:
@@ -203,6 +203,30 @@ test-ios-swift:
 	@# TODO: verify that xcodebuild and xcpretty are available
 	@cd tests/e2e/ios-swift && pod install
 	@make test-ios-swift-dev test-ios-swift-prod
+
+.PHONY: test-android-java
+test-android-java:
+	@cd tests/e2e/android-java
+	@make test-android-dev test-android-prod
+
+.PHONY: test-android-dev test-android-prod test-android-java-runner test-android-runner
+test-android-dev: IS_DEVELOPMENT=true
+test-android-dev: TYPEWRITER_COMMAND=build
+test-android-dev: test-android-java-runner
+
+test-android-prod: IS_DEVELOPMENT=false
+test-android-prod: TYPEWRITER_COMMAND=prod
+test-android-prod: test-android-java-runner
+
+test-android-java-runner: LANGUAGE=java
+test-android-java-runner: test-android-runner
+
+test-android-runner:
+	@echo "\n>>>	🏃 Running Android client test suite ($(TYPEWRITER_COMMAND), $(LANGUAGE))...\n"
+	@make clear-mock
+	@yarn run -s dev $(TYPEWRITER_COMMAND) --config=./tests/e2e/android-java
+	@cd tests/e2e/android-java && ./gradlew testDebugUnitTest
+	@SDK=analytics-android LANGUAGE=$(LANGUAGE) IS_DEVELOPMENT=$(IS_DEVELOPMENT) yarn run -s jest ./tests/e2e/suite.test.ts
 
 .PHONY: test-ios-objc-dev test-ios-objc-prod test-ios-objc-runner test-ios-swift-dev test-ios-swift-prod test-ios-swift-runner test-ios-runner
 test-ios-objc-dev: IS_DEVELOPMENT=true

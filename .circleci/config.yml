@@ -235,6 +235,52 @@ jobs:
             cd mock && yarn dev &
             sleep 5
             make test-ios-swift-prod
+  test-android-dev:
+    docker: # run the steps with Docker
+      - image: circleci/android:api-29-node
+    environment:
+      JVM_OPTS: -Xmx3200m
+    steps: # a collection of executable commands
+      - attach_workspace: { at: . }
+      - restore_cache:
+          key: jars-{{ checksum "tests/e2e/android-java/build.gradle" }}-{{ checksum  "tests/e2e/android-java/app/build.gradle" }}
+      - run:
+          name: Download Dependencies
+          command: cd tests/e2e/android-java && ./gradlew androidDependencies && cd ../../..
+      - run:
+          name: Run Android Java Tests
+          command: |
+            git clone https://github.com/segmentio/mock.git && cd mock && yarn && cd ..
+            cd mock && yarn dev & 
+            sleep 5
+            make test-android-dev
+      - save_cache:
+          paths:
+            - ~/typewriter/tests/e2e/android-java/.gradle
+          key: jars-{{ checksum "tests/e2e/android-java/build.gradle" }}-{{ checksum  "tests/e2e/android-java/app/build.gradle" }}
+  test-android-prod:
+    docker: # run the steps with Docker
+      - image: circleci/android:api-29-node
+    environment:
+      JVM_OPTS: -Xmx3200m
+    steps: # a collection of executable commands
+      - attach_workspace: { at: . }
+      - restore_cache:
+          key: jars-{{ checksum "tests/e2e/android-java/build.gradle" }}-{{ checksum  "tests/e2e/android-java/app/build.gradle" }}
+      - run:
+          name: Download Dependencies
+          command: cd tests/e2e/android-java && ./gradlew androidDependencies && cd ../../..
+      - run:
+          name: Run Android Java Tests
+          command: |
+            git clone https://github.com/segmentio/mock.git && cd mock && yarn && cd ..
+            cd mock && yarn dev & 
+            sleep 5
+            make test-android-prod
+      - save_cache:
+          paths:
+            - ~/typewriter/tests/e2e/android-java/.gradle
+          key: jars-{{ checksum "tests/e2e/android-java/build.gradle" }}-{{ checksum  "tests/e2e/android-java/app/build.gradle" }}
 
 workflows:
   version: 2
@@ -272,4 +318,8 @@ workflows:
       - test-ios-swift-dev:
           requires: [setup]
       - test-ios-swift-prod:
+          requires: [setup]
+      - test-android-dev:
+          requires: [setup]
+      - test-android-prod:
           requires: [setup]

@@ -202,6 +202,7 @@ const SDKPrompt: React.FC<SDKPromptProps> = ({ step, sdk, onSubmit }) => {
 		{ label: 'Web (analytics.js)', value: SDK.WEB },
 		{ label: 'Node.js (analytics-node)', value: SDK.NODE },
 		{ label: 'iOS (analytics-ios)', value: SDK.IOS },
+		{ label: 'Android (analytics-android)', value: SDK.ANDROID },
 	]
 	const initialIndex = items.findIndex(i => i.value === sdk)
 
@@ -239,12 +240,14 @@ const LanguagePrompt: React.FC<LanguagePromptProps> = ({ step, sdk, language, on
 		{ label: 'TypeScript', value: Language.TYPESCRIPT },
 		{ label: 'Objective-C', value: Language.OBJECTIVE_C },
 		{ label: 'Swift', value: Language.SWIFT },
+		{ label: 'Java', value: Language.JAVA },
 	].filter(item => {
 		// Filter out items that aren't relevant, given the selected SDK.
 		const supportedLanguages = {
 			[SDK.WEB]: [Language.JAVASCRIPT, Language.TYPESCRIPT],
 			[SDK.NODE]: [Language.JAVASCRIPT, Language.TYPESCRIPT],
 			[SDK.IOS]: [Language.OBJECTIVE_C, Language.SWIFT],
+			[SDK.ANDROID]: [Language.JAVA],
 		}
 
 		return supportedLanguages[sdk].includes(item.value)
