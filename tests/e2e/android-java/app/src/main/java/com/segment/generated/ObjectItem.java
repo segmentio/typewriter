@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 public final class ObjectItem extends SerializableProperties {
   private Properties properties;
 
-  
   private ObjectItem(Properties properties) {
     this.properties = properties;
 	}
@@ -19,7 +18,6 @@ public final class ObjectItem extends SerializableProperties {
   protected Properties toProperties() {
     return properties;
 	}
-  
 
   /**
   * Builder for {@link ObjectItem}

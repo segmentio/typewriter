@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 public final class PropertyObjectNameCollision2 extends SerializableProperties {
   private Properties properties;
 
-  
   private PropertyObjectNameCollision2(Properties properties) {
     this.properties = properties;
 	}
@@ -19,7 +18,6 @@ public final class PropertyObjectNameCollision2 extends SerializableProperties {
   protected Properties toProperties() {
     return properties;
 	}
-  
 
   /**
   * Builder for {@link PropertyObjectNameCollision2}

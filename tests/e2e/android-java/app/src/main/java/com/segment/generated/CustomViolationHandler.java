@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 public final class CustomViolationHandler extends SerializableProperties {
   private Properties properties;
 
-  
   private CustomViolationHandler(Properties properties) {
     this.properties = properties;
 	}
@@ -19,7 +18,6 @@ public final class CustomViolationHandler extends SerializableProperties {
   protected Properties toProperties() {
     return properties;
 	}
-  
 
   /**
   * Builder for {@link CustomViolationHandler}
@@ -48,10 +46,6 @@ public final class CustomViolationHandler extends SerializableProperties {
     * Build an instance of {@link CustomViolationHandler}
     */
     public CustomViolationHandler build() {
-      if(properties.get("regex property") == null){
-        throw new IllegalArgumentException("CustomViolationHandler missing required property: regex property");
-      }
-  
       return new CustomViolationHandler(properties);
     }
   }

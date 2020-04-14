@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 public final class Universe1 extends SerializableProperties {
   private Properties properties;
 
-  
   private Universe1(Properties properties) {
     this.properties = properties;
 	}
@@ -19,7 +18,6 @@ public final class Universe1 extends SerializableProperties {
   protected Properties toProperties() {
     return properties;
 	}
-  
 
   /**
   * Builder for {@link Universe1}
@@ -60,14 +58,6 @@ public final class Universe1 extends SerializableProperties {
     * Build an instance of {@link Universe1}
     */
     public Universe1 build() {
-      if(properties.get("name") == null){
-        throw new IllegalArgumentException("Universe1 missing required property: name");
-      }
-  
-      if(properties.get("occupants") == null){
-        throw new IllegalArgumentException("Universe1 missing required property: occupants");
-      }
-  
       return new Universe1(properties);
     }
   }

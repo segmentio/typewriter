@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 public final class OptionalObjectWithProperties extends SerializableProperties {
   private Properties properties;
 
-  
   private OptionalObjectWithProperties(Properties properties) {
     this.properties = properties;
 	}
@@ -19,7 +18,6 @@ public final class OptionalObjectWithProperties extends SerializableProperties {
   protected Properties toProperties() {
     return properties;
 	}
-  
 
   /**
   * Builder for {@link OptionalObjectWithProperties}

@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 public final class NestedObjects extends SerializableProperties {
   private Properties properties;
 
-  
   private NestedObjects(Properties properties) {
     this.properties = properties;
 	}
@@ -19,7 +18,6 @@ public final class NestedObjects extends SerializableProperties {
   protected Properties toProperties() {
     return properties;
 	}
-  
 
   /**
   * Builder for {@link NestedObjects}
@@ -52,10 +50,6 @@ public final class NestedObjects extends SerializableProperties {
     * Build an instance of {@link NestedObjects}
     */
     public NestedObjects build() {
-      if(properties.get("garage") == null){
-        throw new IllegalArgumentException("NestedObjects missing required property: garage");
-      }
-  
       return new NestedObjects(properties);
     }
   }

@@ -22,6 +22,8 @@ interface AndroidPropertyContext {
 	isVariableNullable: boolean
 	// Whether null is a valid value for this property when sent to Segment.
 	nonNullPayload: boolean
+	// Whethere runtime error should be thrown for null payload value
+	shouldThrowRuntimeError: boolean | undefined
 }
 
 interface AndroidTrackCallContext {
@@ -62,12 +64,7 @@ export const android: Generator<
 	setup: async () => {
 		Handlebars.registerHelper('trackCallFunctionSignature', generateFunctionSignature)
 		Handlebars.registerHelper('trackCallFunctionExecution', generateFunctionExecution)
-		Handlebars.registerHelper('builderFunctionSignature', generateBuilderFunctionSignature)
 		Handlebars.registerHelper('builderFunctionBody', generateBuilderFunctionBody)
-		Handlebars.registerHelper('propertiesGetterSetter', generatePropertiesGetterSetter)
-		Handlebars.registerHelper('shouldThrowWhenNull', shouldThrowRuntimeError)
-		Handlebars.registerHelper('runtimeRequiredCheck', generateRequiredPropertyRuntimeError)
-		Handlebars.registerHelper('descriptionComment', generateComment)
 		return {}
 	},
 	generatePrimitive: async (client, schema, parentPath) => {
@@ -196,11 +193,8 @@ function defaultPropertyContext(
 				: Modifier.FinalNonNullable,
 		isVariableNullable: !schema.isRequired || !!schema.isNullable,
 		nonNullPayload: !schema.isNullable,
+		shouldThrowRuntimeError: schema.isRequired && !schema.isNullable,
 	}
-}
-
-function generateBuilderFunctionSignature(name: string, modifiers: string, type: string): string {
-	return `public Builder ${name}(${modifiers} ${type} ${name})`
 }
 
 function generateBuilderFunctionBody(name: string, rawName: string, type: string): string {
@@ -250,16 +244,6 @@ const getValidArgs = (potentialArgs: Arg[], defaultArg?: string[]) =>
 		return acc
 	}, defaultArg || [])
 
-const intersperse = (values: string[], char: string) => {
-	let joined = values[0] || ''
-	if (values.length) {
-		for (let i = 1; i < values.length; i++) {
-			joined += `${char}${values[i]}`
-		}
-	}
-	return joined
-}
-
 function generateFunctionSignature(
 	{ functionName, propsParam }: { functionName: string; propsParam: boolean },
 	withOptions: boolean
@@ -269,7 +253,7 @@ function generateFunctionSignature(
 		{ hasParam: withOptions, name: 'options', type: 'Options' },
 	])
 
-	return `public void ${functionName}(${intersperse(params, Separator.Comma)})`
+	return `public void ${functionName}(${params.join(Separator.Comma)})`
 }
 
 function generateFunctionExecution(
@@ -284,45 +268,6 @@ function generateFunctionExecution(
 		[`"${rawEventName}"`]
 	)
 	return `{
-    this.analytics.track(${intersperse(args, Separator.Comma)});
+    this.analytics.track(${args.join(Separator.Comma)});
   }`
-}
-
-function generatePropertiesGetterSetter(name: string): string {
-	return `
-  private ${name}(Properties properties) {
-    this.properties = properties;
-	}
-
-  protected Properties toProperties() {
-    return properties;
-	}
-  `
-}
-
-function shouldThrowRuntimeError({
-	isRequired,
-	nonNullPayload,
-}: AndroidPropertyContext & BasePropertyContext) {
-	return isRequired && nonNullPayload
-}
-
-function generateRequiredPropertyRuntimeError(
-	className: string,
-	property: BasePropertyContext & AndroidPropertyContext
-): string {
-	return `if(properties.get("${property.rawName}") == null){
-    ${Separator.Indent}${
-		Separator.Indent
-	}throw new IllegalArgumentException("${className} missing required property: ${
-		property.rawName
-	}");
-    ${Separator.Indent}}
-  `
-}
-
-function generateComment({ rawEventName }: { rawEventName: string }) {
-	const eventClass = rawEventName.replace(/\s|\_/g, '')
-	return `* @param props {@link ${eventClass}} to add extra information to this call.
-  * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>`
 }

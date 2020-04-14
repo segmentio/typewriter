@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 public final class EveryRequiredType extends SerializableProperties {
   private Properties properties;
 
-  
   private EveryRequiredType(Properties properties) {
     this.properties = properties;
 	}
@@ -19,7 +18,6 @@ public final class EveryRequiredType extends SerializableProperties {
   protected Properties toProperties() {
     return properties;
 	}
-  
 
   /**
   * Builder for {@link EveryRequiredType}
@@ -145,42 +143,6 @@ public final class EveryRequiredType extends SerializableProperties {
     * Build an instance of {@link EveryRequiredType}
     */
     public EveryRequiredType build() {
-      if(properties.get("required array") == null){
-        throw new IllegalArgumentException("EveryRequiredType missing required property: required array");
-      }
-  
-      if(properties.get("required array with properties") == null){
-        throw new IllegalArgumentException("EveryRequiredType missing required property: required array with properties");
-      }
-  
-      if(properties.get("required boolean") == null){
-        throw new IllegalArgumentException("EveryRequiredType missing required property: required boolean");
-      }
-  
-      if(properties.get("required int") == null){
-        throw new IllegalArgumentException("EveryRequiredType missing required property: required int");
-      }
-  
-      if(properties.get("required number") == null){
-        throw new IllegalArgumentException("EveryRequiredType missing required property: required number");
-      }
-  
-      if(properties.get("required object") == null){
-        throw new IllegalArgumentException("EveryRequiredType missing required property: required object");
-      }
-  
-      if(properties.get("required object with properties") == null){
-        throw new IllegalArgumentException("EveryRequiredType missing required property: required object with properties");
-      }
-  
-      if(properties.get("required string") == null){
-        throw new IllegalArgumentException("EveryRequiredType missing required property: required string");
-      }
-  
-      if(properties.get("required string with regex") == null){
-        throw new IllegalArgumentException("EveryRequiredType missing required property: required string with regex");
-      }
-  
       return new EveryRequiredType(properties);
     }
   }

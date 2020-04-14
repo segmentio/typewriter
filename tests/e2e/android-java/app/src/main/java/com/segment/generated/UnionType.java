@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 public final class UnionType extends SerializableProperties {
   private Properties properties;
 
-  
   private UnionType(Properties properties) {
     this.properties = properties;
 	}
@@ -19,7 +18,6 @@ public final class UnionType extends SerializableProperties {
   protected Properties toProperties() {
     return properties;
 	}
-  
 
   /**
   * Builder for {@link UnionType}

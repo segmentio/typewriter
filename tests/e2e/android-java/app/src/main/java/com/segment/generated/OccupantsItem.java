@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 public final class OccupantsItem extends SerializableProperties {
   private Properties properties;
 
-  
   private OccupantsItem(Properties properties) {
     this.properties = properties;
 	}
@@ -19,7 +18,6 @@ public final class OccupantsItem extends SerializableProperties {
   protected Properties toProperties() {
     return properties;
 	}
-  
 
   /**
   * Builder for {@link OccupantsItem}
@@ -49,10 +47,6 @@ public final class OccupantsItem extends SerializableProperties {
     * Build an instance of {@link OccupantsItem}
     */
     public OccupantsItem build() {
-      if(properties.get("name") == null){
-        throw new IllegalArgumentException("OccupantsItem missing required property: name");
-      }
-  
       return new OccupantsItem(properties);
     }
   }

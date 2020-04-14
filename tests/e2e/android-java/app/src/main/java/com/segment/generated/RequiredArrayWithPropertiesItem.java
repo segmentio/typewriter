@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 public final class RequiredArrayWithPropertiesItem extends SerializableProperties {
   private Properties properties;
 
-  
   private RequiredArrayWithPropertiesItem(Properties properties) {
     this.properties = properties;
 	}
@@ -19,7 +18,6 @@ public final class RequiredArrayWithPropertiesItem extends SerializablePropertie
   protected Properties toProperties() {
     return properties;
 	}
-  
 
   /**
   * Builder for {@link RequiredArrayWithPropertiesItem}

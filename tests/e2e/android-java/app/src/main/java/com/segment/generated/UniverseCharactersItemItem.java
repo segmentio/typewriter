@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 public final class UniverseCharactersItemItem extends SerializableProperties {
   private Properties properties;
 
-  
   private UniverseCharactersItemItem(Properties properties) {
     this.properties = properties;
 	}
@@ -19,7 +18,6 @@ public final class UniverseCharactersItemItem extends SerializableProperties {
   protected Properties toProperties() {
     return properties;
 	}
-  
 
   /**
   * Builder for {@link UniverseCharactersItemItem}
@@ -49,10 +47,6 @@ public final class UniverseCharactersItemItem extends SerializableProperties {
     * Build an instance of {@link UniverseCharactersItemItem}
     */
     public UniverseCharactersItemItem build() {
-      if(properties.get("name") == null){
-        throw new IllegalArgumentException("UniverseCharactersItemItem missing required property: name");
-      }
-  
       return new UniverseCharactersItemItem(properties);
     }
   }

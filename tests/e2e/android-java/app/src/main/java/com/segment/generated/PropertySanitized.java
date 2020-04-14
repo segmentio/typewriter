@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 public final class PropertySanitized extends SerializableProperties {
   private Properties properties;
 
-  
   private PropertySanitized(Properties properties) {
     this.properties = properties;
 	}
@@ -19,7 +18,6 @@ public final class PropertySanitized extends SerializableProperties {
   protected Properties toProperties() {
     return properties;
 	}
-  
 
   /**
   * Builder for {@link PropertySanitized}
@@ -48,10 +46,6 @@ public final class PropertySanitized extends SerializableProperties {
     * Build an instance of {@link PropertySanitized}
     */
     public PropertySanitized build() {
-      if(properties.get("0000---terrible-property-name~!3") == null){
-        throw new IllegalArgumentException("PropertySanitized missing required property: 0000---terrible-property-name~!3");
-      }
-  
       return new PropertySanitized(properties);
     }
   }

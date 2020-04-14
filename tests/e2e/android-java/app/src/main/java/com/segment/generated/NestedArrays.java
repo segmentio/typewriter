@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 public final class NestedArrays extends SerializableProperties {
   private Properties properties;
 
-  
   private NestedArrays(Properties properties) {
     this.properties = properties;
 	}
@@ -19,7 +18,6 @@ public final class NestedArrays extends SerializableProperties {
   protected Properties toProperties() {
     return properties;
 	}
-  
 
   /**
   * Builder for {@link NestedArrays}
@@ -50,10 +48,6 @@ public final class NestedArrays extends SerializableProperties {
     * Build an instance of {@link NestedArrays}
     */
     public NestedArrays build() {
-      if(properties.get("universeCharacters") == null){
-        throw new IllegalArgumentException("NestedArrays missing required property: universeCharacters");
-      }
-  
       return new NestedArrays(properties);
     }
   }

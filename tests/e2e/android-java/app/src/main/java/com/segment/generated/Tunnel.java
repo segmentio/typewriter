@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 public final class Tunnel extends SerializableProperties {
   private Properties properties;
 
-  
   private Tunnel(Properties properties) {
     this.properties = properties;
 	}
@@ -19,7 +18,6 @@ public final class Tunnel extends SerializableProperties {
   protected Properties toProperties() {
     return properties;
 	}
-  
 
   /**
   * Builder for {@link Tunnel}
@@ -52,10 +50,6 @@ public final class Tunnel extends SerializableProperties {
     * Build an instance of {@link Tunnel}
     */
     public Tunnel build() {
-      if(properties.get("subterranean lab") == null){
-        throw new IllegalArgumentException("Tunnel missing required property: subterranean lab");
-      }
-  
       return new Tunnel(properties);
     }
   }

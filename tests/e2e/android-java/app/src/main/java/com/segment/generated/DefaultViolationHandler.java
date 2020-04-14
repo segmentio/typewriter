@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 public final class DefaultViolationHandler extends SerializableProperties {
   private Properties properties;
 
-  
   private DefaultViolationHandler(Properties properties) {
     this.properties = properties;
 	}
@@ -19,7 +18,6 @@ public final class DefaultViolationHandler extends SerializableProperties {
   protected Properties toProperties() {
     return properties;
 	}
-  
 
   /**
   * Builder for {@link DefaultViolationHandler}
@@ -48,10 +46,6 @@ public final class DefaultViolationHandler extends SerializableProperties {
     * Build an instance of {@link DefaultViolationHandler}
     */
     public DefaultViolationHandler build() {
-      if(properties.get("regex property") == null){
-        throw new IllegalArgumentException("DefaultViolationHandler missing required property: regex property");
-      }
-  
       return new DefaultViolationHandler(properties);
     }
   }

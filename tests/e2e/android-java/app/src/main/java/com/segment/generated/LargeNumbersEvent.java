@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 public final class LargeNumbersEvent extends SerializableProperties {
   private Properties properties;
 
-  
   private LargeNumbersEvent(Properties properties) {
     this.properties = properties;
 	}
@@ -19,7 +18,6 @@ public final class LargeNumbersEvent extends SerializableProperties {
   protected Properties toProperties() {
     return properties;
 	}
-  
 
   /**
   * Builder for {@link LargeNumbersEvent}
@@ -111,14 +109,6 @@ public final class LargeNumbersEvent extends SerializableProperties {
     * Build an instance of {@link LargeNumbersEvent}
     */
     public LargeNumbersEvent build() {
-      if(properties.get("large required integer") == null){
-        throw new IllegalArgumentException("LargeNumbersEvent missing required property: large required integer");
-      }
-  
-      if(properties.get("large required number") == null){
-        throw new IllegalArgumentException("LargeNumbersEvent missing required property: large required number");
-      }
-  
       return new LargeNumbersEvent(properties);
     }
   }

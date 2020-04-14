@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 public final class Garage extends SerializableProperties {
   private Properties properties;
 
-  
   private Garage(Properties properties) {
     this.properties = properties;
 	}
@@ -19,7 +18,6 @@ public final class Garage extends SerializableProperties {
   protected Properties toProperties() {
     return properties;
 	}
-  
 
   /**
   * Builder for {@link Garage}
@@ -52,10 +50,6 @@ public final class Garage extends SerializableProperties {
     * Build an instance of {@link Garage}
     */
     public Garage build() {
-      if(properties.get("tunnel") == null){
-        throw new IllegalArgumentException("Garage missing required property: tunnel");
-      }
-  
       return new Garage(properties);
     }
   }

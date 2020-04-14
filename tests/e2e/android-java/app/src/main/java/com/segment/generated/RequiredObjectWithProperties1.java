@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 public final class RequiredObjectWithProperties1 extends SerializableProperties {
   private Properties properties;
 
-  
   private RequiredObjectWithProperties1(Properties properties) {
     this.properties = properties;
 	}
@@ -19,7 +18,6 @@ public final class RequiredObjectWithProperties1 extends SerializableProperties 
   protected Properties toProperties() {
     return properties;
 	}
-  
 
   /**
   * Builder for {@link RequiredObjectWithProperties1}
@@ -120,34 +118,6 @@ public final class RequiredObjectWithProperties1 extends SerializableProperties 
     * Build an instance of {@link RequiredObjectWithProperties1}
     */
     public RequiredObjectWithProperties1 build() {
-      if(properties.get("required array") == null){
-        throw new IllegalArgumentException("RequiredObjectWithProperties1 missing required property: required array");
-      }
-  
-      if(properties.get("required boolean") == null){
-        throw new IllegalArgumentException("RequiredObjectWithProperties1 missing required property: required boolean");
-      }
-  
-      if(properties.get("required int") == null){
-        throw new IllegalArgumentException("RequiredObjectWithProperties1 missing required property: required int");
-      }
-  
-      if(properties.get("required number") == null){
-        throw new IllegalArgumentException("RequiredObjectWithProperties1 missing required property: required number");
-      }
-  
-      if(properties.get("required object") == null){
-        throw new IllegalArgumentException("RequiredObjectWithProperties1 missing required property: required object");
-      }
-  
-      if(properties.get("required string") == null){
-        throw new IllegalArgumentException("RequiredObjectWithProperties1 missing required property: required string");
-      }
-  
-      if(properties.get("required string with regex") == null){
-        throw new IllegalArgumentException("RequiredObjectWithProperties1 missing required property: required string with regex");
-      }
-  
       return new RequiredObjectWithProperties1(properties);
     }
   }
