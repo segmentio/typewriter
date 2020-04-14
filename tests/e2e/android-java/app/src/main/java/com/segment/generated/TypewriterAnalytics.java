@@ -141,6 +141,22 @@ public class TypewriterAnalytics {
   };
   
   /**
+  *Validates that client property sanitize enums.
+  * @param props {@link EnumTypes} to add extra information to this call.
+  * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
+  */
+  public void enumTypes(final @Nullable EnumTypes props) {
+    this.analytics.track("Enum Types", props.toProperties(), TypewriterUtils.addTypewriterContext());
+  };
+
+  /**
+  * Validates that client property sanitize enums.
+  */
+  public void enumTypes(final @Nullable EnumTypes props, final @Nullable Options options) {
+    this.analytics.track("Enum Types", props.toProperties(), TypewriterUtils.addTypewriterContext(options));
+  };
+  
+  /**
   *Validates that a generated client handles even naming collisions.
   */
   public void eventCollided() {

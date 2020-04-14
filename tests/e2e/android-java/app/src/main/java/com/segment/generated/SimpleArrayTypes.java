@@ -66,7 +66,7 @@ public final class SimpleArrayTypes extends SerializableProperties {
     /**
      * This property is optional and not required to generate a valid SimpleArrayTypes object
      */
-    public Builder nullable(final @Nullable List<Object> nullable) {
+    public Builder nullable(final @Nullable List<String> nullable) {
       List<?> p = TypewriterUtils.serialize(nullable);
       properties.putValue("nullable", p);
       return this;
