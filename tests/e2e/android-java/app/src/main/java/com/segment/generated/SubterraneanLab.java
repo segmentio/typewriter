@@ -22,13 +22,13 @@ public final class SubterraneanLab extends SerializableProperties {
   
 
   /**
-  * Builder for {@link SubterraneanLab }
+  * Builder for {@link SubterraneanLab}
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link SubterraneanLab }
+    * Builder for {@link SubterraneanLab}
     */
     public Builder() {
       properties = new Properties();
@@ -65,7 +65,7 @@ public final class SubterraneanLab extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link SubterraneanLab }
+    * Build an instance of {@link SubterraneanLab}
     */
     public SubterraneanLab build() {
       return new SubterraneanLab(properties);

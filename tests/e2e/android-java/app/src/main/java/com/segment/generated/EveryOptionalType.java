@@ -22,13 +22,13 @@ public final class EveryOptionalType extends SerializableProperties {
   
 
   /**
-  * Builder for {@link EveryOptionalType }
+  * Builder for {@link EveryOptionalType}
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link EveryOptionalType }
+    * Builder for {@link EveryOptionalType}
     */
     public Builder() {
       properties = new Properties();
@@ -112,8 +112,8 @@ public final class EveryOptionalType extends SerializableProperties {
      * This property is optional and not required to generate a valid EveryOptionalType object
      */
     public Builder optionalObjectWithProperties(final @Nullable OptionalObjectWithProperties1 optionalObjectWithProperties) {
-      if(optionalObjectWithProperties instanceof SerializableProperties){
-        properties.putValue("optional object with properties", ((SerializableProperties) optionalObjectWithProperties).toProperties());
+      if(optionalObjectWithProperties != null){
+        properties.putValue("optional object with properties", optionalObjectWithProperties.toProperties());
       }else{
         properties.putValue("optional object with properties", optionalObjectWithProperties);
       }
@@ -142,7 +142,7 @@ public final class EveryOptionalType extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link EveryOptionalType }
+    * Build an instance of {@link EveryOptionalType}
     */
     public EveryOptionalType build() {
       return new EveryOptionalType(properties);

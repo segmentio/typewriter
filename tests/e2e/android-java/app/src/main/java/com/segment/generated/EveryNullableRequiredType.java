@@ -22,13 +22,13 @@ public final class EveryNullableRequiredType extends SerializableProperties {
   
 
   /**
-  * Builder for {@link EveryNullableRequiredType }
+  * Builder for {@link EveryNullableRequiredType}
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link EveryNullableRequiredType }
+    * Builder for {@link EveryNullableRequiredType}
     */
     public Builder() {
       properties = new Properties();
@@ -112,8 +112,8 @@ public final class EveryNullableRequiredType extends SerializableProperties {
      * This property is required to generate a valid EveryNullableRequiredType object
      */
     public Builder requiredObjectWithProperties(final @Nullable RequiredObjectWithProperties requiredObjectWithProperties) {
-      if(requiredObjectWithProperties instanceof SerializableProperties){
-        properties.putValue("required object with properties", ((SerializableProperties) requiredObjectWithProperties).toProperties());
+      if(requiredObjectWithProperties != null){
+        properties.putValue("required object with properties", requiredObjectWithProperties.toProperties());
       }else{
         properties.putValue("required object with properties", requiredObjectWithProperties);
       }
@@ -142,7 +142,7 @@ public final class EveryNullableRequiredType extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link EveryNullableRequiredType }
+    * Build an instance of {@link EveryNullableRequiredType}
     */
     public EveryNullableRequiredType build() {
       return new EveryNullableRequiredType(properties);

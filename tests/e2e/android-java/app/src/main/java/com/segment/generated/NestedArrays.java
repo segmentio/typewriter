@@ -22,13 +22,13 @@ public final class NestedArrays extends SerializableProperties {
   
 
   /**
-  * Builder for {@link NestedArrays }
+  * Builder for {@link NestedArrays}
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link NestedArrays }
+    * Builder for {@link NestedArrays}
     */
     public Builder() {
       properties = new Properties();
@@ -47,7 +47,7 @@ public final class NestedArrays extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link NestedArrays }
+    * Build an instance of {@link NestedArrays}
     */
     public NestedArrays build() {
       if(properties.get("universeCharacters") == null){

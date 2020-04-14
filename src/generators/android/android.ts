@@ -56,8 +56,8 @@ export const android: Generator<
       "switch", "synchronized", "this", "throw", "throws", "transient", "try", "void", "volatile", "while"
     ],
 		quoteChar: '"',
-		allowedIdentifierStartingChars: 'A-Za-z_$',
-		allowedIdentifierChars: 'A-Za-z0-9_$',
+		allowedIdentifierStartingChars: 'A-Za-z_',
+		allowedIdentifierChars: 'A-Za-z0-9_',
 	},
 	setup: async () => {
 		Handlebars.registerHelper('trackCallFunctionSignature', generateFunctionSignature)
@@ -212,10 +212,10 @@ function generateBuilderFunctionBody(name: string, rawName: string, type: string
 		`${Separator.NewLineIndent}return this;`
 
 	const serializeObject =
-		`${Separator.Indent}if(${name} instanceof SerializableProperties){\n` +
+		`${Separator.Indent}if(${name} != null){\n` +
 		`${Separator.NewLineIndent}${
 			Separator.Indent
-		}properties.putValue("${rawName}", ((SerializableProperties) ${name}).toProperties());\n` +
+		}properties.putValue("${rawName}", ${name}.toProperties());\n` +
 		`${Separator.NewLineIndent}}else{\n` +
 		`${Separator.NewLineIndent}${Separator.Indent}properties.putValue("${rawName}", ${name});\n` +
 		`${Separator.NewLineIndent}}\n` +

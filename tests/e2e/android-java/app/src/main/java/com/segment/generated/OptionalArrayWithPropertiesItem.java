@@ -22,13 +22,13 @@ public final class OptionalArrayWithPropertiesItem extends SerializablePropertie
   
 
   /**
-  * Builder for {@link OptionalArrayWithPropertiesItem }
+  * Builder for {@link OptionalArrayWithPropertiesItem}
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link OptionalArrayWithPropertiesItem }
+    * Builder for {@link OptionalArrayWithPropertiesItem}
     */
     public Builder() {
       properties = new Properties();
@@ -117,7 +117,7 @@ public final class OptionalArrayWithPropertiesItem extends SerializablePropertie
     
 
     /**
-    * Build an instance of {@link OptionalArrayWithPropertiesItem }
+    * Build an instance of {@link OptionalArrayWithPropertiesItem}
     */
     public OptionalArrayWithPropertiesItem build() {
       return new OptionalArrayWithPropertiesItem(properties);

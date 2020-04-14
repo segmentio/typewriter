@@ -22,13 +22,13 @@ public final class Garage extends SerializableProperties {
   
 
   /**
-  * Builder for {@link Garage }
+  * Builder for {@link Garage}
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link Garage }
+    * Builder for {@link Garage}
     */
     public Builder() {
       properties = new Properties();
@@ -39,8 +39,8 @@ public final class Garage extends SerializableProperties {
      * This property is required to generate a valid Garage object
      */
     public Builder tunnel(final @NonNull Tunnel tunnel) {
-      if(tunnel instanceof SerializableProperties){
-        properties.putValue("tunnel", ((SerializableProperties) tunnel).toProperties());
+      if(tunnel != null){
+        properties.putValue("tunnel", tunnel.toProperties());
       }else{
         properties.putValue("tunnel", tunnel);
       }
@@ -49,7 +49,7 @@ public final class Garage extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link Garage }
+    * Build an instance of {@link Garage}
     */
     public Garage build() {
       if(properties.get("tunnel") == null){

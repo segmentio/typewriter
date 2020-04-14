@@ -22,13 +22,13 @@ public final class NestedObjects extends SerializableProperties {
   
 
   /**
-  * Builder for {@link NestedObjects }
+  * Builder for {@link NestedObjects}
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link NestedObjects }
+    * Builder for {@link NestedObjects}
     */
     public Builder() {
       properties = new Properties();
@@ -39,8 +39,8 @@ public final class NestedObjects extends SerializableProperties {
      * This property is required to generate a valid NestedObjects object
      */
     public Builder garage(final @NonNull Garage garage) {
-      if(garage instanceof SerializableProperties){
-        properties.putValue("garage", ((SerializableProperties) garage).toProperties());
+      if(garage != null){
+        properties.putValue("garage", garage.toProperties());
       }else{
         properties.putValue("garage", garage);
       }
@@ -49,7 +49,7 @@ public final class NestedObjects extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link NestedObjects }
+    * Build an instance of {@link NestedObjects}
     */
     public NestedObjects build() {
       if(properties.get("garage") == null){

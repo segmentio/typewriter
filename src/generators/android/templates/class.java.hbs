@@ -14,13 +14,13 @@ public final class {{name}} extends SerializableProperties {
   {{propertiesGetterSetter name}}
 
   /**
-  * Builder for {@link {{name}} }
+  * Builder for {@link {{name ~}} }
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link {{name}} }
+    * Builder for {@link {{name ~}} }
     */
     public Builder() {
       properties = new Properties();
@@ -45,7 +45,7 @@ public final class {{name}} extends SerializableProperties {
   {{/each}}
 
     /**
-    * Build an instance of {@link {{name}} }
+    * Build an instance of {@link {{name ~}} }
     */
     public {{name}} build() {
   {{#each properties}}

@@ -22,13 +22,13 @@ public final class SimpleArrayTypes extends SerializableProperties {
   
 
   /**
-  * Builder for {@link SimpleArrayTypes }
+  * Builder for {@link SimpleArrayTypes}
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link SimpleArrayTypes }
+    * Builder for {@link SimpleArrayTypes}
     */
     public Builder() {
       properties = new Properties();
@@ -106,7 +106,7 @@ public final class SimpleArrayTypes extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link SimpleArrayTypes }
+    * Build an instance of {@link SimpleArrayTypes}
     */
     public SimpleArrayTypes build() {
       return new SimpleArrayTypes(properties);

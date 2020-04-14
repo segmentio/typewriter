@@ -22,13 +22,13 @@ public final class LargeNumbersEvent extends SerializableProperties {
   
 
   /**
-  * Builder for {@link LargeNumbersEvent }
+  * Builder for {@link LargeNumbersEvent}
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link LargeNumbersEvent }
+    * Builder for {@link LargeNumbersEvent}
     */
     public Builder() {
       properties = new Properties();
@@ -108,7 +108,7 @@ public final class LargeNumbersEvent extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link LargeNumbersEvent }
+    * Build an instance of {@link LargeNumbersEvent}
     */
     public LargeNumbersEvent build() {
       if(properties.get("large required integer") == null){

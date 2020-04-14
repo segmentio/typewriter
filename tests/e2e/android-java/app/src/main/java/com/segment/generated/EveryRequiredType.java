@@ -22,13 +22,13 @@ public final class EveryRequiredType extends SerializableProperties {
   
 
   /**
-  * Builder for {@link EveryRequiredType }
+  * Builder for {@link EveryRequiredType}
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link EveryRequiredType }
+    * Builder for {@link EveryRequiredType}
     */
     public Builder() {
       properties = new Properties();
@@ -112,8 +112,8 @@ public final class EveryRequiredType extends SerializableProperties {
      * This property is required to generate a valid EveryRequiredType object
      */
     public Builder requiredObjectWithProperties(final @NonNull RequiredObjectWithProperties1 requiredObjectWithProperties) {
-      if(requiredObjectWithProperties instanceof SerializableProperties){
-        properties.putValue("required object with properties", ((SerializableProperties) requiredObjectWithProperties).toProperties());
+      if(requiredObjectWithProperties != null){
+        properties.putValue("required object with properties", requiredObjectWithProperties.toProperties());
       }else{
         properties.putValue("required object with properties", requiredObjectWithProperties);
       }
@@ -142,7 +142,7 @@ public final class EveryRequiredType extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link EveryRequiredType }
+    * Build an instance of {@link EveryRequiredType}
     */
     public EveryRequiredType build() {
       if(properties.get("required array") == null){

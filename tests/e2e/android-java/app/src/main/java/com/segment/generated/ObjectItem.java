@@ -22,13 +22,13 @@ public final class ObjectItem extends SerializableProperties {
   
 
   /**
-  * Builder for {@link ObjectItem }
+  * Builder for {@link ObjectItem}
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link ObjectItem }
+    * Builder for {@link ObjectItem}
     */
     public Builder() {
       properties = new Properties();
@@ -45,7 +45,7 @@ public final class ObjectItem extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link ObjectItem }
+    * Build an instance of {@link ObjectItem}
     */
     public ObjectItem build() {
       return new ObjectItem(properties);

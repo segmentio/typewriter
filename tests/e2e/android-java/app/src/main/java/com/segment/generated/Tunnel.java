@@ -22,13 +22,13 @@ public final class Tunnel extends SerializableProperties {
   
 
   /**
-  * Builder for {@link Tunnel }
+  * Builder for {@link Tunnel}
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link Tunnel }
+    * Builder for {@link Tunnel}
     */
     public Builder() {
       properties = new Properties();
@@ -39,8 +39,8 @@ public final class Tunnel extends SerializableProperties {
      * This property is required to generate a valid Tunnel object
      */
     public Builder subterraneanLab(final @NonNull SubterraneanLab subterraneanLab) {
-      if(subterraneanLab instanceof SerializableProperties){
-        properties.putValue("subterranean lab", ((SerializableProperties) subterraneanLab).toProperties());
+      if(subterraneanLab != null){
+        properties.putValue("subterranean lab", subterraneanLab.toProperties());
       }else{
         properties.putValue("subterranean lab", subterraneanLab);
       }
@@ -49,7 +49,7 @@ public final class Tunnel extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link Tunnel }
+    * Build an instance of {@link Tunnel}
     */
     public Tunnel build() {
       if(properties.get("subterranean lab") == null){

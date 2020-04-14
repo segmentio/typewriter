@@ -22,13 +22,13 @@ public final class OptionalObjectWithProperties extends SerializableProperties {
   
 
   /**
-  * Builder for {@link OptionalObjectWithProperties }
+  * Builder for {@link OptionalObjectWithProperties}
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link OptionalObjectWithProperties }
+    * Builder for {@link OptionalObjectWithProperties}
     */
     public Builder() {
       properties = new Properties();
@@ -117,7 +117,7 @@ public final class OptionalObjectWithProperties extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link OptionalObjectWithProperties }
+    * Build an instance of {@link OptionalObjectWithProperties}
     */
     public OptionalObjectWithProperties build() {
       return new OptionalObjectWithProperties(properties);
