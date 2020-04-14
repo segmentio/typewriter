@@ -28,6 +28,8 @@ bulk:
 	@NODE_ENV=development node ./dist/src/cli/index.js $(COMMAND) --config=tests/e2e/ios-objc
 	@echo " >> Running 'typewriter $(COMMAND)' on 'tests/e2e/ios-swift'"
 	@NODE_ENV=development node ./dist/src/cli/index.js $(COMMAND) --config=tests/e2e/ios-swift
+	@echo " >> Running 'typewriter $(COMMAND)' on 'tests/e2e/android-java'"
+	@NODE_ENV=development node ./dist/src/cli/index.js $(COMMAND) --config=tests/e2e/android-java
 	@# Changes to the Tracking Plan JSON files will need to be run through our
 	@# linter again to reduce git deltas.
 	@make lint
