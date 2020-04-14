@@ -22,13 +22,13 @@ public final class UniverseCharactersItemItem extends SerializableProperties {
   
 
   /**
-  * Builder for {@link UniverseCharactersItemItem}
+  * Builder for {@link UniverseCharactersItemItem }
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link UniverseCharactersItemItem}
+    * Builder for {@link UniverseCharactersItemItem }
     */
     public Builder() {
       properties = new Properties();
@@ -46,7 +46,7 @@ public final class UniverseCharactersItemItem extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link UniverseCharactersItemItem}
+    * Build an instance of {@link UniverseCharactersItemItem }
     */
     public UniverseCharactersItemItem build() {
       if(properties.get("name") == null){

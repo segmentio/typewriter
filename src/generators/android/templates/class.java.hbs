@@ -14,13 +14,13 @@ public final class {{name}} extends SerializableProperties {
   {{propertiesGetterSetter name}}
 
   /**
-  * Builder for {@link {{name ~}} }
+  * Builder for {@link {{name}} }
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link {{name ~}} }
+    * Builder for {@link {{name}} }
     */
     public Builder() {
       properties = new Properties();
@@ -34,6 +34,8 @@ public final class {{name}} extends SerializableProperties {
      {{/if}}
      {{#if isRequired}}
      * This property is required to generate a valid {{../name}} object
+     {{else}}
+     * This property is optional and not required to generate a valid {{../name}} object
      {{/if}}
      */
     {{builderFunctionSignature name modifiers type}} {
@@ -43,14 +45,12 @@ public final class {{name}} extends SerializableProperties {
   {{/each}}
 
     /**
-    * Build an instance of {@link {{name ~}} }
+    * Build an instance of {@link {{name}} }
     */
     public {{name}} build() {
-  {{#each properties ~}}
-    {{#if isRequired}}
-    {{#if nonNullPayload}}
+  {{#each properties}}
+    {{#if (shouldThrowWhenNull this)}}
       {{runtimeRequiredCheck ../name this}}
-    {{/if}}
     {{/if}}
   {{/each}}
       return new {{name}}(properties);

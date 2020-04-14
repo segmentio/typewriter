@@ -22,13 +22,13 @@ public final class UnionType extends SerializableProperties {
   
 
   /**
-  * Builder for {@link UnionType}
+  * Builder for {@link UnionType }
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link UnionType}
+    * Builder for {@link UnionType }
     */
     public Builder() {
       properties = new Properties();
@@ -45,7 +45,7 @@ public final class UnionType extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link UnionType}
+    * Build an instance of {@link UnionType }
     */
     public UnionType build() {
       return new UnionType(properties);

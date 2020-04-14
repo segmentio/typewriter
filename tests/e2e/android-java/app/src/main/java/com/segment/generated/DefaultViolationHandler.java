@@ -22,13 +22,13 @@ public final class DefaultViolationHandler extends SerializableProperties {
   
 
   /**
-  * Builder for {@link DefaultViolationHandler}
+  * Builder for {@link DefaultViolationHandler }
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link DefaultViolationHandler}
+    * Builder for {@link DefaultViolationHandler }
     */
     public Builder() {
       properties = new Properties();
@@ -45,7 +45,7 @@ public final class DefaultViolationHandler extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link DefaultViolationHandler}
+    * Build an instance of {@link DefaultViolationHandler }
     */
     public DefaultViolationHandler build() {
       if(properties.get("regex property") == null){

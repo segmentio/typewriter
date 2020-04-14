@@ -22,13 +22,13 @@ public final class EveryNullableRequiredType extends SerializableProperties {
   
 
   /**
-  * Builder for {@link EveryNullableRequiredType}
+  * Builder for {@link EveryNullableRequiredType }
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link EveryNullableRequiredType}
+    * Builder for {@link EveryNullableRequiredType }
     */
     public Builder() {
       properties = new Properties();
@@ -142,7 +142,7 @@ public final class EveryNullableRequiredType extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link EveryNullableRequiredType}
+    * Build an instance of {@link EveryNullableRequiredType }
     */
     public EveryNullableRequiredType build() {
       return new EveryNullableRequiredType(properties);

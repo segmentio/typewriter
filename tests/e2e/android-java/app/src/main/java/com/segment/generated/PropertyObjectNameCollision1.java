@@ -22,13 +22,13 @@ public final class PropertyObjectNameCollision1 extends SerializableProperties {
   
 
   /**
-  * Builder for {@link PropertyObjectNameCollision1}
+  * Builder for {@link PropertyObjectNameCollision1 }
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link PropertyObjectNameCollision1}
+    * Builder for {@link PropertyObjectNameCollision1 }
     */
     public Builder() {
       properties = new Properties();
@@ -36,6 +36,7 @@ public final class PropertyObjectNameCollision1 extends SerializableProperties {
 
 
     /**
+     * This property is optional and not required to generate a valid PropertyObjectNameCollision1 object
      */
     public Builder universe(final @Nullable Universe universe) {
       if(universe instanceof SerializableProperties){
@@ -48,7 +49,7 @@ public final class PropertyObjectNameCollision1 extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link PropertyObjectNameCollision1}
+    * Build an instance of {@link PropertyObjectNameCollision1 }
     */
     public PropertyObjectNameCollision1 build() {
       return new PropertyObjectNameCollision1(properties);

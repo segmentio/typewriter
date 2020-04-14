@@ -22,13 +22,13 @@ public final class CustomViolationHandler extends SerializableProperties {
   
 
   /**
-  * Builder for {@link CustomViolationHandler}
+  * Builder for {@link CustomViolationHandler }
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link CustomViolationHandler}
+    * Builder for {@link CustomViolationHandler }
     */
     public Builder() {
       properties = new Properties();
@@ -45,7 +45,7 @@ public final class CustomViolationHandler extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link CustomViolationHandler}
+    * Build an instance of {@link CustomViolationHandler }
     */
     public CustomViolationHandler build() {
       if(properties.get("regex property") == null){

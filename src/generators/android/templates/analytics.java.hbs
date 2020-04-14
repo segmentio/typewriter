@@ -12,24 +12,38 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
-public class SEGTypewriterAnalytics {
+public class TypewriterAnalytics {
   private Analytics analytics;
 
-  public SEGTypewriterAnalytics(final @NonNull Analytics analytics) {
+  /**
+  * Initializes a new TypewriterAnalytics client wrapping the provided Segment Analytics client.
+  * @param analytics {@link Analytics} configured Segment analytics instance
+  * @see <a href="https://segment.com/docs/sources/mobile/android/#getting-started">Android Getting Started</a>
+  */
+  public TypewriterAnalytics(final @NonNull Analytics analytics) {
     this.analytics = analytics;
   }
 
 {{#each tracks}}
 {{!-- TODO: add callsite with no props --}}
+  /**
   {{#if functionDescription}}
-  // {{functionDescription}}
+  *{{functionDescription}}
   {{/if}}
+  {{#if propsParam}}
+  {{descriptionComment this}}
+  {{/if}}
+  */
   {{trackCallFunctionSignature this false}} {{trackCallFunctionExecution this false}};
 
+  /**
   {{#if functionDescription}}
-  // {{functionDescription}}
-  {{!-- TODO: description of what options are --}}
+  * {{functionDescription}}
   {{/if}}
+  {{#if propsParm}}
+  {{descriptionComment this}}
+  {{/if}}
+  */
   {{trackCallFunctionSignature this true}} {{trackCallFunctionExecution this true}};
   
 {{/each}}

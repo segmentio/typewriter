@@ -22,13 +22,13 @@ public final class PropertySanitized extends SerializableProperties {
   
 
   /**
-  * Builder for {@link PropertySanitized}
+  * Builder for {@link PropertySanitized }
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link PropertySanitized}
+    * Builder for {@link PropertySanitized }
     */
     public Builder() {
       properties = new Properties();
@@ -45,7 +45,7 @@ public final class PropertySanitized extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link PropertySanitized}
+    * Build an instance of {@link PropertySanitized }
     */
     public PropertySanitized build() {
       if(properties.get("0000---terrible-property-name~!3") == null){

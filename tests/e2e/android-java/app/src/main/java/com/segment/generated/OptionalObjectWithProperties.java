@@ -22,13 +22,13 @@ public final class OptionalObjectWithProperties extends SerializableProperties {
   
 
   /**
-  * Builder for {@link OptionalObjectWithProperties}
+  * Builder for {@link OptionalObjectWithProperties }
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link OptionalObjectWithProperties}
+    * Builder for {@link OptionalObjectWithProperties }
     */
     public Builder() {
       properties = new Properties();
@@ -37,6 +37,7 @@ public final class OptionalObjectWithProperties extends SerializableProperties {
 
     /**
      * Optional any property
+     * This property is optional and not required to generate a valid OptionalObjectWithProperties object
      */
     public Builder optionalAny(final @Nullable Object optionalAny) {
       properties.putValue("optional any", optionalAny);
@@ -46,6 +47,7 @@ public final class OptionalObjectWithProperties extends SerializableProperties {
 
     /**
      * Optional array property
+     * This property is optional and not required to generate a valid OptionalObjectWithProperties object
      */
     public Builder optionalArray(final @Nullable List<Object> optionalArray) {
       List<?> p = TypewriterUtils.serialize(optionalArray);
@@ -56,6 +58,7 @@ public final class OptionalObjectWithProperties extends SerializableProperties {
 
     /**
      * Optional boolean property
+     * This property is optional and not required to generate a valid OptionalObjectWithProperties object
      */
     public Builder optionalBoolean(final @Nullable Boolean optionalBoolean) {
       properties.putValue("optional boolean", optionalBoolean);
@@ -65,6 +68,7 @@ public final class OptionalObjectWithProperties extends SerializableProperties {
 
     /**
      * Optional integer property
+     * This property is optional and not required to generate a valid OptionalObjectWithProperties object
      */
     public Builder optionalInt(final @Nullable Long optionalInt) {
       properties.putValue("optional int", optionalInt);
@@ -74,6 +78,7 @@ public final class OptionalObjectWithProperties extends SerializableProperties {
 
     /**
      * Optional number property
+     * This property is optional and not required to generate a valid OptionalObjectWithProperties object
      */
     public Builder optionalNumber(final @Nullable Double optionalNumber) {
       properties.putValue("optional number", optionalNumber);
@@ -83,6 +88,7 @@ public final class OptionalObjectWithProperties extends SerializableProperties {
 
     /**
      * Optional object property
+     * This property is optional and not required to generate a valid OptionalObjectWithProperties object
      */
     public Builder optionalObject(final @Nullable Object optionalObject) {
       properties.putValue("optional object", optionalObject);
@@ -92,6 +98,7 @@ public final class OptionalObjectWithProperties extends SerializableProperties {
 
     /**
      * Optional string property
+     * This property is optional and not required to generate a valid OptionalObjectWithProperties object
      */
     public Builder optionalString(final @Nullable String optionalString) {
       properties.putValue("optional string", optionalString);
@@ -101,6 +108,7 @@ public final class OptionalObjectWithProperties extends SerializableProperties {
 
     /**
      * Optional string property with a regex conditional
+     * This property is optional and not required to generate a valid OptionalObjectWithProperties object
      */
     public Builder optionalStringWithRegex(final @Nullable String optionalStringWithRegex) {
       properties.putValue("optional string with regex", optionalStringWithRegex);
@@ -109,7 +117,7 @@ public final class OptionalObjectWithProperties extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link OptionalObjectWithProperties}
+    * Build an instance of {@link OptionalObjectWithProperties }
     */
     public OptionalObjectWithProperties build() {
       return new OptionalObjectWithProperties(properties);

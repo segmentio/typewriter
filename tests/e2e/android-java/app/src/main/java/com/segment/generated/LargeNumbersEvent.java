@@ -22,13 +22,13 @@ public final class LargeNumbersEvent extends SerializableProperties {
   
 
   /**
-  * Builder for {@link LargeNumbersEvent}
+  * Builder for {@link LargeNumbersEvent }
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link LargeNumbersEvent}
+    * Builder for {@link LargeNumbersEvent }
     */
     public Builder() {
       properties = new Properties();
@@ -36,6 +36,7 @@ public final class LargeNumbersEvent extends SerializableProperties {
 
 
     /**
+     * This property is optional and not required to generate a valid LargeNumbersEvent object
      */
     public Builder largeNullableOptionalInteger(final @Nullable Long largeNullableOptionalInteger) {
       properties.putValue("large nullable optional integer", largeNullableOptionalInteger);
@@ -44,6 +45,7 @@ public final class LargeNumbersEvent extends SerializableProperties {
     
 
     /**
+     * This property is optional and not required to generate a valid LargeNumbersEvent object
      */
     public Builder largeNullableOptionalNumber(final @Nullable Double largeNullableOptionalNumber) {
       properties.putValue("large nullable optional number", largeNullableOptionalNumber);
@@ -70,6 +72,7 @@ public final class LargeNumbersEvent extends SerializableProperties {
     
 
     /**
+     * This property is optional and not required to generate a valid LargeNumbersEvent object
      */
     public Builder largeOptionalInteger(final @Nullable Long largeOptionalInteger) {
       properties.putValue("large optional integer", largeOptionalInteger);
@@ -78,6 +81,7 @@ public final class LargeNumbersEvent extends SerializableProperties {
     
 
     /**
+     * This property is optional and not required to generate a valid LargeNumbersEvent object
      */
     public Builder largeOptionalNumber(final @Nullable Double largeOptionalNumber) {
       properties.putValue("large optional number", largeOptionalNumber);
@@ -104,7 +108,7 @@ public final class LargeNumbersEvent extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link LargeNumbersEvent}
+    * Build an instance of {@link LargeNumbersEvent }
     */
     public LargeNumbersEvent build() {
       if(properties.get("large required integer") == null){

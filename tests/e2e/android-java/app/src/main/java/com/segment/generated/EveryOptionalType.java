@@ -22,13 +22,13 @@ public final class EveryOptionalType extends SerializableProperties {
   
 
   /**
-  * Builder for {@link EveryOptionalType}
+  * Builder for {@link EveryOptionalType }
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link EveryOptionalType}
+    * Builder for {@link EveryOptionalType }
     */
     public Builder() {
       properties = new Properties();
@@ -37,6 +37,7 @@ public final class EveryOptionalType extends SerializableProperties {
 
     /**
      * Optional any property
+     * This property is optional and not required to generate a valid EveryOptionalType object
      */
     public Builder optionalAny(final @Nullable Object optionalAny) {
       properties.putValue("optional any", optionalAny);
@@ -46,6 +47,7 @@ public final class EveryOptionalType extends SerializableProperties {
 
     /**
      * Optional array property
+     * This property is optional and not required to generate a valid EveryOptionalType object
      */
     public Builder optionalArray(final @Nullable List<Object> optionalArray) {
       List<?> p = TypewriterUtils.serialize(optionalArray);
@@ -56,6 +58,7 @@ public final class EveryOptionalType extends SerializableProperties {
 
     /**
      * Optional array with properties
+     * This property is optional and not required to generate a valid EveryOptionalType object
      */
     public Builder optionalArrayWithProperties(final @Nullable List<OptionalArrayWithPropertiesItem1> optionalArrayWithProperties) {
       List<?> p = TypewriterUtils.serialize(optionalArrayWithProperties);
@@ -66,6 +69,7 @@ public final class EveryOptionalType extends SerializableProperties {
 
     /**
      * Optional boolean property
+     * This property is optional and not required to generate a valid EveryOptionalType object
      */
     public Builder optionalBoolean(final @Nullable Boolean optionalBoolean) {
       properties.putValue("optional boolean", optionalBoolean);
@@ -75,6 +79,7 @@ public final class EveryOptionalType extends SerializableProperties {
 
     /**
      * Optional integer property
+     * This property is optional and not required to generate a valid EveryOptionalType object
      */
     public Builder optionalInt(final @Nullable Long optionalInt) {
       properties.putValue("optional int", optionalInt);
@@ -84,6 +89,7 @@ public final class EveryOptionalType extends SerializableProperties {
 
     /**
      * Optional number property
+     * This property is optional and not required to generate a valid EveryOptionalType object
      */
     public Builder optionalNumber(final @Nullable Double optionalNumber) {
       properties.putValue("optional number", optionalNumber);
@@ -93,6 +99,7 @@ public final class EveryOptionalType extends SerializableProperties {
 
     /**
      * Optional object property
+     * This property is optional and not required to generate a valid EveryOptionalType object
      */
     public Builder optionalObject(final @Nullable Object optionalObject) {
       properties.putValue("optional object", optionalObject);
@@ -102,6 +109,7 @@ public final class EveryOptionalType extends SerializableProperties {
 
     /**
      * Optional object with properties
+     * This property is optional and not required to generate a valid EveryOptionalType object
      */
     public Builder optionalObjectWithProperties(final @Nullable OptionalObjectWithProperties1 optionalObjectWithProperties) {
       if(optionalObjectWithProperties instanceof SerializableProperties){
@@ -115,6 +123,7 @@ public final class EveryOptionalType extends SerializableProperties {
 
     /**
      * Optional string property
+     * This property is optional and not required to generate a valid EveryOptionalType object
      */
     public Builder optionalString(final @Nullable String optionalString) {
       properties.putValue("optional string", optionalString);
@@ -124,6 +133,7 @@ public final class EveryOptionalType extends SerializableProperties {
 
     /**
      * Optional string property with a regex conditional
+     * This property is optional and not required to generate a valid EveryOptionalType object
      */
     public Builder optionalStringWithRegex(final @Nullable String optionalStringWithRegex) {
       properties.putValue("optional string with regex", optionalStringWithRegex);
@@ -132,7 +142,7 @@ public final class EveryOptionalType extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link EveryOptionalType}
+    * Build an instance of {@link EveryOptionalType }
     */
     public EveryOptionalType build() {
       return new EveryOptionalType(properties);

@@ -22,13 +22,13 @@ public final class OccupantsItem extends SerializableProperties {
   
 
   /**
-  * Builder for {@link OccupantsItem}
+  * Builder for {@link OccupantsItem }
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link OccupantsItem}
+    * Builder for {@link OccupantsItem }
     */
     public Builder() {
       properties = new Properties();
@@ -46,7 +46,7 @@ public final class OccupantsItem extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link OccupantsItem}
+    * Build an instance of {@link OccupantsItem }
     */
     public OccupantsItem build() {
       if(properties.get("name") == null){

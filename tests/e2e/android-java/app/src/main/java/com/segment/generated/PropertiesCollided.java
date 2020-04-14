@@ -22,13 +22,13 @@ public final class PropertiesCollided extends SerializableProperties {
   
 
   /**
-  * Builder for {@link PropertiesCollided}
+  * Builder for {@link PropertiesCollided }
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link PropertiesCollided}
+    * Builder for {@link PropertiesCollided }
     */
     public Builder() {
       properties = new Properties();
@@ -54,7 +54,7 @@ public final class PropertiesCollided extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link PropertiesCollided}
+    * Build an instance of {@link PropertiesCollided }
     */
     public PropertiesCollided build() {
       if(properties.get("Property Collided") == null){

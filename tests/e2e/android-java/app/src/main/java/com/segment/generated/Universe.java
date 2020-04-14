@@ -22,13 +22,13 @@ public final class Universe extends SerializableProperties {
   
 
   /**
-  * Builder for {@link Universe}
+  * Builder for {@link Universe }
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link Universe}
+    * Builder for {@link Universe }
     */
     public Builder() {
       properties = new Properties();
@@ -57,7 +57,7 @@ public final class Universe extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link Universe}
+    * Build an instance of {@link Universe }
     */
     public Universe build() {
       if(properties.get("name") == null){

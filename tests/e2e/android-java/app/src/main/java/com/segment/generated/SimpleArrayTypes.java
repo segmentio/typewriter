@@ -22,13 +22,13 @@ public final class SimpleArrayTypes extends SerializableProperties {
   
 
   /**
-  * Builder for {@link SimpleArrayTypes}
+  * Builder for {@link SimpleArrayTypes }
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link SimpleArrayTypes}
+    * Builder for {@link SimpleArrayTypes }
     */
     public Builder() {
       properties = new Properties();
@@ -36,6 +36,7 @@ public final class SimpleArrayTypes extends SerializableProperties {
 
 
     /**
+     * This property is optional and not required to generate a valid SimpleArrayTypes object
      */
     public Builder any(final @Nullable List<Object> any) {
       List<?> p = TypewriterUtils.serialize(any);
@@ -45,6 +46,7 @@ public final class SimpleArrayTypes extends SerializableProperties {
     
 
     /**
+     * This property is optional and not required to generate a valid SimpleArrayTypes object
      */
     public Builder boolean_(final @Nullable List<Boolean> boolean_) {
       List<?> p = TypewriterUtils.serialize(boolean_);
@@ -54,6 +56,7 @@ public final class SimpleArrayTypes extends SerializableProperties {
     
 
     /**
+     * This property is optional and not required to generate a valid SimpleArrayTypes object
      */
     public Builder integer(final @Nullable List<Long> integer) {
       List<?> p = TypewriterUtils.serialize(integer);
@@ -63,6 +66,7 @@ public final class SimpleArrayTypes extends SerializableProperties {
     
 
     /**
+     * This property is optional and not required to generate a valid SimpleArrayTypes object
      */
     public Builder nullable(final @Nullable List<Object> nullable) {
       List<?> p = TypewriterUtils.serialize(nullable);
@@ -72,6 +76,7 @@ public final class SimpleArrayTypes extends SerializableProperties {
     
 
     /**
+     * This property is optional and not required to generate a valid SimpleArrayTypes object
      */
     public Builder number(final @Nullable List<Double> number) {
       List<?> p = TypewriterUtils.serialize(number);
@@ -81,6 +86,7 @@ public final class SimpleArrayTypes extends SerializableProperties {
     
 
     /**
+     * This property is optional and not required to generate a valid SimpleArrayTypes object
      */
     public Builder object(final @Nullable List<ObjectItem> object) {
       List<?> p = TypewriterUtils.serialize(object);
@@ -90,6 +96,7 @@ public final class SimpleArrayTypes extends SerializableProperties {
     
 
     /**
+     * This property is optional and not required to generate a valid SimpleArrayTypes object
      */
     public Builder string(final @Nullable List<String> string) {
       List<?> p = TypewriterUtils.serialize(string);
@@ -99,7 +106,7 @@ public final class SimpleArrayTypes extends SerializableProperties {
     
 
     /**
-    * Build an instance of {@link SimpleArrayTypes}
+    * Build an instance of {@link SimpleArrayTypes }
     */
     public SimpleArrayTypes build() {
       return new SimpleArrayTypes(properties);

@@ -26,6 +26,12 @@ public final class TypewriterUtils {
     return typewriterContext;
   }
 
+  /**
+  * Handles serialization of all arrays by iterating over each item and
+  * a) recursing over nested arrays
+  * b) calling toProperties on any found instance of SerializableProperties
+  * c) directly adding found primitive values
+  */
   protected static List<?> serialize(final @Nullable List<?> props){
     List p = new ArrayList<>();
     if(props instanceof List){

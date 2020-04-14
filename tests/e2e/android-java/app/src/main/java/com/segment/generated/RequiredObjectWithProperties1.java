@@ -22,13 +22,13 @@ public final class RequiredObjectWithProperties1 extends SerializableProperties 
   
 
   /**
-  * Builder for {@link RequiredObjectWithProperties1}
+  * Builder for {@link RequiredObjectWithProperties1 }
   */
   public static class Builder {
     private Properties properties;
 
     /**
-    * Builder for {@link RequiredObjectWithProperties1}
+    * Builder for {@link RequiredObjectWithProperties1 }
     */
     public Builder() {
       properties = new Properties();
@@ -117,7 +117,7 @@ public final class RequiredObjectWithProperties1 extends SerializableProperties 
     
 
     /**
-    * Build an instance of {@link RequiredObjectWithProperties1}
+    * Build an instance of {@link RequiredObjectWithProperties1 }
     */
     public RequiredObjectWithProperties1 build() {
       if(properties.get("required array") == null){

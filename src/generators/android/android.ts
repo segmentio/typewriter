@@ -1,7 +1,7 @@
 import { camelCase, upperFirst } from 'lodash'
 import { Type, Schema, getPropertiesSchema } from '../ast'
 import * as Handlebars from 'handlebars'
-import { Generator, GeneratorClient } from '../gen'
+import { Generator, GeneratorClient, BasePropertyContext } from '../gen'
 
 // These contexts are what will be passed to Handlebars to perform rendering.
 // Everything in these contexts should be properly sanitized.
@@ -65,7 +65,9 @@ export const android: Generator<
 		Handlebars.registerHelper('builderFunctionSignature', generateBuilderFunctionSignature)
 		Handlebars.registerHelper('builderFunctionBody', generateBuilderFunctionBody)
 		Handlebars.registerHelper('propertiesGetterSetter', generatePropertiesGetterSetter)
+		Handlebars.registerHelper('shouldThrowWhenNull', shouldThrowRuntimeError)
 		Handlebars.registerHelper('runtimeRequiredCheck', generateRequiredPropertyRuntimeError)
+		Handlebars.registerHelper('descriptionComment', generateComment)
 		return {}
 	},
 	generatePrimitive: async (client, schema, parentPath) => {
@@ -123,7 +125,7 @@ export const android: Generator<
 	generateRoot: async (client, context) => {
 		await Promise.all([
 			client.generateFile(
-				'SEGTypewriterAnalytics.java',
+				'TypewriterAnalytics.java',
 				'generators/android/templates/analytics.java.hbs',
 				context
 			),
@@ -133,7 +135,7 @@ export const android: Generator<
 				context
 			),
 			client.generateFile(
-				'SEGSerializable.java',
+				'SerializableProperties.java',
 				'generators/android/templates/abstractSerializableClass.java.hbs',
 				context
 			),
@@ -210,10 +212,10 @@ function generateBuilderFunctionBody(name: string, rawName: string, type: string
 		`${Separator.NewLineIndent}return this;`
 
 	const serializeObject =
-		`${Separator.Indent}if(${name} instanceof SEGSerializable){\n` +
+		`${Separator.Indent}if(${name} instanceof SerializableProperties){\n` +
 		`${Separator.NewLineIndent}${
 			Separator.Indent
-		}properties.putValue("${rawName}", ((SEGSerializable) ${name}).toProperties());\n` +
+		}properties.putValue("${rawName}", ((SerializableProperties) ${name}).toProperties());\n` +
 		`${Separator.NewLineIndent}}else{\n` +
 		`${Separator.NewLineIndent}${Separator.Indent}properties.putValue("${rawName}", ${name});\n` +
 		`${Separator.NewLineIndent}}\n` +
@@ -298,6 +300,13 @@ function generatePropertiesGetterSetter(name: string): string {
   `
 }
 
+function shouldThrowRuntimeError({
+	isRequired,
+	nonNullPayload,
+}: AndroidPropertyContext & BasePropertyContext) {
+	return isRequired && nonNullPayload
+}
+
 function generateRequiredPropertyRuntimeError(
 	className: string,
 	property: { rawName: string; isPayloadFieldNullable: boolean }
@@ -310,4 +319,10 @@ function generateRequiredPropertyRuntimeError(
 	}");
     ${Separator.Indent}}
   `
+}
+
+function generateComment({ rawEventName }: { rawEventName: string }) {
+	const eventClass = rawEventName.replace(/\s|\_/g, '')
+	return `* @param props {@link ${eventClass}} to add extra information to this call.
+  * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>`
 }
