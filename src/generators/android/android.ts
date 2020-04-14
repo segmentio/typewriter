@@ -20,9 +20,7 @@ interface AndroidPropertyContext {
 	modifiers: Modifier
 	// Whether the property is nullable (@Nonnull vs @Nullable modifier).
 	isVariableNullable: boolean
-	// Whether null is a valid value for this property when sent to Segment.
-	nonNullPayload: boolean
-	// Whethere runtime error should be thrown for null payload value
+	// Whether runtime error should be thrown for null payload value
 	shouldThrowRuntimeError: boolean | undefined
 }
 
@@ -191,7 +189,6 @@ function defaultPropertyContext(
 				? Modifier.FinalNullable
 				: Modifier.FinalNonNullable,
 		isVariableNullable: !schema.isRequired || !!schema.isNullable,
-		nonNullPayload: !schema.isNullable,
 		shouldThrowRuntimeError: schema.isRequired && !schema.isNullable,
 	}
 }
