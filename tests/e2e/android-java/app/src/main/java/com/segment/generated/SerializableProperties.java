@@ -7,5 +7,5 @@ import java.util.*;
 import com.segment.analytics.Properties;
 
 abstract class SerializableProperties {
-  protected abstract Properties toProperties();
+    protected abstract Properties toProperties();
 }
