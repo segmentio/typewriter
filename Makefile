@@ -28,6 +28,8 @@ bulk:
 	@NODE_ENV=development node ./dist/src/cli/index.js $(COMMAND) --config=tests/e2e/ios-objc
 	@echo " >> Running 'typewriter $(COMMAND)' on 'tests/e2e/ios-swift'"
 	@NODE_ENV=development node ./dist/src/cli/index.js $(COMMAND) --config=tests/e2e/ios-swift
+	@echo " >> Running 'typewriter $(COMMAND)' on 'tests/e2e/android-java'"
+	@NODE_ENV=development node ./dist/src/cli/index.js $(COMMAND) --config=tests/e2e/android-java
 	@# Changes to the Tracking Plan JSON files will need to be run through our
 	@# linter again to reduce git deltas.
 	@make lint
@@ -207,25 +209,23 @@ test-ios-swift:
 .PHONY: test-android-java
 test-android-java:
 	@cd tests/e2e/android-java
-	@make test-android-dev test-android-prod
+	@make test-android-java-dev test-android-java-prod
 
-.PHONY: test-android-dev test-android-prod test-android-java-runner test-android-runner
-test-android-dev: IS_DEVELOPMENT=true
-test-android-dev: TYPEWRITER_COMMAND=build
-test-android-dev: test-android-java-runner
+.PHONY: test-android-java-dev test-android-java-prod test-android-java-runner test-android-java-runner
+test-android-java-dev: IS_DEVELOPMENT=true
+test-android-java-dev: TYPEWRITER_COMMAND=build
+test-android-java-dev: test-android-java-runner
 
-test-android-prod: IS_DEVELOPMENT=false
-test-android-prod: TYPEWRITER_COMMAND=prod
-test-android-prod: test-android-java-runner
+test-android-java-prod: IS_DEVELOPMENT=false
+test-android-java-prod: TYPEWRITER_COMMAND=prod
+test-android-java-prod: test-android-java-runner
 
 test-android-java-runner: LANGUAGE=java
-test-android-java-runner: test-android-runner
-
-test-android-runner:
+test-android-java-runner:
 	@echo "\n>>>	🏃 Running Android client test suite ($(TYPEWRITER_COMMAND), $(LANGUAGE))...\n"
 	@make clear-mock
 	@yarn run -s dev $(TYPEWRITER_COMMAND) --config=./tests/e2e/android-java
-	@cd tests/e2e/android-java && ./gradlew testDebugUnitTest
+	@cd tests/e2e/android-java && ./gradlew --rerun-tasks testDebugUnitTest
 	@SDK=analytics-android LANGUAGE=$(LANGUAGE) IS_DEVELOPMENT=$(IS_DEVELOPMENT) yarn run -s jest ./tests/e2e/suite.test.ts
 
 .PHONY: test-ios-objc-dev test-ios-objc-prod test-ios-objc-runner test-ios-swift-dev test-ios-swift-prod test-ios-swift-runner test-ios-runner
