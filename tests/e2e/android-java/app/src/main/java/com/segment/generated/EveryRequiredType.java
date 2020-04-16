@@ -37,139 +37,139 @@ public final class EveryRequiredType extends SerializableProperties {
          * This property is required to generate a valid EveryRequiredType object
          */
         public Builder requiredAny(final @Nullable Object requiredAny) {
-          properties.putValue("required any", requiredAny);
-          
-          return this;
-        } 
+            properties.putValue("required any", requiredAny);
+            
+            return this;
+        }
 
         /**
          * Required array property
          * This property is required to generate a valid EveryRequiredType object
          */
         public Builder requiredArray(final @NonNull List<Object> requiredArray) {
-          List<?> p = TypewriterUtils.serializeList(requiredArray);
-          properties.putValue("required array", p);
+            List<?> p = TypewriterUtils.serializeList(requiredArray);
+            properties.putValue("required array", p);
 
-          return this;
-        } 
+            return this;
+        }
 
         /**
          * Required array with properties
          * This property is required to generate a valid EveryRequiredType object
          */
         public Builder requiredArrayWithProperties(final @NonNull List<RequiredArrayWithPropertiesItem1> requiredArrayWithProperties) {
-          List<?> p = TypewriterUtils.serializeList(requiredArrayWithProperties);
-          properties.putValue("required array with properties", p);
+            List<?> p = TypewriterUtils.serializeList(requiredArrayWithProperties);
+            properties.putValue("required array with properties", p);
 
-          return this;
-        } 
+            return this;
+        }
 
         /**
          * Required boolean property
          * This property is required to generate a valid EveryRequiredType object
          */
         public Builder requiredBoolean(final @NonNull Boolean requiredBoolean) {
-          properties.putValue("required boolean", requiredBoolean);
-          
-          return this;
-        } 
+            properties.putValue("required boolean", requiredBoolean);
+            
+            return this;
+        }
 
         /**
          * Required integer property
          * This property is required to generate a valid EveryRequiredType object
          */
         public Builder requiredInt(final @NonNull Long requiredInt) {
-          properties.putValue("required int", requiredInt);
-          
-          return this;
-        } 
+            properties.putValue("required int", requiredInt);
+            
+            return this;
+        }
 
         /**
          * Required number property
          * This property is required to generate a valid EveryRequiredType object
          */
         public Builder requiredNumber(final @NonNull Double requiredNumber) {
-          properties.putValue("required number", requiredNumber);
-          
-          return this;
-        } 
+            properties.putValue("required number", requiredNumber);
+            
+            return this;
+        }
 
         /**
          * Required object property
          * This property is required to generate a valid EveryRequiredType object
          */
         public Builder requiredObject(final @NonNull Object requiredObject) {
-          properties.putValue("required object", requiredObject);
-          
-          return this;
-        } 
+            properties.putValue("required object", requiredObject);
+            
+            return this;
+        }
 
         /**
          * Required object with properties
          * This property is required to generate a valid EveryRequiredType object
          */
         public Builder requiredObjectWithProperties(final @NonNull RequiredObjectWithProperties1 requiredObjectWithProperties) {
-          if (requiredObjectWithProperties != null) {
-            properties.putValue("required object with properties", requiredObjectWithProperties.toProperties());
-          } else {
-            properties.putValue("required object with properties", requiredObjectWithProperties);
-          }
+            if (requiredObjectWithProperties != null) {
+                properties.putValue("required object with properties", requiredObjectWithProperties.toProperties());
+            } else {
+                properties.putValue("required object with properties", requiredObjectWithProperties);
+            }
 
-          return this;
-        } 
+            return this;
+        }
 
         /**
          * Required string property
          * This property is required to generate a valid EveryRequiredType object
          */
         public Builder requiredString(final @NonNull String requiredString) {
-          properties.putValue("required string", requiredString);
-          
-          return this;
-        } 
+            properties.putValue("required string", requiredString);
+            
+            return this;
+        }
 
         /**
          * Required string property with a regex conditional
          * This property is required to generate a valid EveryRequiredType object
          */
         public Builder requiredStringWithRegex(final @NonNull String requiredStringWithRegex) {
-          properties.putValue("required string with regex", requiredStringWithRegex);
-          
-          return this;
-        } 
+            properties.putValue("required string with regex", requiredStringWithRegex);
+            
+            return this;
+        }
 
         /**
          * Build an instance of {@link EveryRequiredType}
          */
         public EveryRequiredType build() {
             if(properties.get("required array") == null){
-              throw new IllegalArgumentException("EveryRequiredType missing required property: required array");
+                throw new IllegalArgumentException("EveryRequiredType missing required property: required array");
             }
             if(properties.get("required array with properties") == null){
-              throw new IllegalArgumentException("EveryRequiredType missing required property: required array with properties");
+                throw new IllegalArgumentException("EveryRequiredType missing required property: required array with properties");
             }
             if(properties.get("required boolean") == null){
-              throw new IllegalArgumentException("EveryRequiredType missing required property: required boolean");
+                throw new IllegalArgumentException("EveryRequiredType missing required property: required boolean");
             }
             if(properties.get("required int") == null){
-              throw new IllegalArgumentException("EveryRequiredType missing required property: required int");
+                throw new IllegalArgumentException("EveryRequiredType missing required property: required int");
             }
             if(properties.get("required number") == null){
-              throw new IllegalArgumentException("EveryRequiredType missing required property: required number");
+                throw new IllegalArgumentException("EveryRequiredType missing required property: required number");
             }
             if(properties.get("required object") == null){
-              throw new IllegalArgumentException("EveryRequiredType missing required property: required object");
+                throw new IllegalArgumentException("EveryRequiredType missing required property: required object");
             }
             if(properties.get("required object with properties") == null){
-              throw new IllegalArgumentException("EveryRequiredType missing required property: required object with properties");
+                throw new IllegalArgumentException("EveryRequiredType missing required property: required object with properties");
             }
             if(properties.get("required string") == null){
-              throw new IllegalArgumentException("EveryRequiredType missing required property: required string");
+                throw new IllegalArgumentException("EveryRequiredType missing required property: required string");
             }
             if(properties.get("required string with regex") == null){
-              throw new IllegalArgumentException("EveryRequiredType missing required property: required string with regex");
+                throw new IllegalArgumentException("EveryRequiredType missing required property: required string with regex");
             }
-          return new EveryRequiredType(properties);
+            return new EveryRequiredType(properties);
         }
     }
 }

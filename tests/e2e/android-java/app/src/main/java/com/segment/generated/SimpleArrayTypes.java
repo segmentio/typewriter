@@ -36,77 +36,77 @@ public final class SimpleArrayTypes extends SerializableProperties {
          * This property is optional and not required to generate a valid SimpleArrayTypes object
          */
         public Builder any(final @Nullable List<Object> any) {
-          List<?> p = TypewriterUtils.serializeList(any);
-          properties.putValue("any", p);
+            List<?> p = TypewriterUtils.serializeList(any);
+            properties.putValue("any", p);
 
-          return this;
-        } 
+            return this;
+        }
 
         /**
          * This property is optional and not required to generate a valid SimpleArrayTypes object
          */
         public Builder boolean_(final @Nullable List<Boolean> boolean_) {
-          List<?> p = TypewriterUtils.serializeList(boolean_);
-          properties.putValue("boolean", p);
+            List<?> p = TypewriterUtils.serializeList(boolean_);
+            properties.putValue("boolean", p);
 
-          return this;
-        } 
+            return this;
+        }
 
         /**
          * This property is optional and not required to generate a valid SimpleArrayTypes object
          */
         public Builder integer(final @Nullable List<Long> integer) {
-          List<?> p = TypewriterUtils.serializeList(integer);
-          properties.putValue("integer", p);
+            List<?> p = TypewriterUtils.serializeList(integer);
+            properties.putValue("integer", p);
 
-          return this;
-        } 
+            return this;
+        }
 
         /**
          * This property is optional and not required to generate a valid SimpleArrayTypes object
          */
         public Builder nullable(final @Nullable List<String> nullable) {
-          List<?> p = TypewriterUtils.serializeList(nullable);
-          properties.putValue("nullable", p);
+            List<?> p = TypewriterUtils.serializeList(nullable);
+            properties.putValue("nullable", p);
 
-          return this;
-        } 
+            return this;
+        }
 
         /**
          * This property is optional and not required to generate a valid SimpleArrayTypes object
          */
         public Builder number(final @Nullable List<Double> number) {
-          List<?> p = TypewriterUtils.serializeList(number);
-          properties.putValue("number", p);
+            List<?> p = TypewriterUtils.serializeList(number);
+            properties.putValue("number", p);
 
-          return this;
-        } 
+            return this;
+        }
 
         /**
          * This property is optional and not required to generate a valid SimpleArrayTypes object
          */
         public Builder object(final @Nullable List<ObjectItem> object) {
-          List<?> p = TypewriterUtils.serializeList(object);
-          properties.putValue("object", p);
+            List<?> p = TypewriterUtils.serializeList(object);
+            properties.putValue("object", p);
 
-          return this;
-        } 
+            return this;
+        }
 
         /**
          * This property is optional and not required to generate a valid SimpleArrayTypes object
          */
         public Builder string(final @Nullable List<String> string) {
-          List<?> p = TypewriterUtils.serializeList(string);
-          properties.putValue("string", p);
+            List<?> p = TypewriterUtils.serializeList(string);
+            properties.putValue("string", p);
 
-          return this;
-        } 
+            return this;
+        }
 
         /**
          * Build an instance of {@link SimpleArrayTypes}
          */
         public SimpleArrayTypes build() {
-          return new SimpleArrayTypes(properties);
+            return new SimpleArrayTypes(properties);
         }
     }
 }

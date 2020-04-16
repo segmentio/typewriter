@@ -36,19 +36,19 @@ public final class DefaultViolationHandler extends SerializableProperties {
          * This property is required to generate a valid DefaultViolationHandler object
          */
         public Builder regexProperty(final @NonNull String regexProperty) {
-          properties.putValue("regex property", regexProperty);
-          
-          return this;
-        } 
+            properties.putValue("regex property", regexProperty);
+            
+            return this;
+        }
 
         /**
          * Build an instance of {@link DefaultViolationHandler}
          */
         public DefaultViolationHandler build() {
             if(properties.get("regex property") == null){
-              throw new IllegalArgumentException("DefaultViolationHandler missing required property: regex property");
+                throw new IllegalArgumentException("DefaultViolationHandler missing required property: regex property");
             }
-          return new DefaultViolationHandler(properties);
+            return new DefaultViolationHandler(properties);
         }
     }
 }

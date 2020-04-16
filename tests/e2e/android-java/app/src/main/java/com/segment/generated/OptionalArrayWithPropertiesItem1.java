@@ -37,87 +37,87 @@ public final class OptionalArrayWithPropertiesItem1 extends SerializableProperti
          * This property is optional and not required to generate a valid OptionalArrayWithPropertiesItem1 object
          */
         public Builder optionalAny(final @Nullable Object optionalAny) {
-          properties.putValue("optional any", optionalAny);
-          
-          return this;
-        } 
+            properties.putValue("optional any", optionalAny);
+            
+            return this;
+        }
 
         /**
          * Optional array property
          * This property is optional and not required to generate a valid OptionalArrayWithPropertiesItem1 object
          */
         public Builder optionalArray(final @Nullable List<Object> optionalArray) {
-          List<?> p = TypewriterUtils.serializeList(optionalArray);
-          properties.putValue("optional array", p);
+            List<?> p = TypewriterUtils.serializeList(optionalArray);
+            properties.putValue("optional array", p);
 
-          return this;
-        } 
+            return this;
+        }
 
         /**
          * Optional boolean property
          * This property is optional and not required to generate a valid OptionalArrayWithPropertiesItem1 object
          */
         public Builder optionalBoolean(final @Nullable Boolean optionalBoolean) {
-          properties.putValue("optional boolean", optionalBoolean);
-          
-          return this;
-        } 
+            properties.putValue("optional boolean", optionalBoolean);
+            
+            return this;
+        }
 
         /**
          * Optional integer property
          * This property is optional and not required to generate a valid OptionalArrayWithPropertiesItem1 object
          */
         public Builder optionalInt(final @Nullable Long optionalInt) {
-          properties.putValue("optional int", optionalInt);
-          
-          return this;
-        } 
+            properties.putValue("optional int", optionalInt);
+            
+            return this;
+        }
 
         /**
          * Optional number property
          * This property is optional and not required to generate a valid OptionalArrayWithPropertiesItem1 object
          */
         public Builder optionalNumber(final @Nullable Double optionalNumber) {
-          properties.putValue("optional number", optionalNumber);
-          
-          return this;
-        } 
+            properties.putValue("optional number", optionalNumber);
+            
+            return this;
+        }
 
         /**
          * Optional object property
          * This property is optional and not required to generate a valid OptionalArrayWithPropertiesItem1 object
          */
         public Builder optionalObject(final @Nullable Object optionalObject) {
-          properties.putValue("optional object", optionalObject);
-          
-          return this;
-        } 
+            properties.putValue("optional object", optionalObject);
+            
+            return this;
+        }
 
         /**
          * Optional string property
          * This property is optional and not required to generate a valid OptionalArrayWithPropertiesItem1 object
          */
         public Builder optionalString(final @Nullable String optionalString) {
-          properties.putValue("optional string", optionalString);
-          
-          return this;
-        } 
+            properties.putValue("optional string", optionalString);
+            
+            return this;
+        }
 
         /**
          * Optional string property with a regex conditional
          * This property is optional and not required to generate a valid OptionalArrayWithPropertiesItem1 object
          */
         public Builder optionalStringWithRegex(final @Nullable String optionalStringWithRegex) {
-          properties.putValue("optional string with regex", optionalStringWithRegex);
-          
-          return this;
-        } 
+            properties.putValue("optional string with regex", optionalStringWithRegex);
+            
+            return this;
+        }
 
         /**
          * Build an instance of {@link OptionalArrayWithPropertiesItem1}
          */
         public OptionalArrayWithPropertiesItem1 build() {
-          return new OptionalArrayWithPropertiesItem1(properties);
+            return new OptionalArrayWithPropertiesItem1(properties);
         }
     }
 }

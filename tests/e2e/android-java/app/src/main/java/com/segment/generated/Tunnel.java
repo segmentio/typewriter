@@ -36,23 +36,23 @@ public final class Tunnel extends SerializableProperties {
          * This property is required to generate a valid Tunnel object
          */
         public Builder subterraneanLab(final @NonNull SubterraneanLab subterraneanLab) {
-          if (subterraneanLab != null) {
-            properties.putValue("subterranean lab", subterraneanLab.toProperties());
-          } else {
-            properties.putValue("subterranean lab", subterraneanLab);
-          }
+            if (subterraneanLab != null) {
+                properties.putValue("subterranean lab", subterraneanLab.toProperties());
+            } else {
+                properties.putValue("subterranean lab", subterraneanLab);
+            }
 
-          return this;
-        } 
+            return this;
+        }
 
         /**
          * Build an instance of {@link Tunnel}
          */
         public Tunnel build() {
             if(properties.get("subterranean lab") == null){
-              throw new IllegalArgumentException("Tunnel missing required property: subterranean lab");
+                throw new IllegalArgumentException("Tunnel missing required property: subterranean lab");
             }
-          return new Tunnel(properties);
+            return new Tunnel(properties);
         }
     }
 }

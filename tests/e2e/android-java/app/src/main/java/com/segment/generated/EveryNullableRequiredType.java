@@ -37,112 +37,112 @@ public final class EveryNullableRequiredType extends SerializableProperties {
          * This property is required to generate a valid EveryNullableRequiredType object
          */
         public Builder requiredAny(final @Nullable Object requiredAny) {
-          properties.putValue("required any", requiredAny);
-          
-          return this;
-        } 
+            properties.putValue("required any", requiredAny);
+            
+            return this;
+        }
 
         /**
          * Required array property
          * This property is required to generate a valid EveryNullableRequiredType object
          */
         public Builder requiredArray(final @Nullable List<Object> requiredArray) {
-          List<?> p = TypewriterUtils.serializeList(requiredArray);
-          properties.putValue("required array", p);
+            List<?> p = TypewriterUtils.serializeList(requiredArray);
+            properties.putValue("required array", p);
 
-          return this;
-        } 
+            return this;
+        }
 
         /**
          * Required array with properties
          * This property is required to generate a valid EveryNullableRequiredType object
          */
         public Builder requiredArrayWithProperties(final @Nullable List<RequiredArrayWithPropertiesItem> requiredArrayWithProperties) {
-          List<?> p = TypewriterUtils.serializeList(requiredArrayWithProperties);
-          properties.putValue("required array with properties", p);
+            List<?> p = TypewriterUtils.serializeList(requiredArrayWithProperties);
+            properties.putValue("required array with properties", p);
 
-          return this;
-        } 
+            return this;
+        }
 
         /**
          * Required boolean property
          * This property is required to generate a valid EveryNullableRequiredType object
          */
         public Builder requiredBoolean(final @Nullable Boolean requiredBoolean) {
-          properties.putValue("required boolean", requiredBoolean);
-          
-          return this;
-        } 
+            properties.putValue("required boolean", requiredBoolean);
+            
+            return this;
+        }
 
         /**
          * Required integer property
          * This property is required to generate a valid EveryNullableRequiredType object
          */
         public Builder requiredInt(final @Nullable Long requiredInt) {
-          properties.putValue("required int", requiredInt);
-          
-          return this;
-        } 
+            properties.putValue("required int", requiredInt);
+            
+            return this;
+        }
 
         /**
          * Required number property
          * This property is required to generate a valid EveryNullableRequiredType object
          */
         public Builder requiredNumber(final @Nullable Double requiredNumber) {
-          properties.putValue("required number", requiredNumber);
-          
-          return this;
-        } 
+            properties.putValue("required number", requiredNumber);
+            
+            return this;
+        }
 
         /**
          * Required object property
          * This property is required to generate a valid EveryNullableRequiredType object
          */
         public Builder requiredObject(final @Nullable Object requiredObject) {
-          properties.putValue("required object", requiredObject);
-          
-          return this;
-        } 
+            properties.putValue("required object", requiredObject);
+            
+            return this;
+        }
 
         /**
          * Required object with properties
          * This property is required to generate a valid EveryNullableRequiredType object
          */
         public Builder requiredObjectWithProperties(final @Nullable RequiredObjectWithProperties requiredObjectWithProperties) {
-          if (requiredObjectWithProperties != null) {
-            properties.putValue("required object with properties", requiredObjectWithProperties.toProperties());
-          } else {
-            properties.putValue("required object with properties", requiredObjectWithProperties);
-          }
+            if (requiredObjectWithProperties != null) {
+                properties.putValue("required object with properties", requiredObjectWithProperties.toProperties());
+            } else {
+                properties.putValue("required object with properties", requiredObjectWithProperties);
+            }
 
-          return this;
-        } 
+            return this;
+        }
 
         /**
          * Required string property
          * This property is required to generate a valid EveryNullableRequiredType object
          */
         public Builder requiredString(final @Nullable String requiredString) {
-          properties.putValue("required string", requiredString);
-          
-          return this;
-        } 
+            properties.putValue("required string", requiredString);
+            
+            return this;
+        }
 
         /**
          * Required string property with a regex conditional
          * This property is required to generate a valid EveryNullableRequiredType object
          */
         public Builder requiredStringWithRegex(final @Nullable String requiredStringWithRegex) {
-          properties.putValue("required string with regex", requiredStringWithRegex);
-          
-          return this;
-        } 
+            properties.putValue("required string with regex", requiredStringWithRegex);
+            
+            return this;
+        }
 
         /**
          * Build an instance of {@link EveryNullableRequiredType}
          */
         public EveryNullableRequiredType build() {
-          return new EveryNullableRequiredType(properties);
+            return new EveryNullableRequiredType(properties);
         }
     }
 }

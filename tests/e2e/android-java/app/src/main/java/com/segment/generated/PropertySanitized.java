@@ -36,19 +36,19 @@ public final class PropertySanitized extends SerializableProperties {
          * This property is required to generate a valid PropertySanitized object
          */
         public Builder I0000TerriblePropertyName3(final @NonNull String I0000TerriblePropertyName3) {
-          properties.putValue("0000---terrible-property-name~!3", I0000TerriblePropertyName3);
-          
-          return this;
-        } 
+            properties.putValue("0000---terrible-property-name~!3", I0000TerriblePropertyName3);
+            
+            return this;
+        }
 
         /**
          * Build an instance of {@link PropertySanitized}
          */
         public PropertySanitized build() {
             if(properties.get("0000---terrible-property-name~!3") == null){
-              throw new IllegalArgumentException("PropertySanitized missing required property: 0000---terrible-property-name~!3");
+                throw new IllegalArgumentException("PropertySanitized missing required property: 0000---terrible-property-name~!3");
             }
-          return new PropertySanitized(properties);
+            return new PropertySanitized(properties);
         }
     }
 }

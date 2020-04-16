@@ -36,23 +36,23 @@ public final class NestedObjects extends SerializableProperties {
          * This property is required to generate a valid NestedObjects object
          */
         public Builder garage(final @NonNull Garage garage) {
-          if (garage != null) {
-            properties.putValue("garage", garage.toProperties());
-          } else {
-            properties.putValue("garage", garage);
-          }
+            if (garage != null) {
+                properties.putValue("garage", garage.toProperties());
+            } else {
+                properties.putValue("garage", garage);
+            }
 
-          return this;
-        } 
+            return this;
+        }
 
         /**
          * Build an instance of {@link NestedObjects}
          */
         public NestedObjects build() {
             if(properties.get("garage") == null){
-              throw new IllegalArgumentException("NestedObjects missing required property: garage");
+                throw new IllegalArgumentException("NestedObjects missing required property: garage");
             }
-          return new NestedObjects(properties);
+            return new NestedObjects(properties);
         }
     }
 }

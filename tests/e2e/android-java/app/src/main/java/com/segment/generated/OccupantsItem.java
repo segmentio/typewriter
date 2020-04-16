@@ -37,19 +37,19 @@ public final class OccupantsItem extends SerializableProperties {
          * This property is required to generate a valid OccupantsItem object
          */
         public Builder name(final @NonNull String name) {
-          properties.putValue("name", name);
-          
-          return this;
-        } 
+            properties.putValue("name", name);
+            
+            return this;
+        }
 
         /**
          * Build an instance of {@link OccupantsItem}
          */
         public OccupantsItem build() {
             if(properties.get("name") == null){
-              throw new IllegalArgumentException("OccupantsItem missing required property: name");
+                throw new IllegalArgumentException("OccupantsItem missing required property: name");
             }
-          return new OccupantsItem(properties);
+            return new OccupantsItem(properties);
         }
     }
 }

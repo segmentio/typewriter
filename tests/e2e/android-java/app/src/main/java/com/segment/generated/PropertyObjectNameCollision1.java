@@ -36,20 +36,20 @@ public final class PropertyObjectNameCollision1 extends SerializableProperties {
          * This property is optional and not required to generate a valid PropertyObjectNameCollision1 object
          */
         public Builder universe(final @Nullable Universe universe) {
-          if (universe != null) {
-            properties.putValue("universe", universe.toProperties());
-          } else {
-            properties.putValue("universe", universe);
-          }
+            if (universe != null) {
+                properties.putValue("universe", universe.toProperties());
+            } else {
+                properties.putValue("universe", universe);
+            }
 
-          return this;
-        } 
+            return this;
+        }
 
         /**
          * Build an instance of {@link PropertyObjectNameCollision1}
          */
         public PropertyObjectNameCollision1 build() {
-          return new PropertyObjectNameCollision1(properties);
+            return new PropertyObjectNameCollision1(properties);
         }
     }
 }

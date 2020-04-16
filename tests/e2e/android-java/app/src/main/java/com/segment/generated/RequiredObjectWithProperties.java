@@ -37,87 +37,87 @@ public final class RequiredObjectWithProperties extends SerializableProperties {
          * This property is required to generate a valid RequiredObjectWithProperties object
          */
         public Builder requiredAny(final @Nullable Object requiredAny) {
-          properties.putValue("required any", requiredAny);
-          
-          return this;
-        } 
+            properties.putValue("required any", requiredAny);
+            
+            return this;
+        }
 
         /**
          * Required array property
          * This property is required to generate a valid RequiredObjectWithProperties object
          */
         public Builder requiredArray(final @Nullable List<Object> requiredArray) {
-          List<?> p = TypewriterUtils.serializeList(requiredArray);
-          properties.putValue("required array", p);
+            List<?> p = TypewriterUtils.serializeList(requiredArray);
+            properties.putValue("required array", p);
 
-          return this;
-        } 
+            return this;
+        }
 
         /**
          * Required boolean property
          * This property is required to generate a valid RequiredObjectWithProperties object
          */
         public Builder requiredBoolean(final @Nullable Boolean requiredBoolean) {
-          properties.putValue("required boolean", requiredBoolean);
-          
-          return this;
-        } 
+            properties.putValue("required boolean", requiredBoolean);
+            
+            return this;
+        }
 
         /**
          * Required integer property
          * This property is required to generate a valid RequiredObjectWithProperties object
          */
         public Builder requiredInt(final @Nullable Long requiredInt) {
-          properties.putValue("required int", requiredInt);
-          
-          return this;
-        } 
+            properties.putValue("required int", requiredInt);
+            
+            return this;
+        }
 
         /**
          * Required number property
          * This property is required to generate a valid RequiredObjectWithProperties object
          */
         public Builder requiredNumber(final @Nullable Double requiredNumber) {
-          properties.putValue("required number", requiredNumber);
-          
-          return this;
-        } 
+            properties.putValue("required number", requiredNumber);
+            
+            return this;
+        }
 
         /**
          * Required object property
          * This property is required to generate a valid RequiredObjectWithProperties object
          */
         public Builder requiredObject(final @Nullable Object requiredObject) {
-          properties.putValue("required object", requiredObject);
-          
-          return this;
-        } 
+            properties.putValue("required object", requiredObject);
+            
+            return this;
+        }
 
         /**
          * Required string property
          * This property is required to generate a valid RequiredObjectWithProperties object
          */
         public Builder requiredString(final @Nullable String requiredString) {
-          properties.putValue("required string", requiredString);
-          
-          return this;
-        } 
+            properties.putValue("required string", requiredString);
+            
+            return this;
+        }
 
         /**
          * Required string property with a regex conditional
          * This property is required to generate a valid RequiredObjectWithProperties object
          */
         public Builder requiredStringWithRegex(final @Nullable String requiredStringWithRegex) {
-          properties.putValue("required string with regex", requiredStringWithRegex);
-          
-          return this;
-        } 
+            properties.putValue("required string with regex", requiredStringWithRegex);
+            
+            return this;
+        }
 
         /**
          * Build an instance of {@link RequiredObjectWithProperties}
          */
         public RequiredObjectWithProperties build() {
-          return new RequiredObjectWithProperties(properties);
+            return new RequiredObjectWithProperties(properties);
         }
     }
 }

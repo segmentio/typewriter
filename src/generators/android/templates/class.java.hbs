@@ -31,7 +31,7 @@ public final class {{name}} extends SerializableProperties {
         public Builder() {
             properties = new Properties();
         }
-      {{#each properties}}
+        {{#each properties}}
 
         /**
          {{#if description}}
@@ -44,35 +44,35 @@ public final class {{name}} extends SerializableProperties {
          {{/if}}
          */
         public Builder {{name}}({{modifiers}} {{type}} {{name}}) {
-          {{#if isListType}}
-          List<?> p = TypewriterUtils.serializeList({{name}});
-          properties.putValue("{{rawName}}", p);
-          {{else if implementsSerializableProperties}}
-          if ({{name}} != null) {
-            properties.putValue("{{rawName}}", {{name}}.toProperties());
-          } else {
+            {{#if isListType}}
+            List<?> p = TypewriterUtils.serializeList({{name}});
+            properties.putValue("{{rawName}}", p);
+            {{else if implementsSerializableProperties}}
+            if ({{name}} != null) {
+                properties.putValue("{{rawName}}", {{name}}.toProperties());
+            } else {
+                properties.putValue("{{rawName}}", {{name}});
+            }
+            {{else}}
             properties.putValue("{{rawName}}", {{name}});
-          }
-          {{else}}
-          properties.putValue("{{rawName}}", {{name}});
-          {{/if}}
+            {{/if}}
 
-          return this;
-        } 
-      {{/each}}
+            return this;
+        }
+        {{/each}}
 
         /**
          * Build an instance of {@link {{name ~}} }
          */
         public {{name}} build() {
-        {{#each properties}}
-        {{#if shouldThrowRuntimeError}}
+            {{#each properties}}
+            {{#if shouldThrowRuntimeError}}
             if(properties.get("{{rawName}}") == null){
-              throw new IllegalArgumentException("{{../name}} missing required property: {{rawName}}");
+                throw new IllegalArgumentException("{{../name}} missing required property: {{rawName}}");
             }
-        {{/if}}
-        {{/each}}
-          return new {{name}}(properties);
+            {{/if}}
+            {{/each}}
+            return new {{name}}(properties);
         }
     }
 }

@@ -36,23 +36,23 @@ public final class Garage extends SerializableProperties {
          * This property is required to generate a valid Garage object
          */
         public Builder tunnel(final @NonNull Tunnel tunnel) {
-          if (tunnel != null) {
-            properties.putValue("tunnel", tunnel.toProperties());
-          } else {
-            properties.putValue("tunnel", tunnel);
-          }
+            if (tunnel != null) {
+                properties.putValue("tunnel", tunnel.toProperties());
+            } else {
+                properties.putValue("tunnel", tunnel);
+            }
 
-          return this;
-        } 
+            return this;
+        }
 
         /**
          * Build an instance of {@link Garage}
          */
         public Garage build() {
             if(properties.get("tunnel") == null){
-              throw new IllegalArgumentException("Garage missing required property: tunnel");
+                throw new IllegalArgumentException("Garage missing required property: tunnel");
             }
-          return new Garage(properties);
+            return new Garage(properties);
         }
     }
 }

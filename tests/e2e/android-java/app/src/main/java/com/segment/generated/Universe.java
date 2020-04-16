@@ -37,33 +37,33 @@ public final class Universe extends SerializableProperties {
          * This property is required to generate a valid Universe object
          */
         public Builder name(final @NonNull String name) {
-          properties.putValue("name", name);
-          
-          return this;
-        } 
+            properties.putValue("name", name);
+            
+            return this;
+        }
 
         /**
          * The most important occupants in this universe.
          * This property is required to generate a valid Universe object
          */
         public Builder occupants(final @NonNull List<OccupantsItem> occupants) {
-          List<?> p = TypewriterUtils.serializeList(occupants);
-          properties.putValue("occupants", p);
+            List<?> p = TypewriterUtils.serializeList(occupants);
+            properties.putValue("occupants", p);
 
-          return this;
-        } 
+            return this;
+        }
 
         /**
          * Build an instance of {@link Universe}
          */
         public Universe build() {
             if(properties.get("name") == null){
-              throw new IllegalArgumentException("Universe missing required property: name");
+                throw new IllegalArgumentException("Universe missing required property: name");
             }
             if(properties.get("occupants") == null){
-              throw new IllegalArgumentException("Universe missing required property: occupants");
+                throw new IllegalArgumentException("Universe missing required property: occupants");
             }
-          return new Universe(properties);
+            return new Universe(properties);
         }
     }
 }
