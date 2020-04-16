@@ -15,9 +15,7 @@ interface AndroidPropertyContext {
 	name: string
 	// The type of this property. ex: "String".
 	type: string
-	// Stringified property modifiers. ex: "final, @Nonnull".
-	modifiers: Modifier
-	// Whether the property is nullable (@Nonnull vs @Nullable modifier).
+	// Whether the property is nullable (@NonNull vs @Nullable modifier).
 	isVariableNullable: boolean
 	// Whether runtime error should be thrown for null payload value
 	shouldThrowRuntimeError: boolean | undefined
@@ -32,14 +30,6 @@ interface AndroidTrackCallContext {
 	functionName: string
 	propsType: string
 	propsParam: boolean
-}
-
-enum JavaType {
-	String = 'String',
-	Long = 'Long',
-	Double = 'Double',
-	Boolean = 'Boolean',
-	Object = 'Object',
 }
 
 export const android: Generator<
@@ -64,16 +54,16 @@ export const android: Generator<
 		allowedIdentifierChars: 'A-Za-z0-9_',
 	},
 	generatePrimitive: async (client, schema, parentPath) => {
-		let type = JavaType.Object
+		let type = 'Object'
 
 		if (schema.type === Type.STRING) {
-			type = JavaType.String
+			type = 'String'
 		} else if (schema.type === Type.BOOLEAN) {
-			type = JavaType.Boolean
+			type = 'Boolean'
 		} else if (schema.type === Type.INTEGER) {
-			type = JavaType.Long
+			type = 'Long'
 		} else if (schema.type === Type.NUMBER) {
-			type = JavaType.Double
+			type = 'Double'
 		}
 
 		return {
@@ -88,7 +78,7 @@ export const android: Generator<
 		}
 	},
 	generateObject: async (client, schema, properties, parentPath) => {
-		const property = defaultPropertyContext(client, schema, JavaType.Object, parentPath)
+		const property = defaultPropertyContext(client, schema, 'Object', parentPath)
 		let object: AndroidObjectContext | undefined
 
 		if (properties.length > 0) {
@@ -146,11 +136,6 @@ export const android: Generator<
 	},
 }
 
-enum Modifier {
-	FinalNullable = 'final @Nullable',
-	FinalNonNullable = 'final @NonNull',
-}
-
 function defaultPropertyContext(
 	client: GeneratorClient,
 	schema: Schema,
@@ -162,10 +147,6 @@ function defaultPropertyContext(
 			transform: camelCase,
 		}),
 		type,
-		modifiers:
-			!schema.isRequired || !!schema.isNullable
-				? Modifier.FinalNullable
-				: Modifier.FinalNonNullable,
 		isVariableNullable: !schema.isRequired || !!schema.isNullable,
 		shouldThrowRuntimeError: schema.isRequired && !schema.isNullable,
 		isListType: false,

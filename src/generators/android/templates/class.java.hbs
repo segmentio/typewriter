@@ -43,7 +43,7 @@ public final class {{name}} extends SerializableProperties {
          * This property is optional and not required to generate a valid {{../name}} object
          {{/if}}
          */
-        public Builder {{name}}({{modifiers}} {{type}} {{name}}) {
+        public Builder {{name}}(final {{#if isVariableNullable}}@Nullable{{else}}@NonNull{{/if}} {{type}} {{name}}) {
             {{#if isListType}}
             List<?> p = TypewriterUtils.serializeList({{name}});
             properties.putValue("{{rawName}}", p);
