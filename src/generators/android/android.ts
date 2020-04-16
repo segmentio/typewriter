@@ -61,7 +61,6 @@ export const android: Generator<
 		allowedIdentifierChars: 'A-Za-z0-9_',
 	},
 	setup: async () => {
-		Handlebars.registerHelper('trackCallFunctionExecution', generateFunctionExecution)
 		Handlebars.registerHelper('builderFunctionBody', generateBuilderFunctionBody)
 		return {}
 	},
@@ -158,16 +157,6 @@ enum Separator {
 	NewLineIndent = '      ',
 }
 
-enum Properties {
-	ToProperties = 'props.toProperties()',
-	Create = 'new Properties()',
-}
-
-enum Options {
-	MergeOptions = 'TypewriterUtils.addTypewriterContext(options)',
-	Create = 'TypewriterUtils.addTypewriterContext()',
-}
-
 function defaultPropertyContext(
 	client: GeneratorClient,
 	schema: Schema,
@@ -215,30 +204,4 @@ function generateBuilderFunctionBody(name: string, rawName: string, type: string
 		: isSerializable
 		? serializeObject
 		: defaultHandler()
-}
-
-const getValidArgs = (potentialArgs: Arg[], defaultArg?: string[]) =>
-	potentialArgs.reduce((acc: string[], { inUse, execution, fallback }) => {
-		if (inUse) {
-			acc.push(execution)
-		} else if (fallback) {
-			acc.push(fallback)
-		}
-		return acc
-	}, defaultArg || [])
-
-function generateFunctionExecution(
-	{ rawEventName, propsParam }: { rawEventName: string; propsParam: boolean },
-	withOptions: boolean
-): string {
-	const args = getValidArgs(
-		[
-			{ inUse: propsParam, execution: Properties.ToProperties, fallback: Properties.Create },
-			{ inUse: withOptions, execution: Options.MergeOptions, fallback: Options.Create },
-		],
-		[`"${rawEventName}"`]
-	)
-	return `{
-    this.analytics.track(${args.join(Separator.Comma)});
-  }`
 }

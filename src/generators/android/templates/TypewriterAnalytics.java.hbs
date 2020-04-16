@@ -49,7 +49,9 @@ public class TypewriterAnalytics {
      * @param props {@link {{class ~}} } to add extra information to this call.
      * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
      */
-    public void {{functionName}}(final @Nullable {{propsType}} props) {{trackCallFunctionExecution this false}};
+    public void {{functionName}}(final @Nullable {{propsType}} props) {
+        this.analytics.track("{{rawEventName}}", props.toProperties(), TypewriterUtils.addTypewriterContext());
+    }
 
     /**
      {{#if functionDescription}}
@@ -58,7 +60,9 @@ public class TypewriterAnalytics {
      * @param props {@link {{class ~}} } to add extra information to this call.
      * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
      */
-    public void {{functionName}}(final @Nullable {{propsType}} props, final @Nullable Options options) {{trackCallFunctionExecution this true}};
+    public void {{functionName}}(final @Nullable {{propsType}} props, final @Nullable Options options) {
+        this.analytics.track("{{rawEventName}}", props.toProperties(), TypewriterUtils.addTypewriterContext(options));
+    }
     {{else}}
     /**
      {{#if functionDescription}}
@@ -66,7 +70,9 @@ public class TypewriterAnalytics {
      {{/if}}
      * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
      */
-    public void {{functionName}}() {{trackCallFunctionExecution this false}};
+    public void {{functionName}}() {
+        this.analytics.track("{{rawEventName}}", new Properties(), TypewriterUtils.addTypewriterContext());
+    }
 
     /**
      {{#if functionDescription}}
@@ -74,7 +80,9 @@ public class TypewriterAnalytics {
      {{/if}}
      * @see <a href="https://segment.com/docs/spec/track/">Track Documentation</a>
      */
-    public void {{functionName}}(final @Nullable Options options) {{trackCallFunctionExecution this true}};
+    public void {{functionName}}(final @Nullable Options options)  {
+        this.analytics.track("{{rawEventName}}", new Properties(), TypewriterUtils.addTypewriterContext(options));
+    }
     {{/if}}
     {{/each}}
 }
