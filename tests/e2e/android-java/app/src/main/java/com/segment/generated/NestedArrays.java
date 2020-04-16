@@ -37,9 +37,10 @@ public final class NestedArrays extends SerializableProperties {
          * This property is required to generate a valid NestedArrays object
          */
         public Builder universeCharacters(final @NonNull List<List<UniverseCharactersItemItem>> universeCharacters) {
-              List<?> p = TypewriterUtils.serialize(universeCharacters);
-      properties.putValue("universeCharacters", p);
-      return this;
+          List<?> p = TypewriterUtils.serializeList(universeCharacters);
+          properties.putValue("universeCharacters", p);
+
+          return this;
         } 
 
         /**

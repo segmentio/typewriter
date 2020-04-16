@@ -36,16 +36,18 @@ public final class PropertiesCollided extends SerializableProperties {
          * This property is required to generate a valid PropertiesCollided object
          */
         public Builder propertyCollided(final @NonNull String propertyCollided) {
-              properties.putValue("Property Collided", propertyCollided);
-      return this;
+          properties.putValue("Property Collided", propertyCollided);
+          
+          return this;
         } 
 
         /**
          * This property is required to generate a valid PropertiesCollided object
          */
         public Builder propertyCollided1(final @NonNull String propertyCollided1) {
-              properties.putValue("property_collided", propertyCollided1);
-      return this;
+          properties.putValue("property_collided", propertyCollided1);
+          
+          return this;
         } 
 
         /**

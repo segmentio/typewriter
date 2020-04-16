@@ -37,8 +37,9 @@ public final class OccupantsItem extends SerializableProperties {
          * This property is required to generate a valid OccupantsItem object
          */
         public Builder name(final @NonNull String name) {
-              properties.putValue("name", name);
-      return this;
+          properties.putValue("name", name);
+          
+          return this;
         } 
 
         /**

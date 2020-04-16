@@ -36,8 +36,9 @@ public final class PropertySanitized extends SerializableProperties {
          * This property is required to generate a valid PropertySanitized object
          */
         public Builder I0000TerriblePropertyName3(final @NonNull String I0000TerriblePropertyName3) {
-              properties.putValue("0000---terrible-property-name~!3", I0000TerriblePropertyName3);
-      return this;
+          properties.putValue("0000---terrible-property-name~!3", I0000TerriblePropertyName3);
+          
+          return this;
         } 
 
         /**

@@ -36,8 +36,9 @@ public final class CustomViolationHandler extends SerializableProperties {
          * This property is required to generate a valid CustomViolationHandler object
          */
         public Builder regexProperty(final @NonNull String regexProperty) {
-              properties.putValue("regex property", regexProperty);
-      return this;
+          properties.putValue("regex property", regexProperty);
+          
+          return this;
         } 
 
         /**

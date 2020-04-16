@@ -37,8 +37,9 @@ public final class EveryOptionalType extends SerializableProperties {
          * This property is optional and not required to generate a valid EveryOptionalType object
          */
         public Builder optionalAny(final @Nullable Object optionalAny) {
-              properties.putValue("optional any", optionalAny);
-      return this;
+          properties.putValue("optional any", optionalAny);
+          
+          return this;
         } 
 
         /**
@@ -46,9 +47,10 @@ public final class EveryOptionalType extends SerializableProperties {
          * This property is optional and not required to generate a valid EveryOptionalType object
          */
         public Builder optionalArray(final @Nullable List<Object> optionalArray) {
-              List<?> p = TypewriterUtils.serialize(optionalArray);
-      properties.putValue("optional array", p);
-      return this;
+          List<?> p = TypewriterUtils.serializeList(optionalArray);
+          properties.putValue("optional array", p);
+
+          return this;
         } 
 
         /**
@@ -56,9 +58,10 @@ public final class EveryOptionalType extends SerializableProperties {
          * This property is optional and not required to generate a valid EveryOptionalType object
          */
         public Builder optionalArrayWithProperties(final @Nullable List<OptionalArrayWithPropertiesItem1> optionalArrayWithProperties) {
-              List<?> p = TypewriterUtils.serialize(optionalArrayWithProperties);
-      properties.putValue("optional array with properties", p);
-      return this;
+          List<?> p = TypewriterUtils.serializeList(optionalArrayWithProperties);
+          properties.putValue("optional array with properties", p);
+
+          return this;
         } 
 
         /**
@@ -66,8 +69,9 @@ public final class EveryOptionalType extends SerializableProperties {
          * This property is optional and not required to generate a valid EveryOptionalType object
          */
         public Builder optionalBoolean(final @Nullable Boolean optionalBoolean) {
-              properties.putValue("optional boolean", optionalBoolean);
-      return this;
+          properties.putValue("optional boolean", optionalBoolean);
+          
+          return this;
         } 
 
         /**
@@ -75,8 +79,9 @@ public final class EveryOptionalType extends SerializableProperties {
          * This property is optional and not required to generate a valid EveryOptionalType object
          */
         public Builder optionalInt(final @Nullable Long optionalInt) {
-              properties.putValue("optional int", optionalInt);
-      return this;
+          properties.putValue("optional int", optionalInt);
+          
+          return this;
         } 
 
         /**
@@ -84,8 +89,9 @@ public final class EveryOptionalType extends SerializableProperties {
          * This property is optional and not required to generate a valid EveryOptionalType object
          */
         public Builder optionalNumber(final @Nullable Double optionalNumber) {
-              properties.putValue("optional number", optionalNumber);
-      return this;
+          properties.putValue("optional number", optionalNumber);
+          
+          return this;
         } 
 
         /**
@@ -93,8 +99,9 @@ public final class EveryOptionalType extends SerializableProperties {
          * This property is optional and not required to generate a valid EveryOptionalType object
          */
         public Builder optionalObject(final @Nullable Object optionalObject) {
-              properties.putValue("optional object", optionalObject);
-      return this;
+          properties.putValue("optional object", optionalObject);
+          
+          return this;
         } 
 
         /**
@@ -102,12 +109,13 @@ public final class EveryOptionalType extends SerializableProperties {
          * This property is optional and not required to generate a valid EveryOptionalType object
          */
         public Builder optionalObjectWithProperties(final @Nullable OptionalObjectWithProperties1 optionalObjectWithProperties) {
-              if(optionalObjectWithProperties != null){
-          properties.putValue("optional object with properties", optionalObjectWithProperties.toProperties());
-      }else{
-          properties.putValue("optional object with properties", optionalObjectWithProperties);
-      }
-      return this;
+          if (optionalObjectWithProperties != null) {
+            properties.putValue("optional object with properties", optionalObjectWithProperties.toProperties());
+          } else {
+            properties.putValue("optional object with properties", optionalObjectWithProperties);
+          }
+
+          return this;
         } 
 
         /**
@@ -115,8 +123,9 @@ public final class EveryOptionalType extends SerializableProperties {
          * This property is optional and not required to generate a valid EveryOptionalType object
          */
         public Builder optionalString(final @Nullable String optionalString) {
-              properties.putValue("optional string", optionalString);
-      return this;
+          properties.putValue("optional string", optionalString);
+          
+          return this;
         } 
 
         /**
@@ -124,8 +133,9 @@ public final class EveryOptionalType extends SerializableProperties {
          * This property is optional and not required to generate a valid EveryOptionalType object
          */
         public Builder optionalStringWithRegex(final @Nullable String optionalStringWithRegex) {
-              properties.putValue("optional string with regex", optionalStringWithRegex);
-      return this;
+          properties.putValue("optional string with regex", optionalStringWithRegex);
+          
+          return this;
         } 
 
         /**

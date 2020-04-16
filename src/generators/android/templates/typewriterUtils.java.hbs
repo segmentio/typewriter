@@ -31,28 +31,22 @@ public final class TypewriterUtils {
         return typewriterContext;
     }
 
-    /**
-     * Handles serialization of all arrays by iterating over each item and
-     * a) recursing over nested arrays
-     * b) calling toProperties on any found instance of SerializableProperties
-     * c) directly adding found primitive values
-     */
-    protected static List<?> serialize(final @Nullable List<?> props){
-        List p = new ArrayList<>();
-        if (props != null) {
-            for(Object item : props) {
-                if (item instanceof List) {
-                    p.add(serialize((List) item));
-                } else if(item instanceof SerializableProperties) {
-                    p.add(((SerializableProperties) item).toProperties());
-                } else {
-                    p.add(item);
-                }
-            }
-
-            return p;
+    protected static List<?> serializeList(final @Nullable List<?> props){
+        if (props == null) {
+            return props;
         }
 
-        return props;
+        List p = new ArrayList<>();
+        for(Object item : props) {
+            if (item instanceof List) {
+                p.add(serializeList((List) item));
+            } else if(item instanceof SerializableProperties) {
+                p.add(((SerializableProperties) item).toProperties());
+            } else {
+                p.add(item);
+            }
+        }
+
+        return p;
     }
 }

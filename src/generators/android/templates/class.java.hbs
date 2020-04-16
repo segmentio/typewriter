@@ -44,7 +44,20 @@ public final class {{name}} extends SerializableProperties {
          {{/if}}
          */
         public Builder {{name}}({{modifiers}} {{type}} {{name}}) {
-          {{builderFunctionBody name rawName type}}
+          {{#if isListType}}
+          List<?> p = TypewriterUtils.serializeList({{name}});
+          properties.putValue("{{rawName}}", p);
+          {{else if implementsSerializableProperties}}
+          if ({{name}} != null) {
+            properties.putValue("{{rawName}}", {{name}}.toProperties());
+          } else {
+            properties.putValue("{{rawName}}", {{name}});
+          }
+          {{else}}
+          properties.putValue("{{rawName}}", {{name}});
+          {{/if}}
+
+          return this;
         } 
       {{/each}}
 

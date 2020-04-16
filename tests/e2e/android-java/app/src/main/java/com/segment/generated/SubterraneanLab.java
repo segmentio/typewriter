@@ -36,26 +36,29 @@ public final class SubterraneanLab extends SerializableProperties {
          * This property is optional and not required to generate a valid SubterraneanLab object
          */
         public Builder jerrysMemories(final @Nullable List<Object> jerrysMemories) {
-              List<?> p = TypewriterUtils.serialize(jerrysMemories);
-      properties.putValue("jerry's memories", p);
-      return this;
+          List<?> p = TypewriterUtils.serializeList(jerrysMemories);
+          properties.putValue("jerry's memories", p);
+
+          return this;
         } 
 
         /**
          * This property is optional and not required to generate a valid SubterraneanLab object
          */
         public Builder mortysMemories(final @Nullable List<Object> mortysMemories) {
-              List<?> p = TypewriterUtils.serialize(mortysMemories);
-      properties.putValue("morty's memories", p);
-      return this;
+          List<?> p = TypewriterUtils.serializeList(mortysMemories);
+          properties.putValue("morty's memories", p);
+
+          return this;
         } 
 
         /**
          * This property is optional and not required to generate a valid SubterraneanLab object
          */
         public Builder summersContingencyPlan(final @Nullable String summersContingencyPlan) {
-              properties.putValue("summer's contingency plan", summersContingencyPlan);
-      return this;
+          properties.putValue("summer's contingency plan", summersContingencyPlan);
+          
+          return this;
         } 
 
         /**

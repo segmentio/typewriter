@@ -37,8 +37,9 @@ public final class EveryRequiredType extends SerializableProperties {
          * This property is required to generate a valid EveryRequiredType object
          */
         public Builder requiredAny(final @Nullable Object requiredAny) {
-              properties.putValue("required any", requiredAny);
-      return this;
+          properties.putValue("required any", requiredAny);
+          
+          return this;
         } 
 
         /**
@@ -46,9 +47,10 @@ public final class EveryRequiredType extends SerializableProperties {
          * This property is required to generate a valid EveryRequiredType object
          */
         public Builder requiredArray(final @NonNull List<Object> requiredArray) {
-              List<?> p = TypewriterUtils.serialize(requiredArray);
-      properties.putValue("required array", p);
-      return this;
+          List<?> p = TypewriterUtils.serializeList(requiredArray);
+          properties.putValue("required array", p);
+
+          return this;
         } 
 
         /**
@@ -56,9 +58,10 @@ public final class EveryRequiredType extends SerializableProperties {
          * This property is required to generate a valid EveryRequiredType object
          */
         public Builder requiredArrayWithProperties(final @NonNull List<RequiredArrayWithPropertiesItem1> requiredArrayWithProperties) {
-              List<?> p = TypewriterUtils.serialize(requiredArrayWithProperties);
-      properties.putValue("required array with properties", p);
-      return this;
+          List<?> p = TypewriterUtils.serializeList(requiredArrayWithProperties);
+          properties.putValue("required array with properties", p);
+
+          return this;
         } 
 
         /**
@@ -66,8 +69,9 @@ public final class EveryRequiredType extends SerializableProperties {
          * This property is required to generate a valid EveryRequiredType object
          */
         public Builder requiredBoolean(final @NonNull Boolean requiredBoolean) {
-              properties.putValue("required boolean", requiredBoolean);
-      return this;
+          properties.putValue("required boolean", requiredBoolean);
+          
+          return this;
         } 
 
         /**
@@ -75,8 +79,9 @@ public final class EveryRequiredType extends SerializableProperties {
          * This property is required to generate a valid EveryRequiredType object
          */
         public Builder requiredInt(final @NonNull Long requiredInt) {
-              properties.putValue("required int", requiredInt);
-      return this;
+          properties.putValue("required int", requiredInt);
+          
+          return this;
         } 
 
         /**
@@ -84,8 +89,9 @@ public final class EveryRequiredType extends SerializableProperties {
          * This property is required to generate a valid EveryRequiredType object
          */
         public Builder requiredNumber(final @NonNull Double requiredNumber) {
-              properties.putValue("required number", requiredNumber);
-      return this;
+          properties.putValue("required number", requiredNumber);
+          
+          return this;
         } 
 
         /**
@@ -93,8 +99,9 @@ public final class EveryRequiredType extends SerializableProperties {
          * This property is required to generate a valid EveryRequiredType object
          */
         public Builder requiredObject(final @NonNull Object requiredObject) {
-              properties.putValue("required object", requiredObject);
-      return this;
+          properties.putValue("required object", requiredObject);
+          
+          return this;
         } 
 
         /**
@@ -102,12 +109,13 @@ public final class EveryRequiredType extends SerializableProperties {
          * This property is required to generate a valid EveryRequiredType object
          */
         public Builder requiredObjectWithProperties(final @NonNull RequiredObjectWithProperties1 requiredObjectWithProperties) {
-              if(requiredObjectWithProperties != null){
-          properties.putValue("required object with properties", requiredObjectWithProperties.toProperties());
-      }else{
-          properties.putValue("required object with properties", requiredObjectWithProperties);
-      }
-      return this;
+          if (requiredObjectWithProperties != null) {
+            properties.putValue("required object with properties", requiredObjectWithProperties.toProperties());
+          } else {
+            properties.putValue("required object with properties", requiredObjectWithProperties);
+          }
+
+          return this;
         } 
 
         /**
@@ -115,8 +123,9 @@ public final class EveryRequiredType extends SerializableProperties {
          * This property is required to generate a valid EveryRequiredType object
          */
         public Builder requiredString(final @NonNull String requiredString) {
-              properties.putValue("required string", requiredString);
-      return this;
+          properties.putValue("required string", requiredString);
+          
+          return this;
         } 
 
         /**
@@ -124,8 +133,9 @@ public final class EveryRequiredType extends SerializableProperties {
          * This property is required to generate a valid EveryRequiredType object
          */
         public Builder requiredStringWithRegex(final @NonNull String requiredStringWithRegex) {
-              properties.putValue("required string with regex", requiredStringWithRegex);
-      return this;
+          properties.putValue("required string with regex", requiredStringWithRegex);
+          
+          return this;
         } 
 
         /**

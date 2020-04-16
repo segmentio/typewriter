@@ -37,8 +37,9 @@ public final class RequiredArrayWithPropertiesItem extends SerializablePropertie
          * This property is required to generate a valid RequiredArrayWithPropertiesItem object
          */
         public Builder requiredAny(final @Nullable Object requiredAny) {
-              properties.putValue("required any", requiredAny);
-      return this;
+          properties.putValue("required any", requiredAny);
+          
+          return this;
         } 
 
         /**
@@ -46,9 +47,10 @@ public final class RequiredArrayWithPropertiesItem extends SerializablePropertie
          * This property is required to generate a valid RequiredArrayWithPropertiesItem object
          */
         public Builder requiredArray(final @Nullable List<Object> requiredArray) {
-              List<?> p = TypewriterUtils.serialize(requiredArray);
-      properties.putValue("required array", p);
-      return this;
+          List<?> p = TypewriterUtils.serializeList(requiredArray);
+          properties.putValue("required array", p);
+
+          return this;
         } 
 
         /**
@@ -56,8 +58,9 @@ public final class RequiredArrayWithPropertiesItem extends SerializablePropertie
          * This property is required to generate a valid RequiredArrayWithPropertiesItem object
          */
         public Builder requiredBoolean(final @Nullable Boolean requiredBoolean) {
-              properties.putValue("required boolean", requiredBoolean);
-      return this;
+          properties.putValue("required boolean", requiredBoolean);
+          
+          return this;
         } 
 
         /**
@@ -65,8 +68,9 @@ public final class RequiredArrayWithPropertiesItem extends SerializablePropertie
          * This property is required to generate a valid RequiredArrayWithPropertiesItem object
          */
         public Builder requiredInt(final @Nullable Long requiredInt) {
-              properties.putValue("required int", requiredInt);
-      return this;
+          properties.putValue("required int", requiredInt);
+          
+          return this;
         } 
 
         /**
@@ -74,8 +78,9 @@ public final class RequiredArrayWithPropertiesItem extends SerializablePropertie
          * This property is required to generate a valid RequiredArrayWithPropertiesItem object
          */
         public Builder requiredNumber(final @Nullable Double requiredNumber) {
-              properties.putValue("required number", requiredNumber);
-      return this;
+          properties.putValue("required number", requiredNumber);
+          
+          return this;
         } 
 
         /**
@@ -83,8 +88,9 @@ public final class RequiredArrayWithPropertiesItem extends SerializablePropertie
          * This property is required to generate a valid RequiredArrayWithPropertiesItem object
          */
         public Builder requiredObject(final @Nullable Object requiredObject) {
-              properties.putValue("required object", requiredObject);
-      return this;
+          properties.putValue("required object", requiredObject);
+          
+          return this;
         } 
 
         /**
@@ -92,8 +98,9 @@ public final class RequiredArrayWithPropertiesItem extends SerializablePropertie
          * This property is required to generate a valid RequiredArrayWithPropertiesItem object
          */
         public Builder requiredString(final @Nullable String requiredString) {
-              properties.putValue("required string", requiredString);
-      return this;
+          properties.putValue("required string", requiredString);
+          
+          return this;
         } 
 
         /**
@@ -101,8 +108,9 @@ public final class RequiredArrayWithPropertiesItem extends SerializablePropertie
          * This property is required to generate a valid RequiredArrayWithPropertiesItem object
          */
         public Builder requiredStringWithRegex(final @Nullable String requiredStringWithRegex) {
-              properties.putValue("required string with regex", requiredStringWithRegex);
-      return this;
+          properties.putValue("required string with regex", requiredStringWithRegex);
+          
+          return this;
         } 
 
         /**

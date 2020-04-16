@@ -1,6 +1,5 @@
 import { camelCase, upperFirst } from 'lodash'
 import { Type, Schema, getPropertiesSchema } from '../ast'
-import * as Handlebars from 'handlebars'
 import { Generator, GeneratorClient } from '../gen'
 
 // These contexts are what will be passed to Handlebars to perform rendering.
@@ -22,6 +21,10 @@ interface AndroidPropertyContext {
 	isVariableNullable: boolean
 	// Whether runtime error should be thrown for null payload value
 	shouldThrowRuntimeError: boolean | undefined
+	// Whether this is a List property
+	isListType: boolean
+	// Whether this is property can be serialized with toProperties()
+	implementsSerializableProperties: boolean
 }
 
 interface AndroidTrackCallContext {
@@ -60,10 +63,6 @@ export const android: Generator<
 		allowedIdentifierStartingChars: 'A-Za-z_',
 		allowedIdentifierChars: 'A-Za-z0-9_',
 	},
-	setup: async () => {
-		Handlebars.registerHelper('builderFunctionBody', generateBuilderFunctionBody)
-		return {}
-	},
 	generatePrimitive: async (client, schema, parentPath) => {
 		let type = JavaType.Object
 
@@ -77,10 +76,16 @@ export const android: Generator<
 			type = JavaType.Double
 		}
 
-		return defaultPropertyContext(client, schema, type, parentPath)
+		return {
+			...defaultPropertyContext(client, schema, type, parentPath),
+		}
 	},
+	setup: async () => ({}),
 	generateArray: async (client, schema, items, parentPath) => {
-		return defaultPropertyContext(client, schema, `List<${items.type}>`, parentPath)
+		return {
+			...defaultPropertyContext(client, schema, `List<${items.type}>`, parentPath),
+			isListType: true,
+		}
 	},
 	generateObject: async (client, schema, properties, parentPath) => {
 		const property = defaultPropertyContext(client, schema, JavaType.Object, parentPath)
@@ -94,6 +99,7 @@ export const android: Generator<
 			})
 
 			property.type = className
+			property.implementsSerializableProperties = true
 			object = {
 				name: className,
 			}
@@ -140,21 +146,9 @@ export const android: Generator<
 	},
 }
 
-interface Arg {
-	inUse: boolean
-	execution: string
-	fallback?: string
-}
-
 enum Modifier {
 	FinalNullable = 'final @Nullable',
 	FinalNonNullable = 'final @NonNull',
-}
-
-enum Separator {
-	Comma = ', ',
-	Indent = '    ',
-	NewLineIndent = '      ',
 }
 
 function defaultPropertyContext(
@@ -174,34 +168,7 @@ function defaultPropertyContext(
 				: Modifier.FinalNonNullable,
 		isVariableNullable: !schema.isRequired || !!schema.isNullable,
 		shouldThrowRuntimeError: schema.isRequired && !schema.isNullable,
+		isListType: false,
+		implementsSerializableProperties: false,
 	}
-}
-
-function generateBuilderFunctionBody(name: string, rawName: string, type: string): string {
-	const isArrayType = type.match(/List\<(.*)\>/)
-	const isSerializable = Object.values(JavaType).every(t => t !== type)
-
-	const defaultHandler = (raw = rawName, n = name, indentFirstLine = true) =>
-		`${indentFirstLine ? Separator.Indent : ''}properties.putValue("${raw}", ${n});\n` +
-		`${Separator.NewLineIndent}return this;`
-
-	const serializeObject =
-		`${Separator.Indent}if(${name} != null){\n` +
-		`${Separator.NewLineIndent}${
-			Separator.Indent
-		}properties.putValue("${rawName}", ${name}.toProperties());\n` +
-		`${Separator.NewLineIndent}}else{\n` +
-		`${Separator.NewLineIndent}${Separator.Indent}properties.putValue("${rawName}", ${name});\n` +
-		`${Separator.NewLineIndent}}\n` +
-		`${Separator.NewLineIndent}return this;`
-
-	const serializeArray =
-		`${Separator.Indent}List<?> p = TypewriterUtils.serialize(${name});\n` +
-		`${Separator.NewLineIndent}${defaultHandler(rawName, 'p', false)}`
-
-	return isArrayType && isArrayType[1] !== 'Properties'
-		? serializeArray
-		: isSerializable
-		? serializeObject
-		: defaultHandler()
 }
