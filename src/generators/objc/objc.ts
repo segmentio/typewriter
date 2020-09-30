@@ -36,7 +36,7 @@ interface IOSTrackCallContext {
 	functionName: string
 }
 
-export const ios: Generator<{}, IOSTrackCallContext, IOSObjectContext, IOSPropertyContext> = {
+export const objc: Generator<{}, IOSTrackCallContext, IOSObjectContext, IOSPropertyContext> = {
 	generatePropertiesObject: false,
 	namer: {
 		// See: https://github.com/AnanthaRajuCprojects/Reserved-Key-Words-list-of-various-programming-languages/blob/master/Objective-C%20Reserved%20Words.md
@@ -156,10 +156,10 @@ export const ios: Generator<{}, IOSTrackCallContext, IOSObjectContext, IOSProper
 				context
 			),
 			...context.objects.map(o =>
-				client.generateFile(`${o.name}.h`, 'generators/ios/templates/class.h.hbs', o)
+				client.generateFile(`${o.name}.h`, 'generators/objc/templates/class.h.hbs', o)
 			),
 			...context.objects.map(o =>
-				client.generateFile(`${o.name}.m`, 'generators/ios/templates/class.m.hbs', o)
+				client.generateFile(`${o.name}.m`, 'generators/objc/templates/class.m.hbs', o)
 			),
 		])
 	},

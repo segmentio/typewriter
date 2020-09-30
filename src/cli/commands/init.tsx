@@ -201,7 +201,7 @@ const SDKPrompt: React.FC<SDKPromptProps> = ({ step, sdk, onSubmit }) => {
 	const items: Item[] = [
 		{ label: 'Web (analytics.js)', value: SDK.WEB },
 		{ label: 'Node.js (analytics-node)', value: SDK.NODE },
-		{ label: 'iOS (analytics-ios)', value: SDK.IOS },
+		{ label: 'Objective-C (analytics-ios)', value: SDK.IOS },
 		{ label: 'Android (analytics-android)', value: SDK.ANDROID },
 	]
 	const initialIndex = items.findIndex(i => i.value === sdk)
