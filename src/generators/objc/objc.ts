@@ -132,27 +132,27 @@ export const objc: Generator<{}, IOSTrackCallContext, IOSObjectContext, IOSPrope
 		await Promise.all([
 			client.generateFile(
 				'SEGTypewriterAnalytics.h',
-				'generators/ios/templates/analytics.h.hbs',
+				'generators/objc/templates/analytics.h.hbs',
 				context
 			),
 			client.generateFile(
 				'SEGTypewriterAnalytics.m',
-				'generators/ios/templates/analytics.m.hbs',
+				'generators/objc/templates/analytics.m.hbs',
 				context
 			),
 			client.generateFile(
 				'SEGTypewriterUtils.h',
-				'generators/ios/templates/SEGTypewriterUtils.h.hbs',
+				'generators/objc/templates/SEGTypewriterUtils.h.hbs',
 				context
 			),
 			client.generateFile(
 				'SEGTypewriterUtils.m',
-				'generators/ios/templates/SEGTypewriterUtils.m.hbs',
+				'generators/objc/templates/SEGTypewriterUtils.m.hbs',
 				context
 			),
 			client.generateFile(
 				'SEGTypewriterSerializable.h',
-				'generators/ios/templates/SEGTypewriterSerializable.h.hbs',
+				'generators/objc/templates/SEGTypewriterSerializable.h.hbs',
 				context
 			),
 			...context.objects.map(o =>
