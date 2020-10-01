@@ -1,4 +1,5 @@
 import * as childProcess from 'child_process'
+import * as path from 'path'
 import { promisify } from 'util'
 import { wrapError } from '../commands/error'
 
@@ -12,8 +13,8 @@ export enum Scripts {
 const EXEC_TIMEOUT = 5000 // ms
 
 export async function runScript(script: string, configPath: string, type: Scripts) {
-	const scriptWithCD = `cd ${configPath}; ${script}`
-	const { stdout } = await exec(scriptWithCD, { timeout: EXEC_TIMEOUT }).catch(err => {
+	const scriptPath = path.resolve( configPath )
+	const { stdout } = await exec(script, { timeout: EXEC_TIMEOUT, cwd: scriptPath }).catch(err => {
 		const { stderr = '' } = err
 		const firstStdErrLine = stderr.split('\n')[0]
 		// This child process will be SIGTERM-ed if it times out.
