@@ -75,7 +75,7 @@
     "semver": "^6.3.0",
     "sort-keys": "^3.0.0",
     "typescript": "^3.4.5",
-    "yargs": "^13.2.2"
+    "yargs": "^16.0.3"
   },
   "files": [
     "dist",
