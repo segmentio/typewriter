@@ -3,7 +3,7 @@ jobs:
   setup:
     working_directory: ~/typewriter
     docker:
-      - image: circleci/node:10.15
+      - image: &node_image circleci/node:10
 
     steps:
       - checkout
@@ -27,56 +27,56 @@ jobs:
 
   build:
     docker:
-      - image: circleci/node:10.15
+      - image: *node_image
     steps:
       - attach_workspace: { at: . }
       - run: yarn build
 
   lint:
     docker:
-      - image: circleci/node:10.15
+      - image: *node_image
     steps:
       - attach_workspace: { at: . }
       - run: yarn lint
 
   test-unit-tests:
     docker:
-      - image: circleci/node:10.15
+      - image: *node_image
     steps:
       - attach_workspace: { at: . }
       - run: yarn test
 
   build-example:
     docker:
-      - image: circleci/node:10.15
+      - image: *node_image
     steps:
       - attach_workspace: { at: . }
       - run: make build-example
 
   test-node-javascript-dev:
     docker:
-      - image: circleci/node:10.15
+      - image: *node_image
       - image: segment/mock:v0.0.2
     steps:
       - attach_workspace: { at: . }
       - run: make test-node-javascript-dev
   test-node-javascript-prod:
     docker:
-      - image: circleci/node:10.15
+      - image: *node_image
       - image: segment/mock:v0.0.2
     steps:
       - attach_workspace: { at: . }
       - run: make test-node-javascript-prod
   test-node-typescript-dev:
     docker:
-      - image: circleci/node:10.15
+      - image: *node_image
       - image: segment/mock:v0.0.2
     steps:
       - attach_workspace: { at: . }
       - run: make test-node-typescript-dev
   test-node-typescript-prod:
     docker:
-      - image: circleci/node:10.15
+      - image: *node_image
       - image: segment/mock:v0.0.2
     steps:
       - attach_workspace: { at: . }
@@ -251,7 +251,7 @@ jobs:
           name: Run Android Java Tests
           command: |
             git clone https://github.com/segmentio/mock.git && cd mock && yarn && cd ..
-            cd mock && yarn dev & 
+            cd mock && yarn dev &
             sleep 5
             make test-android-java-dev
       - save_cache:
@@ -274,7 +274,7 @@ jobs:
           name: Run Android Java Tests
           command: |
             git clone https://github.com/segmentio/mock.git && cd mock && yarn && cd ..
-            cd mock && yarn dev & 
+            cd mock && yarn dev &
             sleep 5
             make test-android-java-prod
       - save_cache:
