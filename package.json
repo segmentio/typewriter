@@ -45,13 +45,17 @@
     "husky": "^2.1.0",
     "jest": "^26.4.2",
     "jest-expect-message": "^1.0.2",
+    "latest-version": "^5.1.0",
     "lint-staged": "^8.1.7",
     "np": "^5.0.1",
+    "prettier": "^1.17.0",
+    "semver": "^6.3.0",
     "snyk": "^1.250.0",
     "ts-jest": "^26.4.1",
     "ts-node": "^8.1.0",
     "tsconfig-paths": "^3.8.0",
-    "typewriter": "^7.1.0"
+    "typewriter": "^7.1.0",
+    "typescript": "^3.4.5"
   },
   "dependencies": {
     "@hapi/joi": "^15.1.1",
@@ -67,14 +71,10 @@
     "ink-text-input": "^3.2.1",
     "js-yaml": "^3.13.1",
     "json-stable-stringify": "^1.0.1",
-    "latest-version": "^5.1.0",
     "lodash": "^4.17.20",
     "node-machine-id": "^1.1.12",
-    "prettier": "^1.17.0",
     "react": "^16.9.0",
-    "semver": "^6.3.0",
     "sort-keys": "^3.0.0",
-    "typescript": "^3.4.5",
     "yargs": "^16.0.3"
   },
   "files": [
