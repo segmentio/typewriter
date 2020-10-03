@@ -55,9 +55,7 @@ export async function fetchTrackingPlan(options: {
 	const url = `workspaces/${options.workspaceSlug}/tracking-plans/${options.id}`
 	const response = await apiGet<SegmentAPI.GetTrackingPlanResponse>(url, options.token)
 
-	// eslint-disable-next-line @typescript-eslint/camelcase
 	response.create_time = new Date(response.create_time)
-	// eslint-disable-next-line @typescript-eslint/camelcase
 	response.update_time = new Date(response.update_time)
 
 	return sanitizeTrackingPlan(response)
@@ -72,12 +70,9 @@ export async function fetchTrackingPlans(options: {
 	const url = `workspaces/${options.workspaceSlug}/tracking-plans`
 	const response = await apiGet<SegmentAPI.ListTrackingPlansResponse>(url, options.token)
 
-	// eslint-disable-next-line @typescript-eslint/camelcase
 	return response.tracking_plans.map((tp) => ({
 		...tp,
-		// eslint-disable-next-line @typescript-eslint/camelcase
 		create_time: new Date(tp.create_time),
-		// eslint-disable-next-line @typescript-eslint/camelcase
 		update_time: new Date(tp.update_time),
 	}))
 }
@@ -107,7 +102,6 @@ export async function fetchWorkspaces(options: { token: string }): Promise<Segme
 
 	return resp.workspaces.map((w) => ({
 		...w,
-		// eslint-disable-next-line @typescript-eslint/camelcase
 		create_time: new Date(w.create_time),
 	}))
 }

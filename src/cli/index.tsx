@@ -6,8 +6,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'production'
 
 import React, { createContext } from 'react'
 import { render } from 'ink'
-import { Token, Version, Build, Help, Init, ErrorBoundary, wrapError } from './commands'
-import { CLIArguments } from './index'
+import { Token, Version, Build, Help, Init, ErrorBoundary } from './commands'
 import Analytics from 'analytics-node'
 import typewriter from '../analytics'
 import { Config, getConfig, getTokenMethod } from './config'
@@ -72,7 +71,7 @@ const commandDefaults = {
 }
 
 // The `.argv` below will boot a Yargs CLI.
-require('yargs')
+require('yargs') // eslint-disable-line
 	.command({
 		...commandDefaults,
 		command: ['init', 'initialize', 'quickstart'],
@@ -137,7 +136,7 @@ typewriter.setTypewriterOptions({
 	analytics: analyticsNode,
 })
 
-function toYargsHandler<P = {}>(
+function toYargsHandler<P = Record<string, unknown>>(
 	Command: React.FC<StandardProps & P>,
 	props: P,
 	cliOptions?: { validateDefault?: boolean }
@@ -149,7 +148,6 @@ function toYargsHandler<P = {}>(
 			anonymousId = await getAnonymousId()
 		} catch (error) {
 			typewriter.errorFired({
-				/* eslint-disable @typescript-eslint/camelcase */
 				error_string: 'Failed to generate an anonymous id',
 				error,
 			})
@@ -292,7 +290,6 @@ async function typewriterLibraryProperties(
 	} catch {}
 
 	return {
-		/* eslint-disable @typescript-eslint/camelcase */
 		version,
 		client: cfg && {
 			language: cfg.client.language,

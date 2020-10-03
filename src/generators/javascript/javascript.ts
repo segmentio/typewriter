@@ -198,3 +198,5 @@ function conditionallyNullable(
 		type: !!schema.isNullable ? `${property.type} | null` : property.type,
 	}
 }
+
+export default javascript

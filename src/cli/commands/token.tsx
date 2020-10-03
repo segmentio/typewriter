@@ -6,6 +6,38 @@ import { listTokens, ListTokensOutput, getTokenMethod, TokenMetadata } from '../
 import { StandardProps } from '../index'
 import { ErrorContext } from './error'
 
+interface TokenRowProps {
+	tokenMetadata?: TokenMetadata
+	method?: string
+	name: string
+}
+
+const TokenRow: React.FC<TokenRowProps> = ({ tokenMetadata, method, name }) => {
+	const isSelected = tokenMetadata && method === tokenMetadata.method
+
+	return (
+		<Box flexDirection="row">
+			<Color green={isSelected} grey={!isSelected}>
+				<Box width={20}>{name}:</Box>
+				<Box width={15}>
+					{tokenMetadata && tokenMetadata.token
+						? `${tokenMetadata.token.slice(0, 10)}...`
+						: '(None)'}
+				</Box>
+				{tokenMetadata && !!tokenMetadata.token && !tokenMetadata.isValidToken ? (
+					<Box width={10}>
+						<Color red={true}>(invalid token)</Color>
+					</Box>
+				) : (
+					<Box width={10}>
+						{tokenMetadata && tokenMetadata.workspace ? tokenMetadata.workspace.name : ''}
+					</Box>
+				)}
+			</Color>
+		</Box>
+	)
+}
+
 export const Token: React.FC<StandardProps> = (props) => {
 	const [isLoading, setIsLoading] = useState(true)
 	const [method, setMethod] = useState<string | undefined>()
@@ -47,38 +79,6 @@ export const Token: React.FC<StandardProps> = (props) => {
 					.
 				</Color>
 			</Box>
-		</Box>
-	)
-}
-
-interface TokenRowProps {
-	tokenMetadata?: TokenMetadata
-	method?: string
-	name: string
-}
-
-const TokenRow: React.FC<TokenRowProps> = ({ tokenMetadata, method, name }) => {
-	const isSelected = tokenMetadata && method === tokenMetadata.method
-
-	return (
-		<Box flexDirection="row">
-			<Color green={isSelected} grey={!isSelected}>
-				<Box width={20}>{name}:</Box>
-				<Box width={15}>
-					{tokenMetadata && tokenMetadata.token
-						? `${tokenMetadata.token.slice(0, 10)}...`
-						: '(None)'}
-				</Box>
-				{tokenMetadata && !!tokenMetadata.token && !tokenMetadata.isValidToken ? (
-					<Box width={10}>
-						<Color red={true}>(invalid token)</Color>
-					</Box>
-				) : (
-					<Box width={10}>
-						{tokenMetadata && tokenMetadata.workspace ? tokenMetadata.workspace.name : ''}
-					</Box>
-				)}
-			</Color>
 		</Box>
 	)
 }

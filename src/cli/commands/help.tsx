@@ -7,6 +7,67 @@ import { Box, Color, Text, useApp } from 'ink'
 import Link from 'ink-link'
 import { StandardProps } from '../index'
 
+interface HelpSectionProps {
+	name: string
+}
+
+const HelpSection: React.FC<HelpSectionProps> = ({ name, children }) => {
+	return (
+		<Box flexDirection="column" marginBottom={1}>
+			<Color grey>{name}:</Color>
+			<Box flexDirection="column" marginLeft={2}>
+				{children}
+			</Box>
+		</Box>
+	)
+}
+
+interface HelpRowProps {
+	name: string
+	isDefault?: boolean
+	description: string | JSX.Element
+	linesNeeded?: number
+	isHidden?: boolean
+}
+
+const HelpRow: React.FC<HelpRowProps> = ({
+	name,
+	description,
+	isDefault,
+	linesNeeded,
+	isHidden,
+}) => {
+	if (!!isHidden) {
+		return null
+	}
+
+	return (
+		<Box height={linesNeeded || 1}>
+			<Box width="20%">{name}</Box>
+			<Box width="65%" textWrap="wrap">
+				{description}
+			</Box>
+			<Box width="15%">{!!isDefault ? <Color blue>(default)</Color> : ''}</Box>
+		</Box>
+	)
+}
+
+interface ExampleRowProps {
+	description: string
+	command: string
+}
+
+const ExampleRow: React.FC<ExampleRowProps> = ({ description, command }) => {
+	return (
+		<Box flexDirection="column">
+			{description}
+			<Box marginLeft={2}>
+				<Color redBright>$ {command}</Color>
+			</Box>
+		</Box>
+	)
+}
+
 export const Help: React.FC<StandardProps> = () => {
 	const { exit } = useApp()
 	useEffect(() => {
@@ -103,67 +164,6 @@ export const Help: React.FC<StandardProps> = () => {
 						command="typewriter --config ../typewriter.yml"
 					/>
 				</HelpSection>
-			</Box>
-		</Box>
-	)
-}
-
-interface HelpSectionProps {
-	name: string
-}
-
-const HelpSection: React.FC<HelpSectionProps> = ({ name, children }) => {
-	return (
-		<Box flexDirection="column" marginBottom={1}>
-			<Color grey>{name}:</Color>
-			<Box flexDirection="column" marginLeft={2}>
-				{children}
-			</Box>
-		</Box>
-	)
-}
-
-interface HelpRowProps {
-	name: string
-	isDefault?: boolean
-	description: string | JSX.Element
-	linesNeeded?: number
-	isHidden?: boolean
-}
-
-const HelpRow: React.FC<HelpRowProps> = ({
-	name,
-	description,
-	isDefault,
-	linesNeeded,
-	isHidden,
-}) => {
-	if (!!isHidden) {
-		return null
-	}
-
-	return (
-		<Box height={linesNeeded || 1}>
-			<Box width="20%">{name}</Box>
-			<Box width="65%" textWrap="wrap">
-				{description}
-			</Box>
-			<Box width="15%">{!!isDefault ? <Color blue>(default)</Color> : ''}</Box>
-		</Box>
-	)
-}
-
-interface ExampleRowProps {
-	description: string
-	command: string
-}
-
-const ExampleRow: React.FC<ExampleRowProps> = ({ description, command }) => {
-	return (
-		<Box flexDirection="column">
-			{description}
-			<Box marginLeft={2}>
-				<Color redBright>$ {command}</Color>
 			</Box>
 		</Box>
 	)

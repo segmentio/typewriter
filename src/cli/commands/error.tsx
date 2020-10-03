@@ -7,7 +7,7 @@ import { Box, Color, useApp } from 'ink'
 import Link from 'ink-link'
 import figures from 'figures'
 import { version } from '../../../package.json'
-import { DebugContext, AnalyticsProps } from '../index'
+import { AnalyticsProps } from '../index'
 import typewriter from '../../analytics'
 
 interface ErrorContextProps {
@@ -17,8 +17,8 @@ interface ErrorContextProps {
 	handleFatalError: (error: WrappedError) => void
 }
 export const ErrorContext = createContext<ErrorContextProps>({
-	handleError: () => {},
-	handleFatalError: () => {},
+	handleError: () => {}, // eslint-disable-line
+	handleFatalError: () => {}, // eslint-disable-line
 })
 
 export interface WrappedError {
@@ -65,95 +65,6 @@ interface ErrorBoundaryState {
 	error?: WrappedError
 }
 
-/**
- * We use a class component here, because we need access to the getDerivedStateFromError
- * lifecycle method, which is not yet supported by React Hooks.
- *
- * NOTE: it's important that the CLI runs in NODE_ENV=production when packaged up,
- *    otherwise, React will print a warning preventing this component from overwriting
- *    the error-ed component. See: https://github.com/vadimdemedes/ink/issues/234
- */
-export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
-	public state: ErrorBoundaryState = {}
-
-	public static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {
-		return { error: toUnexpectedError(error) }
-	}
-
-	public componentDidCatch(error: Error) {
-		this.reportError({
-			error: toUnexpectedError(error),
-			fatal: true,
-		})
-	}
-
-	public componentDidMount() {
-		if (this.props.error) {
-			const err = toUnexpectedError(this.props.error)
-			this.reportError({
-				error: err,
-				fatal: true,
-			})
-			this.setState({ error: err })
-		}
-	}
-
-	private reportError = async (params: { error: WrappedError; fatal: boolean }) => {
-		const { anonymousId, analyticsProps } = this.props
-
-		typewriter.errorFired({
-			/* eslint-disable @typescript-eslint/camelcase */
-			properties: {
-				...analyticsProps,
-				error_string: JSON.stringify(params.error, undefined, 2),
-				unexpected: params.fatal,
-				error: params.error,
-			},
-			anonymousId,
-		})
-
-		if (this.props.debug) {
-			console.trace(params.error)
-		}
-	}
-
-	/** For non-fatal errors, we just log the error when in debug mode. */
-	private handleError = async (error: WrappedError) => {
-		await this.reportError({
-			error,
-			fatal: false,
-		})
-	}
-
-	/** For fatal errors, we halt the CLI by rendering an ErrorComponent. */
-	private handleFatalError = async (error: WrappedError) => {
-		await this.reportError({
-			error,
-			fatal: true,
-		})
-		this.setState({ error })
-	}
-
-	public render() {
-		const { children } = this.props
-		const { error } = this.state
-
-		const context = {
-			handleError: this.handleError,
-			handleFatalError: this.handleFatalError,
-		}
-
-		return (
-			<ErrorContext.Provider value={context}>
-				<Box flexDirection="column">
-					{error && <ErrorComponent error={error} />}
-					{!error && children}
-				</Box>
-			</ErrorContext.Provider>
-		)
-	}
-}
-
 interface ErrorComponentProps {
 	error: WrappedError
 }
@@ -194,4 +105,92 @@ const ErrorComponent: React.FC<ErrorComponentProps> = ({ error }) => {
 			</Box>
 		</Box>
 	)
+}
+
+/**
+ * We use a class component here, because we need access to the getDerivedStateFromError
+ * lifecycle method, which is not yet supported by React Hooks.
+ *
+ * NOTE: it's important that the CLI runs in NODE_ENV=production when packaged up,
+ *    otherwise, React will print a warning preventing this component from overwriting
+ *    the error-ed component. See: https://github.com/vadimdemedes/ink/issues/234
+ */
+export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+	public state: ErrorBoundaryState = {}
+
+	public static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {
+		return { error: toUnexpectedError(error) }
+	}
+
+	public componentDidCatch(error: Error): void {
+		this.reportError({
+			error: toUnexpectedError(error),
+			fatal: true,
+		})
+	}
+
+	public componentDidMount(): void {
+		if (this.props.error) {
+			const err = toUnexpectedError(this.props.error)
+			this.reportError({
+				error: err,
+				fatal: true,
+			})
+			this.setState({ error: err })
+		}
+	}
+
+	private reportError = async (params: { error: WrappedError; fatal: boolean }) => {
+		const { anonymousId, analyticsProps } = this.props
+
+		typewriter.errorFired({
+			properties: {
+				...analyticsProps,
+				error_string: JSON.stringify(params.error, undefined, 2),
+				unexpected: params.fatal,
+				error: params.error,
+			},
+			anonymousId,
+		})
+
+		if (this.props.debug) {
+			console.trace(params.error)
+		}
+	}
+
+	/** For non-fatal errors, we just log the error when in debug mode. */
+	private handleError = async (error: WrappedError) => {
+		await this.reportError({
+			error,
+			fatal: false,
+		})
+	}
+
+	/** For fatal errors, we halt the CLI by rendering an ErrorComponent. */
+	private handleFatalError = async (error: WrappedError) => {
+		await this.reportError({
+			error,
+			fatal: true,
+		})
+		this.setState({ error })
+	}
+
+	public render(): JSX.Element {
+		const { children } = this.props
+		const { error } = this.state
+
+		const context = {
+			handleError: this.handleError,
+			handleFatalError: this.handleFatalError,
+		}
+
+		return (
+			<ErrorContext.Provider value={context}>
+				<Box flexDirection="column">
+					{error && <ErrorComponent error={error} />}
+					{!error && children}
+				</Box>
+			</ErrorContext.Provider>
+		)
+	}
 }
