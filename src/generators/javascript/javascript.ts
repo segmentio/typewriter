@@ -62,7 +62,7 @@ export const javascript: Generator<
 		allowedIdentifierStartingChars: 'A-Za-z_$',
 		allowedIdentifierChars: 'A-Za-z0-9_$',
 	},
-	setup: async options => {
+	setup: async (options) => {
 		await registerPartial(
 			'generators/javascript/templates/setTypewriterOptionsDocumentation.hbs',
 			'setTypewriterOptionsDocumentation'
@@ -125,7 +125,7 @@ export const javascript: Generator<
 	generateUnion: async (client, schema, types) =>
 		conditionallyNullable(schema, {
 			name: client.namer.escapeString(schema.name),
-			type: types.map(t => t.type).join(' | '),
+			type: types.map((t) => t.type).join(' | '),
 		}),
 	generateTrackCall: async (client, schema, propertiesObject) => ({
 		functionName: client.namer.register(schema.name, 'function->track', { transform: camelCase }),

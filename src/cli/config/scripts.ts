@@ -13,7 +13,7 @@ const EXEC_TIMEOUT = 5000 // ms
 
 export async function runScript(script: string, configPath: string, type: Scripts) {
 	const scriptWithCD = `cd ${configPath}; ${script}`
-	const { stdout } = await exec(scriptWithCD, { timeout: EXEC_TIMEOUT }).catch(err => {
+	const { stdout } = await exec(scriptWithCD, { timeout: EXEC_TIMEOUT }).catch((err) => {
 		const { stderr = '' } = err
 		const firstStdErrLine = stderr.split('\n')[0]
 		// This child process will be SIGTERM-ed if it times out.

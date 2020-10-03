@@ -73,7 +73,7 @@ export async function fetchTrackingPlans(options: {
 	const response = await apiGet<SegmentAPI.ListTrackingPlansResponse>(url, options.token)
 
 	// eslint-disable-next-line @typescript-eslint/camelcase
-	return response.tracking_plans.map(tp => ({
+	return response.tracking_plans.map((tp) => ({
 		...tp,
 		// eslint-disable-next-line @typescript-eslint/camelcase
 		create_time: new Date(tp.create_time),
@@ -89,7 +89,7 @@ export async function fetchAllTrackingPlans(options: {
 	const trackingPlans = []
 
 	const workspaces = await fetchWorkspaces({ token: options.token })
-	for (var workspace of workspaces) {
+	for (const workspace of workspaces) {
 		const workspaceTPs = await fetchTrackingPlans({
 			workspaceSlug: workspace.name.replace('workspaces/', ''),
 			token: options.token,
@@ -105,7 +105,7 @@ export async function fetchAllTrackingPlans(options: {
 export async function fetchWorkspaces(options: { token: string }): Promise<SegmentAPI.Workspace[]> {
 	const resp = await apiGet<SegmentAPI.ListWorkspacesResponse>('workspaces', options.token)
 
-	return resp.workspaces.map(w => ({
+	return resp.workspaces.map((w) => ({
 		...w,
 		// eslint-disable-next-line @typescript-eslint/camelcase
 		create_time: new Date(w.create_time),
@@ -127,7 +127,7 @@ export async function validateToken(token: string | undefined): Promise<TokenVal
 
 	// If we don't have a cached result, query the API to find out if this is a valid token.
 	if (!tokenValidationCache[token]) {
-		let result: TokenValidationResult = { isValid: false }
+		const result: TokenValidationResult = { isValid: false }
 		try {
 			const workspaces = await fetchWorkspaces({ token })
 			result.isValid = workspaces.length > 0

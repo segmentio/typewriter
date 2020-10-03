@@ -46,7 +46,7 @@ enum Steps {
 	Done = 8,
 }
 
-export const Init: React.FC<InitProps> = props => {
+export const Init: React.FC<InitProps> = (props) => {
 	const { config, configPath } = props
 
 	const [step, setStep] = useState(Steps.Confirmation)
@@ -204,7 +204,7 @@ const SDKPrompt: React.FC<SDKPromptProps> = ({ step, sdk, onSubmit }) => {
 		{ label: 'iOS (analytics-ios)', value: SDK.IOS },
 		{ label: 'Android (analytics-android)', value: SDK.ANDROID },
 	]
-	const initialIndex = items.findIndex(i => i.value === sdk)
+	const initialIndex = items.findIndex((i) => i.value === sdk)
 
 	const onSelect = (item: Item) => {
 		onSubmit(item.value as SDK)
@@ -241,7 +241,7 @@ const LanguagePrompt: React.FC<LanguagePromptProps> = ({ step, sdk, language, on
 		{ label: 'Objective-C', value: Language.OBJECTIVE_C },
 		{ label: 'Swift', value: Language.SWIFT },
 		{ label: 'Java', value: Language.JAVA },
-	].filter(item => {
+	].filter((item) => {
 		// Filter out items that aren't relevant, given the selected SDK.
 		const supportedLanguages = {
 			[SDK.WEB]: [Language.JAVASCRIPT, Language.TYPESCRIPT],
@@ -252,7 +252,7 @@ const LanguagePrompt: React.FC<LanguagePromptProps> = ({ step, sdk, language, on
 
 		return supportedLanguages[sdk].includes(item.value)
 	})
-	const initialIndex = items.findIndex(i => i.value === language)
+	const initialIndex = items.findIndex((i) => i.value === language)
 
 	const onSelect = (item: Item) => {
 		onSubmit(item.value as Language)
@@ -281,11 +281,11 @@ async function filterDirectories(path: string): Promise<string[]> {
 			})
 			const directoryBlocklist = ['node_modules']
 			return files
-				.filter(f => f.isDirectory())
-				.filter(f => !f.name.startsWith('.'))
-				.filter(f => !directoryBlocklist.some(b => f.name.startsWith(b)))
-				.map(f => join(path, f.name))
-				.filter(f => normalize(f).startsWith(normalize(path).replace(/^\.\/?/, '')))
+				.filter((f) => f.isDirectory())
+				.filter((f) => !f.name.startsWith('.'))
+				.filter((f) => !directoryBlocklist.some((b) => f.name.startsWith(b)))
+				.map((f) => join(path, f.name))
+				.filter((f) => normalize(f).startsWith(normalize(path).replace(/^\.\/?/, '')))
 		} catch {
 			// If we can't read this path, then return an empty list of sub-directories.
 			return []
@@ -298,13 +298,13 @@ async function filterDirectories(path: string): Promise<string[]> {
 	// First look for all directories in the same directory as the current query path.
 	const parentPath = join(path, isPathEmpty || path.endsWith('/') ? '.' : '..')
 	const parentDirectories = await listDirectories(parentPath)
-	parentDirectories.forEach(f => directories.add(f))
+	parentDirectories.forEach((f) => directories.add(f))
 
 	const queryPath = join(parentPath, path)
 	// Next, if the current query IS a directory, then we want to prioritize results from inside that directory.
 	if (directories.has(queryPath)) {
 		const queryDirectories = await listDirectories(queryPath)
-		queryDirectories.forEach(f => directories.add(f))
+		queryDirectories.forEach((f) => directories.add(f))
 	}
 
 	// Otherwise, show results from inside any other directories at the level of the current query path.
@@ -314,12 +314,15 @@ async function filterDirectories(path: string): Promise<string[]> {
 		}
 
 		const otherDirectories = await listDirectories(dirPath)
-		otherDirectories.forEach(f => directories.add(f))
+		otherDirectories.forEach((f) => directories.add(f))
 	}
 
 	// Now sort these directories by the query path.
-	var fuse = new Fuse([...directories].map(d => ({ name: d })), { keys: ['name'] })
-	return isPathEmpty ? [...directories] : fuse.search(path).map(d => d.name)
+	const fuse = new Fuse(
+		[...directories].map((d) => ({ name: d })),
+		{ keys: ['name'] }
+	)
+	return isPathEmpty ? [...directories] : fuse.search(path).map((d) => d.name)
 }
 
 /** A prompt to identify where to store the new client on the user's filesystem. */
@@ -594,20 +597,20 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
 	}, [])
 
 	const onSelect = (item: Item) => {
-		const trackingPlan = trackingPlans.find(tp => tp.name === item.value)!
+		const trackingPlan = trackingPlans.find((tp) => tp.name === item.value)!
 		onSubmit(trackingPlan)
 	}
 
 	// Sort the Tracking Plan alphabetically by display name.
 	const choices = orderBy(
-		trackingPlans.map(tp => ({
+		trackingPlans.map((tp) => ({
 			label: tp.display_name,
 			value: tp.name,
 		})),
 		'label',
 		'asc'
 	)
-	let initialIndex = choices.findIndex(c => !!trackingPlan && c.value === trackingPlan.name)
+	let initialIndex = choices.findIndex((c) => !!trackingPlan && c.value === trackingPlan.name)
 	initialIndex = initialIndex === -1 ? 0 : initialIndex
 
 	const tips = [
@@ -722,7 +725,7 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 
 	const summary = (
 		<Box flexDirection="column">
-			{summaryRows.map(r => (
+			{summaryRows.map((r) => (
 				<Box key={r.label}>
 					<Box width={20}>
 						<Color grey>{r.label}:</Color>
@@ -736,7 +739,10 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 	return (
 		<Step name="Summary:" step={step} description={summary} isLoading={isLoading}>
 			<SelectInput
-				items={[{ label: 'Looks good!', value: 'lgtm' }, { label: 'Edit', value: 'edit' }]}
+				items={[
+					{ label: 'Looks good!', value: 'lgtm' },
+					{ label: 'Edit', value: 'edit' },
+				]}
 				onSelect={onSelect}
 			/>
 		</Step>

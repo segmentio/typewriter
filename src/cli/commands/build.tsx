@@ -200,8 +200,8 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
 				path: trackingPlanConfig.path,
 				trackCalls: events
 					// Typewriter doesn't yet support event versioning. For now, we just choose the most recent version.
-					.filter(e => events.every(e2 => e.name !== e2.name || e.version >= e2.version))
-					.map<JSONSchema7>(e => ({
+					.filter((e) => events.every((e2) => e.name !== e2.name || e.version >= e2.version))
+					.map<JSONSchema7>((e) => ({
 						...e.rules,
 						title: e.name,
 						description: e.description,
@@ -275,7 +275,7 @@ export const ClearFilesStep: React.FC<ClearFilesProps> = ({ config, configPath, 
 
 	async function clearGeneratedFiles() {
 		const errors = await Promise.all(
-			config.trackingPlans.map(async trackingPlanConfig => {
+			config.trackingPlans.map(async (trackingPlanConfig) => {
 				const path = resolveRelativePath(configPath, trackingPlanConfig.path)
 				await verifyDirectoryExists(path)
 				try {
@@ -291,7 +291,7 @@ export const ClearFilesStep: React.FC<ClearFilesProps> = ({ config, configPath, 
 			})
 		)
 
-		const error = errors.find(error => isWrappedError(error))
+		const error = errors.find((error) => isWrappedError(error))
 		if (error) {
 			handleFatalError(error)
 			return null
@@ -306,7 +306,7 @@ export const ClearFilesStep: React.FC<ClearFilesProps> = ({ config, configPath, 
 	// lines of every generated file.
 	async function clearFolder(path: string): Promise<void> {
 		const fileNames = await readdir(path, 'utf-8')
-		for (let fileName of fileNames) {
+		for (const fileName of fileNames) {
 			const fullPath = join(path, fileName)
 			try {
 				const contents = await readFile(fullPath, 'utf-8')
@@ -357,7 +357,7 @@ export const GenerationStep: React.FC<GenerationProps> = ({
 			})
 
 			// Write it out to the specified directory:
-			for (var file of files) {
+			for (const file of files) {
 				const path = resolveRelativePath(configPath, trackingPlan.path, file.path)
 				await verifyDirectoryExists(path, 'file')
 				await writeFile(path, file.contents, {
@@ -372,7 +372,7 @@ export const GenerationStep: React.FC<GenerationProps> = ({
 	return (
 		<Step name={stepName} isRunning={isRunning} isDone={isDone}>
 			<Note>Building for {production ? 'production' : 'development'}</Note>
-			{trackingPlans.map(trackingPlan => (
+			{trackingPlans.map((trackingPlan) => (
 				<Note key={trackingPlan.url}>
 					<Link url={trackingPlan.url}>{trackingPlan.name}</Link>
 				</Note>
@@ -418,8 +418,8 @@ export const AfterStep: React.FC<AfterStepProps> = ({ config, configPath, step, 
 				<>
 					<Note isWarning>{error.description}</Note>
 					{error.notes
-						.filter(n => !!n)
-						.map(n => (
+						.filter((n) => !!n)
+						.map((n) => (
 							<Note isWarning key={n}>
 								{n}
 							</Note>

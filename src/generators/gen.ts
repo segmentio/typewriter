@@ -125,7 +125,8 @@ export declare type Generator<
 				schema: Schema,
 				properties: (P & BasePropertyContext)[]
 			) => Promise<T>
-	  })
+	  }
+)
 
 export interface GenOptions {
 	// Configuration options configured by the typewriter.yml config.
@@ -142,7 +143,7 @@ export interface GenOptions {
 export async function gen(trackingPlan: RawTrackingPlan, options: GenOptions): Promise<File[]> {
 	const parsedTrackingPlan = {
 		url: trackingPlan.url,
-		trackCalls: trackingPlan.trackCalls.map(s => {
+		trackCalls: trackingPlan.trackCalls.map((s) => {
 			const sanitizedSchema = {
 				$schema: 'http://json-schema.org/draft-07/schema#',
 				...s,
@@ -260,7 +261,7 @@ async function runGenerator<R extends object, T extends object, O extends object
 			// For unions, we generate a property type to represent each of the possible types
 			// then use that list of possible property types to generate a union.
 			const types = await Promise.all(
-				schema.types.map(async t => {
+				schema.types.map(async (t) => {
 					const subSchema = {
 						name: schema.name,
 						description: schema.description,
@@ -310,7 +311,7 @@ async function runGenerator<R extends object, T extends object, O extends object
 	await generator.generateRoot(client, context)
 
 	// Format and output all generated files.
-	return files.map(f => (generator.formatFile ? generator.formatFile(client, f) : f))
+	return files.map((f) => (generator.formatFile ? generator.formatFile(client, f) : f))
 }
 
 // Legacy Code:

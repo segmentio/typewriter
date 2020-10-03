@@ -160,7 +160,7 @@ function parseTypeSpecificFields(raw: JSONSchema7, type: Type): TypeSpecificFiel
 	if (type === Type.OBJECT) {
 		const fields: ObjectTypeFields = { type, properties: [] }
 		const requiredFields = new Set(raw.required || [])
-		for (var entry of Object.entries(raw.properties || {})) {
+		for (const entry of Object.entries(raw.properties || {})) {
 			const [property, propertySchema] = entry
 			if (typeof propertySchema !== 'boolean') {
 				const isRequired = requiredFields.has(property)
@@ -173,10 +173,10 @@ function parseTypeSpecificFields(raw: JSONSchema7, type: Type): TypeSpecificFiel
 		const fields: ArrayTypeFields = { type, items: { type: Type.ANY } }
 		if (typeof raw.items !== 'boolean' && raw.items !== undefined) {
 			// `items` can be a single schemas, or an array of schemas, so standardize on an array.
-			let definitions = raw.items instanceof Array ? raw.items : [raw.items]
+			const definitions = raw.items instanceof Array ? raw.items : [raw.items]
 
 			// Convert from JSONSchema7Definition -> JSONSchema7
-			const schemas = definitions.filter(def => typeof def !== 'boolean') as JSONSchema7[]
+			const schemas = definitions.filter((def) => typeof def !== 'boolean') as JSONSchema7[]
 
 			if (schemas.length === 1) {
 				const schema = schemas[0]
@@ -184,7 +184,7 @@ function parseTypeSpecificFields(raw: JSONSchema7, type: Type): TypeSpecificFiel
 			} else if (schemas.length > 1) {
 				fields.items = {
 					type: Type.UNION,
-					types: schemas.map(schema => parseTypeSpecificFields(schema, getType(schema))),
+					types: schemas.map((schema) => parseTypeSpecificFields(schema, getType(schema))),
 				}
 			}
 		}
@@ -192,7 +192,7 @@ function parseTypeSpecificFields(raw: JSONSchema7, type: Type): TypeSpecificFiel
 		return fields
 	} else if (type === Type.UNION) {
 		const fields: UnionTypeFields = { type, types: [] }
-		for (var val of getRawTypes(raw).values()) {
+		for (const val of getRawTypes(raw).values()) {
 			// For codegen purposes, we don't consider "null" as a type, so remove it.
 			if (val === 'null') {
 				continue
@@ -233,7 +233,7 @@ function getRawTypes(raw: JSONSchema7): Set<string> {
 	if (typeof raw.type === 'string') {
 		rawTypes.add(raw.type)
 	} else if (raw.type instanceof Array) {
-		raw.type.forEach(t => rawTypes.add(t))
+		raw.type.forEach((t) => rawTypes.add(t))
 	}
 
 	return rawTypes
@@ -270,7 +270,7 @@ function getEnum(raw: JSONSchema7): EnumValue[] | undefined {
 	}
 
 	const enm = raw.enum.filter(
-		val => ['boolean', 'number', 'string'].includes(typeof val) || val === null
+		(val) => ['boolean', 'number', 'string'].includes(typeof val) || val === null
 	) as EnumValue[]
 
 	return enm

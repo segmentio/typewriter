@@ -88,7 +88,7 @@ export const ios: Generator<{}, IOSTrackCallContext, IOSObjectContext, IOSProper
 	generateArray: async (client, schema, items, parentPath) => {
 		// Objective-C doesn't support NSArray's of primitives. Therefore, we
 		// map booleans and integers to NSNumbers.
-		let itemsType = [Type.BOOLEAN, Type.INTEGER].includes(items.schemaType)
+		const itemsType = [Type.BOOLEAN, Type.INTEGER].includes(items.schemaType)
 			? 'NSNumber *'
 			: items.type
 
@@ -113,7 +113,7 @@ export const ios: Generator<{}, IOSTrackCallContext, IOSObjectContext, IOSProper
 			property.importName = `"${className}.h"`
 			object = {
 				name: className,
-				imports: properties.filter(p => !!p.importName).map(p => p.importName!),
+				imports: properties.filter((p) => !!p.importName).map((p) => p.importName!),
 			}
 		}
 
@@ -155,10 +155,10 @@ export const ios: Generator<{}, IOSTrackCallContext, IOSObjectContext, IOSProper
 				'generators/ios/templates/SEGTypewriterSerializable.h.hbs',
 				context
 			),
-			...context.objects.map(o =>
+			...context.objects.map((o) =>
 				client.generateFile(`${o.name}.h`, 'generators/ios/templates/class.h.hbs', o)
 			),
-			...context.objects.map(o =>
+			...context.objects.map((o) =>
 				client.generateFile(`${o.name}.m`, 'generators/ios/templates/class.m.hbs', o)
 			),
 		])
@@ -225,7 +225,7 @@ function generateFunctionSignature(
 		const first = parameters[0]
 		signature += `With${upperFirst(first.name)}:(${withNullability(first)})${first.name}\n`
 	}
-	for (var parameter of parameters.slice(1)) {
+	for (const parameter of parameters.slice(1)) {
 		signature += `${parameter.name}:(${withNullability(parameter)})${parameter.name}\n`
 	}
 
@@ -240,7 +240,7 @@ function generateFunctionCall(
 	extraParameterValue?: string
 ): string {
 	let functionCall = functionName
-	const parameters: { name: string; value: string }[] = properties.map(p => ({
+	const parameters: { name: string; value: string }[] = properties.map((p) => ({
 		name: p.name,
 		value: p.name,
 	}))
@@ -255,7 +255,7 @@ function generateFunctionCall(
 		const { name, value } = parameters[0]
 		functionCall += `With${upperFirst(name)}:${value}`
 	}
-	for (var { name, value } of parameters.slice(1)) {
+	for (const { name, value } of parameters.slice(1)) {
 		functionCall += ` ${name}:${value}`
 	}
 
@@ -267,7 +267,7 @@ function generatePropertiesDictionary(
 	prefix?: string
 ): string {
 	let out = 'NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];\n'
-	for (let property of properties) {
+	for (const property of properties) {
 		const name = prefix && prefix.length > 0 ? `${prefix}${property.name}` : property.name
 		const serializableName =
 			property.schemaType === Type.BOOLEAN
@@ -288,16 +288,12 @@ function generatePropertiesDictionary(
 		if (property.isPointerType) {
 			if (property.isPayloadFieldNullable) {
 				// If the value is nil, we need to convert it from a primitive nil to NSNull (an object).
-				setter = `properties[@"${
-					property.rawName
-				}"] = ${name} == nil ? [NSNull null] : ${serializableName};\n`
+				setter = `properties[@"${property.rawName}"] = ${name} == nil ? [NSNull null] : ${serializableName};\n`
 			} else {
 				// If the property is not nullable, but is a pointer, then we need to guard on nil
 				// values. In that case, we don't set any value to the field.
 				// TODO: do we need these guards if we've already set a field as nonnull? TBD
-				setter = `if (${name} != nil) {\n  properties[@"${
-					property.rawName
-				}"] = ${serializableName};\n}\n`
+				setter = `if (${name} != nil) {\n  properties[@"${property.rawName}"] = ${serializableName};\n}\n`
 			}
 		} else {
 			setter = `properties[@"${property.rawName}"] = ${serializableName};\n`

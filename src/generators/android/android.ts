@@ -129,7 +129,7 @@ export const android: Generator<
 				'generators/android/templates/SerializableProperties.java.hbs',
 				context
 			),
-			...context.objects.map(o =>
+			...context.objects.map((o) =>
 				client.generateFile(`${o.name}.java`, 'generators/android/templates/class.java.hbs', o)
 			),
 		])

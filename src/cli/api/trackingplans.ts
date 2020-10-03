@@ -43,8 +43,8 @@ export async function writeTrackingPlan(
 	// Perform some pre-processing on the Tracking Plan before writing it.
 	const planJSON = flow<SegmentAPI.TrackingPlan, SegmentAPI.TrackingPlan, string>(
 		// Enforce a deterministic ordering to reduce verson control deltas.
-		plan => sanitizeTrackingPlan(plan),
-		plan => stringify(plan, { space: '\t' })
+		(plan) => sanitizeTrackingPlan(plan),
+		(plan) => stringify(plan, { space: '\t' })
 	)(plan)
 
 	await writeFile(path, planJSON, {

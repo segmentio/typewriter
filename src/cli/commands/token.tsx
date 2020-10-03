@@ -6,7 +6,7 @@ import { listTokens, ListTokensOutput, getTokenMethod, TokenMetadata } from '../
 import { StandardProps } from '../index'
 import { ErrorContext } from './error'
 
-export const Token: React.FC<StandardProps> = props => {
+export const Token: React.FC<StandardProps> = (props) => {
 	const [isLoading, setIsLoading] = useState(true)
 	const [method, setMethod] = useState<string | undefined>()
 	const [tokens, setTokens] = useState<ListTokensOutput | undefined>()
