@@ -54,8 +54,8 @@
     "ts-jest": "^26.4.1",
     "ts-node": "^8.1.0",
     "tsconfig-paths": "^3.8.0",
-    "typewriter": "^7.1.0",
-    "typescript": "^3.4.5"
+    "typescript": "^3.4.5",
+    "typewriter": "^7.1.0"
   },
   "dependencies": {
     "@hapi/joi": "^15.1.1",
