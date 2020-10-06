@@ -9,19 +9,12 @@ extension Array {
         var result = [Any]()
         
         for item in self {
-            switch item {
-            case let value as NSNumber:
-                result.append(value)
-            case let value as NSString:
-                result.append(value)
-            case let value as NSArray:
-                result.append(value)
-            case let value as NSDictionary:
-                result.append(value)
-            case let value as NSNull:
-                result.append(value)
-            default:
-                break
+            if let arr = item as? [Any] {
+                result.append(arr.serializableArray())
+            } else if let obj = item as? TypewriterSerializable {
+                result.append(obj.serializableDictionary())
+            } else {
+                result.append(item)
             }
         }
         return result
