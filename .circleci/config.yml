@@ -120,7 +120,7 @@ jobs:
       - run:
           name: Install build dependencies
           command: |
-            sudo gem install cocoapods -v 1.9.3
+            sudo gem install cocoapods -v 1.8.4
             sudo gem install xcpretty
             sudo gem install cocoapods-check -v 1.1.0
             pod --version
@@ -151,7 +151,7 @@ jobs:
       - run:
           name: Install build dependencies
           command: |
-            sudo gem install cocoapods -v 1.9.3
+            sudo gem install cocoapods -v 1.8.4
             sudo gem install xcpretty
             sudo gem install cocoapods-check -v 1.1.0
             pod --version
@@ -182,7 +182,7 @@ jobs:
       - run:
           name: Install build dependencies
           command: |
-            sudo gem install cocoapods -v 1.9.3
+            sudo gem install cocoapods -v 1.8.4
             sudo gem install xcpretty
             sudo gem install cocoapods-check -v 1.1.0
             pod --version
@@ -213,7 +213,7 @@ jobs:
       - run:
           name: Install build dependencies
           command: |
-            sudo gem install cocoapods -v 1.9.3
+            sudo gem install cocoapods -v 1.8.4
             sudo gem install xcpretty
             sudo gem install cocoapods-check -v 1.1.0
             pod --version
