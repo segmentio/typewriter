@@ -120,7 +120,7 @@ jobs:
       - run:
           name: Install build dependencies
           command: |
-            sudo gem install cocoapods -v 1.8.4
+            sudo gem install cocoapods -v 1.9.3
             sudo gem install xcpretty
             sudo gem install cocoapods-check -v 1.1.0
             pod --version
@@ -130,7 +130,7 @@ jobs:
           name: Install Cocoapods
           command: |
             cd tests/e2e/ios-objc
-            pod check --verbose || pod install --deployment
+            pod check --verbose || pod install --repo-update
       - save_cache:
           paths:
             - tests/e2e/ios-objc/Pods
@@ -151,7 +151,7 @@ jobs:
       - run:
           name: Install build dependencies
           command: |
-            sudo gem install cocoapods -v 1.8.4
+            sudo gem install cocoapods -v 1.9.3
             sudo gem install xcpretty
             sudo gem install cocoapods-check -v 1.1.0
             pod --version
@@ -161,7 +161,7 @@ jobs:
           name: Install Cocoapods
           command: |
             cd tests/e2e/ios-objc
-            pod check --verbose || pod install --deployment
+            pod check --verbose || pod install --repo-update
       - save_cache:
           paths:
             - tests/e2e/ios-objc/Pods
@@ -182,7 +182,7 @@ jobs:
       - run:
           name: Install build dependencies
           command: |
-            sudo gem install cocoapods -v 1.8.4
+            sudo gem install cocoapods -v 1.9.3
             sudo gem install xcpretty
             sudo gem install cocoapods-check -v 1.1.0
             pod --version
@@ -192,7 +192,7 @@ jobs:
           name: Install Cocoapods
           command: |
             cd tests/e2e/ios-swift
-            pod check --verbose || pod install --deployment
+            pod check --verbose || pod install --repo-update
       - save_cache:
           paths:
             - tests/e2e/ios-swift/Pods
@@ -213,7 +213,7 @@ jobs:
       - run:
           name: Install build dependencies
           command: |
-            sudo gem install cocoapods -v 1.8.4
+            sudo gem install cocoapods -v 1.9.3
             sudo gem install xcpretty
             sudo gem install cocoapods-check -v 1.1.0
             pod --version
@@ -223,7 +223,7 @@ jobs:
           name: Install Cocoapods
           command: |
             cd tests/e2e/ios-swift
-            pod check --verbose || pod install --deployment
+            pod check --verbose || pod install --repo-update
       - save_cache:
           paths:
             - tests/e2e/ios-swift/Pods
