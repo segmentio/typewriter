@@ -6,20 +6,20 @@ import Foundation
 
 class Universe: TypewriterSerializable {
 /// The common name of this universe.
-  var name: String
+    var name: String
 /// The most important occupants in this universe.
-  var occupants: [OccupantsItem]
+    var occupants: [OccupantsItem]
 
-  init(name: String, occupants: [OccupantsItem]) {
-    self.name = name
-    self.occupants = occupants
-  }
+    init(name: String, occupants: [OccupantsItem]) {
+        self.name = name
+        self.occupants = occupants
+    }
 
-  func serializableDictionary() -> [String: Any] {
-    var properties = [String: Any]()
-  properties["name"] = self.name;
-  properties["occupants"] = self.occupants.serializableArray();
+    func serializableDictionary() -> [String: Any] {
+        var properties = [String: Any]()
+        properties["name"] = self.name;
+        properties["occupants"] = self.occupants.serializableArray();
 
-    return properties;
-  }
+        return properties;
+    }
 }

@@ -6,44 +6,44 @@ import Foundation
 
 class RequiredArrayWithPropertiesItem1: TypewriterSerializable {
 /// Required any property
-  var requiredAny: Any?
+    var requiredAny: Any?
 /// Required array property
-  var requiredArray: [Any]
+    var requiredArray: [Any]
 /// Required boolean property
-  var requiredBoolean: Bool
+    var requiredBoolean: Bool
 /// Required integer property
-  var requiredInt: Int
+    var requiredInt: Int
 /// Required number property
-  var requiredNumber: Decimal
+    var requiredNumber: Decimal
 /// Required object property
-  var requiredObject: [String: Any]
+    var requiredObject: [String: Any]
 /// Required string property
-  var requiredString: String
+    var requiredString: String
 /// Required string property with a regex conditional
-  var requiredStringWithRegex: String
+    var requiredStringWithRegex: String
 
-  init(requiredAny: Any?, requiredArray: [Any], requiredBoolean: Bool, requiredInt: Int, requiredNumber: Decimal, requiredObject: [String: Any], requiredString: String, requiredStringWithRegex: String) {
-    self.requiredAny = requiredAny
-    self.requiredArray = requiredArray
-    self.requiredBoolean = requiredBoolean
-    self.requiredInt = requiredInt
-    self.requiredNumber = requiredNumber
-    self.requiredObject = requiredObject
-    self.requiredString = requiredString
-    self.requiredStringWithRegex = requiredStringWithRegex
-  }
+    init(requiredAny: Any?, requiredArray: [Any], requiredBoolean: Bool, requiredInt: Int, requiredNumber: Decimal, requiredObject: [String: Any], requiredString: String, requiredStringWithRegex: String) {
+        self.requiredAny = requiredAny
+        self.requiredArray = requiredArray
+        self.requiredBoolean = requiredBoolean
+        self.requiredInt = requiredInt
+        self.requiredNumber = requiredNumber
+        self.requiredObject = requiredObject
+        self.requiredString = requiredString
+        self.requiredStringWithRegex = requiredStringWithRegex
+    }
 
-  func serializableDictionary() -> [String: Any] {
-    var properties = [String: Any]()
-  properties["required any"] = self.requiredAny == nil ? NSNull() : self.requiredAny
-  properties["required array"] = self.requiredArray.serializableArray();
-  properties["required boolean"] = self.requiredBoolean;
-  properties["required int"] = self.requiredInt;
-  properties["required number"] = self.requiredNumber;
-  properties["required object"] = self.requiredObject;
-  properties["required string"] = self.requiredString;
-  properties["required string with regex"] = self.requiredStringWithRegex;
+    func serializableDictionary() -> [String: Any] {
+        var properties = [String: Any]()
+        properties["required any"] = self.requiredAny == nil ? NSNull() : self.requiredAny
+        properties["required array"] = self.requiredArray.serializableArray();
+        properties["required boolean"] = self.requiredBoolean;
+        properties["required int"] = self.requiredInt;
+        properties["required number"] = self.requiredNumber;
+        properties["required object"] = self.requiredObject;
+        properties["required string"] = self.requiredString;
+        properties["required string with regex"] = self.requiredStringWithRegex;
 
-    return properties;
-  }
+        return properties;
+    }
 }

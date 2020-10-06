@@ -5,16 +5,16 @@
 import Foundation
 
 class ObjectItem: TypewriterSerializable {
-  var name: String?
+    var name: String?
 
-  init(name: String?) {
-    self.name = name
-  }
+    init(name: String?) {
+        self.name = name
+    }
 
-  func serializableDictionary() -> [String: Any] {
-    var properties = [String: Any]()
-  properties["name"] = self.name;
+    func serializableDictionary() -> [String: Any] {
+        var properties = [String: Any]()
+        properties["name"] = self.name;
 
-    return properties;
-  }
+        return properties;
+    }
 }

@@ -5,16 +5,16 @@
 import Foundation
 
 class Garage: TypewriterSerializable {
-  var tunnel: Tunnel
+    var tunnel: Tunnel
 
-  init(tunnel: Tunnel) {
-    self.tunnel = tunnel
-  }
+    init(tunnel: Tunnel) {
+        self.tunnel = tunnel
+    }
 
-  func serializableDictionary() -> [String: Any] {
-    var properties = [String: Any]()
-  properties["tunnel"] = self.tunnel.serializableDictionary();
+    func serializableDictionary() -> [String: Any] {
+        var properties = [String: Any]()
+        properties["tunnel"] = self.tunnel.serializableDictionary();
 
-    return properties;
-  }
+        return properties;
+    }
 }

@@ -5,16 +5,16 @@
 import Foundation
 
 class Tunnel: TypewriterSerializable {
-  var subterraneanLab: SubterraneanLab
+    var subterraneanLab: SubterraneanLab
 
-  init(subterraneanLab: SubterraneanLab) {
-    self.subterraneanLab = subterraneanLab
-  }
+    init(subterraneanLab: SubterraneanLab) {
+        self.subterraneanLab = subterraneanLab
+    }
 
-  func serializableDictionary() -> [String: Any] {
-    var properties = [String: Any]()
-  properties["subterranean lab"] = self.subterraneanLab.serializableDictionary();
+    func serializableDictionary() -> [String: Any] {
+        var properties = [String: Any]()
+        properties["subterranean lab"] = self.subterraneanLab.serializableDictionary();
 
-    return properties;
-  }
+        return properties;
+    }
 }

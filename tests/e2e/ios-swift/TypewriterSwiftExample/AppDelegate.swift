@@ -7,7 +7,11 @@
 //
 
 import UIKit
+#if canImport(Segment)
+import Segment
+#elseif canImport(Analytics)
 import Analytics
+#endif
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

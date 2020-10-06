@@ -5,22 +5,22 @@
 import Foundation
 
 class {{name}}: TypewriterSerializable {
-  {{#each properties}}
+{{#each properties}}
 {{#if description}}
 /// {{description}}
 {{/if}}
-  var {{name}}: {{type}}{{#isVariableNullable}}?{{/isVariableNullable}}
+    var {{name}}: {{type}}{{#isVariableNullable}}?{{/isVariableNullable}}
 {{/each}}
 
-  {{functionSignature "init" properties false}} {
-    {{#each properties}}
-    self.{{name}} = {{name}}
-    {{/each}}
-  }
+    {{functionSignature "init" properties false}} {
+        {{#each properties}}
+        self.{{name}} = {{name}}
+        {{/each}}
+    }
 
-  func serializableDictionary() -> [String: Any] {
-    {{indent "  " (propertiesDictionary properties "self.")}}
+    func serializableDictionary() -> [String: Any] {
+        {{indent "        " (propertiesDictionary properties "self.")}}
 
-    return properties;
-  }
+        return properties;
+    }
 }

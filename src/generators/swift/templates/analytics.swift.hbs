@@ -21,7 +21,7 @@ class TypewriterAnalytics {
     /// {{description}}
     {{/if}}
     static func {{functionSignature functionName properties true}} {
-        {{indent "    " (propertiesDictionary properties)}}
+        {{indent "        " (propertiesDictionary properties)}}
 
         {{!-- TODO: run-time JSON Schema validation --}}
         Analytics.shared().track("{{rawEventName}}", properties: properties, options: TypewriterUtils.addContextFields(options));

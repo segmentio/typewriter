@@ -18,8 +18,6 @@ interface SWIFTPropertyContext {
 	name: string
 	// The type of this property. ex: "NSNumber".
 	type: string
-	// Stringified property modifiers. ex: "nonatomic, copy".
-	modifiers: string
 	// Whether the property is nullable (nonnull vs nullable modifier).
 	isVariableNullable: boolean
 	// Whether null is a valid value for this property when sent to Segment.
@@ -164,11 +162,6 @@ function defaultPropertyContext(
 			transform: camelCase,
 		}),
 		type,
-		modifiers: isPointerType
-			? schema.isRequired
-				? 'strong, nonatomic, nonnull'
-				: 'strong, nonatomic, nullable'
-			: 'nonatomic',
 		isVariableNullable: !schema.isRequired || !!schema.isNullable,
 		isPayloadFieldNullable: !!schema.isNullable && !!schema.isRequired,
 		isPointerType,

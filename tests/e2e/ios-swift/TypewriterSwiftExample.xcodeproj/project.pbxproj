@@ -604,7 +604,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.segment.TypewriterSwiftExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PROJECT_NAME)/TypewriterSwiftExample-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TypewriterSwiftExample.app/TypewriterSwiftExample";
@@ -627,7 +626,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.segment.TypewriterSwiftExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PROJECT_NAME)/TypewriterSwiftExample-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TypewriterSwiftExample.app/TypewriterSwiftExample";

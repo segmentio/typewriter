@@ -45,7 +45,7 @@ class TypewriterAnalytics {
 
     static func customViolationHandler(regexProperty: String, options: [String: Any]?) {
         var properties = [String: Any]()
-    properties["regex property"] = regexProperty;
+        properties["regex property"] = regexProperty;
 
         Analytics.shared().track("Custom Violation Handler", properties: properties, options: TypewriterUtils.addContextFields(options));
     }
@@ -66,7 +66,7 @@ class TypewriterAnalytics {
 
     static func defaultViolationHandler(regexProperty: String, options: [String: Any]?) {
         var properties = [String: Any]()
-    properties["regex property"] = regexProperty;
+        properties["regex property"] = regexProperty;
 
         Analytics.shared().track("Default Violation Handler", properties: properties, options: TypewriterUtils.addContextFields(options));
     }
@@ -97,8 +97,8 @@ class TypewriterAnalytics {
 
     static func enumTypes(stringConst: String?, stringEnum: String?, options: [String: Any]?) {
         var properties = [String: Any]()
-    properties["string const"] = stringConst;
-    properties["string enum"] = stringEnum;
+        properties["string const"] = stringConst;
+        properties["string enum"] = stringEnum;
 
         Analytics.shared().track("Enum Types", properties: properties, options: TypewriterUtils.addContextFields(options));
     }
@@ -119,16 +119,16 @@ class TypewriterAnalytics {
 
     static func everyNullableOptionalType(optionalAny: Any?, optionalArray: [Any]?, optionalArrayWithProperties: [OptionalArrayWithPropertiesItem]?, optionalBoolean: Bool?, optionalInt: Int?, optionalNumber: Decimal?, optionalObject: [String: Any]?, optionalObjectWithProperties: OptionalObjectWithProperties?, optionalString: String?, optionalStringWithRegex: String?, options: [String: Any]?) {
         var properties = [String: Any]()
-    properties["optional any"] = optionalAny;
-    properties["optional array"] = optionalArray?.serializableArray();
-    properties["optional array with properties"] = optionalArrayWithProperties?.serializableArray();
-    properties["optional boolean"] = optionalBoolean;
-    properties["optional int"] = optionalInt;
-    properties["optional number"] = optionalNumber;
-    properties["optional object"] = optionalObject;
-    properties["optional object with properties"] = optionalObjectWithProperties?.serializableDictionary();
-    properties["optional string"] = optionalString;
-    properties["optional string with regex"] = optionalStringWithRegex;
+        properties["optional any"] = optionalAny;
+        properties["optional array"] = optionalArray?.serializableArray();
+        properties["optional array with properties"] = optionalArrayWithProperties?.serializableArray();
+        properties["optional boolean"] = optionalBoolean;
+        properties["optional int"] = optionalInt;
+        properties["optional number"] = optionalNumber;
+        properties["optional object"] = optionalObject;
+        properties["optional object with properties"] = optionalObjectWithProperties?.serializableDictionary();
+        properties["optional string"] = optionalString;
+        properties["optional string with regex"] = optionalStringWithRegex;
 
         Analytics.shared().track("Every Nullable Optional Type", properties: properties, options: TypewriterUtils.addContextFields(options));
     }
@@ -139,16 +139,16 @@ class TypewriterAnalytics {
 
     static func everyNullableRequiredType(requiredAny: Any?, requiredArray: [Any]?, requiredArrayWithProperties: [RequiredArrayWithPropertiesItem]?, requiredBoolean: Bool?, requiredInt: Int?, requiredNumber: Decimal?, requiredObject: [String: Any]?, requiredObjectWithProperties: RequiredObjectWithProperties?, requiredString: String?, requiredStringWithRegex: String?, options: [String: Any]?) {
         var properties = [String: Any]()
-    properties["required any"] = requiredAny == nil ? NSNull() : requiredAny
-    properties["required array"] = requiredArray == nil ? NSNull() : requiredArray?.serializableArray()
-    properties["required array with properties"] = requiredArrayWithProperties == nil ? NSNull() : requiredArrayWithProperties?.serializableArray()
-    properties["required boolean"] = requiredBoolean == nil ? NSNull() : requiredBoolean
-    properties["required int"] = requiredInt == nil ? NSNull() : requiredInt
-    properties["required number"] = requiredNumber == nil ? NSNull() : requiredNumber
-    properties["required object"] = requiredObject == nil ? NSNull() : requiredObject
-    properties["required object with properties"] = requiredObjectWithProperties == nil ? NSNull() : requiredObjectWithProperties?.serializableDictionary()
-    properties["required string"] = requiredString == nil ? NSNull() : requiredString
-    properties["required string with regex"] = requiredStringWithRegex == nil ? NSNull() : requiredStringWithRegex
+        properties["required any"] = requiredAny == nil ? NSNull() : requiredAny
+        properties["required array"] = requiredArray == nil ? NSNull() : requiredArray?.serializableArray()
+        properties["required array with properties"] = requiredArrayWithProperties == nil ? NSNull() : requiredArrayWithProperties?.serializableArray()
+        properties["required boolean"] = requiredBoolean == nil ? NSNull() : requiredBoolean
+        properties["required int"] = requiredInt == nil ? NSNull() : requiredInt
+        properties["required number"] = requiredNumber == nil ? NSNull() : requiredNumber
+        properties["required object"] = requiredObject == nil ? NSNull() : requiredObject
+        properties["required object with properties"] = requiredObjectWithProperties == nil ? NSNull() : requiredObjectWithProperties?.serializableDictionary()
+        properties["required string"] = requiredString == nil ? NSNull() : requiredString
+        properties["required string with regex"] = requiredStringWithRegex == nil ? NSNull() : requiredStringWithRegex
 
         Analytics.shared().track("Every Nullable Required Type", properties: properties, options: TypewriterUtils.addContextFields(options));
     }
@@ -159,16 +159,16 @@ class TypewriterAnalytics {
 
     static func everyOptionalType(optionalAny: Any?, optionalArray: [Any]?, optionalArrayWithProperties: [OptionalArrayWithPropertiesItem1]?, optionalBoolean: Bool?, optionalInt: Int?, optionalNumber: Decimal?, optionalObject: [String: Any]?, optionalObjectWithProperties: OptionalObjectWithProperties1?, optionalString: String?, optionalStringWithRegex: String?, options: [String: Any]?) {
         var properties = [String: Any]()
-    properties["optional any"] = optionalAny;
-    properties["optional array"] = optionalArray?.serializableArray();
-    properties["optional array with properties"] = optionalArrayWithProperties?.serializableArray();
-    properties["optional boolean"] = optionalBoolean;
-    properties["optional int"] = optionalInt;
-    properties["optional number"] = optionalNumber;
-    properties["optional object"] = optionalObject;
-    properties["optional object with properties"] = optionalObjectWithProperties?.serializableDictionary();
-    properties["optional string"] = optionalString;
-    properties["optional string with regex"] = optionalStringWithRegex;
+        properties["optional any"] = optionalAny;
+        properties["optional array"] = optionalArray?.serializableArray();
+        properties["optional array with properties"] = optionalArrayWithProperties?.serializableArray();
+        properties["optional boolean"] = optionalBoolean;
+        properties["optional int"] = optionalInt;
+        properties["optional number"] = optionalNumber;
+        properties["optional object"] = optionalObject;
+        properties["optional object with properties"] = optionalObjectWithProperties?.serializableDictionary();
+        properties["optional string"] = optionalString;
+        properties["optional string with regex"] = optionalStringWithRegex;
 
         Analytics.shared().track("Every Optional Type", properties: properties, options: TypewriterUtils.addContextFields(options));
     }
@@ -179,16 +179,16 @@ class TypewriterAnalytics {
 
     static func everyRequiredType(requiredAny: Any?, requiredArray: [Any], requiredArrayWithProperties: [RequiredArrayWithPropertiesItem1], requiredBoolean: Bool, requiredInt: Int, requiredNumber: Decimal, requiredObject: [String: Any], requiredObjectWithProperties: RequiredObjectWithProperties1, requiredString: String, requiredStringWithRegex: String, options: [String: Any]?) {
         var properties = [String: Any]()
-    properties["required any"] = requiredAny == nil ? NSNull() : requiredAny
-    properties["required array"] = requiredArray.serializableArray();
-    properties["required array with properties"] = requiredArrayWithProperties.serializableArray();
-    properties["required boolean"] = requiredBoolean;
-    properties["required int"] = requiredInt;
-    properties["required number"] = requiredNumber;
-    properties["required object"] = requiredObject;
-    properties["required object with properties"] = requiredObjectWithProperties.serializableDictionary();
-    properties["required string"] = requiredString;
-    properties["required string with regex"] = requiredStringWithRegex;
+        properties["required any"] = requiredAny == nil ? NSNull() : requiredAny
+        properties["required array"] = requiredArray.serializableArray();
+        properties["required array with properties"] = requiredArrayWithProperties.serializableArray();
+        properties["required boolean"] = requiredBoolean;
+        properties["required int"] = requiredInt;
+        properties["required number"] = requiredNumber;
+        properties["required object"] = requiredObject;
+        properties["required object with properties"] = requiredObjectWithProperties.serializableDictionary();
+        properties["required string"] = requiredString;
+        properties["required string with regex"] = requiredStringWithRegex;
 
         Analytics.shared().track("Every Required Type", properties: properties, options: TypewriterUtils.addContextFields(options));
     }
@@ -199,14 +199,14 @@ class TypewriterAnalytics {
 
     static func largeNumbersEvent(largeNullableOptionalInteger: Int?, largeNullableOptionalNumber: Decimal?, largeNullableRequiredInteger: Int?, largeNullableRequiredNumber: Decimal?, largeOptionalInteger: Int?, largeOptionalNumber: Decimal?, largeRequiredInteger: Int, largeRequiredNumber: Decimal, options: [String: Any]?) {
         var properties = [String: Any]()
-    properties["large nullable optional integer"] = largeNullableOptionalInteger;
-    properties["large nullable optional number"] = largeNullableOptionalNumber;
-    properties["large nullable required integer"] = largeNullableRequiredInteger == nil ? NSNull() : largeNullableRequiredInteger
-    properties["large nullable required number"] = largeNullableRequiredNumber == nil ? NSNull() : largeNullableRequiredNumber
-    properties["large optional integer"] = largeOptionalInteger;
-    properties["large optional number"] = largeOptionalNumber;
-    properties["large required integer"] = largeRequiredInteger;
-    properties["large required number"] = largeRequiredNumber;
+        properties["large nullable optional integer"] = largeNullableOptionalInteger;
+        properties["large nullable optional number"] = largeNullableOptionalNumber;
+        properties["large nullable required integer"] = largeNullableRequiredInteger == nil ? NSNull() : largeNullableRequiredInteger
+        properties["large nullable required number"] = largeNullableRequiredNumber == nil ? NSNull() : largeNullableRequiredNumber
+        properties["large optional integer"] = largeOptionalInteger;
+        properties["large optional number"] = largeOptionalNumber;
+        properties["large required integer"] = largeRequiredInteger;
+        properties["large required number"] = largeRequiredNumber;
 
         Analytics.shared().track("Large Numbers Event", properties: properties, options: TypewriterUtils.addContextFields(options));
     }
@@ -217,7 +217,7 @@ class TypewriterAnalytics {
 
     static func nestedArrays(universeCharacters: [[UniverseCharactersItemItem]], options: [String: Any]?) {
         var properties = [String: Any]()
-    properties["universeCharacters"] = universeCharacters.serializableArray();
+        properties["universeCharacters"] = universeCharacters.serializableArray();
 
         Analytics.shared().track("Nested Arrays", properties: properties, options: TypewriterUtils.addContextFields(options));
     }
@@ -228,7 +228,7 @@ class TypewriterAnalytics {
 
     static func nestedObjects(garage: Garage, options: [String: Any]?) {
         var properties = [String: Any]()
-    properties["garage"] = garage.serializableDictionary();
+        properties["garage"] = garage.serializableDictionary();
 
         Analytics.shared().track("Nested Objects", properties: properties, options: TypewriterUtils.addContextFields(options));
     }
@@ -239,8 +239,8 @@ class TypewriterAnalytics {
 
     static func propertiesCollided(propertyCollided: String, propertyCollided1: String, options: [String: Any]?) {
         var properties = [String: Any]()
-    properties["Property Collided"] = propertyCollided;
-    properties["property_collided"] = propertyCollided1;
+        properties["Property Collided"] = propertyCollided;
+        properties["property_collided"] = propertyCollided1;
 
         Analytics.shared().track("Properties Collided", properties: properties, options: TypewriterUtils.addContextFields(options));
     }
@@ -251,7 +251,7 @@ class TypewriterAnalytics {
 
     static func propertyObjectNameCollision1(universe: Universe?, options: [String: Any]?) {
         var properties = [String: Any]()
-    properties["universe"] = universe?.serializableDictionary();
+        properties["universe"] = universe?.serializableDictionary();
 
         Analytics.shared().track("Property Object Name Collision #1", properties: properties, options: TypewriterUtils.addContextFields(options));
     }
@@ -262,7 +262,7 @@ class TypewriterAnalytics {
 
     static func propertyObjectNameCollision2(universe: Universe1?, options: [String: Any]?) {
         var properties = [String: Any]()
-    properties["universe"] = universe?.serializableDictionary();
+        properties["universe"] = universe?.serializableDictionary();
 
         Analytics.shared().track("Property Object Name Collision #2", properties: properties, options: TypewriterUtils.addContextFields(options));
     }
@@ -273,7 +273,7 @@ class TypewriterAnalytics {
 
     static func propertySanitized(I0000TerriblePropertyName3: String, options: [String: Any]?) {
         var properties = [String: Any]()
-    properties["0000---terrible-property-name~!3"] = I0000TerriblePropertyName3;
+        properties["0000---terrible-property-name~!3"] = I0000TerriblePropertyName3;
 
         Analytics.shared().track("Property Sanitized", properties: properties, options: TypewriterUtils.addContextFields(options));
     }
@@ -284,13 +284,13 @@ class TypewriterAnalytics {
 
     static func simpleArrayTypes(any: [Any]?, boolean: [Bool]?, integer: [Int]?, nullable: [String]?, number: [Decimal]?, object: [ObjectItem]?, string: [String]?, options: [String: Any]?) {
         var properties = [String: Any]()
-    properties["any"] = any?.serializableArray();
-    properties["boolean"] = boolean?.serializableArray();
-    properties["integer"] = integer?.serializableArray();
-    properties["nullable"] = nullable?.serializableArray();
-    properties["number"] = number?.serializableArray();
-    properties["object"] = object?.serializableArray();
-    properties["string"] = string?.serializableArray();
+        properties["any"] = any?.serializableArray();
+        properties["boolean"] = boolean?.serializableArray();
+        properties["integer"] = integer?.serializableArray();
+        properties["nullable"] = nullable?.serializableArray();
+        properties["number"] = number?.serializableArray();
+        properties["object"] = object?.serializableArray();
+        properties["string"] = string?.serializableArray();
 
         Analytics.shared().track("Simple Array Types", properties: properties, options: TypewriterUtils.addContextFields(options));
     }
@@ -301,7 +301,7 @@ class TypewriterAnalytics {
 
     static func unionType(universeName: Any?, options: [String: Any]?) {
         var properties = [String: Any]()
-    properties["universe_name"] = universeName == nil ? NSNull() : universeName
+        properties["universe_name"] = universeName == nil ? NSNull() : universeName
 
         Analytics.shared().track("Union Type", properties: properties, options: TypewriterUtils.addContextFields(options));
     }

@@ -7,18 +7,25 @@
 //
 
 import XCTest
+
+#if canImport(Segment)
+import Segment
+#elseif canImport(Analytics)
+import Analytics
+#endif
+
 @testable import TypewriterSwiftExample
 
 class TypewriterSwiftExampleTests: XCTestCase {
     func testExample() {
-        SEGTypewriterAnalytics.emptyEvent()
+        TypewriterAnalytics.emptyEvent()
         
-        SEGTypewriterAnalytics.everyRequiredType(
-            withRequiredAny: "Rick Sanchez",
+        TypewriterAnalytics.everyRequiredType(
+            requiredAny: "Rick Sanchez",
             requiredArray: [137, "C-137"],
             requiredArrayWithProperties: [
-                SEGRequiredArrayWithPropertiesItem1.initWithRequiredAny(
-                    "Rick Sanchez",
+                RequiredArrayWithPropertiesItem1.init(
+                    requiredAny: "Rick Sanchez",
                     requiredArray: [137, "C-137"],
                     requiredBoolean: false,
                     requiredInt: 97,
@@ -31,8 +38,8 @@ class TypewriterSwiftExampleTests: XCTestCase {
             requiredInt: 97,
             requiredNumber: 3.14,
             requiredObject: [:],
-            requiredObjectWithProperties: SEGRequiredObjectWithProperties1.initWithRequiredAny(
-                "Rick Sanchez",
+            requiredObjectWithProperties: RequiredObjectWithProperties1.init(
+                requiredAny: "Rick Sanchez",
                 requiredArray: [137, "C-137"],
                 requiredBoolean: false,
                 requiredInt: 97,
@@ -43,8 +50,8 @@ class TypewriterSwiftExampleTests: XCTestCase {
             requiredString: "Alpha-Betrium",
             requiredStringWithRegex:  "Lawyer Morty")
             
-        SEGTypewriterAnalytics.everyOptionalType(
-            withOptionalAny: nil,
+        TypewriterAnalytics.everyOptionalType(
+            optionalAny: nil,
             optionalArray: nil,
             optionalArrayWithProperties: nil,
             optionalBoolean: nil,
@@ -55,12 +62,12 @@ class TypewriterSwiftExampleTests: XCTestCase {
             optionalString: nil,
             optionalStringWithRegex:  nil)
         
-        SEGTypewriterAnalytics.everyOptionalType(
-            withOptionalAny: "Rick Sanchez",
+        TypewriterAnalytics.everyOptionalType(
+            optionalAny: "Rick Sanchez",
             optionalArray: [137, "C-137"],
             optionalArrayWithProperties: [
-                SEGOptionalArrayWithPropertiesItem1.initWithOptionalAny(
-                    "Rick Sanchez",
+                OptionalArrayWithPropertiesItem1.init(
+                    optionalAny: "Rick Sanchez",
                     optionalArray: [137, "C-137"],
                     optionalBoolean: false,
                     optionalInt: 97,
@@ -73,8 +80,8 @@ class TypewriterSwiftExampleTests: XCTestCase {
             optionalInt: 97,
             optionalNumber: 3.14,
             optionalObject: [:],
-            optionalObjectWithProperties: SEGOptionalObjectWithProperties1.initWithOptionalAny(
-                "Rick Sanchez",
+            optionalObjectWithProperties: OptionalObjectWithProperties1.init(
+                optionalAny: "Rick Sanchez",
                 optionalArray: [137, "C-137"],
                 optionalBoolean: false,
                 optionalInt: 97,
@@ -85,12 +92,12 @@ class TypewriterSwiftExampleTests: XCTestCase {
             optionalString: "Alpha-Betrium",
             optionalStringWithRegex:  "Lawyer Morty")
         
-        SEGTypewriterAnalytics.everyNullableRequiredType(
-            withRequiredAny: nil,
+        TypewriterAnalytics.everyNullableRequiredType(
+            requiredAny: nil,
             requiredArray: nil,
             requiredArrayWithProperties: [
-                SEGRequiredArrayWithPropertiesItem.initWithRequiredAny(
-                    nil,
+                RequiredArrayWithPropertiesItem.init(
+                    requiredAny: nil,
                     requiredArray: nil,
                     requiredBoolean: nil,
                     requiredInt: nil,
@@ -103,8 +110,8 @@ class TypewriterSwiftExampleTests: XCTestCase {
             requiredInt: nil,
             requiredNumber: nil,
             requiredObject: nil,
-            requiredObjectWithProperties: SEGRequiredObjectWithProperties.initWithRequiredAny(
-                nil,
+            requiredObjectWithProperties: RequiredObjectWithProperties.init(
+                requiredAny: nil,
                 requiredArray: nil,
                 requiredBoolean: nil,
                 requiredInt: nil,
@@ -115,12 +122,12 @@ class TypewriterSwiftExampleTests: XCTestCase {
             requiredString: nil,
             requiredStringWithRegex: nil)
 
-        SEGTypewriterAnalytics.everyNullableRequiredType(
-            withRequiredAny: "Rick Sanchez",
+        TypewriterAnalytics.everyNullableRequiredType(
+            requiredAny: "Rick Sanchez",
             requiredArray: [137, "C-137"],
             requiredArrayWithProperties: [
-                SEGRequiredArrayWithPropertiesItem.initWithRequiredAny(
-                    "Rick Sanchez",
+                RequiredArrayWithPropertiesItem.init(
+                    requiredAny: "Rick Sanchez",
                     requiredArray: [137, "C-137"],
                     requiredBoolean: false,
                     requiredInt: 97,
@@ -133,8 +140,8 @@ class TypewriterSwiftExampleTests: XCTestCase {
             requiredInt: 97,
             requiredNumber: 3.14,
             requiredObject: [:],
-            requiredObjectWithProperties: SEGRequiredObjectWithProperties.initWithRequiredAny(
-                "Rick Sanchez",
+            requiredObjectWithProperties: RequiredObjectWithProperties.init(
+                requiredAny: "Rick Sanchez",
                 requiredArray: [137, "C-137"],
                 requiredBoolean: false,
                 requiredInt: 97,
@@ -145,8 +152,8 @@ class TypewriterSwiftExampleTests: XCTestCase {
             requiredString: "Alpha-Betrium",
             requiredStringWithRegex:  "Lawyer Morty")
         
-        SEGTypewriterAnalytics.everyNullableOptionalType(
-            withOptionalAny: nil,
+        TypewriterAnalytics.everyNullableOptionalType(
+            optionalAny: nil,
             optionalArray: nil,
             optionalArrayWithProperties: nil,
             optionalBoolean: nil,
@@ -157,12 +164,12 @@ class TypewriterSwiftExampleTests: XCTestCase {
             optionalString: nil,
             optionalStringWithRegex:  nil)
         
-        SEGTypewriterAnalytics.everyNullableOptionalType(
-            withOptionalAny: "Rick Sanchez",
+        TypewriterAnalytics.everyNullableOptionalType(
+            optionalAny: "Rick Sanchez",
             optionalArray: [137, "C-137"],
             optionalArrayWithProperties: [
-                SEGOptionalArrayWithPropertiesItem.initWithOptionalAny(
-                    "Rick Sanchez",
+                OptionalArrayWithPropertiesItem.init(
+                    optionalAny: "Rick Sanchez",
                     optionalArray: [137, "C-137"],
                     optionalBoolean: false,
                     optionalInt: 97,
@@ -175,8 +182,8 @@ class TypewriterSwiftExampleTests: XCTestCase {
             optionalInt: 97,
             optionalNumber: 3.14,
             optionalObject: [:],
-            optionalObjectWithProperties: SEGOptionalObjectWithProperties.initWithOptionalAny(
-                "Rick Sanchez",
+            optionalObjectWithProperties: OptionalObjectWithProperties.init(
+                optionalAny: "Rick Sanchez",
                 optionalArray: [137, "C-137"],
                 optionalBoolean: false,
                 optionalInt: 97,
@@ -187,57 +194,57 @@ class TypewriterSwiftExampleTests: XCTestCase {
             optionalString: "Alpha-Betrium",
             optionalStringWithRegex:  "Lawyer Morty")
         
-        SEGTypewriterAnalytics.i42TerribleEventName3()
+        TypewriterAnalytics.I42TerribleEventName3()
         
-        SEGTypewriterAnalytics.propertySanitized(withI0000TerriblePropertyName3: "what a cronenberg")
+        TypewriterAnalytics.propertySanitized(I0000TerriblePropertyName3: "what a cronenberg")
         
-        SEGTypewriterAnalytics.eventCollided()
+        TypewriterAnalytics.eventCollided()
         
-        SEGTypewriterAnalytics.eventCollided1()
+        TypewriterAnalytics.eventCollided1()
         
-        SEGTypewriterAnalytics.propertiesCollided(withPropertyCollided: "The Citadel", propertyCollided1: "Galactic Prison")
+        TypewriterAnalytics.propertiesCollided(propertyCollided: "The Citadel", propertyCollided1: "Galactic Prison")
         
-        SEGTypewriterAnalytics.propertyObjectNameCollision1(with: SEGUniverse.initWithName("Froopyland", occupants: [
-                SEGOccupantsItem.initWithName("Beth Smith"),
-                SEGOccupantsItem.initWithName("Thomas Lipkip"),
+        TypewriterAnalytics.propertyObjectNameCollision1(universe: Universe.init(name: "Froopyland", occupants: [
+            OccupantsItem.init(name: "Beth Smith"),
+            OccupantsItem.init(name: "Thomas Lipkip"),
         ]))
         
-        SEGTypewriterAnalytics.propertyObjectNameCollision2(with: SEGUniverse1.initWithName("Froopyland", occupants: [
-            SEGOccupantsItem1.initWithName("Beth Smith"),
-            SEGOccupantsItem1.initWithName("Thomas Lipkip"),
+        TypewriterAnalytics.propertyObjectNameCollision2(universe: Universe1.init(name: "Froopyland", occupants: [
+            OccupantsItem1.init(name: "Beth Smith"),
+            OccupantsItem1.init(name: "Thomas Lipkip"),
         ]))
         
-        SEGTypewriterAnalytics.simpleArrayTypes(withAny: [137, "C-137"], boolean: [true, false], integer: [97], nullable_: nil, number: [3.14], object: [SEGObjectItem.initWithName("Beth Smith")], string: ["Alpha-Betrium"])
+        TypewriterAnalytics.simpleArrayTypes(any: [137, "C-137"], boolean: [true, false], integer: [97], nullable: nil, number: [3.14], object: [ObjectItem.init(name: "Beth Smith")], string: ["Alpha-Betrium"])
         
-        SEGTypewriterAnalytics.nestedObjects(with: SEGGarage.initWith(SEGTunnel.initWith(SEGSubterraneanLab.initWithJerrysMemories([], mortysMemories: [], summersContingencyPlan: "Oh, man, it’s a scenario four."))))
+        TypewriterAnalytics.nestedObjects(garage: Garage.init(tunnel: Tunnel.init(subterraneanLab: SubterraneanLab.init(jerrysMemories: [], mortysMemories: [], summersContingencyPlan: "Oh, man, it’s a scenario four."))))
         
-        SEGTypewriterAnalytics.nestedArrays(withUniverseCharacters: [
+        TypewriterAnalytics.nestedArrays(universeCharacters: [
             [
-                SEGUniverseCharactersItemItem.initWithName("Morty Smith"),
-                SEGUniverseCharactersItemItem.initWithName("Rick Sanchez")
+                UniverseCharactersItemItem.init(name: "Morty Smith"),
+                UniverseCharactersItemItem.init(name: "Rick Sanchez")
             ],
             [
-                SEGUniverseCharactersItemItem.initWithName("Cronenberg Morty"),
-                SEGUniverseCharactersItemItem.initWithName("Cronenberg Rick")
+                UniverseCharactersItemItem.init(name: "Cronenberg Morty"),
+                UniverseCharactersItemItem.init(name: "Cronenberg Rick")
             ]
         ])
 
-        SEGTypewriterAnalytics.largeNumbersEvent(withLargeNullableOptionalInteger: 1230007112658965944, largeNullableOptionalNumber: 1240007112658965944331.0, largeNullableRequiredInteger: 1250007112658965944, largeNullableRequiredNumber: 1260007112658965944331.0, largeOptionalInteger: 1270007112658965944, largeOptionalNumber: 1280007112658965944331.0, largeRequiredInteger: 1290007112658965944, largeRequiredNumber: 1300007112658965944331.0)
+        TypewriterAnalytics.largeNumbersEvent(largeNullableOptionalInteger: 1230007112658965944, largeNullableOptionalNumber: 1240007112658965944331.0, largeNullableRequiredInteger: 1250007112658965944, largeNullableRequiredNumber: 1260007112658965944331.0, largeOptionalInteger: 1270007112658965944, largeOptionalNumber: 1280007112658965944331.0, largeRequiredInteger: 1290007112658965944, largeRequiredNumber: 1300007112658965944331.0)
 
         // Note: flushing is an async operation in analytics-ios. Therefore, we use notifications to
         // identify when all events have finished flushing.
         var finishedFlushing = false
-        NotificationCenter.default.addObserver(forName: Notification.Name.SEGSegmentRequestDidSucceed, object: nil, queue: nil) { (notification) in
-            print("Typewriter: SEGSegmentRequestDidSucceedNotification notification fired")
+        NotificationCenter.default.addObserver(forName: Notification.Name.SEGSegmentDidSendRequest, object: nil, queue: nil) { (notification) in
+            print("Typewriter: mentRequestDidSucceedNotification notification fired")
             finishedFlushing = true
         }
         // We also want to catch failures, so that our test suite will still finish.
         NotificationCenter.default.addObserver(forName: Notification.Name.SEGSegmentRequestDidFail, object: nil, queue: nil) { (notification) in
-            print("Typewriter: SEGSegmentRequestDidFailNotification notification fired")
+            print("Typewriter: mentRequestDidFailNotification notification fired")
             finishedFlushing = true
         }
         
-        SEGAnalytics.shared()!.flush()
+        Analytics.shared().flush()
         
         while(!finishedFlushing) {
             RunLoop.current.run(until: Date.init(timeIntervalSinceNow: 0.1))

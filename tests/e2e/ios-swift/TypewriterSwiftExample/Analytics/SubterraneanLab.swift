@@ -5,22 +5,22 @@
 import Foundation
 
 class SubterraneanLab: TypewriterSerializable {
-  var jerrysMemories: [Any]?
-  var mortysMemories: [Any]?
-  var summersContingencyPlan: String?
+    var jerrysMemories: [Any]?
+    var mortysMemories: [Any]?
+    var summersContingencyPlan: String?
 
-  init(jerrysMemories: [Any]?, mortysMemories: [Any]?, summersContingencyPlan: String?) {
-    self.jerrysMemories = jerrysMemories
-    self.mortysMemories = mortysMemories
-    self.summersContingencyPlan = summersContingencyPlan
-  }
+    init(jerrysMemories: [Any]?, mortysMemories: [Any]?, summersContingencyPlan: String?) {
+        self.jerrysMemories = jerrysMemories
+        self.mortysMemories = mortysMemories
+        self.summersContingencyPlan = summersContingencyPlan
+    }
 
-  func serializableDictionary() -> [String: Any] {
-    var properties = [String: Any]()
-  properties["jerry's memories"] = self.jerrysMemories?.serializableArray();
-  properties["morty's memories"] = self.mortysMemories?.serializableArray();
-  properties["summer's contingency plan"] = self.summersContingencyPlan;
+    func serializableDictionary() -> [String: Any] {
+        var properties = [String: Any]()
+        properties["jerry's memories"] = self.jerrysMemories?.serializableArray();
+        properties["morty's memories"] = self.mortysMemories?.serializableArray();
+        properties["summer's contingency plan"] = self.summersContingencyPlan;
 
-    return properties;
-  }
+        return properties;
+    }
 }
