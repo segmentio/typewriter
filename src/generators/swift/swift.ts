@@ -6,14 +6,14 @@ import { Generator, BasePropertyContext, GeneratorClient } from '../gen'
 // These contexts are what will be passed to Handlebars to perform rendering.
 // Everything in these contexts should be properly sanitized.
 
-interface OBJCObjectContext {
+interface SWIFTObjectContext {
 	// The formatted name for this object, ex: "numAvocados
 	name: string
 	// Set of files that need to be imported in this file.
 	imports: string[]
 }
 
-interface OBJCPropertyContext {
+interface SWIFTPropertyContext {
 	// The formatted name for this property, ex: "numAvocados".
 	name: string
 	// The type of this property. ex: "NSNumber".
@@ -31,27 +31,30 @@ interface OBJCPropertyContext {
 	importName?: string
 }
 
-interface OBJCTrackCallContext {
+interface SWIFTTrackCallContext {
 	// The formatted function name, ex: "orderCompleted".
 	functionName: string
 }
 
-export const objc: Generator<{}, OBJCTrackCallContext, OBJCObjectContext, OBJCPropertyContext> = {
+export const swift: Generator<
+	{},
+	SWIFTTrackCallContext,
+	SWIFTObjectContext,
+	SWIFTPropertyContext
+> = {
 	generatePropertiesObject: false,
 	namer: {
 		// See: https://github.com/AnanthaRajuCprojects/Reserved-Key-Words-list-of-various-programming-languages/blob/master/Objective-C%20Reserved%20Words.md
 		// prettier-ignore
 		reservedWords: [
-			'asm', 'atomic', 'auto', 'bool', 'break', 'bycopy', 'byref', 'case', 'catch', 'char',
-			'class', 'const', 'continue', 'copy', 'debugDescription', 'default', 'description',
-			'do', 'double', 'dynamic', 'else', 'end', 'enum', 'extern', 'false', 'finally', 'float',
-			'for', 'goto', 'hash', 'id', 'if', 'imp', 'implementation', 'in', 'init', 'inline',
-			'inout', 'int', 'interface', 'long', 'mutableCopy', 'new', 'nil', 'no', 'nonatomic',
-			'null', 'nullable', 'nonnull', 'oneway', 'options', 'out', 'private', 'property', 'protected',
-			'protocol', 'public', 'register', 'restrict', 'retain', 'return', 'sel', 'selector', 'self',
-			'short', 'signed', 'sizeof', 'static', 'struct', 'super', 'superclass', 'switch', 'synthesize',
-			'throw', 'true', 'try', 'typedef', 'typeof', 'union', 'unsigned', 'void', 'volatile', 'while',
-			'yes'
+			'associatedtype', 'class', 'deinit', 'enum', 'extension', 'fileprivate', 'func', 'import', 'init', 
+			'inout', 'internal', 'let', 'open', 'operator', 'private', 'protocol', 'public', 'rethrows', 'static',
+			'struct', 'subscript', 'typealias', 'var', 'break', 'case', 'continue', 'default', 'defer', 'do', 'else', 
+			'fallthrough', 'for', 'guard', 'if', 'in', 'repeat', 'return', 'switch', 'where', 'while', 'as', 'Any', 
+			'catch', 'false', 'is', 'nil', 'super', 'self', 'Self', 'throw', 'throws', 'true', 'try', '_', 
+			'associativity', 'convenience', 'dynamic', 'didSet', 'final', 'get', 'infix', 'indirect', 'lazy', 'left', 
+			'mutating', 'none', 'nonmutating', 'optional', 'override', 'postfix', 'precedence', 'prefix', 'Protocol', 
+			'required', 'right', 'set', 'Type', 'unowned', 'weak', 'willSet'
 		],
 		quoteChar: '"',
 		allowedIdentifierStartingChars: 'A-Za-z_$',
@@ -61,25 +64,24 @@ export const objc: Generator<{}, OBJCTrackCallContext, OBJCObjectContext, OBJCPr
 		Handlebars.registerHelper('propertiesDictionary', generatePropertiesDictionary)
 		Handlebars.registerHelper('functionCall', generateFunctionCall)
 		Handlebars.registerHelper('functionSignature', generateFunctionSignature)
-		Handlebars.registerHelper('variableSeparator', variableSeparator)
 		return {}
 	},
 	generatePrimitive: async (client, schema, parentPath) => {
-		let type = 'id'
+		let type = 'Any'
 		let isPointerType = !schema.isRequired || !!schema.isNullable
 
 		if (schema.type === Type.STRING) {
-			type = 'NSString *'
+			type = 'String'
 			isPointerType = true
 		} else if (schema.type === Type.BOOLEAN) {
 			// BOOLs cannot nullable in Objective-C. Instead, use an NSNumber which can be
 			// initialized like a boolean like so: [NSNumber numberWithBool:YES]
 			// This is what is done behind the scenes by typewriter if this boolean is nonnull.
-			type = isPointerType ? 'NSNumber *' : 'BOOL'
+			type = 'Bool'
 		} else if (schema.type === Type.INTEGER) {
-			type = isPointerType ? 'NSNumber *' : 'NSInteger'
+			type = 'Int'
 		} else if (schema.type === Type.NUMBER) {
-			type = 'NSNumber *'
+			type = 'Decimal'
 			isPointerType = true
 		}
 
@@ -88,28 +90,26 @@ export const objc: Generator<{}, OBJCTrackCallContext, OBJCObjectContext, OBJCPr
 	generateArray: async (client, schema, items, parentPath) => {
 		// Objective-C doesn't support NSArray's of primitives. Therefore, we
 		// map booleans and integers to NSNumbers.
-		let itemsType = [Type.BOOLEAN, Type.INTEGER].includes(items.schemaType)
-			? 'NSNumber *'
-			: items.type
+		let itemsType = items.type
 
 		return {
-			...defaultPropertyContext(client, schema, `NSArray<${itemsType}> *`, parentPath, true),
+			...defaultPropertyContext(client, schema, `[${itemsType}]`, parentPath, true),
 			importName: items.importName,
 		}
 	},
 	generateObject: async (client, schema, properties, parentPath) => {
-		const property = defaultPropertyContext(client, schema, 'SERIALIZABLE_DICT', parentPath, true)
-		let object: OBJCObjectContext | undefined = undefined
+		const property = defaultPropertyContext(client, schema, '[String: Any]', parentPath, true)
+		let object: SWIFTObjectContext | undefined = undefined
 
 		if (properties.length > 0) {
 			// If at least one property is set, generate a class that only allows the explicitly
 			// allowed properties.
 			const className = client.namer.register(schema.name, 'class', {
 				transform: (name: string) => {
-					return `SEG${upperFirst(camelCase(name))}`
+					return `${upperFirst(camelCase(name))}`
 				},
 			})
-			property.type = `${className} *`
+			property.type = `${className}`
 			property.importName = `"${className}.h"`
 			object = {
 				name: className,
@@ -121,7 +121,7 @@ export const objc: Generator<{}, OBJCTrackCallContext, OBJCObjectContext, OBJCPr
 	},
 	generateUnion: async (client, schema, _, parentPath) => {
 		// TODO: support unions in iOS
-		return defaultPropertyContext(client, schema, 'id', parentPath, true)
+		return defaultPropertyContext(client, schema, 'Any', parentPath, true)
 	},
 	generateTrackCall: async (client, schema) => ({
 		functionName: client.namer.register(schema.name, 'function->track', {
@@ -131,35 +131,22 @@ export const objc: Generator<{}, OBJCTrackCallContext, OBJCObjectContext, OBJCPr
 	generateRoot: async (client, context) => {
 		await Promise.all([
 			client.generateFile(
-				'SEGTypewriterAnalytics.h',
-				'generators/objc/templates/analytics.h.hbs',
+				'TypewriterAnalytics.swift',
+				'generators/swift/templates/analytics.swift.hbs',
 				context
 			),
 			client.generateFile(
-				'SEGTypewriterAnalytics.m',
-				'generators/objc/templates/analytics.m.hbs',
+				'TypewriterUtils.swift',
+				'generators/swift/templates/TypewriterUtils.swift.hbs',
 				context
 			),
 			client.generateFile(
-				'SEGTypewriterUtils.h',
-				'generators/objc/templates/SEGTypewriterUtils.h.hbs',
-				context
-			),
-			client.generateFile(
-				'SEGTypewriterUtils.m',
-				'generators/objc/templates/SEGTypewriterUtils.m.hbs',
-				context
-			),
-			client.generateFile(
-				'SEGTypewriterSerializable.h',
-				'generators/objc/templates/SEGTypewriterSerializable.h.hbs',
+				'TypewriterSerializable.swift',
+				'generators/swift/templates/TypewriterSerializable.swift.hbs',
 				context
 			),
 			...context.objects.map(o =>
-				client.generateFile(`${o.name}.h`, 'generators/objc/templates/class.h.hbs', o)
-			),
-			...context.objects.map(o =>
-				client.generateFile(`${o.name}.m`, 'generators/objc/templates/class.m.hbs', o)
+				client.generateFile(`${o.name}.swift`, 'generators/swift/templates/class.swift.hbs', o)
 			),
 		])
 	},
@@ -171,7 +158,7 @@ function defaultPropertyContext(
 	type: string,
 	namespace: string,
 	isPointerType: boolean
-): OBJCPropertyContext {
+): SWIFTPropertyContext {
 	return {
 		name: client.namer.register(schema.name, namespace, {
 			transform: camelCase,
@@ -192,7 +179,7 @@ function defaultPropertyContext(
 
 function generateFunctionSignature(
 	functionName: string,
-	properties: (BasePropertyContext & OBJCPropertyContext)[],
+	properties: (BasePropertyContext & SWIFTPropertyContext)[],
 	withOptions: boolean
 ): string {
 	let signature = functionName
@@ -205,7 +192,7 @@ function generateFunctionSignature(
 	if (withOptions) {
 		parameters.push({
 			name: 'options',
-			type: 'SERIALIZABLE_DICT',
+			type: '[String: Any]',
 			isPointerType: true,
 			isVariableNullable: true,
 		})
@@ -217,17 +204,22 @@ function generateFunctionSignature(
 		isVariableNullable: boolean
 	}) => {
 		const { isPointerType, type, isVariableNullable } = property
-		return isPointerType ? `${isVariableNullable ? 'nullable' : 'nonnull'} ${type}` : type
+		if (isVariableNullable) {
+			return `${type}?`
+		} else {
+			return `${type}`
+		}
 	}
 
-	// Mutate the function name to match standard Objective-C naming standards (FooBar vs. FooBarWithSparkles:sparkles).
-	if (parameters.length > 0) {
-		const first = parameters[0]
-		signature += `With${upperFirst(first.name)}:(${withNullability(first)})${first.name}\n`
+	signature += `(`
+	for (let index = 0; index < parameters.length; index++) {
+		let parameter = parameters[index]
+		signature += `${parameter.name}: ${withNullability(parameter)}`
+		if (index != parameters.length - 1) {
+			signature += `, `
+		}
 	}
-	for (var parameter of parameters.slice(1)) {
-		signature += `${parameter.name}:(${withNullability(parameter)})${parameter.name}\n`
-	}
+	signature += `)`
 
 	return signature.trim()
 }
@@ -235,7 +227,7 @@ function generateFunctionSignature(
 function generateFunctionCall(
 	caller: string,
 	functionName: string,
-	properties: (BasePropertyContext & OBJCPropertyContext)[],
+	properties: (BasePropertyContext & SWIFTPropertyContext)[],
 	extraParameterName?: string,
 	extraParameterValue?: string
 ): string {
@@ -251,66 +243,59 @@ function generateFunctionCall(
 		})
 	}
 
-	if (parameters.length > 0) {
-		const { name, value } = parameters[0]
-		functionCall += `With${upperFirst(name)}:${value}`
+	functionCall += `(`
+	for (let index = 0; index < parameters.length; index++) {
+		let parameter = parameters[index]
+		functionCall += `${parameter.name}: ${parameter.value}`
+		if (index != parameters.length - 1) {
+			functionCall += `, `
+		}
 	}
-	for (var { name, value } of parameters.slice(1)) {
-		functionCall += ` ${name}:${value}`
-	}
+	functionCall += `)`
 
-	return `[${caller} ${functionCall.trim()}];`
+	return `${caller}.${functionCall.trim()}`
 }
 
 function generatePropertiesDictionary(
-	properties: (BasePropertyContext & OBJCPropertyContext)[],
+	properties: (BasePropertyContext & SWIFTPropertyContext)[],
 	prefix?: string
 ): string {
-	let out = 'NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];\n'
+	let varOrLet = properties.length > 0 ? `var` : `let`
+	let out = varOrLet + ` properties = [String: Any]()\n`
+
 	for (let property of properties) {
 		const name = prefix && prefix.length > 0 ? `${prefix}${property.name}` : property.name
 		const serializableName =
 			property.schemaType === Type.BOOLEAN
-				? property.isPointerType
-					? name
-					: `[NSNumber numberWithBool:${name}]`
+				? name
 				: property.schemaType === Type.INTEGER
-				? property.isPointerType
-					? name
-					: `[NSNumber numberWithInteger:${name}]`
-				: property.schemaType === Type.OBJECT && !property.type.includes('SERIALIZABLE_DICT')
-				? `[${name} toDictionary]`
+				? name
+				: property.schemaType === Type.OBJECT && !property.type.includes('[String: Any]')
+				? property.isVariableNullable
+					? `${name}?.serializableDictionary()`
+					: `${name}.serializableDictionary()`
 				: property.schemaType === Type.ARRAY
-				? `[SEGTypewriterUtils toSerializableArray:${name}]`
+				? property.isVariableNullable
+					? `${name}?.serializableArray()`
+					: `${name}.serializableArray()`
 				: name
 
 		let setter: string
 		if (property.isPointerType) {
 			if (property.isPayloadFieldNullable) {
 				// If the value is nil, we need to convert it from a primitive nil to NSNull (an object).
-				setter = `properties[@"${
+				setter = `properties["${
 					property.rawName
-				}"] = ${name} == nil ? [NSNull null] : ${serializableName};\n`
+				}"] = ${name} == nil ? NSNull() : ${serializableName}\n`
 			} else {
-				// If the property is not nullable, but is a pointer, then we need to guard on nil
-				// values. In that case, we don't set any value to the field.
-				// TODO: do we need these guards if we've already set a field as nonnull? TBD
-				setter = `if (${name} != nil) {\n  properties[@"${
-					property.rawName
-				}"] = ${serializableName};\n}\n`
+				setter = `properties["${property.rawName}"] = ${serializableName};\n`
 			}
 		} else {
-			setter = `properties[@"${property.rawName}"] = ${serializableName};\n`
+			setter = `properties["${property.rawName}"] = ${serializableName};\n`
 		}
 
 		out += setter
 	}
 
 	return out
-}
-
-// Render `NSString *foo` not `NSString * foo` and `BOOL foo` not `BOOLfoo` or `BOOL  foo` by doing:
-// `{{type}}{{variableSeparator type}}{{name}}`
-function variableSeparator(type: string): string {
-	return type.endsWith('*') ? '' : ' '
 }
