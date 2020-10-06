@@ -20,32 +20,6 @@ extension Array {
         return result
     }
 }
-/*
-extension Array {
-    func serializableArray() -> [Any] {
-        var result = [Any]()
-        
-        for item in self {
-            switch item {
-            case let value as TypewriterSerializable:
-                result.append(value.serializableDictionary())
-            case let value as NSNumber:
-                result.append(value)
-            case let value as NSString:
-                result.append(value)
-            case let value as NSArray:
-                result.append(value)
-            case let value as NSDictionary:
-                result.append(value)
-            case let value as NSNull:
-                result.append(value)
-            default:
-                break
-            }
-        }
-        return result
-    }
-}*/
 
 class TypewriterUtils {
     static func addContextFields(_ options: [String: Any]?) -> [String: Any] {
