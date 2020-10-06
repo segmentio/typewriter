@@ -13,6 +13,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.I42TerribleEventName3(options: [:])
     }
 
+    /// Validates that clients properly sanitize event names.
     static func I42TerribleEventName3(options: [String: Any]?) {
         let properties = [String: Any]()
 
@@ -23,6 +24,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.analyticsInstanceMissing(options: [:])
     }
 
+    /// Fired before an analytics instance has been set, which should throw an error.
     static func analyticsInstanceMissing(options: [String: Any]?) {
         let properties = [String: Any]()
 
@@ -33,6 +35,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.analyticsInstanceMissingThrewError(options: [:])
     }
 
+    /// Fired after a client throws an "Analytics Instance Missing" error to mark the test as successful.
     static func analyticsInstanceMissingThrewError(options: [String: Any]?) {
         let properties = [String: Any]()
 
@@ -43,6 +46,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.customViolationHandler(regexProperty: regexProperty, options: [:])
     }
 
+    /// This event is fired in order to trigger a custom violation handler. It should be called with a JSON Schema violation.
     static func customViolationHandler(regexProperty: String, options: [String: Any]?) {
         var properties = [String: Any]()
         properties["regex property"] = regexProperty;
@@ -54,6 +58,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.customViolationHandlerCalled(options: [:])
     }
 
+    /// This event should be fired if a custom violation handler is correctly called due to a call to `Custom Violation Handler` with a violation.
     static func customViolationHandlerCalled(options: [String: Any]?) {
         let properties = [String: Any]()
 
@@ -64,6 +69,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.defaultViolationHandler(regexProperty: regexProperty, options: [:])
     }
 
+    /// This event is fired in order to trigger the default violation handler. It should be called with a JSON Schema violation.
     static func defaultViolationHandler(regexProperty: String, options: [String: Any]?) {
         var properties = [String: Any]()
         properties["regex property"] = regexProperty;
@@ -75,6 +81,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.defaultViolationHandlerCalled(options: [:])
     }
 
+    /// This event should be fired if the default violation handler is correctly called due to a call to `Default Violation Handler` with a violation.
     static func defaultViolationHandlerCalled(options: [String: Any]?) {
         let properties = [String: Any]()
 
@@ -85,6 +92,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.emptyEvent(options: [:])
     }
 
+    /// Validates that a generated client supports events with no explicit properties. It is expected that this event accepts ANY properties.
     static func emptyEvent(options: [String: Any]?) {
         let properties = [String: Any]()
 
@@ -95,6 +103,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.enumTypes(stringConst: stringConst, stringEnum: stringEnum, options: [:])
     }
 
+    /// Validates that client property sanitize enums.
     static func enumTypes(stringConst: String?, stringEnum: String?, options: [String: Any]?) {
         var properties = [String: Any]()
         properties["string const"] = stringConst;
@@ -107,6 +116,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.eventCollided(options: [:])
     }
 
+    /// Validates that a generated client handles even naming collisions.
     static func eventCollided(options: [String: Any]?) {
         let properties = [String: Any]()
 
@@ -117,6 +127,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.everyNullableOptionalType(optionalAny: optionalAny, optionalArray: optionalArray, optionalArrayWithProperties: optionalArrayWithProperties, optionalBoolean: optionalBoolean, optionalInt: optionalInt, optionalNumber: optionalNumber, optionalObject: optionalObject, optionalObjectWithProperties: optionalObjectWithProperties, optionalString: optionalString, optionalStringWithRegex: optionalStringWithRegex, options: [:])
     }
 
+    /// Validates that clients handle all of the supported field types, as nullable optional fields. If a field is null, it is expected to be NOT sent through.
     static func everyNullableOptionalType(optionalAny: Any?, optionalArray: [Any]?, optionalArrayWithProperties: [OptionalArrayWithPropertiesItem]?, optionalBoolean: Bool?, optionalInt: Int?, optionalNumber: Decimal?, optionalObject: [String: Any]?, optionalObjectWithProperties: OptionalObjectWithProperties?, optionalString: String?, optionalStringWithRegex: String?, options: [String: Any]?) {
         var properties = [String: Any]()
         properties["optional any"] = optionalAny;
@@ -137,6 +148,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.everyNullableRequiredType(requiredAny: requiredAny, requiredArray: requiredArray, requiredArrayWithProperties: requiredArrayWithProperties, requiredBoolean: requiredBoolean, requiredInt: requiredInt, requiredNumber: requiredNumber, requiredObject: requiredObject, requiredObjectWithProperties: requiredObjectWithProperties, requiredString: requiredString, requiredStringWithRegex: requiredStringWithRegex, options: [:])
     }
 
+    /// Validates that clients handle all of the supported field types, as nullable required fields. If a field is null, it is expected to be sent through.
     static func everyNullableRequiredType(requiredAny: Any?, requiredArray: [Any]?, requiredArrayWithProperties: [RequiredArrayWithPropertiesItem]?, requiredBoolean: Bool?, requiredInt: Int?, requiredNumber: Decimal?, requiredObject: [String: Any]?, requiredObjectWithProperties: RequiredObjectWithProperties?, requiredString: String?, requiredStringWithRegex: String?, options: [String: Any]?) {
         var properties = [String: Any]()
         properties["required any"] = requiredAny == nil ? NSNull() : requiredAny
@@ -157,6 +169,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.everyOptionalType(optionalAny: optionalAny, optionalArray: optionalArray, optionalArrayWithProperties: optionalArrayWithProperties, optionalBoolean: optionalBoolean, optionalInt: optionalInt, optionalNumber: optionalNumber, optionalObject: optionalObject, optionalObjectWithProperties: optionalObjectWithProperties, optionalString: optionalString, optionalStringWithRegex: optionalStringWithRegex, options: [:])
     }
 
+    /// Validates that clients handle all of the supported field types, as optional fields.
     static func everyOptionalType(optionalAny: Any?, optionalArray: [Any]?, optionalArrayWithProperties: [OptionalArrayWithPropertiesItem1]?, optionalBoolean: Bool?, optionalInt: Int?, optionalNumber: Decimal?, optionalObject: [String: Any]?, optionalObjectWithProperties: OptionalObjectWithProperties1?, optionalString: String?, optionalStringWithRegex: String?, options: [String: Any]?) {
         var properties = [String: Any]()
         properties["optional any"] = optionalAny;
@@ -177,6 +190,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.everyRequiredType(requiredAny: requiredAny, requiredArray: requiredArray, requiredArrayWithProperties: requiredArrayWithProperties, requiredBoolean: requiredBoolean, requiredInt: requiredInt, requiredNumber: requiredNumber, requiredObject: requiredObject, requiredObjectWithProperties: requiredObjectWithProperties, requiredString: requiredString, requiredStringWithRegex: requiredStringWithRegex, options: [:])
     }
 
+    /// Validates that clients handle all of the supported field types, as required fields. 
     static func everyRequiredType(requiredAny: Any?, requiredArray: [Any], requiredArrayWithProperties: [RequiredArrayWithPropertiesItem1], requiredBoolean: Bool, requiredInt: Int, requiredNumber: Decimal, requiredObject: [String: Any], requiredObjectWithProperties: RequiredObjectWithProperties1, requiredString: String, requiredStringWithRegex: String, options: [String: Any]?) {
         var properties = [String: Any]()
         properties["required any"] = requiredAny == nil ? NSNull() : requiredAny
@@ -197,6 +211,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.largeNumbersEvent(largeNullableOptionalInteger: largeNullableOptionalInteger, largeNullableOptionalNumber: largeNullableOptionalNumber, largeNullableRequiredInteger: largeNullableRequiredInteger, largeNullableRequiredNumber: largeNullableRequiredNumber, largeOptionalInteger: largeOptionalInteger, largeOptionalNumber: largeOptionalNumber, largeRequiredInteger: largeRequiredInteger, largeRequiredNumber: largeRequiredNumber, options: [:])
     }
 
+    /// Validates that clients correctly serialize large numbers (integers and floats).
     static func largeNumbersEvent(largeNullableOptionalInteger: Int?, largeNullableOptionalNumber: Decimal?, largeNullableRequiredInteger: Int?, largeNullableRequiredNumber: Decimal?, largeOptionalInteger: Int?, largeOptionalNumber: Decimal?, largeRequiredInteger: Int, largeRequiredNumber: Decimal, options: [String: Any]?) {
         var properties = [String: Any]()
         properties["large nullable optional integer"] = largeNullableOptionalInteger;
@@ -215,6 +230,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.nestedArrays(universeCharacters: universeCharacters, options: [:])
     }
 
+    /// Validates that clients handle arrays-within-arrays.
     static func nestedArrays(universeCharacters: [[UniverseCharactersItemItem]], options: [String: Any]?) {
         var properties = [String: Any]()
         properties["universeCharacters"] = universeCharacters.serializableArray();
@@ -226,6 +242,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.nestedObjects(garage: garage, options: [:])
     }
 
+    /// Validates that clients handle objects-within-objects.
     static func nestedObjects(garage: Garage, options: [String: Any]?) {
         var properties = [String: Any]()
         properties["garage"] = garage.serializableDictionary();
@@ -237,6 +254,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.propertiesCollided(propertyCollided: propertyCollided, propertyCollided1: propertyCollided1, options: [:])
     }
 
+    /// Validates that clients handle collisions in property names within a single event.
     static func propertiesCollided(propertyCollided: String, propertyCollided1: String, options: [String: Any]?) {
         var properties = [String: Any]()
         properties["Property Collided"] = propertyCollided;
@@ -249,6 +267,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.propertyObjectNameCollision1(universe: universe, options: [:])
     }
 
+    /// Validates that clients handle collisions in object names across multiple events.
     static func propertyObjectNameCollision1(universe: Universe?, options: [String: Any]?) {
         var properties = [String: Any]()
         properties["universe"] = universe?.serializableDictionary();
@@ -260,6 +279,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.propertyObjectNameCollision2(universe: universe, options: [:])
     }
 
+    /// Validates that clients handle collisions in object names across multiple events.
     static func propertyObjectNameCollision2(universe: Universe1?, options: [String: Any]?) {
         var properties = [String: Any]()
         properties["universe"] = universe?.serializableDictionary();
@@ -271,6 +291,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.propertySanitized(I0000TerriblePropertyName3: I0000TerriblePropertyName3, options: [:])
     }
 
+    /// Validates that clients sanitize property names that contain invalid identifier characters.
     static func propertySanitized(I0000TerriblePropertyName3: String, options: [String: Any]?) {
         var properties = [String: Any]()
         properties["0000---terrible-property-name~!3"] = I0000TerriblePropertyName3;
@@ -282,6 +303,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.simpleArrayTypes(any: any, boolean: boolean, integer: integer, nullable: nullable, number: number, object: object, string: string, options: [:])
     }
 
+    /// Validates that clients support fields with various types of arrays.
     static func simpleArrayTypes(any: [Any]?, boolean: [Bool]?, integer: [Int]?, nullable: [String]?, number: [Decimal]?, object: [ObjectItem]?, string: [String]?, options: [String: Any]?) {
         var properties = [String: Any]()
         properties["any"] = any?.serializableArray();
@@ -299,6 +321,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.unionType(universeName: universeName, options: [:])
     }
 
+    /// Validates that clients support fields with multiple (union) types.
     static func unionType(universeName: Any?, options: [String: Any]?) {
         var properties = [String: Any]()
         properties["universe_name"] = universeName == nil ? NSNull() : universeName
@@ -310,6 +333,7 @@ class TypewriterAnalytics {
         TypewriterAnalytics.eventCollided1(options: [:])
     }
 
+    /// Validates that a generated client handles even naming collisions.
     static func eventCollided1(options: [String: Any]?) {
         let properties = [String: Any]()
 

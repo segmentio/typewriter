@@ -17,8 +17,8 @@ class TypewriterAnalytics {
         {{functionCall "TypewriterAnalytics" functionName properties "options" "[:]"}}
     }
 
-    {{#if description}}
-    /// {{description}}
+    {{#if functionDescription}}
+    /// {{functionDescription}}
     {{/if}}
     static func {{functionSignature functionName properties true}} {
         {{indent "        " (propertiesDictionary properties)}}

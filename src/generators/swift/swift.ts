@@ -6,14 +6,14 @@ import { Generator, BasePropertyContext, GeneratorClient } from '../gen'
 // These contexts are what will be passed to Handlebars to perform rendering.
 // Everything in these contexts should be properly sanitized.
 
-interface SWIFTObjectContext {
-	// The formatted name for this object, ex: "numAvocados
+interface SwiftObjectContext {
+	// The formatted name for this object, ex: "numAvocados".
 	name: string
 	// Set of files that need to be imported in this file.
 	imports: string[]
 }
 
-interface SWIFTPropertyContext {
+interface SwiftPropertyContext {
 	// The formatted name for this property, ex: "numAvocados".
 	name: string
 	// The type of this property. ex: "NSNumber".
@@ -29,20 +29,20 @@ interface SWIFTPropertyContext {
 	importName?: string
 }
 
-interface SWIFTTrackCallContext {
+interface SwiftTrackCallContext {
 	// The formatted function name, ex: "orderCompleted".
 	functionName: string
 }
 
 export const swift: Generator<
 	{},
-	SWIFTTrackCallContext,
-	SWIFTObjectContext,
-	SWIFTPropertyContext
+	SwiftTrackCallContext,
+	SwiftObjectContext,
+	SwiftPropertyContext
 > = {
 	generatePropertiesObject: false,
 	namer: {
-		// See: https://github.com/AnanthaRajuCprojects/Reserved-Key-Words-list-of-various-programming-languages/blob/master/Objective-C%20Reserved%20Words.md
+		// See: https://docs.swift.org/swift-book/ReferenceManual/LexicalStructure.html#ID413
 		// prettier-ignore
 		reservedWords: [
 			'associatedtype', 'class', 'deinit', 'enum', 'extension', 'fileprivate', 'func', 'import', 'init', 
@@ -97,7 +97,7 @@ export const swift: Generator<
 	},
 	generateObject: async (client, schema, properties, parentPath) => {
 		const property = defaultPropertyContext(client, schema, '[String: Any]', parentPath, true)
-		let object: SWIFTObjectContext | undefined = undefined
+		let object: SwiftObjectContext | undefined = undefined
 
 		if (properties.length > 0) {
 			// If at least one property is set, generate a class that only allows the explicitly
@@ -156,7 +156,7 @@ function defaultPropertyContext(
 	type: string,
 	namespace: string,
 	isPointerType: boolean
-): SWIFTPropertyContext {
+): SwiftPropertyContext {
 	return {
 		name: client.namer.register(schema.name, namespace, {
 			transform: camelCase,
@@ -172,7 +172,7 @@ function defaultPropertyContext(
 
 function generateFunctionSignature(
 	functionName: string,
-	properties: (BasePropertyContext & SWIFTPropertyContext)[],
+	properties: (BasePropertyContext & SwiftPropertyContext)[],
 	withOptions: boolean
 ): string {
 	let signature = functionName
@@ -220,7 +220,7 @@ function generateFunctionSignature(
 function generateFunctionCall(
 	caller: string,
 	functionName: string,
-	properties: (BasePropertyContext & SWIFTPropertyContext)[],
+	properties: (BasePropertyContext & SwiftPropertyContext)[],
 	extraParameterName?: string,
 	extraParameterValue?: string
 ): string {
@@ -250,7 +250,7 @@ function generateFunctionCall(
 }
 
 function generatePropertiesDictionary(
-	properties: (BasePropertyContext & SWIFTPropertyContext)[],
+	properties: (BasePropertyContext & SwiftPropertyContext)[],
 	prefix?: string
 ): string {
 	let varOrLet = properties.length > 0 ? `var` : `let`

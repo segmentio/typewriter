@@ -24,7 +24,7 @@ class TypewriterSwiftExampleTests: XCTestCase {
             requiredAny: "Rick Sanchez",
             requiredArray: [137, "C-137"],
             requiredArrayWithProperties: [
-                RequiredArrayWithPropertiesItem1.init(
+                RequiredArrayWithPropertiesItem1(
                     requiredAny: "Rick Sanchez",
                     requiredArray: [137, "C-137"],
                     requiredBoolean: false,
@@ -38,7 +38,7 @@ class TypewriterSwiftExampleTests: XCTestCase {
             requiredInt: 97,
             requiredNumber: 3.14,
             requiredObject: [:],
-            requiredObjectWithProperties: RequiredObjectWithProperties1.init(
+            requiredObjectWithProperties: RequiredObjectWithProperties1(
                 requiredAny: "Rick Sanchez",
                 requiredArray: [137, "C-137"],
                 requiredBoolean: false,
@@ -66,7 +66,7 @@ class TypewriterSwiftExampleTests: XCTestCase {
             optionalAny: "Rick Sanchez",
             optionalArray: [137, "C-137"],
             optionalArrayWithProperties: [
-                OptionalArrayWithPropertiesItem1.init(
+                OptionalArrayWithPropertiesItem1(
                     optionalAny: "Rick Sanchez",
                     optionalArray: [137, "C-137"],
                     optionalBoolean: false,
@@ -80,7 +80,7 @@ class TypewriterSwiftExampleTests: XCTestCase {
             optionalInt: 97,
             optionalNumber: 3.14,
             optionalObject: [:],
-            optionalObjectWithProperties: OptionalObjectWithProperties1.init(
+            optionalObjectWithProperties: OptionalObjectWithProperties1(
                 optionalAny: "Rick Sanchez",
                 optionalArray: [137, "C-137"],
                 optionalBoolean: false,
@@ -96,7 +96,7 @@ class TypewriterSwiftExampleTests: XCTestCase {
             requiredAny: nil,
             requiredArray: nil,
             requiredArrayWithProperties: [
-                RequiredArrayWithPropertiesItem.init(
+                RequiredArrayWithPropertiesItem(
                     requiredAny: nil,
                     requiredArray: nil,
                     requiredBoolean: nil,
@@ -110,7 +110,7 @@ class TypewriterSwiftExampleTests: XCTestCase {
             requiredInt: nil,
             requiredNumber: nil,
             requiredObject: nil,
-            requiredObjectWithProperties: RequiredObjectWithProperties.init(
+            requiredObjectWithProperties: RequiredObjectWithProperties(
                 requiredAny: nil,
                 requiredArray: nil,
                 requiredBoolean: nil,
@@ -126,7 +126,7 @@ class TypewriterSwiftExampleTests: XCTestCase {
             requiredAny: "Rick Sanchez",
             requiredArray: [137, "C-137"],
             requiredArrayWithProperties: [
-                RequiredArrayWithPropertiesItem.init(
+                RequiredArrayWithPropertiesItem(
                     requiredAny: "Rick Sanchez",
                     requiredArray: [137, "C-137"],
                     requiredBoolean: false,
@@ -140,7 +140,7 @@ class TypewriterSwiftExampleTests: XCTestCase {
             requiredInt: 97,
             requiredNumber: 3.14,
             requiredObject: [:],
-            requiredObjectWithProperties: RequiredObjectWithProperties.init(
+            requiredObjectWithProperties: RequiredObjectWithProperties(
                 requiredAny: "Rick Sanchez",
                 requiredArray: [137, "C-137"],
                 requiredBoolean: false,
@@ -168,7 +168,7 @@ class TypewriterSwiftExampleTests: XCTestCase {
             optionalAny: "Rick Sanchez",
             optionalArray: [137, "C-137"],
             optionalArrayWithProperties: [
-                OptionalArrayWithPropertiesItem.init(
+                OptionalArrayWithPropertiesItem(
                     optionalAny: "Rick Sanchez",
                     optionalArray: [137, "C-137"],
                     optionalBoolean: false,
@@ -182,7 +182,7 @@ class TypewriterSwiftExampleTests: XCTestCase {
             optionalInt: 97,
             optionalNumber: 3.14,
             optionalObject: [:],
-            optionalObjectWithProperties: OptionalObjectWithProperties.init(
+            optionalObjectWithProperties: OptionalObjectWithProperties(
                 optionalAny: "Rick Sanchez",
                 optionalArray: [137, "C-137"],
                 optionalBoolean: false,
@@ -204,28 +204,28 @@ class TypewriterSwiftExampleTests: XCTestCase {
         
         TypewriterAnalytics.propertiesCollided(propertyCollided: "The Citadel", propertyCollided1: "Galactic Prison")
         
-        TypewriterAnalytics.propertyObjectNameCollision1(universe: Universe.init(name: "Froopyland", occupants: [
-            OccupantsItem.init(name: "Beth Smith"),
-            OccupantsItem.init(name: "Thomas Lipkip"),
+        TypewriterAnalytics.propertyObjectNameCollision1(universe: Universe(name: "Froopyland", occupants: [
+            OccupantsItem(name: "Beth Smith"),
+            OccupantsItem(name: "Thomas Lipkip"),
         ]))
         
-        TypewriterAnalytics.propertyObjectNameCollision2(universe: Universe1.init(name: "Froopyland", occupants: [
-            OccupantsItem1.init(name: "Beth Smith"),
-            OccupantsItem1.init(name: "Thomas Lipkip"),
+        TypewriterAnalytics.propertyObjectNameCollision2(universe: Universe1(name: "Froopyland", occupants: [
+            OccupantsItem1(name: "Beth Smith"),
+            OccupantsItem1(name: "Thomas Lipkip"),
         ]))
         
-        TypewriterAnalytics.simpleArrayTypes(any: [137, "C-137"], boolean: [true, false], integer: [97], nullable: nil, number: [3.14], object: [ObjectItem.init(name: "Beth Smith")], string: ["Alpha-Betrium"])
+        TypewriterAnalytics.simpleArrayTypes(any: [137, "C-137"], boolean: [true, false], integer: [97], nullable: nil, number: [3.14], object: [ObjectItem(name: "Beth Smith")], string: ["Alpha-Betrium"])
         
-        TypewriterAnalytics.nestedObjects(garage: Garage.init(tunnel: Tunnel.init(subterraneanLab: SubterraneanLab.init(jerrysMemories: [], mortysMemories: [], summersContingencyPlan: "Oh, man, it’s a scenario four."))))
+        TypewriterAnalytics.nestedObjects(garage: Garage(tunnel: Tunnel(subterraneanLab: SubterraneanLab(jerrysMemories: [], mortysMemories: [], summersContingencyPlan: "Oh, man, it’s a scenario four."))))
         
         TypewriterAnalytics.nestedArrays(universeCharacters: [
             [
-                UniverseCharactersItemItem.init(name: "Morty Smith"),
-                UniverseCharactersItemItem.init(name: "Rick Sanchez")
+                UniverseCharactersItemItem(name: "Morty Smith"),
+                UniverseCharactersItemItem(name: "Rick Sanchez")
             ],
             [
-                UniverseCharactersItemItem.init(name: "Cronenberg Morty"),
-                UniverseCharactersItemItem.init(name: "Cronenberg Rick")
+                UniverseCharactersItemItem(name: "Cronenberg Morty"),
+                UniverseCharactersItemItem(name: "Cronenberg Rick")
             ]
         ])
 
@@ -235,19 +235,19 @@ class TypewriterSwiftExampleTests: XCTestCase {
         // identify when all events have finished flushing.
         var finishedFlushing = false
         NotificationCenter.default.addObserver(forName: Notification.Name.SEGSegmentDidSendRequest, object: nil, queue: nil) { (notification) in
-            print("Typewriter: mentRequestDidSucceedNotification notification fired")
+            print("Typewriter: SegmentRequestDidSucceedNotification notification fired")
             finishedFlushing = true
         }
         // We also want to catch failures, so that our test suite will still finish.
         NotificationCenter.default.addObserver(forName: Notification.Name.SEGSegmentRequestDidFail, object: nil, queue: nil) { (notification) in
-            print("Typewriter: mentRequestDidFailNotification notification fired")
+            print("Typewriter: SegmentRequestDidFailNotification notification fired")
             finishedFlushing = true
         }
         
         Analytics.shared().flush()
         
         while(!finishedFlushing) {
-            RunLoop.current.run(until: Date.init(timeIntervalSinceNow: 0.1))
+            RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
         }
     }
 }

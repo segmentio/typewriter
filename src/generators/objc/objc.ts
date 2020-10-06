@@ -6,14 +6,14 @@ import { Generator, BasePropertyContext, GeneratorClient } from '../gen'
 // These contexts are what will be passed to Handlebars to perform rendering.
 // Everything in these contexts should be properly sanitized.
 
-interface OBJCObjectContext {
-	// The formatted name for this object, ex: "numAvocados
+interface ObjCObjectContext {
+	// The formatted name for this object, ex: "numAvocados".
 	name: string
 	// Set of files that need to be imported in this file.
 	imports: string[]
 }
 
-interface OBJCPropertyContext {
+interface ObjCPropertyContext {
 	// The formatted name for this property, ex: "numAvocados".
 	name: string
 	// The type of this property. ex: "NSNumber".
@@ -31,12 +31,12 @@ interface OBJCPropertyContext {
 	importName?: string
 }
 
-interface OBJCTrackCallContext {
+interface ObjCTrackCallContext {
 	// The formatted function name, ex: "orderCompleted".
 	functionName: string
 }
 
-export const objc: Generator<{}, OBJCTrackCallContext, OBJCObjectContext, OBJCPropertyContext> = {
+export const objc: Generator<{}, ObjCTrackCallContext, ObjCObjectContext, ObjCPropertyContext> = {
 	generatePropertiesObject: false,
 	namer: {
 		// See: https://github.com/AnanthaRajuCprojects/Reserved-Key-Words-list-of-various-programming-languages/blob/master/Objective-C%20Reserved%20Words.md
@@ -99,7 +99,7 @@ export const objc: Generator<{}, OBJCTrackCallContext, OBJCObjectContext, OBJCPr
 	},
 	generateObject: async (client, schema, properties, parentPath) => {
 		const property = defaultPropertyContext(client, schema, 'SERIALIZABLE_DICT', parentPath, true)
-		let object: OBJCObjectContext | undefined = undefined
+		let object: ObjCObjectContext | undefined = undefined
 
 		if (properties.length > 0) {
 			// If at least one property is set, generate a class that only allows the explicitly
@@ -171,7 +171,7 @@ function defaultPropertyContext(
 	type: string,
 	namespace: string,
 	isPointerType: boolean
-): OBJCPropertyContext {
+): ObjCPropertyContext {
 	return {
 		name: client.namer.register(schema.name, namespace, {
 			transform: camelCase,
@@ -192,7 +192,7 @@ function defaultPropertyContext(
 
 function generateFunctionSignature(
 	functionName: string,
-	properties: (BasePropertyContext & OBJCPropertyContext)[],
+	properties: (BasePropertyContext & ObjCPropertyContext)[],
 	withOptions: boolean
 ): string {
 	let signature = functionName
@@ -235,7 +235,7 @@ function generateFunctionSignature(
 function generateFunctionCall(
 	caller: string,
 	functionName: string,
-	properties: (BasePropertyContext & OBJCPropertyContext)[],
+	properties: (BasePropertyContext & ObjCPropertyContext)[],
 	extraParameterName?: string,
 	extraParameterValue?: string
 ): string {
@@ -263,7 +263,7 @@ function generateFunctionCall(
 }
 
 function generatePropertiesDictionary(
-	properties: (BasePropertyContext & OBJCPropertyContext)[],
+	properties: (BasePropertyContext & ObjCPropertyContext)[],
 	prefix?: string
 ): string {
 	let out = 'NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];\n'
