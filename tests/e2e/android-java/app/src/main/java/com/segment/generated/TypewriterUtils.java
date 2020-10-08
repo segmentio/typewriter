@@ -14,7 +14,7 @@ public final class TypewriterUtils {
 
     static {
         typewriterCtx = new HashMap<>();
-        typewriterCtx.put("version", "7.1.0");
+        typewriterCtx.put("version", "7.2.0");
         typewriterCtx.put("language", "java");
     }
 
