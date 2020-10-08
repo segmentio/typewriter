@@ -1,9 +1,10 @@
 import { JSONSchema7 } from 'json-schema'
 import { parse, Schema, getPropertiesSchema, Type } from './ast'
 import { javascript } from './javascript'
-import { ios } from './ios'
+import { objc } from './objc'
+import { swift } from './swift'
 import { android } from './android'
-import { Options, SDK } from './options'
+import { Options, SDK, Language } from './options'
 import { registerStandardHelpers, generateFromTemplate } from '../templates'
 import { Namer, Options as NamerOptions } from './namer'
 import stringify from 'json-stable-stringify'
@@ -157,7 +158,11 @@ export async function gen(trackingPlan: RawTrackingPlan, options: GenOptions): P
 	if (options.client.sdk === SDK.WEB || options.client.sdk === SDK.NODE) {
 		return await runGenerator(javascript, parsedTrackingPlan, options)
 	} else if (options.client.sdk === SDK.IOS) {
-		return await runGenerator(ios, parsedTrackingPlan, options)
+		if (options.client.language === Language.SWIFT) {
+			return await runGenerator(swift, parsedTrackingPlan, options)
+		} else {
+			return await runGenerator(objc, parsedTrackingPlan, options)
+		}
 	} else if (options.client.sdk === SDK.ANDROID) {
 		return await runGenerator(android, parsedTrackingPlan, options)
 	} else {

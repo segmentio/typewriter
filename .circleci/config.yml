@@ -130,7 +130,7 @@ jobs:
           name: Install Cocoapods
           command: |
             cd tests/e2e/ios-objc
-            pod check --verbose || pod install --deployment
+            pod check --verbose || pod install --repo-update
       - save_cache:
           paths:
             - tests/e2e/ios-objc/Pods
@@ -161,7 +161,7 @@ jobs:
           name: Install Cocoapods
           command: |
             cd tests/e2e/ios-objc
-            pod check --verbose || pod install --deployment
+            pod check --verbose || pod install --repo-update
       - save_cache:
           paths:
             - tests/e2e/ios-objc/Pods
@@ -192,7 +192,7 @@ jobs:
           name: Install Cocoapods
           command: |
             cd tests/e2e/ios-swift
-            pod check --verbose || pod install --deployment
+            pod check --verbose || pod install --repo-update
       - save_cache:
           paths:
             - tests/e2e/ios-swift/Pods
@@ -223,7 +223,7 @@ jobs:
           name: Install Cocoapods
           command: |
             cd tests/e2e/ios-swift
-            pod check --verbose || pod install --deployment
+            pod check --verbose || pod install --repo-update
       - save_cache:
           paths:
             - tests/e2e/ios-swift/Pods

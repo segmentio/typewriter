@@ -1,7 +1,7 @@
 target 'TypewriterSwiftExample' do
   use_frameworks!
 
-  pod "Analytics", "3.8.0-beta.1"
+  pod "Analytics"
   platform :ios, "12.2"
 
   target 'TypewriterSwiftExampleTests' do

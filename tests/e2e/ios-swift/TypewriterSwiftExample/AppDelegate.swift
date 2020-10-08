@@ -7,14 +7,18 @@
 //
 
 import UIKit
+#if canImport(Segment)
+import Segment
+#elseif canImport(Analytics)
 import Analytics
+#endif
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        SEGAnalytics.debug(true)
+        Analytics.debug(true)
         
-        let configuration: SEGAnalyticsConfiguration = SEGAnalyticsConfiguration.init(writeKey: "123456")
+        let configuration: AnalyticsConfiguration = AnalyticsConfiguration.init(writeKey: "123456")
         configuration.trackApplicationLifecycleEvents = false
         configuration.flushAt = 999
         
@@ -29,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return NSMutableURLRequest.init(url: components!.url!)
         }
         
-        SEGAnalytics.setup(with: configuration)
+        Analytics.setup(with: configuration)
         
         return true
     }
