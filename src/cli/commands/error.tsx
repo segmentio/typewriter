@@ -7,7 +7,7 @@ import { Box, Color, useApp } from 'ink'
 import Link from 'ink-link'
 import figures from 'figures'
 import { version } from '../../../package.json'
-import { DebugContext, AnalyticsProps } from '../index'
+import { AnalyticsProps } from '../index'
 import typewriter from '../../analytics'
 
 interface ErrorContextProps {

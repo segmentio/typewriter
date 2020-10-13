@@ -6,7 +6,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'production'
 
 import React, { createContext } from 'react'
 import { render } from 'ink'
-import { Token, Version, Build, Help, Init, ErrorBoundary, wrapError } from './commands'
+import { Token, Version, Build, Help, Init, ErrorBoundary } from './commands'
 import { CLIArguments } from './index'
 import Analytics from 'analytics-node'
 import typewriter from '../analytics'

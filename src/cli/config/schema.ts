@@ -83,9 +83,9 @@ const ConfigSchema = Joi.object().required().keys({
 export const validateConfig = (rawConfig: object): Config => {
 	// Validate the provided configuration file using our Joi schema.
 	const result = ConfigSchema.validate(rawConfig, {
-    abortEarly: false,
-    convert: false,
-  });
+		abortEarly: false,
+		convert: false,
+	})
 	if (!!result.error) {
 		throw new Error(result.error.annotate())
 	}
