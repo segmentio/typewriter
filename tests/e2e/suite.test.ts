@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import got from 'got'
 import { SDK, Language } from '../../src/generators/options'
-import Joi from '@hapi/joi'
+import Joi from 'joi'
 import { remove } from 'lodash'
 
 const SIDECAR_ADDRESS = 'http://localhost:8765'
