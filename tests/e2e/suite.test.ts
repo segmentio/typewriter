@@ -573,9 +573,7 @@ describe('e2e tests', () => {
 		// Do a sanity check to make sure our client isn't overwriting any fields that
 		// are usually set by the SDK itself.
 		for (let event of events) {
-			const resp = Joi.validate(
-				event,
-				Joi.object().keys({
+			const schema = Joi.object().keys({
 					properties: Joi.object(),
 					event: Joi.string(),
 					context: Joi.object().keys({
@@ -589,7 +587,8 @@ describe('e2e tests', () => {
 						}),
 					}),
 					type: Joi.string(),
-				}),
+				});
+			const resp = schema.validate(event,
 				{
 					abortEarly: false,
 					allowUnknown: true,
@@ -629,11 +628,11 @@ describe('e2e tests', () => {
 				const errors = [] as Joi.ValidationError[]
 				for (const event of matchingEvents) {
 					const i = schemas.findIndex(schema => {
-						let resp = Joi.validate(event, schema, {
-							abortEarly: false,
-							allowUnknown: true,
-							presence: 'required',
-						})
+						let resp = schema.validate(event, {
+              abortEarly: false,
+              allowUnknown: true,
+              presence: 'required',
+            });
 
 						if (resp.error) {
 							errors.push(resp.error)
