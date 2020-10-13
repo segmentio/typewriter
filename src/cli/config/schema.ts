@@ -1,5 +1,5 @@
 import { Options } from 'src/generators/options'
-import Joi from '@hapi/joi'
+import Joi from 'joi'
 
 /**
  * A config, stored in a typewriter.yml file.
