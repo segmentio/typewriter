@@ -112,7 +112,7 @@ function withTypewriterContext(message) {
 		context: __assign({}, message.context || {}, {
 			typewriter: {
 				language: 'javascript',
-				version: '7.2.0',
+				version: '7.2.1',
 			},
 		}),
 	})
