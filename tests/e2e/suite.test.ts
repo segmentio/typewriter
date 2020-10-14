@@ -29,7 +29,7 @@ interface Expectation {
 // Joi schema helper for expecting exact matches on array values.
 // It's a bit confusing since arrays are used as union schemas,
 // not exact matches by default.
-function exactArray<T>(arr: T[]): Joi.ArraySchema {
+function exactArray(arr: any): Joi.ArraySchema {
 	return Joi.array()
 		.ordered(arr)
 		.length(arr.length)
