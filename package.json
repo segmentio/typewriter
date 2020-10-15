@@ -68,7 +68,7 @@
     "js-yaml": "^3.13.1",
     "json-stable-stringify": "^1.0.1",
     "latest-version": "^5.1.0",
-    "lodash": "4.17.12",
+    "lodash": "4.17.20",
     "node-machine-id": "^1.1.12",
     "prettier": "^1.17.0",
     "react": "^16.9.0",
