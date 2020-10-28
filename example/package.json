@@ -13,23 +13,27 @@
     "test": "jest"
   },
   "dependencies": {
-    "@segment/snippet": "^4.4.0",
-    "evergreen-ui": "^4.17.0",
-    "next": "^9.0.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "@segment/snippet": "^4.13.1",
+    "evergreen-ui": "^5.1.2",
+    "next": "^10.0.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "request": "^2.88.0",
-    "typescript": "^3.0.1"
+    "typescript": "^4.0.5"
   },
   "devDependencies": {
-    "@types/react": "^16.0.36",
-    "@types/segment-analytics": "^0.0.31",
+    "@types/react": "^16.9.54",
+    "@types/segment-analytics": "^0.0.32",
     "@types/styled-jsx": "^2.2.3",
     "enzyme": "^3.9.0",
-    "enzyme-adapter-react-16": "^1.13.1",
-    "fork-ts-checker-webpack-plugin": "^0.4.3",
-    "jest": "^24.8.0",
-    "typewriter": "7.0.1"
+    "enzyme-adapter-react-16": "^1.15.5",
+    "fork-ts-checker-webpack-plugin": "^5.2.1",
+    "jest": "^26.6.1",
+    "typewriter": "7.2.1"
+  },
+  "resolutions": {
+    "lodash": ">=4.17.19",
+    "node-fetch": ">=2.6.1"
   },
   "jest": {
     "setupFilesAfterEnv": [
