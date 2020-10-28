@@ -59,7 +59,7 @@
     "figures": "^3.0.0",
     "fuse.js": "^3.4.5",
     "got": "^9.6.0",
-    "handlebars": "4.5.3",
+    "handlebars": "4.7.6",
     "ink": "^2.5.0",
     "ink-link": "^1.0.0",
     "ink-select-input": "^3.1.2",
