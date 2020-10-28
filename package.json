@@ -20,7 +20,7 @@
     "release:pre": "yarn run build && np prerelease --any-branch --tag next --no-release-draft"
   },
   "engines": {
-    "node": ">=0.10.15"
+    "node": ">=0.10.18"
   },
   "devDependencies": {
     "@types/analytics-node": "^3.1.1",
