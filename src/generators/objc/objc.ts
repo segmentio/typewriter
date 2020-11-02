@@ -88,7 +88,7 @@ export const objc: Generator<{}, ObjCTrackCallContext, ObjCObjectContext, ObjCPr
 	generateArray: async (client, schema, items, parentPath) => {
 		// Objective-C doesn't support NSArray's of primitives. Therefore, we
 		// map booleans and integers to NSNumbers.
-		let itemsType = [Type.BOOLEAN, Type.INTEGER].includes(items.schemaType)
+		const itemsType = [Type.BOOLEAN, Type.INTEGER].includes(items.schemaType)
 			? 'NSNumber *'
 			: items.type
 
@@ -225,7 +225,7 @@ function generateFunctionSignature(
 		const first = parameters[0]
 		signature += `With${upperFirst(first.name)}:(${withNullability(first)})${first.name}\n`
 	}
-	for (var parameter of parameters.slice(1)) {
+	for (const parameter of parameters.slice(1)) {
 		signature += `${parameter.name}:(${withNullability(parameter)})${parameter.name}\n`
 	}
 
@@ -255,7 +255,7 @@ function generateFunctionCall(
 		const { name, value } = parameters[0]
 		functionCall += `With${upperFirst(name)}:${value}`
 	}
-	for (var { name, value } of parameters.slice(1)) {
+	for (const { name, value } of parameters.slice(1)) {
 		functionCall += ` ${name}:${value}`
 	}
 
@@ -267,7 +267,7 @@ function generatePropertiesDictionary(
 	prefix?: string
 ): string {
 	let out = 'NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];\n'
-	for (let property of properties) {
+	for (const property of properties) {
 		const name = prefix && prefix.length > 0 ? `${prefix}${property.name}` : property.name
 		const serializableName =
 			property.schemaType === Type.BOOLEAN

@@ -306,7 +306,7 @@ export const ClearFilesStep: React.FC<ClearFilesProps> = ({ config, configPath, 
 	// lines of every generated file.
 	async function clearFolder(path: string): Promise<void> {
 		const fileNames = await readdir(path, 'utf-8')
-		for (let fileName of fileNames) {
+		for (const fileName of fileNames) {
 			const fullPath = join(path, fileName)
 			try {
 				const contents = await readFile(fullPath, 'utf-8')
@@ -357,7 +357,7 @@ export const GenerationStep: React.FC<GenerationProps> = ({
 			})
 
 			// Write it out to the specified directory:
-			for (var file of files) {
+			for (const file of files) {
 				const path = resolveRelativePath(configPath, trackingPlan.path, file.path)
 				await verifyDirectoryExists(path, 'file')
 				await writeFile(path, file.contents, {

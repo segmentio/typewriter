@@ -89,7 +89,7 @@ export async function fetchAllTrackingPlans(options: {
 	const trackingPlans = []
 
 	const workspaces = await fetchWorkspaces({ token: options.token })
-	for (var workspace of workspaces) {
+	for (const workspace of workspaces) {
 		const workspaceTPs = await fetchTrackingPlans({
 			workspaceSlug: workspace.name.replace('workspaces/', ''),
 			token: options.token,
@@ -127,7 +127,7 @@ export async function validateToken(token: string | undefined): Promise<TokenVal
 
 	// If we don't have a cached result, query the API to find out if this is a valid token.
 	if (!tokenValidationCache[token]) {
-		let result: TokenValidationResult = { isValid: false }
+		const result: TokenValidationResult = { isValid: false }
 		try {
 			const workspaces = await fetchWorkspaces({ token })
 			result.isValid = workspaces.length > 0
