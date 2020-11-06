@@ -675,7 +675,7 @@ function withTypewriterContext<P, T extends Segment.TrackMessage<P>>(
 			...(message.context || {}),
 			typewriter: {
 				language: 'typescript',
-				version: '7.2.0',
+				version: '7.3.0',
 			},
 		},
 	}
