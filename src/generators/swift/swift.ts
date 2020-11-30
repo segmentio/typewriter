@@ -35,7 +35,7 @@ interface SwiftTrackCallContext {
 }
 
 export const swift: Generator<
-	{},
+	Record<string, unknown>,
 	SwiftTrackCallContext,
 	SwiftObjectContext,
 	SwiftPropertyContext
@@ -88,7 +88,7 @@ export const swift: Generator<
 	generateArray: async (client, schema, items, parentPath) => {
 		// Objective-C doesn't support NSArray's of primitives. Therefore, we
 		// map booleans and integers to NSNumbers.
-		let itemsType = items.type
+		const itemsType = items.type
 
 		return {
 			...defaultPropertyContext(client, schema, `[${itemsType}]`, parentPath, true),
@@ -196,7 +196,7 @@ function generateFunctionSignature(
 		isPointerType: boolean
 		isVariableNullable: boolean
 	}) => {
-		const { isPointerType, type, isVariableNullable } = property
+		const { type, isVariableNullable } = property
 		if (isVariableNullable) {
 			return `${type}?`
 		} else {
@@ -206,7 +206,7 @@ function generateFunctionSignature(
 
 	signature += `(`
 	for (let index = 0; index < parameters.length; index++) {
-		let parameter = parameters[index]
+		const parameter = parameters[index]
 		signature += `${parameter.name}: ${withNullability(parameter)}`
 		if (index != parameters.length - 1) {
 			signature += `, `
@@ -238,7 +238,7 @@ function generateFunctionCall(
 
 	functionCall += `(`
 	for (let index = 0; index < parameters.length; index++) {
-		let parameter = parameters[index]
+		const parameter = parameters[index]
 		functionCall += `${parameter.name}: ${parameter.value}`
 		if (index != parameters.length - 1) {
 			functionCall += `, `
@@ -253,10 +253,10 @@ function generatePropertiesDictionary(
 	properties: (BasePropertyContext & SwiftPropertyContext)[],
 	prefix?: string
 ): string {
-	let varOrLet = properties.length > 0 ? `var` : `let`
+	const varOrLet = properties.length > 0 ? `var` : `let`
 	let out = varOrLet + ` properties = [String: Any]()\n`
 
-	for (let property of properties) {
+	for (const property of properties) {
 		const name = prefix && prefix.length > 0 ? `${prefix}${property.name}` : property.name
 		const serializableName =
 			property.schemaType === Type.BOOLEAN

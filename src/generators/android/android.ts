@@ -33,7 +33,7 @@ interface AndroidTrackCallContext {
 }
 
 export const android: Generator<
-	{},
+	Record<string, unknown>,
 	AndroidTrackCallContext,
 	AndroidObjectContext,
 	AndroidPropertyContext

@@ -160,7 +160,7 @@ function parseTypeSpecificFields(raw: JSONSchema7, type: Type): TypeSpecificFiel
 	if (type === Type.OBJECT) {
 		const fields: ObjectTypeFields = { type, properties: [] }
 		const requiredFields = new Set(raw.required || [])
-		for (var entry of Object.entries(raw.properties || {})) {
+		for (const entry of Object.entries(raw.properties || {})) {
 			const [property, propertySchema] = entry
 			if (typeof propertySchema !== 'boolean') {
 				const isRequired = requiredFields.has(property)
@@ -173,7 +173,7 @@ function parseTypeSpecificFields(raw: JSONSchema7, type: Type): TypeSpecificFiel
 		const fields: ArrayTypeFields = { type, items: { type: Type.ANY } }
 		if (typeof raw.items !== 'boolean' && raw.items !== undefined) {
 			// `items` can be a single schemas, or an array of schemas, so standardize on an array.
-			let definitions = raw.items instanceof Array ? raw.items : [raw.items]
+			const definitions = raw.items instanceof Array ? raw.items : [raw.items]
 
 			// Convert from JSONSchema7Definition -> JSONSchema7
 			const schemas = definitions.filter(def => typeof def !== 'boolean') as JSONSchema7[]
@@ -192,7 +192,7 @@ function parseTypeSpecificFields(raw: JSONSchema7, type: Type): TypeSpecificFiel
 		return fields
 	} else if (type === Type.UNION) {
 		const fields: UnionTypeFields = { type, types: [] }
-		for (var val of getRawTypes(raw).values()) {
+		for (const val of getRawTypes(raw).values()) {
 			// For codegen purposes, we don't consider "null" as a type, so remove it.
 			if (val === 'null') {
 				continue

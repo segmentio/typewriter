@@ -2,7 +2,7 @@
 // targets to TypeScript's compiler enums.
 import { ModuleKind, ScriptTarget } from 'typescript'
 
-export function toTarget(target: string | undefined) {
+export function toTarget(target: string | undefined): ScriptTarget {
 	if (!target) {
 		return ScriptTarget.ESNext
 	}
@@ -31,7 +31,7 @@ export function toTarget(target: string | undefined) {
 	}
 }
 
-export function toModule(target: string | undefined) {
+export function toModule(target: string | undefined): ModuleKind {
 	if (!target) {
 		return ModuleKind.ESNext
 	}

@@ -7,7 +7,7 @@ import { Box, Color, useApp } from 'ink'
 import Link from 'ink-link'
 import figures from 'figures'
 import { version } from '../../../package.json'
-import { DebugContext, AnalyticsProps } from '../index'
+import { AnalyticsProps } from '../index'
 import typewriter from '../../analytics'
 
 interface ErrorContextProps {
@@ -39,7 +39,7 @@ export function wrapError(description: string, error?: Error, ...notes: string[]
 }
 
 export function isWrappedError(error: unknown): error is WrappedError {
-	return !!error && typeof error === 'object' && (error as any).isWrappedError
+	return !!error && typeof error === 'object' && (error as Record<string, boolean>).isWrappedError
 }
 
 export function toUnexpectedError(error: Error): WrappedError {
@@ -80,14 +80,14 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 		return { error: toUnexpectedError(error) }
 	}
 
-	public componentDidCatch(error: Error) {
+	public componentDidCatch(error: Error): void {
 		this.reportError({
 			error: toUnexpectedError(error),
 			fatal: true,
 		})
 	}
 
-	public componentDidMount() {
+	public componentDidMount(): void {
 		if (this.props.error) {
 			const err = toUnexpectedError(this.props.error)
 			this.reportError({
@@ -102,7 +102,6 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 		const { anonymousId, analyticsProps } = this.props
 
 		typewriter.errorFired({
-			/* eslint-disable @typescript-eslint/camelcase */
 			properties: {
 				...analyticsProps,
 				error_string: JSON.stringify(params.error, undefined, 2),
@@ -134,7 +133,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 		this.setState({ error })
 	}
 
-	public render() {
+	public render(): JSX.Element {
 		const { children } = this.props
 		const { error } = this.state
 

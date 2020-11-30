@@ -29,7 +29,11 @@ export interface TrackingPlan {
 	}[]
 }
 
-export interface BaseRootContext<T extends object, O extends object, P extends object> {
+export interface BaseRootContext<
+	T extends Record<string, unknown>,
+	O extends Record<string, unknown>,
+	P extends Record<string, unknown>
+> {
 	isDevelopment: boolean
 	language: string
 	typewriterVersion: string
@@ -38,7 +42,7 @@ export interface BaseRootContext<T extends object, O extends object, P extends o
 	objects: (O & BaseObjectContext<P>)[]
 }
 
-export interface BaseTrackCallContext<P extends object> {
+export interface BaseTrackCallContext<P extends Record<string, unknown>> {
 	// The optional function description.
 	functionDescription?: string
 	// The raw JSON Schema for this event.
@@ -49,7 +53,7 @@ export interface BaseTrackCallContext<P extends object> {
 	properties?: (P & BasePropertyContext)[]
 }
 
-export interface BaseObjectContext<P extends object> {
+export interface BaseObjectContext<P extends Record<string, unknown>> {
 	description?: string
 	properties: (P & BasePropertyContext)[]
 }
@@ -67,7 +71,7 @@ export interface BasePropertyContext {
 export interface GeneratorClient {
 	options: GenOptions
 	namer: Namer
-	generateFile: <T extends object>(
+	generateFile: <T extends Record<string, unknown>>(
 		outputPath: string,
 		templatePath: string,
 		context: T
@@ -82,10 +86,10 @@ export interface GeneratorClient {
  * as parameters to each function. You can toggle this behavior with `generatePropertiesObject`.
  */
 export declare type Generator<
-	R extends object,
-	T extends object,
-	O extends object,
-	P extends object
+	R extends Record<string, unknown>,
+	T extends Record<string, unknown>,
+	O extends Record<string, unknown>,
+	P extends Record<string, unknown>
 > = {
 	namer: NamerOptions
 	setup: (options: GenOptions) => Promise<R>
@@ -170,7 +174,12 @@ export async function gen(trackingPlan: RawTrackingPlan, options: GenOptions): P
 	}
 }
 
-async function runGenerator<R extends object, T extends object, O extends object, P extends object>(
+async function runGenerator<
+	R extends Record<string, unknown>,
+	T extends Record<string, unknown>,
+	O extends Record<string, unknown>,
+	P extends Record<string, unknown>
+>(
 	generator: Generator<R, T, O, P>,
 	trackingPlan: TrackingPlan,
 	options: GenOptions
@@ -190,7 +199,7 @@ async function runGenerator<R extends object, T extends object, O extends object
 
 	// File output.
 	const files: File[] = []
-	const generateFile = async <C extends object>(
+	const generateFile = async <C extends Record<string, unknown>>(
 		outputPath: string,
 		templatePath: string,
 		fileContext: C

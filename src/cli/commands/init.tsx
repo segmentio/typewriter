@@ -318,7 +318,7 @@ async function filterDirectories(path: string): Promise<string[]> {
 	}
 
 	// Now sort these directories by the query path.
-	var fuse = new Fuse([...directories].map(d => ({ name: d })), { keys: ['name'] })
+	const fuse = new Fuse([...directories].map(d => ({ name: d })), { keys: ['name'] })
 	return isPathEmpty ? [...directories] : fuse.search(path).map(d => d.name)
 }
 

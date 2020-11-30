@@ -13,6 +13,7 @@ import { Config, getConfig, getTokenMethod } from './config'
 import { machineId } from 'node-machine-id'
 import { version } from '../../package.json'
 import { loadTrackingPlan } from './api'
+import yargs from 'yargs'
 
 export interface StandardProps extends AnalyticsProps {
 	configPath: string
@@ -71,7 +72,7 @@ const commandDefaults = {
 }
 
 // The `.argv` below will boot a Yargs CLI.
-require('yargs')
+yargs
 	.command({
 		...commandDefaults,
 		command: ['init', 'initialize', 'quickstart'],
@@ -136,7 +137,7 @@ typewriter.setTypewriterOptions({
 	analytics: analyticsNode,
 })
 
-function toYargsHandler<P = {}>(
+function toYargsHandler<P = unknown>(
 	Command: React.FC<StandardProps & P>,
 	props: P,
 	cliOptions?: { validateDefault?: boolean }
@@ -148,7 +149,6 @@ function toYargsHandler<P = {}>(
 			anonymousId = await getAnonymousId()
 		} catch (error) {
 			typewriter.errorFired({
-				/* eslint-disable @typescript-eslint/camelcase */
 				error_string: 'Failed to generate an anonymous id',
 				error,
 			})
@@ -291,7 +291,6 @@ async function typewriterLibraryProperties(
 	} catch {}
 
 	return {
-		/* eslint-disable @typescript-eslint/camelcase */
 		version,
 		client: cfg && {
 			language: cfg.client.language,

@@ -80,7 +80,7 @@ const ConfigSchema = Joi.object().required().keys({
 	),
 })
 
-export const validateConfig = (rawConfig: object): Config => {
+export const validateConfig = (rawConfig: Record<string, unknown>): Config => {
 	// Validate the provided configuration file using our Joi schema.
 	const result = Joi.validate(rawConfig, ConfigSchema, {
 		abortEarly: false,
@@ -91,5 +91,5 @@ export const validateConfig = (rawConfig: object): Config => {
 	}
 
 	// We can safely type cast the config, now that is has been validated.
-	return rawConfig as Config
+	return (rawConfig as unknown) as Config
 }
