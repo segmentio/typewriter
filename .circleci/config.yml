@@ -84,28 +84,28 @@ jobs:
 
   test-web-javascript-dev:
     docker:
-      - image: cypress/browsers:chrome69
+      - image: cypress/browsers:node10.16.3-chrome80-ff73
       - image: segment/mock:v0.0.2
     steps:
       - attach_workspace: { at: . }
       - run: make test-web-javascript-dev
   test-web-javascript-prod:
     docker:
-      - image: cypress/browsers:chrome69
+      - image: cypress/browsers:node10.16.3-chrome80-ff73
       - image: segment/mock:v0.0.2
     steps:
       - attach_workspace: { at: . }
       - run: make test-web-javascript-prod
   test-web-typescript-dev:
     docker:
-      - image: cypress/browsers:chrome69
+      - image: cypress/browsers:node10.16.3-chrome80-ff73
       - image: segment/mock:v0.0.2
     steps:
       - attach_workspace: { at: . }
       - run: make test-web-typescript-dev
   test-web-typescript-prod:
     docker:
-      - image: cypress/browsers:chrome69
+      - image: cypress/browsers:node10.16.3-chrome80-ff73
       - image: segment/mock:v0.0.2
     steps:
       - attach_workspace: { at: . }
