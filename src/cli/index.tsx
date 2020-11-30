@@ -76,7 +76,7 @@ yargs
 	.command({
 		...commandDefaults,
 		command: ['init', 'initialize', 'quickstart'],
-		handler: toYargsHandler(Init, {}) as any,
+		handler: toYargsHandler(Init, {}),
 	})
 	.command({
 		...commandDefaults,
