@@ -293,7 +293,7 @@ async function filterDirectories(path: string): Promise<string[]> {
 	}
 
 	const isPathEmpty = ['', '.', './'].includes(path)
-	const directories = new Set()
+	const directories = new Set<string>()
 
 	// First look for all directories in the same directory as the current query path.
 	const parentPath = join(path, isPathEmpty || path.endsWith('/') ? '.' : '..')
