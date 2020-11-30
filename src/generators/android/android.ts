@@ -5,12 +5,12 @@ import { Generator, GeneratorClient } from '../gen'
 // These contexts are what will be passed to Handlebars to perform rendering.
 // Everything in these contexts should be properly sanitized.
 
-interface AndroidObjectContext {
+type AndroidObjectContext = {
 	// The formatted name for this object, ex: "ProductClicked"
 	name: string
 }
 
-interface AndroidPropertyContext {
+type AndroidPropertyContext = {
 	// The formatted name for this property, ex: "numAvocados".
 	name: string
 	// The type of this property. ex: "String".
@@ -25,7 +25,7 @@ interface AndroidPropertyContext {
 	implementsSerializableProperties: boolean
 }
 
-interface AndroidTrackCallContext {
+type AndroidTrackCallContext = {
 	// The formatted function name, ex: "orderCompleted".
 	functionName: string
 	propsType: string

@@ -36,7 +36,7 @@ const readdir = promisify(fs.readdir)
 const writeFile = promisify(fs.writeFile)
 const unlink = promisify(fs.unlink)
 
-interface Props extends StandardProps {
+type Props = StandardProps & {
 	/** Whether or not to generate a production client. */
 	production: boolean
 	/** Whether or not to update the local `plan.json` with the latest Tracking Plan. */
@@ -117,7 +117,7 @@ export const Build: React.FC<Props> = ({
 	)
 }
 
-interface UpdatePlanStepProps {
+type UpdatePlanStepProps = {
 	config: Config
 	configPath: string
 	update: boolean
@@ -262,7 +262,7 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
 	)
 }
 
-interface ClearFilesProps {
+type ClearFilesProps = {
 	config: Config
 	configPath: string
 	step: number
@@ -328,7 +328,7 @@ export const ClearFilesStep: React.FC<ClearFilesProps> = ({ config, configPath, 
 	return <Step name={stepName} isRunning={isRunning} isDone={isDone} />
 }
 
-interface GenerationProps {
+type GenerationProps = {
 	config: Config
 	configPath: string
 	production: boolean
@@ -381,7 +381,7 @@ export const GenerationStep: React.FC<GenerationProps> = ({
 	)
 }
 
-interface AfterStepProps {
+type AfterStepProps = {
 	config: Config
 	configPath: string
 	step: number
@@ -463,7 +463,7 @@ function useStep<Arg>(
 	}
 }
 
-interface StepProps {
+type StepProps = {
 	name: string
 	isSkipped?: boolean
 	isRunning: boolean
@@ -503,7 +503,7 @@ const Step: React.FC<StepProps> = ({ name, isSkipped, isRunning, isDone, childre
 	)
 }
 
-interface NoteProps {
+type NoteProps = {
 	isWarning?: boolean
 }
 

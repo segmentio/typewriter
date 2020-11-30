@@ -1,4 +1,4 @@
-export interface Options {
+export type Options = {
 	// Words that are reserved by a given language, and which should not be allowed
 	// for identifier names.
 	reservedWords: string[]
@@ -10,7 +10,7 @@ export interface Options {
 	allowedIdentifierChars: string
 }
 
-export interface SanitizeOptions {
+export type SanitizeOptions = {
 	// A transformation that is applied before collision detection, but after registering
 	// a name to the internal registry. It's recommended to apply a transform here, rather
 	// than before calling register() since transformations are oftentimes lossy (camelcase,

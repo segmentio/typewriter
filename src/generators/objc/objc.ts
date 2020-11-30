@@ -6,14 +6,14 @@ import { Generator, BasePropertyContext, GeneratorClient } from '../gen'
 // These contexts are what will be passed to Handlebars to perform rendering.
 // Everything in these contexts should be properly sanitized.
 
-interface ObjCObjectContext {
+type ObjCObjectContext = {
 	// The formatted name for this object, ex: "numAvocados".
 	name: string
 	// Set of files that need to be imported in this file.
 	imports: string[]
 }
 
-interface ObjCPropertyContext {
+type ObjCPropertyContext = {
 	// The formatted name for this property, ex: "numAvocados".
 	name: string
 	// The type of this property. ex: "NSNumber".
@@ -31,7 +31,7 @@ interface ObjCPropertyContext {
 	importName?: string
 }
 
-interface ObjCTrackCallContext {
+type ObjCTrackCallContext = {
 	// The formatted function name, ex: "orderCompleted".
 	functionName: string
 }

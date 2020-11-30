@@ -10,7 +10,7 @@ import { version } from '../../../package.json'
 import { AnalyticsProps } from '../index'
 import typewriter from '../../analytics'
 
-interface ErrorContextProps {
+type ErrorContextProps = {
 	/** Called to indicate that a non-fatal error has occurred. This will be printed only in debug mode. */
 	handleError: (error: WrappedError) => void
 	/** Called to indicate that a fatal error has occurred, which will render the Error component. */
@@ -21,7 +21,7 @@ export const ErrorContext = createContext<ErrorContextProps>({
 	handleFatalError: () => {},
 })
 
-export interface WrappedError {
+export type WrappedError = {
 	isWrappedError: true
 	description: string
 	notes: string[]
@@ -50,7 +50,7 @@ export function toUnexpectedError(error: Error): WrappedError {
 	return wrapError('An unexpected error occurred.', error, error.message)
 }
 
-interface ErrorBoundaryProps extends AnalyticsProps {
+type ErrorBoundaryProps = AnalyticsProps & {
 	/**
 	 * If an error is passed as a prop, then it's considered a fatal error.
 	 * Most errors will be raised via getDerivedStateFromError or the ErrorContext
@@ -61,7 +61,7 @@ interface ErrorBoundaryProps extends AnalyticsProps {
 	debug: boolean
 }
 
-interface ErrorBoundaryState {
+type ErrorBoundaryState = {
 	error?: WrappedError
 }
 
@@ -153,7 +153,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 	}
 }
 
-interface ErrorComponentProps {
+type ErrorComponentProps = {
 	error: WrappedError
 }
 

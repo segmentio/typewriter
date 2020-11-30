@@ -10,11 +10,11 @@ export namespace SegmentAPI {
 	export type GetTrackingPlanResponse = TrackingPlan
 
 	// https://reference.segmentapis.com/?version=latest#ef9f50a2-7031-4ddf-898a-387266894a04
-	export interface ListTrackingPlansResponse {
+	export type ListTrackingPlansResponse = {
 		tracking_plans: TrackingPlan[]
 	}
 
-	export interface TrackingPlan {
+	export type TrackingPlan = {
 		name: string
 		display_name: string
 		rules: {
@@ -27,7 +27,7 @@ export namespace SegmentAPI {
 		update_time: Date
 	}
 
-	export interface RuleMetadata {
+	export type RuleMetadata = {
 		name: string
 		description?: string
 		rules: JSONSchema7
@@ -35,11 +35,11 @@ export namespace SegmentAPI {
 	}
 
 	// https://reference.segmentapis.com/?version=latest#7ed2968b-c4a5-4cfb-b4bf-7d28c7b38bd2
-	export interface ListWorkspacesResponse {
+	export type ListWorkspacesResponse = {
 		workspaces: Workspace[]
 	}
 
-	export interface Workspace {
+	export type Workspace = {
 		name: string
 		display_name: string
 		id: string
@@ -109,7 +109,7 @@ export async function fetchWorkspaces(options: { token: string }): Promise<Segme
 // validateToken returns true if a token is a valid Segment API token.
 // Note: results are cached in-memory since it is commonly called multiple times
 // for the same token (f.e. in `config/`).
-interface TokenValidationResult {
+type TokenValidationResult = {
 	isValid: boolean
 	workspace?: SegmentAPI.Workspace
 }

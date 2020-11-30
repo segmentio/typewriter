@@ -119,12 +119,12 @@ async function getTokenMetadata(
 	return undefined
 }
 
-export interface ListTokensOutput {
+export type ListTokensOutput = {
 	script: TokenMetadata
 	file: TokenMetadata
 }
 
-export interface TokenMetadata {
+export type TokenMetadata = {
 	token?: string
 	method: 'script' | 'file'
 	isValidToken: boolean

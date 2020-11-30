@@ -51,7 +51,7 @@ export const Token: React.FC<StandardProps> = props => {
 	)
 }
 
-interface TokenRowProps {
+type TokenRowProps = {
 	tokenMetadata?: TokenMetadata
 	method?: string
 	name: string

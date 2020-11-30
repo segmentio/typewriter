@@ -58,7 +58,7 @@ export function sanitizeTrackingPlan(plan: SegmentAPI.TrackingPlan): SegmentAPI.
 	return sortKeys(plan, { deep: true })
 }
 
-export interface TrackingPlanDeltas {
+export type TrackingPlanDeltas = {
 	added: number
 	modified: number
 	removed: number
