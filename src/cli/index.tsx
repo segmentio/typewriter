@@ -6,28 +6,26 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'production'
 
 import React, { createContext } from 'react'
 import { render } from 'ink'
-import { Token, Version, Build, Help, Init, ErrorBoundary, wrapError } from './commands'
-import { CLIArguments } from './index'
+import { Token, Version, Build, Help, Init, ErrorBoundary } from './commands'
 import Analytics from 'analytics-node'
 import typewriter from '../analytics'
 import { Config, getConfig, getTokenMethod } from './config'
 import { machineId } from 'node-machine-id'
 import { version } from '../../package.json'
 import { loadTrackingPlan } from './api'
+import yargs from 'yargs'
 
-export interface StandardProps extends AnalyticsProps {
+export type StandardProps = AnalyticsProps & {
 	configPath: string
 	config?: Config
 }
 
-export interface AnalyticsProps {
+export type AnalyticsProps = {
 	analyticsProps: AsyncReturnType<typeof typewriterLibraryProperties>
 	anonymousId: string
 }
 
-export interface CLIArguments {
-	/** Any commands passed in to a yargs CLI. */
-	_: string[]
+export type CLIArguments = {
 	/** An optional path to a typewriter.yml (or directory with a typewriter.yml). **/
 	config: string
 	/** An optional (hidden) flag for enabling Ink debug mode. */
@@ -42,7 +40,9 @@ export interface CLIArguments {
 	h: boolean
 }
 
-const commandDefaults = {
+const commandDefaults: {
+	builder: Record<string, yargs.Options>
+} = {
 	builder: {
 		config: {
 			type: 'string',
@@ -72,7 +72,7 @@ const commandDefaults = {
 }
 
 // The `.argv` below will boot a Yargs CLI.
-require('yargs')
+yargs
 	.command({
 		...commandDefaults,
 		command: ['init', 'initialize', 'quickstart'],
@@ -114,7 +114,7 @@ require('yargs')
 	.showHelpOnFail(false)
 	.version(false).argv
 
-interface DebugContextProps {
+type DebugContextProps = {
 	/** Whether or not debug mode is enabled. */
 	debug: boolean
 }
@@ -137,19 +137,18 @@ typewriter.setTypewriterOptions({
 	analytics: analyticsNode,
 })
 
-function toYargsHandler<P = {}>(
+function toYargsHandler<P = unknown>(
 	Command: React.FC<StandardProps & P>,
 	props: P,
 	cliOptions?: { validateDefault?: boolean }
 ) {
 	// Return a closure which yargs will execute if this command is run.
-	return async (args: CLIArguments) => {
+	return async (args: yargs.Arguments<CLIArguments>) => {
 		let anonymousId = 'unknown'
 		try {
 			anonymousId = await getAnonymousId()
 		} catch (error) {
 			typewriter.errorFired({
-				/* eslint-disable @typescript-eslint/camelcase */
 				error_string: 'Failed to generate an anonymous id',
 				error,
 			})
@@ -260,7 +259,7 @@ function toYargsHandler<P = {}>(
 }
 
 /** Helper to fetch the name of the current yargs CLI command. */
-function getCommand(args: CLIArguments) {
+function getCommand(args: yargs.Arguments<CLIArguments>) {
 	return args._.length === 0 ? 'update' : args._.join(' ')
 }
 
@@ -269,7 +268,7 @@ function getCommand(args: CLIArguments) {
  * See: https://app.segment.com/segment_prod/protocols/libraries/rs_1OL4GFYCh62cOIRi3PJuIOdN7uM
  */
 async function typewriterLibraryProperties(
-	args: CLIArguments,
+	args: yargs.Arguments<CLIArguments>,
 	cfg: Config | undefined = undefined
 ) {
 	// In CI environments, or if there is no internet, we may not be able to execute the
@@ -292,7 +291,6 @@ async function typewriterLibraryProperties(
 	} catch {}
 
 	return {
-		/* eslint-disable @typescript-eslint/camelcase */
 		version,
 		client: cfg && {
 			language: cfg.client.language,

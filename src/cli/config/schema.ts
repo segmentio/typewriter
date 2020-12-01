@@ -5,7 +5,7 @@ import Joi from '@hapi/joi'
  * A config, stored in a typewriter.yml file.
  * If you update this inferface, make sure to also update the Joi schema (ConfigSchema) below.
  */
-export interface Config {
+export type Config = {
 	/** A set of optional shell commands to customize typewriter's behavior. */
 	scripts?: {
 		/**
@@ -25,7 +25,7 @@ export interface Config {
 }
 
 /** Metadata on a specific Tracking Plan to generate a client for. */
-export interface TrackingPlanConfig {
+export type TrackingPlanConfig = {
 	/**
 	 * The name of the Tracking Plan. Only set during the `init` step, so it
 	 * can be added as a comment in the generated `typewriter.yml`.
@@ -80,7 +80,7 @@ const ConfigSchema = Joi.object().required().keys({
 	),
 })
 
-export const validateConfig = (rawConfig: object): Config => {
+export const validateConfig = (rawConfig: Record<string, unknown>): Config => {
 	// Validate the provided configuration file using our Joi schema.
 	const result = Joi.validate(rawConfig, ConfigSchema, {
 		abortEarly: false,
@@ -91,5 +91,5 @@ export const validateConfig = (rawConfig: object): Config => {
 	}
 
 	// We can safely type cast the config, now that is has been validated.
-	return rawConfig as Config
+	return (rawConfig as unknown) as Config
 }

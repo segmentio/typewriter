@@ -12,7 +12,7 @@ export type ArrayTypeSchema = SchemaMetadata & ArrayTypeFields
 export type ObjectTypeSchema = SchemaMetadata & ObjectTypeFields
 export type UnionTypeSchema = SchemaMetadata & UnionTypeFields
 
-export interface SchemaMetadata {
+export type SchemaMetadata = {
 	name: string
 	description?: string
 	isRequired?: boolean
@@ -28,7 +28,7 @@ export type TypeSpecificFields =
 // TODO: consider whether non-primitive types should have an enum.
 // For unions, potentially the enum should just be within the primitive type
 // and filtered down to the relevant enum values.
-export interface Enumable {
+export type Enumable = {
 	// enum optionally represents a specific set of allowed values.
 	// Note: const fields (from JSON Schema) are treated as 1-element enums.
 	enum?: EnumValue[]
@@ -37,24 +37,24 @@ export interface Enumable {
 // Note: we don't support objects or arrays as enums, for simplification purposes.
 export type EnumValue = string | number | boolean | null
 
-export interface PrimitiveTypeFields extends Enumable {
+export type PrimitiveTypeFields = Enumable & {
 	type: Type.STRING | Type.INTEGER | Type.NUMBER | Type.BOOLEAN | Type.ANY
 }
 
-export interface ArrayTypeFields {
+export type ArrayTypeFields = {
 	type: Type.ARRAY
 	// items specifies the type of any items in this array.
 	items: TypeSpecificFields
 }
 
-export interface ObjectTypeFields {
+export type ObjectTypeFields = {
 	type: Type.OBJECT
 	// properties specifies all of the expected properties in this object.
 	// Note: if an empty properties list is passed, all properties should be allowed.
 	properties: Schema[]
 }
 
-export interface UnionTypeFields extends Enumable {
+export type UnionTypeFields = Enumable & {
 	type: Type.UNION
 	types: TypeSpecificFields[]
 }
@@ -160,7 +160,7 @@ function parseTypeSpecificFields(raw: JSONSchema7, type: Type): TypeSpecificFiel
 	if (type === Type.OBJECT) {
 		const fields: ObjectTypeFields = { type, properties: [] }
 		const requiredFields = new Set(raw.required || [])
-		for (var entry of Object.entries(raw.properties || {})) {
+		for (const entry of Object.entries(raw.properties || {})) {
 			const [property, propertySchema] = entry
 			if (typeof propertySchema !== 'boolean') {
 				const isRequired = requiredFields.has(property)
@@ -173,7 +173,7 @@ function parseTypeSpecificFields(raw: JSONSchema7, type: Type): TypeSpecificFiel
 		const fields: ArrayTypeFields = { type, items: { type: Type.ANY } }
 		if (typeof raw.items !== 'boolean' && raw.items !== undefined) {
 			// `items` can be a single schemas, or an array of schemas, so standardize on an array.
-			let definitions = raw.items instanceof Array ? raw.items : [raw.items]
+			const definitions = raw.items instanceof Array ? raw.items : [raw.items]
 
 			// Convert from JSONSchema7Definition -> JSONSchema7
 			const schemas = definitions.filter(def => typeof def !== 'boolean') as JSONSchema7[]
@@ -192,7 +192,7 @@ function parseTypeSpecificFields(raw: JSONSchema7, type: Type): TypeSpecificFiel
 		return fields
 	} else if (type === Type.UNION) {
 		const fields: UnionTypeFields = { type, types: [] }
-		for (var val of getRawTypes(raw).values()) {
+		for (const val of getRawTypes(raw).values()) {
 			// For codegen purposes, we don't consider "null" as a type, so remove it.
 			if (val === 'null') {
 				continue

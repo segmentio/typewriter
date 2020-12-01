@@ -6,14 +6,14 @@ import { Generator, BasePropertyContext, GeneratorClient } from '../gen'
 // These contexts are what will be passed to Handlebars to perform rendering.
 // Everything in these contexts should be properly sanitized.
 
-interface ObjCObjectContext {
+type ObjCObjectContext = {
 	// The formatted name for this object, ex: "numAvocados".
 	name: string
 	// Set of files that need to be imported in this file.
 	imports: string[]
 }
 
-interface ObjCPropertyContext {
+type ObjCPropertyContext = {
 	// The formatted name for this property, ex: "numAvocados".
 	name: string
 	// The type of this property. ex: "NSNumber".
@@ -31,12 +31,17 @@ interface ObjCPropertyContext {
 	importName?: string
 }
 
-interface ObjCTrackCallContext {
+type ObjCTrackCallContext = {
 	// The formatted function name, ex: "orderCompleted".
 	functionName: string
 }
 
-export const objc: Generator<{}, ObjCTrackCallContext, ObjCObjectContext, ObjCPropertyContext> = {
+export const objc: Generator<
+	Record<string, unknown>,
+	ObjCTrackCallContext,
+	ObjCObjectContext,
+	ObjCPropertyContext
+> = {
 	generatePropertiesObject: false,
 	namer: {
 		// See: https://github.com/AnanthaRajuCprojects/Reserved-Key-Words-list-of-various-programming-languages/blob/master/Objective-C%20Reserved%20Words.md
@@ -88,7 +93,7 @@ export const objc: Generator<{}, ObjCTrackCallContext, ObjCObjectContext, ObjCPr
 	generateArray: async (client, schema, items, parentPath) => {
 		// Objective-C doesn't support NSArray's of primitives. Therefore, we
 		// map booleans and integers to NSNumbers.
-		let itemsType = [Type.BOOLEAN, Type.INTEGER].includes(items.schemaType)
+		const itemsType = [Type.BOOLEAN, Type.INTEGER].includes(items.schemaType)
 			? 'NSNumber *'
 			: items.type
 
@@ -225,7 +230,7 @@ function generateFunctionSignature(
 		const first = parameters[0]
 		signature += `With${upperFirst(first.name)}:(${withNullability(first)})${first.name}\n`
 	}
-	for (var parameter of parameters.slice(1)) {
+	for (const parameter of parameters.slice(1)) {
 		signature += `${parameter.name}:(${withNullability(parameter)})${parameter.name}\n`
 	}
 
@@ -255,7 +260,7 @@ function generateFunctionCall(
 		const { name, value } = parameters[0]
 		functionCall += `With${upperFirst(name)}:${value}`
 	}
-	for (var { name, value } of parameters.slice(1)) {
+	for (const { name, value } of parameters.slice(1)) {
 		functionCall += ` ${name}:${value}`
 	}
 
@@ -267,7 +272,7 @@ function generatePropertiesDictionary(
 	prefix?: string
 ): string {
 	let out = 'NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];\n'
-	for (let property of properties) {
+	for (const property of properties) {
 		const name = prefix && prefix.length > 0 ? `${prefix}${property.name}` : property.name
 		const serializableName =
 			property.schemaType === Type.BOOLEAN

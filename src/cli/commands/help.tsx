@@ -108,7 +108,7 @@ export const Help: React.FC<StandardProps> = () => {
 	)
 }
 
-interface HelpSectionProps {
+type HelpSectionProps = {
 	name: string
 }
 
@@ -123,7 +123,7 @@ const HelpSection: React.FC<HelpSectionProps> = ({ name, children }) => {
 	)
 }
 
-interface HelpRowProps {
+type HelpRowProps = {
 	name: string
 	isDefault?: boolean
 	description: string | JSX.Element
@@ -153,7 +153,7 @@ const HelpRow: React.FC<HelpRowProps> = ({
 	)
 }
 
-interface ExampleRowProps {
+type ExampleRowProps = {
 	description: string
 	command: string
 }

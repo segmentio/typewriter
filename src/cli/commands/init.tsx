@@ -25,7 +25,7 @@ import { ErrorContext, wrapError } from './error'
 
 const readir = promisify(fs.readdir)
 
-interface InitProps extends StandardProps {
+type InitProps = StandardProps & {
 	/**
 	 * Optional handler that is fired after the init wizard finishes building a new config.
 	 *
@@ -170,7 +170,7 @@ const Header: React.FC = () => {
 	)
 }
 
-interface ConfirmationPromptProps {
+type ConfirmationPromptProps = {
 	onSubmit: () => void
 }
 
@@ -190,7 +190,7 @@ const ConfirmationPrompt: React.FC<ConfirmationPromptProps> = ({ onSubmit }) => 
 	)
 }
 
-interface SDKPromptProps {
+type SDKPromptProps = {
 	step: number
 	sdk: SDK
 	onSubmit: (sdk: SDK) => void
@@ -226,7 +226,7 @@ const SDKPrompt: React.FC<SDKPromptProps> = ({ step, sdk, onSubmit }) => {
 	)
 }
 
-interface LanguagePromptProps {
+type LanguagePromptProps = {
 	step: number
 	sdk: SDK
 	language: Language
@@ -265,7 +265,7 @@ const LanguagePrompt: React.FC<LanguagePromptProps> = ({ step, sdk, language, on
 	)
 }
 
-interface PathPromptProps {
+type PathPromptProps = {
 	step: number
 	path: string
 	onSubmit: (path: string) => void
@@ -293,7 +293,7 @@ async function filterDirectories(path: string): Promise<string[]> {
 	}
 
 	const isPathEmpty = ['', '.', './'].includes(path)
-	const directories = new Set()
+	const directories = new Set<string>()
 
 	// First look for all directories in the same directory as the current query path.
 	const parentPath = join(path, isPathEmpty || path.endsWith('/') ? '.' : '..')
@@ -318,7 +318,7 @@ async function filterDirectories(path: string): Promise<string[]> {
 	}
 
 	// Now sort these directories by the query path.
-	var fuse = new Fuse([...directories].map(d => ({ name: d })), { keys: ['name'] })
+	const fuse = new Fuse([...directories].map(d => ({ name: d })), { keys: ['name'] })
 	return isPathEmpty ? [...directories] : fuse.search(path).map(d => d.name)
 }
 
@@ -379,7 +379,7 @@ const PathPrompt: React.FC<PathPromptProps> = ({ step, path: initialPath, onSubm
 	)
 }
 
-interface APITokenPromptProps {
+type APITokenPromptProps = {
 	step: number
 	config?: Config
 	configPath: string
@@ -544,7 +544,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 	)
 }
 
-interface TrackingPlanPromptProps {
+type TrackingPlanPromptProps = {
 	step: number
 	token: string
 	trackingPlan?: SegmentAPI.TrackingPlan
@@ -634,7 +634,7 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
 	)
 }
 
-interface SummaryPromptProps {
+type SummaryPromptProps = {
 	step: number
 	sdk: SDK
 	language: Language
@@ -743,7 +743,7 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 	)
 }
 
-interface StepProps {
+type StepProps = {
 	name: string
 	step?: number
 	isLoading?: boolean

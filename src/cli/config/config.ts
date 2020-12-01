@@ -51,7 +51,7 @@ export async function getConfig(path = './'): Promise<Config | undefined> {
 // setConfig writes a config out to a typewriter.yml file.
 // Note path is relative to the directory where the typewriter command
 // was run.
-export async function setConfig(config: Config, path = './') {
+export async function setConfig(config: Config, path = './'): Promise<void> {
 	const file = await generateFromTemplate<Config>('cli/config/typewriter.yml.hbs', config, false)
 
 	await writeFile(await getPath(path), file)
@@ -73,7 +73,7 @@ export function resolveRelativePath(
 export async function verifyDirectoryExists(
 	path: string,
 	type: 'directory' | 'file' = 'directory'
-) {
+): Promise<void> {
 	// If this is a file, we need to verify it's parent directory exists.
 	// If it is a directory, then we need to verify the directory itself exists.
 	const dirPath = type === 'directory' ? path : dirname(path)
@@ -119,12 +119,12 @@ async function getTokenMetadata(
 	return undefined
 }
 
-export interface ListTokensOutput {
+export type ListTokensOutput = {
 	script: TokenMetadata
 	file: TokenMetadata
 }
 
-export interface TokenMetadata {
+export type TokenMetadata = {
 	token?: string
 	method: 'script' | 'file'
 	isValidToken: boolean
@@ -181,7 +181,7 @@ export async function listTokens(
 }
 
 // storeToken writes a token to ~/.typewriter.
-export async function storeToken(token: string) {
+export async function storeToken(token: string): Promise<void> {
 	const path = resolve(homedir(), '.typewriter')
 	return writeFile(path, token, 'utf-8')
 }

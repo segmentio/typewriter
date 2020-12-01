@@ -7,10 +7,10 @@ import { Box, Color, useApp } from 'ink'
 import Link from 'ink-link'
 import figures from 'figures'
 import { version } from '../../../package.json'
-import { DebugContext, AnalyticsProps } from '../index'
+import { AnalyticsProps } from '../index'
 import typewriter from '../../analytics'
 
-interface ErrorContextProps {
+type ErrorContextProps = {
 	/** Called to indicate that a non-fatal error has occurred. This will be printed only in debug mode. */
 	handleError: (error: WrappedError) => void
 	/** Called to indicate that a fatal error has occurred, which will render the Error component. */
@@ -21,7 +21,7 @@ export const ErrorContext = createContext<ErrorContextProps>({
 	handleFatalError: () => {},
 })
 
-export interface WrappedError {
+export type WrappedError = {
 	isWrappedError: true
 	description: string
 	notes: string[]
@@ -39,7 +39,7 @@ export function wrapError(description: string, error?: Error, ...notes: string[]
 }
 
 export function isWrappedError(error: unknown): error is WrappedError {
-	return !!error && typeof error === 'object' && (error as any).isWrappedError
+	return !!error && typeof error === 'object' && (error as Record<string, boolean>).isWrappedError
 }
 
 export function toUnexpectedError(error: Error): WrappedError {
@@ -50,7 +50,7 @@ export function toUnexpectedError(error: Error): WrappedError {
 	return wrapError('An unexpected error occurred.', error, error.message)
 }
 
-interface ErrorBoundaryProps extends AnalyticsProps {
+type ErrorBoundaryProps = AnalyticsProps & {
 	/**
 	 * If an error is passed as a prop, then it's considered a fatal error.
 	 * Most errors will be raised via getDerivedStateFromError or the ErrorContext
@@ -61,7 +61,7 @@ interface ErrorBoundaryProps extends AnalyticsProps {
 	debug: boolean
 }
 
-interface ErrorBoundaryState {
+type ErrorBoundaryState = {
 	error?: WrappedError
 }
 
@@ -80,14 +80,14 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 		return { error: toUnexpectedError(error) }
 	}
 
-	public componentDidCatch(error: Error) {
+	public componentDidCatch(error: Error): void {
 		this.reportError({
 			error: toUnexpectedError(error),
 			fatal: true,
 		})
 	}
 
-	public componentDidMount() {
+	public componentDidMount(): void {
 		if (this.props.error) {
 			const err = toUnexpectedError(this.props.error)
 			this.reportError({
@@ -102,7 +102,6 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 		const { anonymousId, analyticsProps } = this.props
 
 		typewriter.errorFired({
-			/* eslint-disable @typescript-eslint/camelcase */
 			properties: {
 				...analyticsProps,
 				error_string: JSON.stringify(params.error, undefined, 2),
@@ -134,7 +133,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 		this.setState({ error })
 	}
 
-	public render() {
+	public render(): JSX.Element {
 		const { children } = this.props
 		const { error } = this.state
 
@@ -154,7 +153,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 	}
 }
 
-interface ErrorComponentProps {
+type ErrorComponentProps = {
 	error: WrappedError
 }
 

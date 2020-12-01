@@ -15,7 +15,7 @@ export enum Language {
 	JAVA = 'java',
 }
 
-export interface JavaScriptOptions {
+export type JavaScriptOptions = {
 	sdk: SDK.WEB | SDK.NODE
 	language: Language.JAVASCRIPT
 	// JavaScript transpilation settings:
@@ -32,22 +32,22 @@ export interface JavaScriptOptions {
 	moduleTarget?: 'CommonJS' | 'AMD' | 'UMD' | 'System' | 'ES2015' | 'ESNext'
 }
 
-export interface TypeScriptOptions {
+export type TypeScriptOptions = {
 	sdk: SDK.WEB | SDK.NODE
 	language: Language.TYPESCRIPT
 }
 
-export interface ObjectiveCOptions {
+export type ObjectiveCOptions = {
 	sdk: SDK.IOS
 	language: Language.OBJECTIVE_C
 }
 
-export interface SwiftOptions {
+export type SwiftOptions = {
 	sdk: SDK.IOS
 	language: Language.SWIFT
 }
 
-export interface JavaOptions {
+export type JavaOptions = {
 	sdk: SDK.ANDROID
 	language: Language.JAVA
 }

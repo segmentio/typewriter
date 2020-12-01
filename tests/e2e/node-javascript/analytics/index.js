@@ -23,6 +23,7 @@ var __importDefault =
 		return mod && mod.__esModule ? mod : { default: mod }
 	}
 Object.defineProperty(exports, '__esModule', { value: true })
+exports.eventCollided1 = exports.unionType = exports.simpleArrayTypes = exports.propertySanitized = exports.propertyObjectNameCollision2 = exports.propertyObjectNameCollision1 = exports.propertiesCollided = exports.nestedObjects = exports.nestedArrays = exports.largeNumbersEvent = exports.everyRequiredType = exports.everyOptionalType = exports.everyNullableRequiredType = exports.everyNullableOptionalType = exports.eventCollided = exports.emptyEvent = exports.defaultViolationHandlerCalled = exports.defaultViolationHandler = exports.customViolationHandlerCalled = exports.customViolationHandler = exports.analyticsInstanceMissingThrewError = exports.analyticsInstanceMissing = exports.I42TerribleEventName3 = exports.setTypewriterOptions = exports.defaultValidationErrorHandler = void 0
 /**
  * Ajv is a peer dependency for development builds. It's used to apply run-time validation
  * to message payloads before passing them on to the underlying analytics instance.
@@ -37,7 +38,7 @@ var ajv_1 = __importDefault(require('ajv'))
  * If NODE_ENV="test", this handler will throw an error. Otherwise, it will log
  * a warning message to the console.
  */
-exports.defaultValidationErrorHandler = function(message, violations) {
+var defaultValidationErrorHandler = function(message, violations) {
 	var msg = JSON.stringify(
 		{
 			type: 'Typewriter JSON Schema Validation Error',
@@ -56,6 +57,7 @@ exports.defaultValidationErrorHandler = function(message, violations) {
 	}
 	console.warn(msg)
 }
+exports.defaultValidationErrorHandler = defaultValidationErrorHandler
 var onViolation = exports.defaultValidationErrorHandler
 var missingAnalyticsNodeError = new Error(
 	"You must set an analytics-node instance:\n\n>\tconst SegmentAnalytics = require('analytics-node')\n>\tconst { setTypewriterOptions } = require('./analytics')\n>\n>\tconst analytics = new SegmentAnalytics('SEGMENT_WRITE_KEY')\n>\tsetTypewriterOptions({\n>\t\tanalytics: analytics,\n>\t})\n\nFor more information on analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/\n"
@@ -108,8 +110,8 @@ function validateAgainstSchema(message, schema) {
  * This is used for attribution and debugging by the Segment team.
  */
 function withTypewriterContext(message) {
-	return __assign({}, message, {
-		context: __assign({}, message.context || {}, {
+	return __assign(__assign({}, message), {
+		context: __assign(__assign({}, message.context || {}), {
 			typewriter: {
 				language: 'javascript',
 				version: '7.3.0',
@@ -377,7 +379,7 @@ function withTypewriterContext(message) {
  */
 function I42TerribleEventName3(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, {
+		__assign(__assign({ properties: {} }, message), {
 			event: '42_--terrible==\\"event\'++name~!3',
 		})
 	)
@@ -415,7 +417,7 @@ exports.I42TerribleEventName3 = I42TerribleEventName3
  */
 function analyticsInstanceMissing(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, {
+		__assign(__assign({ properties: {} }, message), {
 			event: 'Analytics Instance Missing',
 		})
 	)
@@ -454,7 +456,7 @@ exports.analyticsInstanceMissing = analyticsInstanceMissing
  */
 function analyticsInstanceMissingThrewError(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, {
+		__assign(__assign({ properties: {} }, message), {
 			event: 'Analytics Instance Missing Threw Error',
 		})
 	)
@@ -493,7 +495,9 @@ exports.analyticsInstanceMissingThrewError = analyticsInstanceMissingThrewError
  */
 function customViolationHandler(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, { event: 'Custom Violation Handler' })
+		__assign(__assign({ properties: {} }, message), {
+			event: 'Custom Violation Handler',
+		})
 	)
 	var schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
@@ -539,7 +543,7 @@ exports.customViolationHandler = customViolationHandler
  */
 function customViolationHandlerCalled(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, {
+		__assign(__assign({ properties: {} }, message), {
 			event: 'Custom Violation Handler Called',
 		})
 	)
@@ -578,7 +582,7 @@ exports.customViolationHandlerCalled = customViolationHandlerCalled
  */
 function defaultViolationHandler(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, {
+		__assign(__assign({ properties: {} }, message), {
 			event: 'Default Violation Handler',
 		})
 	)
@@ -626,7 +630,7 @@ exports.defaultViolationHandler = defaultViolationHandler
  */
 function defaultViolationHandlerCalled(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, {
+		__assign(__assign({ properties: {} }, message), {
 			event: 'Default Violation Handler Called',
 		})
 	)
@@ -665,7 +669,7 @@ exports.defaultViolationHandlerCalled = defaultViolationHandlerCalled
  */
 function emptyEvent(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, { event: 'Empty Event' })
+		__assign(__assign({ properties: {} }, message), { event: 'Empty Event' })
 	)
 	var schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
@@ -702,7 +706,7 @@ exports.emptyEvent = emptyEvent
  */
 function eventCollided(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, { event: 'Event Collided' })
+		__assign(__assign({ properties: {} }, message), { event: 'Event Collided' })
 	)
 	var schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
@@ -739,7 +743,7 @@ exports.eventCollided = eventCollided
  */
 function everyNullableOptionalType(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, {
+		__assign(__assign({ properties: {} }, message), {
 			event: 'Every Nullable Optional Type',
 		})
 	)
@@ -897,7 +901,7 @@ exports.everyNullableOptionalType = everyNullableOptionalType
  */
 function everyNullableRequiredType(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, {
+		__assign(__assign({ properties: {} }, message), {
 			event: 'Every Nullable Required Type',
 		})
 	)
@@ -1087,7 +1091,9 @@ exports.everyNullableRequiredType = everyNullableRequiredType
  */
 function everyOptionalType(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, { event: 'Every Optional Type' })
+		__assign(__assign({ properties: {} }, message), {
+			event: 'Every Optional Type',
+		})
 	)
 	var schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
@@ -1242,7 +1248,9 @@ exports.everyOptionalType = everyOptionalType
  */
 function everyRequiredType(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, { event: 'Every Required Type' })
+		__assign(__assign({ properties: {} }, message), {
+			event: 'Every Required Type',
+		})
 	)
 	var schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
@@ -1433,7 +1441,9 @@ exports.everyRequiredType = everyRequiredType
  */
 function largeNumbersEvent(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, { event: 'Large Numbers Event' })
+		__assign(__assign({ properties: {} }, message), {
+			event: 'Large Numbers Event',
+		})
 	)
 	var schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
@@ -1511,7 +1521,7 @@ exports.largeNumbersEvent = largeNumbersEvent
  */
 function nestedArrays(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, { event: 'Nested Arrays' })
+		__assign(__assign({ properties: {} }, message), { event: 'Nested Arrays' })
 	)
 	var schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
@@ -1570,7 +1580,7 @@ exports.nestedArrays = nestedArrays
  */
 function nestedObjects(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, { event: 'Nested Objects' })
+		__assign(__assign({ properties: {} }, message), { event: 'Nested Objects' })
 	)
 	var schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
@@ -1643,7 +1653,9 @@ exports.nestedObjects = nestedObjects
  */
 function propertiesCollided(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, { event: 'Properties Collided' })
+		__assign(__assign({ properties: {} }, message), {
+			event: 'Properties Collided',
+		})
 	)
 	var schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
@@ -1692,7 +1704,7 @@ exports.propertiesCollided = propertiesCollided
  */
 function propertyObjectNameCollision1(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, {
+		__assign(__assign({ properties: {} }, message), {
 			event: 'Property Object Name Collision #1',
 		})
 	)
@@ -1759,7 +1771,7 @@ exports.propertyObjectNameCollision1 = propertyObjectNameCollision1
  */
 function propertyObjectNameCollision2(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, {
+		__assign(__assign({ properties: {} }, message), {
 			event: 'Property Object Name Collision #2',
 		})
 	)
@@ -1826,7 +1838,9 @@ exports.propertyObjectNameCollision2 = propertyObjectNameCollision2
  */
 function propertySanitized(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, { event: 'Property Sanitized' })
+		__assign(__assign({ properties: {} }, message), {
+			event: 'Property Sanitized',
+		})
 	)
 	var schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
@@ -1871,7 +1885,9 @@ exports.propertySanitized = propertySanitized
  */
 function simpleArrayTypes(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, { event: 'Simple Array Types' })
+		__assign(__assign({ properties: {} }, message), {
+			event: 'Simple Array Types',
+		})
 	)
 	var schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
@@ -1972,7 +1988,7 @@ exports.simpleArrayTypes = simpleArrayTypes
  */
 function unionType(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, { event: 'Union Type' })
+		__assign(__assign({ properties: {} }, message), { event: 'Union Type' })
 	)
 	var schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',
@@ -2017,7 +2033,7 @@ exports.unionType = unionType
  */
 function eventCollided1(message, callback) {
 	var msg = withTypewriterContext(
-		__assign({ properties: {} }, message, { event: 'event_collided' })
+		__assign(__assign({ properties: {} }, message), { event: 'event_collided' })
 	)
 	var schema = {
 		$schema: 'http://json-schema.org/draft-07/schema#',

@@ -36,7 +36,7 @@ export async function writeTrackingPlan(
 	configPath: string | undefined,
 	plan: SegmentAPI.TrackingPlan,
 	config: TrackingPlanConfig
-) {
+): Promise<void> {
 	const path = resolveRelativePath(configPath, config.path, TRACKING_PLAN_FILENAME)
 	await verifyDirectoryExists(path, 'file')
 
@@ -52,13 +52,13 @@ export async function writeTrackingPlan(
 	})
 }
 
-export function sanitizeTrackingPlan(plan: SegmentAPI.TrackingPlan) {
+export function sanitizeTrackingPlan(plan: SegmentAPI.TrackingPlan): SegmentAPI.TrackingPlan {
 	// TODO: on JSON Schema Draft-04, required fields must have at least one element.
 	// Therefore, we strip `required: []` from your rules so this error isn't surfaced.
 	return sortKeys(plan, { deep: true })
 }
 
-export interface TrackingPlanDeltas {
+export type TrackingPlanDeltas = {
 	added: number
 	modified: number
 	removed: number
@@ -107,7 +107,7 @@ export function computeDelta(
 	return deltas
 }
 
-export function parseTrackingPlanName(name: string) {
+export function parseTrackingPlanName(name: string): { id: string; workspaceSlug: string } {
 	const parts = name.split('/')
 
 	// Sane fallback:

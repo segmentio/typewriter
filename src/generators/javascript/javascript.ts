@@ -10,13 +10,13 @@ import { registerPartial } from '../../templates'
 // These contexts are what will be passed to Handlebars to perform rendering.
 // Everything in these contexts should be properly sanitized.
 
-interface JavaScriptRootContext {
+type JavaScriptRootContext = {
 	isBrowser: boolean
 	useProxy: boolean
 }
 
 // Represents a single exposed track() call.
-interface JavaScriptTrackCallContext {
+type JavaScriptTrackCallContext = {
 	// The formatted function name, ex: "orderCompleted".
 	functionName: string
 	// The type of the analytics properties object.
@@ -26,12 +26,12 @@ interface JavaScriptTrackCallContext {
 	isPropertiesOptional: boolean
 }
 
-interface JavaScriptObjectContext {
+type JavaScriptObjectContext = {
 	// The formatted name for this object, ex: "Planet"
 	name: string
 }
 
-interface JavaScriptPropertyContext {
+type JavaScriptPropertyContext = {
 	// The formatted name for this property, ex: "numAvocados".
 	name: string
 	// The type of this property. ex: "number".

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import got from 'got'
 import { SDK, Language } from '../../src/generators/options'
 import Joi from '@hapi/joi'
@@ -572,7 +571,7 @@ describe('e2e tests', () => {
 		expect(events.length).toBeGreaterThan(0)
 		// Do a sanity check to make sure our client isn't overwriting any fields that
 		// are usually set by the SDK itself.
-		for (let event of events) {
+		for (const event of events) {
 			const resp = Joi.validate(
 				event,
 				Joi.object().keys({
@@ -629,7 +628,7 @@ describe('e2e tests', () => {
 				const errors = [] as Joi.ValidationError[]
 				for (const event of matchingEvents) {
 					const i = schemas.findIndex(schema => {
-						let resp = Joi.validate(event, schema, {
+						const resp = Joi.validate(event, schema, {
 							abortEarly: false,
 							allowUnknown: true,
 							presence: 'required',

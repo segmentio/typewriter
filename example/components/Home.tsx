@@ -3,7 +3,7 @@ import { Pane, Button, majorScale, Card, Paragraph, Text, Link } from 'evergreen
 import Router, { withRouter } from 'next/router'
 import { get } from 'lodash'
 
-interface Props {
+type Props = {
 	onSignOut: (props: { id: string }) => void
 }
 
