@@ -258,7 +258,7 @@ function getType(raw: JSONSchema7): Type {
 // isNullable returns true if `null` is a valid value for this JSON Schema.
 function isNullable(raw: JSONSchema7): boolean {
 	const typeAllowsNull = getRawTypes(raw).has('null') || getType(raw) === Type.ANY
-	const enumAllowsNull = !raw.enum || raw.enum.includes(null)
+	const enumAllowsNull = !raw.enum || raw.enum.includes('null')
 
 	return typeAllowsNull && enumAllowsNull
 }
