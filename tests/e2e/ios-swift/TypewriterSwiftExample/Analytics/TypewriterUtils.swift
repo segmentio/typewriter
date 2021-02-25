@@ -29,7 +29,7 @@ class TypewriterUtils {
         let typewriterContext = [
             "typewriter": [
                 "language": "swift",
-                "version": "7.4.0"
+                "version": "7.4.1"
             ]
         ]
         
