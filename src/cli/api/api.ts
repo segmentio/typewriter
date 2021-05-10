@@ -19,9 +19,9 @@ export namespace SegmentAPI {
 		display_name: string
 		rules: {
 			events: RuleMetadata[]
-			global: RuleMetadata
-			identify_traits: RuleMetadata
-			group_traits: RuleMetadata
+			global: RuleMetadata[]
+			identify_traits: RuleMetadata[]
+			group_traits: RuleMetadata[]
 		}
 		create_time: Date
 		update_time: Date
@@ -52,13 +52,97 @@ export async function fetchTrackingPlan(options: {
 	id: string
 	token: string
 }): Promise<SegmentAPI.TrackingPlan> {
-	const url = `workspaces/${options.workspaceSlug}/tracking-plans/${options.id}`
-	const response = await apiGet<SegmentAPI.GetTrackingPlanResponse>(url, options.token)
-
-	response.create_time = new Date(response.create_time)
-	response.update_time = new Date(response.update_time)
-
-	return sanitizeTrackingPlan(response)
+	// const url = `workspaces/${options.workspaceSlug}/tracking-plans/${options.id}`
+	// const response = await apiGet<SegmentAPI.GetTrackingPlanResponse>(url, options.token)
+	//
+	// response.create_time = new Date(response.create_time)
+	// response.update_time = new Date(response.update_time)
+	//
+	//return sanitizeTrackingPlan(response)
+	return {
+		name: 'workspaces/myworkspace/tracking-plans/rs_123',
+		display_name: 'Kicks App',
+		rules: {
+			identify_traits: [],
+			group_traits: [],
+			global: [],
+			events: [
+				{
+					description:
+						'Fired when a user successfully submits a sign in, prior to redirecting into the app.',
+					name: 'User Signed Out',
+					rules: {
+						$schema: 'http://json-schema.org/draft-07/schema#',
+						//labels: {},
+						properties: {
+							context: {},
+							properties: {
+								properties: {
+									id: {
+										description: "The user's ID.",
+										type: 'string',
+									},
+									numAttempts: {
+										description: 'How many times the user has attempted to sign-in.',
+										type: 'integer',
+									},
+									rememberMe: {
+										description:
+											'Whether the user has indicated that the browser should store their login credentials.',
+										type: 'boolean',
+									},
+								},
+								required: ['id'],
+								type: 'object',
+							},
+							traits: {
+								type: 'object',
+							},
+						},
+						type: 'object',
+					},
+					version: 1,
+				},
+				{
+					description: 'check if new event works.',
+					name: 'yayyyy it worked',
+					rules: {
+						$schema: 'http://json-schema.org/draft-07/schema#',
+						//labels: {},
+						properties: {
+							context: {},
+							properties: {
+								properties: {
+									yayy: {
+										description: "The user's ID.",
+										type: 'string',
+									},
+									yayy1: {
+										description: 'How many times the user has attempted to sign-in.',
+										type: 'integer',
+									},
+									yayy2: {
+										description:
+											'Whether the user has indicated that the browser should store their login credentials.',
+										type: 'boolean',
+									},
+								},
+								required: ['yayy'],
+								type: 'object',
+							},
+							traits: {
+								type: 'object',
+							},
+						},
+						type: 'object',
+					},
+					version: 1,
+				},
+			],
+		},
+		create_time: new Date('2018-01-23T23:21:55.275Z'),
+		update_time: new Date('2018-01-23T23:21:55.275Z'),
+	}
 }
 
 // fetchTrackingPlans fetches all Tracking Plans accessible by a given API token
@@ -67,43 +151,221 @@ export async function fetchTrackingPlans(options: {
 	workspaceSlug: string
 	token: string
 }): Promise<SegmentAPI.TrackingPlan[]> {
-	const url = `workspaces/${options.workspaceSlug}/tracking-plans`
-	const response = await apiGet<SegmentAPI.ListTrackingPlansResponse>(url, options.token)
-
-	return response.tracking_plans.map(tp => ({
-		...tp,
-		create_time: new Date(tp.create_time),
-		update_time: new Date(tp.update_time),
-	}))
+	// const url = `workspaces/${options.workspaceSlug}/tracking-plans`
+	// const response = await apiGet<SegmentAPI.ListTrackingPlansResponse>(url, options.token)
+	//
+	// return response.tracking_plans.map(tp => ({
+	// 	...tp,
+	// 	create_time: new Date(tp.create_time),
+	// 	update_time: new Date(tp.update_time),
+	// }))
+	return [
+		{
+			name: 'workspaces/myworkspace/tracking-plans/rs_123',
+			display_name: 'Kicks App',
+			rules: {
+				identify_traits: [],
+				group_traits: [],
+				global: [],
+				events: [
+					{
+						description:
+							'Fired when a user successfully submits a sign in, prior to redirecting into the app.',
+						name: 'User Signed Out',
+						rules: {
+							$schema: 'http://json-schema.org/draft-07/schema#',
+							//labels: {},
+							properties: {
+								context: {},
+								properties: {
+									properties: {
+										id: {
+											description: "The user's ID.",
+											type: 'string',
+										},
+										numAttempts: {
+											description: 'How many times the user has attempted to sign-in.',
+											type: 'integer',
+										},
+										rememberMe: {
+											description:
+												'Whether the user has indicated that the browser should store their login credentials.',
+											type: 'boolean',
+										},
+									},
+									required: ['id'],
+									type: 'object',
+								},
+								traits: {
+									type: 'object',
+								},
+							},
+							type: 'object',
+						},
+						version: 1,
+					},
+					{
+						description: 'check if new event works.',
+						name: 'yayyyy it worked',
+						rules: {
+							$schema: 'http://json-schema.org/draft-07/schema#',
+							//labels: {},
+							properties: {
+								context: {},
+								properties: {
+									properties: {
+										yayy: {
+											description: "The user's ID.",
+											type: 'string',
+										},
+										yayy1: {
+											description: 'How many times the user has attempted to sign-in.',
+											type: 'integer',
+										},
+										yayy2: {
+											description:
+												'Whether the user has indicated that the browser should store their login credentials.',
+											type: 'boolean',
+										},
+									},
+									required: ['yayy'],
+									type: 'object',
+								},
+								traits: {
+									type: 'object',
+								},
+							},
+							type: 'object',
+						},
+						version: 1,
+					},
+				],
+			},
+			create_time: new Date('2018-01-23T23:21:55.275Z'),
+			update_time: new Date('2018-01-23T23:21:55.275Z'),
+		},
+	]
 }
 
 // fetchAllTrackingPlans fetches all Tracking Plans accessible by a given API token.
-export async function fetchAllTrackingPlans(options: {
-	token: string
-}): Promise<SegmentAPI.TrackingPlan[]> {
-	const trackingPlans = []
-
-	const workspaces = await fetchWorkspaces({ token: options.token })
-	for (const workspace of workspaces) {
-		const workspaceTPs = await fetchTrackingPlans({
-			workspaceSlug: workspace.name.replace('workspaces/', ''),
-			token: options.token,
-		})
-
-		trackingPlans.push(...workspaceTPs)
-	}
-
-	return trackingPlans
+export function fetchAllTrackingPlans(options: { token: string }): SegmentAPI.TrackingPlan[] {
+	// const trackingPlans = []
+	//
+	// const workspaces = await fetchWorkspaces({ token: options.token })
+	// for (const workspace of workspaces) {
+	// 	const workspaceTPs = await fetchTrackingPlans({
+	// 		workspaceSlug: workspace.name.replace('workspaces/', ''),
+	// 		token: options.token,
+	// 	})
+	//
+	// 	trackingPlans.push(...workspaceTPs)
+	// }
+	//
+	// return trackingPlans
+	return [
+		{
+			name: 'workspaces/myworkspace/tracking-plans/rs_123',
+			display_name: 'Kicks App',
+			rules: {
+				identify_traits: [],
+				group_traits: [],
+				events: [
+					{
+						description:
+							'Fired when a user successfully submits a sign in, prior to redirecting into the app.',
+						name: 'User Signed Out',
+						rules: {
+							$schema: 'http://json-schema.org/draft-07/schema#',
+							//labels: {},
+							properties: {
+								context: {},
+								properties: {
+									properties: {
+										id: {
+											description: "The user's ID.",
+											type: 'string',
+										},
+										numAttempts: {
+											description: 'How many times the user has attempted to sign-in.',
+											type: 'integer',
+										},
+										rememberMe: {
+											description:
+												'Whether the user has indicated that the browser should store their login credentials.',
+											type: 'boolean',
+										},
+									},
+									required: ['id'],
+									type: 'object',
+								},
+								traits: {
+									type: 'object',
+								},
+							},
+							type: 'object',
+						},
+						version: 1,
+					},
+					{
+						description: 'check if new event works.',
+						name: 'yayyyy it worked',
+						rules: {
+							$schema: 'http://json-schema.org/draft-07/schema#',
+							//labels: {},
+							properties: {
+								context: {},
+								properties: {
+									properties: {
+										yayy: {
+											description: "The user's ID.",
+											type: 'string',
+										},
+										yayy1: {
+											description: 'How many times the user has attempted to sign-in.',
+											type: 'integer',
+										},
+										yayy2: {
+											description:
+												'Whether the user has indicated that the browser should store their login credentials.',
+											type: 'boolean',
+										},
+									},
+									required: ['yayy'],
+									type: 'object',
+								},
+								traits: {
+									type: 'object',
+								},
+							},
+							type: 'object',
+						},
+						version: 1,
+					},
+				],
+				global: [],
+			},
+			create_time: new Date('2018-01-23T23:21:55.275Z'),
+			update_time: new Date('2018-01-23T23:21:55.275Z'),
+		},
+	]
 }
 
 // fetchWorkspaces lists all workspaces found with a given Segment API token.
 export async function fetchWorkspaces(options: { token: string }): Promise<SegmentAPI.Workspace[]> {
-	const resp = await apiGet<SegmentAPI.ListWorkspacesResponse>('workspaces', options.token)
-
-	return resp.workspaces.map(w => ({
-		...w,
-		create_time: new Date(w.create_time),
-	}))
+	// const resp = await apiGet<SegmentAPI.ListWorkspacesResponse>('workspaces', options.token)
+	//
+	// return resp.workspaces.map(w => ({
+	// 	...w,
+	// 	create_time: new Date(w.create_time),
+	// }))
+	return [
+		{
+			name: 'workspaces/myworkspace',
+			display_name: 'My Workspace',
+			id: 'jwt9cirmwq',
+			create_time: new Date('2018-01-23T23:21:55.275Z'),
+		},
+	]
 }
 
 // validateToken returns true if a token is a valid Segment API token.
@@ -115,6 +377,17 @@ type TokenValidationResult = {
 }
 const tokenValidationCache: Record<string, TokenValidationResult> = {}
 export async function validateToken(token: string | undefined): Promise<TokenValidationResult> {
+	if (1 === 1) {
+		return {
+			isValid: true,
+			workspace: {
+				name: 'workspaces/myworkspace',
+				display_name: 'My Workspace',
+				id: 'jwt9cirmwq',
+				create_time: new Date('2018-01-23T23:21:55.275Z'),
+			},
+		}
+	}
 	if (!token) {
 		return { isValid: false }
 	}

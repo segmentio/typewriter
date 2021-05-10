@@ -126,5 +126,6 @@ export function parseTrackingPlanName(name: string): { id: string; workspaceSlug
 
 export function toTrackingPlanURL(name: string): string {
 	const { id, workspaceSlug } = parseTrackingPlanName(name)
-	return `https://app.segment.com/${workspaceSlug}/protocols/tracking-plans/${id}`
+	return `test-url`
+	//https://app.segment.com/${workspaceSlug}/protocols/tracking-plans/${id}
 }

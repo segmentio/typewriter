@@ -205,7 +205,7 @@ const SDKPrompt: React.FC<SDKPromptProps> = ({ step, sdk, onSubmit }) => {
 		{ label: 'Android (analytics-android)', value: SDK.ANDROID },
 	]
 	const initialIndex = items.findIndex(i => i.value === sdk)
-
+	console.log('============ choosing sdk steppppppp ==================')
 	const onSelect = (item: Item) => {
 		onSubmit(item.value as SDK)
 	}
@@ -582,7 +582,8 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
 					wrapError(
 						'Unable to fetch Tracking Plans',
 						error,
-						'Check your internet connectivity and try again'
+						error.message
+						//'Check your internet connectivity and try again'
 					)
 				)
 			}
