@@ -1011,7 +1011,7 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
-"@types/analytics-node@^3.1.1":
+"@types/analytics-node@^3.1.5":
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/@types/analytics-node/-/analytics-node-3.1.5.tgz#4fe00efc08aefc5211c8b8e6a8cb4145892c10e5"
   integrity sha512-zSqNpyzF3hcweslf7ttqB03iZvxtymUh820SAXaFhox5Y5Qa7bYmrdOi4IW050OHrKmtq4SE4kE1XeE1mK+zrQ==
