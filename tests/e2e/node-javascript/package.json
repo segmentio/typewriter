@@ -11,6 +11,6 @@
     "test": "node index.js"
   },
   "dependencies": {
-    "analytics-node": "^3.3.0"
+    "analytics-node": "^4.0.1"
   }
 }
