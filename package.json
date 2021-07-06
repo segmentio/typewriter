@@ -54,8 +54,7 @@
     "typewriter": "^7.3.0"
   },
   "dependencies": {
-    "@hapi/joi": "^15.1.1",
-    "analytics-node": "3.4.0-beta.1",
+    "analytics-node": "4.0.1",
     "figures": "^3.0.0",
     "fuse.js": "^3.4.5",
     "got": "^9.6.0",
@@ -65,6 +64,7 @@
     "ink-select-input": "^3.1.2",
     "ink-spinner": "^3.0.1",
     "ink-text-input": "^3.2.1",
+    "joi": "^17.4.0",
     "js-yaml": "^3.13.1",
     "json-stable-stringify": "^1.0.1",
     "latest-version": "^5.1.0",
