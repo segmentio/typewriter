@@ -16,11 +16,11 @@
   "dependencies": {
     "@segment/snippet": "^4.4.0",
     "@zeit/next-typescript": "1.1.0",
-    "evergreen-ui": "^4.17.0",
+    "evergreen-ui": "^6.1.0",
     "express": "^4.17.1",
-    "next": "^7.0.1",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "next": "^10.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "request": "^2.88.0",
     "typescript": "^4.1.2"
   },
@@ -30,11 +30,11 @@
     "@types/react": "^16.0.36",
     "@types/segment-analytics": "^0.0.31",
     "@types/styled-jsx": "^2.2.3",
-    "cypress": "^3.3.2",
+    "cypress": "^7.6.0",
     "fork-ts-checker-webpack-plugin": "^0.4.3",
-    "jest": "^24.8.0",
+    "jest": "^27.0.6",
     "start-server-and-test": "^1.9.1",
-    "typewriter": "7.0.0-25"
+    "typewriter": "7.4.1"
   },
   "jest": {
     "setupFilesAfterEnv": [
