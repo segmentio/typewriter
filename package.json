@@ -43,15 +43,15 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.5",
     "husky": "^2.1.0",
-    "jest": "^26.6.3",
+    "jest": "^27.0.6",
     "jest-expect-message": "^1.0.2",
     "lint-staged": "^8.1.7",
     "np": "^5.0.1",
     "snyk": "^1.250.0",
-    "ts-jest": "^26.4.4",
+    "ts-jest": "^27.0.3",
     "ts-node": "^8.1.0",
     "tsconfig-paths": "^3.8.0",
-    "typewriter": "^7.3.0"
+    "typewriter": "^7.4.1"
   },
   "dependencies": {
     "analytics-node": "4.0.1",
@@ -99,7 +99,7 @@
     },
     "settings": {
       "react": {
-        "version": "16.8.6"
+        "version": "17.0.1"
       }
     },
     "rules": {
