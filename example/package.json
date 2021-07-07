@@ -16,8 +16,8 @@
     "@segment/snippet": "^4.4.0",
     "evergreen-ui": "^6.1.0",
     "next": "^10.0.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
     "request": "^2.88.0",
     "typescript": "^4.0.5"
   },
