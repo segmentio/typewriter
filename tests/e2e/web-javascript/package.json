@@ -23,9 +23,9 @@
     "request": "^2.88.0"
   },
   "devDependencies": {
-    "@types/segment-analytics": "^0.0.31",
+    "@types/segment-analytics": "^0.0.34",
     "cypress": "7.6.0",
     "jest": "^27.0.6",
-    "start-server-and-test": "^1.9.1"
+    "start-server-and-test": "^1.12.6"
   }
 }
