@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Box, Color, Text, useApp } from 'ink'
+import { Box, Text, useApp } from 'ink'
+import Color from 'ink/build/components/Color'
 import Link from 'ink-link'
 import Spinner from 'ink-spinner'
 import { listTokens, ListTokensOutput, getTokenMethod, TokenMetadata } from '../config'

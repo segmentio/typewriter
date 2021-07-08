@@ -3,7 +3,8 @@
  *   https://paper.dropbox.com/doc/Typewriter-Error-Paths--AlUBLKIIcRc_9UU3_sgAh~9YAg-bdjW1EOlEHeomztWLrYWk
  */
 import React, { createContext, useEffect } from 'react'
-import { Box, Color, useApp } from 'ink'
+import { Box, useApp } from 'ink'
+import Color from 'ink/build/components/Color'
 import Link from 'ink-link'
 import figures from 'figures'
 import { version } from '../../../package.json'

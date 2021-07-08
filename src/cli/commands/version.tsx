@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Box, Color, useApp } from 'ink'
+import { Box, useApp } from 'ink'
+import Color from 'ink/build/components/Color'
 import { version as typewriterVersion } from '../../../package.json'
 import latest from 'latest-version'
 import { StandardProps } from '../index'

@@ -3,7 +3,8 @@
  *   https://zeit.co
  */
 import React, { useEffect } from 'react'
-import { Box, Color, Text, useApp } from 'ink'
+import { Box, Text, useApp } from 'ink'
+import Color from 'ink/build/components/Color'
 import Link from 'ink-link'
 import { StandardProps } from '../index'
 

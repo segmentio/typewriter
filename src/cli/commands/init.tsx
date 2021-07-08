@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Text, Box, Color, useApp } from 'ink'
+import { Text, Box, useApp } from 'ink'
+import Color from 'ink/build/components/Color'
 import Link from 'ink-link'
 import SelectInput, { Item } from 'ink-select-input'
 import TextInput from 'ink-text-input'
