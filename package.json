@@ -54,6 +54,7 @@
     "typewriter": "^7.4.1"
   },
   "dependencies": {
+    "@types/react": "16.14.0",
     "analytics-node": "4.0.1",
     "figures": "^3.0.0",
     "fuse.js": "^3.4.5",

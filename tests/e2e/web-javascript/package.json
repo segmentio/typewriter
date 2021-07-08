@@ -14,7 +14,7 @@
     "test": "start-server-and-test start http://localhost:3000 cypress"
   },
   "dependencies": {
-    "@segment/snippet": "^4.4.0",
+    "@segment/snippet": "^4.14.2",
     "evergreen-ui": "^6.1.0",
     "express": "^4.17.1",
     "next": "^10.0.0",
