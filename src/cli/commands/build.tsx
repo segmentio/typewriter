@@ -513,7 +513,7 @@ const Note: React.FC<NoteProps> = ({ isWarning, children }) => {
 		<Text italic>
 			<Color grey={!isWarning} yellow={!!isWarning}>
 				<Box marginLeft={4}>{isWarning ? '⚠' : '↪'}</Box>
-				<Box marginLeft={2} width={80} textWrap="wrap">
+				<Box marginLeft={2} width={80}>
 					{children}
 				</Box>
 			</Color>

@@ -39,7 +39,7 @@ export const Token: React.FC<StandardProps> = props => {
 				<TokenRow name="scripts.token" tokenMetadata={tokens && tokens.script} method={method} />
 				<TokenRow name="~/.typewriter" tokenMetadata={tokens && tokens.file} method={method} />
 			</Box>
-			<Box marginTop={1} width={80} textWrap="wrap">
+			<Box marginTop={1} width={80}>
 				<Color grey>
 					<Text bold>Tip:</Text> For more information on configuring an API token, see the{' '}
 					<Link url="https://segment.com/docs/protocols/typewriter/#api-token-configuration">

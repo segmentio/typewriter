@@ -16,7 +16,7 @@ export const Help: React.FC<StandardProps> = () => {
 
 	return (
 		<Box marginLeft={2} flexDirection="column">
-			<Box marginBottom={2} textWrap="wrap">
+			<Box marginBottom={2}>
 				<Color grey>
 					Typewriter is a tool for generating strongly-typed{' '}
 					<Link url="https://segment.com">Segment</Link> analytics libraries based on your
@@ -146,7 +146,7 @@ const HelpRow: React.FC<HelpRowProps> = ({
 	return (
 		<Box height={linesNeeded || 1}>
 			<Box width="20%">{name}</Box>
-			<Box width="65%" textWrap="wrap">
+			<Box width="65%">
 				{description}
 			</Box>
 			<Box width="15%">{!!isDefault ? <Color blue>(default)</Color> : ''}</Box>
