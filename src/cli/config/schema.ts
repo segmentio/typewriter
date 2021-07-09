@@ -91,5 +91,5 @@ export const validateConfig = (rawConfig: Record<string, unknown>): Config => {
 	}
 
 	// We can safely type cast the config, now that is has been validated.
-	return (rawConfig as unknown) as Config
+	return rawConfig as unknown as Config
 }

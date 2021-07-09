@@ -3,7 +3,8 @@
  *   https://paper.dropbox.com/doc/Typewriter-Error-Paths--AlUBLKIIcRc_9UU3_sgAh~9YAg-bdjW1EOlEHeomztWLrYWk
  */
 import React, { createContext, useEffect } from 'react'
-import { Box, Color, useApp } from 'ink'
+import { Box, useApp } from 'ink'
+import Color from 'ink/build/components/Color'
 import Link from 'ink-link'
 import figures from 'figures'
 import { version } from '../../../package.json'
@@ -166,7 +167,7 @@ const ErrorComponent: React.FC<ErrorComponentProps> = ({ error }) => {
 
 	return (
 		<Box flexDirection="column" marginLeft={2} marginRight={2} marginTop={1} marginBottom={1}>
-			<Box width={80} textWrap="wrap">
+			<Box width={80}>
 				<Color red>
 					{figures.cross} Error: {error.description}
 				</Color>
@@ -177,12 +178,12 @@ const ErrorComponent: React.FC<ErrorComponentProps> = ({ error }) => {
 						<Box marginLeft={1} marginRight={1}>
 							<Color grey>{figures.arrowRight}</Color>
 						</Box>
-						<Box width={80} textWrap="wrap">
+						<Box width={80}>
 							<Color grey>{n}</Color>
 						</Box>
 					</Box>
 				))}
-			<Box height={2} width={80} textWrap="wrap" marginTop={1}>
+			<Box height={2} width={80} marginTop={1}>
 				<Color grey>
 					If you are unable to resolve this issue,{' '}
 					<Link url="https://github.com/segmentio/typewriter/issues/new">

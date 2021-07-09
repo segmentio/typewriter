@@ -13,22 +13,22 @@
     "test": "jest"
   },
   "dependencies": {
-    "@segment/snippet": "^4.4.0",
+    "@segment/snippet": "^4.14.2",
     "evergreen-ui": "^6.1.0",
     "next": "^10.0.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "request": "^2.88.0",
-    "typescript": "^4.0.5"
+    "typescript": "^4.3.5"
   },
   "devDependencies": {
-    "@types/react": "^17.0.13",
+    "@types/react": "^16.14.11",
     "@types/segment-analytics": "^0.0.34",
     "@types/styled-jsx": "^2.2.9",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
     "fork-ts-checker-webpack-plugin": "^5.2.1",
-    "jest": "^26.6.3",
+    "jest": "^27.0.6",
     "typewriter": "7.2.1"
   },
   "resolutions": {

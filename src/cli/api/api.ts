@@ -70,7 +70,7 @@ export async function fetchTrackingPlans(options: {
 	const url = `workspaces/${options.workspaceSlug}/tracking-plans`
 	const response = await apiGet<SegmentAPI.ListTrackingPlansResponse>(url, options.token)
 
-	return response.tracking_plans.map(tp => ({
+	return response.tracking_plans.map((tp) => ({
 		...tp,
 		create_time: new Date(tp.create_time),
 		update_time: new Date(tp.update_time),
@@ -100,7 +100,7 @@ export async function fetchAllTrackingPlans(options: {
 export async function fetchWorkspaces(options: { token: string }): Promise<SegmentAPI.Workspace[]> {
 	const resp = await apiGet<SegmentAPI.ListWorkspacesResponse>('workspaces', options.token)
 
-	return resp.workspaces.map(w => ({
+	return resp.workspaces.map((w) => ({
 		...w,
 		create_time: new Date(w.create_time),
 	}))

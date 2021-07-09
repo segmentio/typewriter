@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Box, Text, Color, useApp } from 'ink'
+import { Box, Text, useApp } from 'ink'
+import Color from 'ink/build/components/Color'
 import Link from 'ink-link'
 import Spinner from 'ink-spinner'
 import {
@@ -512,7 +513,7 @@ const Note: React.FC<NoteProps> = ({ isWarning, children }) => {
 		<Text italic>
 			<Color grey={!isWarning} yellow={!!isWarning}>
 				<Box marginLeft={4}>{isWarning ? '⚠' : '↪'}</Box>
-				<Box marginLeft={2} width={80} textWrap="wrap">
+				<Box marginLeft={2} width={80}>
 					{children}
 				</Box>
 			</Color>

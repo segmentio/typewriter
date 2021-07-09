@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Text, Box, Color, useApp } from 'ink'
+import { Text, Box, useApp } from 'ink'
+import Color from 'ink/build/components/Color'
 import Link from 'ink-link'
-import SelectInput, { Item } from 'ink-select-input'
+import SelectInput from 'ink-select-input/build/SelectInput'
+import Item from 'ink-select-input/build/Item'
 import TextInput from 'ink-text-input'
 import Spinner from 'ink-spinner'
 import { Config, listTokens, getTokenMethod, setConfig, storeToken } from '../config'
@@ -23,8 +25,12 @@ import Fuse from 'fuse.js'
 import { StandardProps, DebugContext } from '../index'
 import { ErrorContext, wrapError } from './error'
 
-const readir = promisify(fs.readdir)
+interface ItemObj {
+	label: string
+	value: string
+}
 
+const readir = promisify(fs.readdir)
 type InitProps = StandardProps & {
 	/**
 	 * Optional handler that is fired after the init wizard finishes building a new config.
@@ -46,7 +52,7 @@ enum Steps {
 	Done = 8,
 }
 
-export const Init: React.FC<InitProps> = props => {
+export const Init: React.FC<InitProps> = (props) => {
 	const { config, configPath } = props
 
 	const [step, setStep] = useState(Steps.Confirmation)
@@ -151,7 +157,7 @@ export const Init: React.FC<InitProps> = props => {
 const Header: React.FC = () => {
 	return (
 		<Box flexDirection="column">
-			<Box width={80} textWrap="wrap" marginBottom={4}>
+			<Box width={80} marginBottom={4}>
 				<Color white>
 					Typewriter is a tool for generating strongly-typed{' '}
 					<Link url="https://segment.com">Segment</Link> analytics libraries from a{' '}
@@ -198,15 +204,15 @@ type SDKPromptProps = {
 
 /** A prompt to identify which Segment SDK a user wants to use. */
 const SDKPrompt: React.FC<SDKPromptProps> = ({ step, sdk, onSubmit }) => {
-	const items: Item[] = [
+	const items = [
 		{ label: 'Web (analytics.js)', value: SDK.WEB },
 		{ label: 'Node.js (analytics-node)', value: SDK.NODE },
 		{ label: 'iOS (analytics-ios)', value: SDK.IOS },
 		{ label: 'Android (analytics-android)', value: SDK.ANDROID },
 	]
-	const initialIndex = items.findIndex(i => i.value === sdk)
+	const initialIndex = items.findIndex((i) => i.value === sdk)
 
-	const onSelect = (item: Item) => {
+	const onSelect = (item: ItemObj) => {
 		onSubmit(item.value as SDK)
 	}
 
@@ -235,13 +241,13 @@ type LanguagePromptProps = {
 
 /** A prompt to identify which Segment programming language a user wants to use. */
 const LanguagePrompt: React.FC<LanguagePromptProps> = ({ step, sdk, language, onSubmit }) => {
-	const items: Item[] = [
+	const items = [
 		{ label: 'JavaScript', value: Language.JAVASCRIPT },
 		{ label: 'TypeScript', value: Language.TYPESCRIPT },
 		{ label: 'Objective-C', value: Language.OBJECTIVE_C },
 		{ label: 'Swift', value: Language.SWIFT },
 		{ label: 'Java', value: Language.JAVA },
-	].filter(item => {
+	].filter((item) => {
 		// Filter out items that aren't relevant, given the selected SDK.
 		const supportedLanguages = {
 			[SDK.WEB]: [Language.JAVASCRIPT, Language.TYPESCRIPT],
@@ -252,9 +258,9 @@ const LanguagePrompt: React.FC<LanguagePromptProps> = ({ step, sdk, language, on
 
 		return supportedLanguages[sdk].includes(item.value)
 	})
-	const initialIndex = items.findIndex(i => i.value === language)
+	const initialIndex = items.findIndex((i) => i.value === language)
 
-	const onSelect = (item: Item) => {
+	const onSelect = (item: ItemObj) => {
 		onSubmit(item.value as Language)
 	}
 
@@ -281,11 +287,11 @@ async function filterDirectories(path: string): Promise<string[]> {
 			})
 			const directoryBlocklist = ['node_modules']
 			return files
-				.filter(f => f.isDirectory())
-				.filter(f => !f.name.startsWith('.'))
-				.filter(f => !directoryBlocklist.some(b => f.name.startsWith(b)))
-				.map(f => join(path, f.name))
-				.filter(f => normalize(f).startsWith(normalize(path).replace(/^\.\/?/, '')))
+				.filter((f) => f.isDirectory())
+				.filter((f) => !f.name.startsWith('.'))
+				.filter((f) => !directoryBlocklist.some((b) => f.name.startsWith(b)))
+				.map((f) => join(path, f.name))
+				.filter((f) => normalize(f).startsWith(normalize(path).replace(/^\.\/?/, '')))
 		} catch {
 			// If we can't read this path, then return an empty list of sub-directories.
 			return []
@@ -298,13 +304,13 @@ async function filterDirectories(path: string): Promise<string[]> {
 	// First look for all directories in the same directory as the current query path.
 	const parentPath = join(path, isPathEmpty || path.endsWith('/') ? '.' : '..')
 	const parentDirectories = await listDirectories(parentPath)
-	parentDirectories.forEach(f => directories.add(f))
+	parentDirectories.forEach((f) => directories.add(f))
 
 	const queryPath = join(parentPath, path)
 	// Next, if the current query IS a directory, then we want to prioritize results from inside that directory.
 	if (directories.has(queryPath)) {
 		const queryDirectories = await listDirectories(queryPath)
-		queryDirectories.forEach(f => directories.add(f))
+		queryDirectories.forEach((f) => directories.add(f))
 	}
 
 	// Otherwise, show results from inside any other directories at the level of the current query path.
@@ -314,12 +320,15 @@ async function filterDirectories(path: string): Promise<string[]> {
 		}
 
 		const otherDirectories = await listDirectories(dirPath)
-		otherDirectories.forEach(f => directories.add(f))
+		otherDirectories.forEach((f) => directories.add(f))
 	}
 
 	// Now sort these directories by the query path.
-	const fuse = new Fuse([...directories].map(d => ({ name: d })), { keys: ['name'] })
-	return isPathEmpty ? [...directories] : fuse.search(path).map(d => d.name)
+	const fuse = new Fuse(
+		[...directories].map((d) => ({ name: d })),
+		{ keys: ['name'] }
+	)
+	return isPathEmpty ? [...directories] : fuse.search(path).map((d) => d.name)
 }
 
 /** A prompt to identify where to store the new client on the user's filesystem. */
@@ -460,7 +469,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 	}
 
 	// Fired if a user confirms a cached token.
-	const onConfirmCachedToken = async (item: Item) => {
+	const onConfirmCachedToken = async (item: ItemObj) => {
 		if (item.value === 'no') {
 			// Clear the selected token so they can enter their own.
 			setState({
@@ -534,7 +543,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 						/>
 					</Box>
 					{state.isInvalid && (
-						<Box textWrap="wrap" marginLeft={2}>
+						<Box marginLeft={2}>
 							<Color red>{figures.cross} Invalid Segment API token.</Color>
 						</Box>
 					)}
@@ -593,21 +602,21 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
 		loadTrackingPlans()
 	}, [])
 
-	const onSelect = (item: Item) => {
-		const trackingPlan = trackingPlans.find(tp => tp.name === item.value)!
+	const onSelect = (item: ItemObj) => {
+		const trackingPlan = trackingPlans.find((tp) => tp.name === item.value)!
 		onSubmit(trackingPlan)
 	}
 
 	// Sort the Tracking Plan alphabetically by display name.
 	const choices = orderBy(
-		trackingPlans.map(tp => ({
+		trackingPlans.map((tp) => ({
 			label: tp.display_name,
 			value: tp.name,
 		})),
 		'label',
 		'asc'
 	)
-	let initialIndex = choices.findIndex(c => !!trackingPlan && c.value === trackingPlan.name)
+	let initialIndex = choices.findIndex((c) => !!trackingPlan && c.value === trackingPlan.name)
 	initialIndex = initialIndex === -1 ? 0 : initialIndex
 
 	const tips = [
@@ -661,15 +670,15 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 	const [isLoading, setIsLoading] = useState(false)
 	const { handleFatalError } = useContext(ErrorContext)
 
-	const onSelect = async (item: Item) => {
+	const onSelect = async (item: ItemObj) => {
 		if (item.value === 'lgtm') {
 			// Write the updated typewriter.yml config.
 			setIsLoading(true)
 
-			let client = ({
+			let client = {
 				sdk,
 				language,
-			} as unknown) as Options
+			} as unknown as Options
 			// Default to ES5 syntax for analytics-node in JS, since node doesn't support things
 			// like ES6 modules. TypeScript transpiles for you, so we don't need it there.
 			// See https://node.green
@@ -722,7 +731,7 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 
 	const summary = (
 		<Box flexDirection="column">
-			{summaryRows.map(r => (
+			{summaryRows.map((r) => (
 				<Box key={r.label}>
 					<Box width={20}>
 						<Color grey>{r.label}:</Color>
@@ -736,7 +745,10 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 	return (
 		<Step name="Summary:" step={step} description={summary} isLoading={isLoading}>
 			<SelectInput
-				items={[{ label: 'Looks good!', value: 'lgtm' }, { label: 'Edit', value: 'edit' }]}
+				items={[
+					{ label: 'Looks good!', value: 'lgtm' },
+					{ label: 'Edit', value: 'edit' },
+				]}
 				onSelect={onSelect}
 			/>
 		</Step>

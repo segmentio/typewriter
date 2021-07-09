@@ -43,7 +43,7 @@ export async function getConfig(path = './'): Promise<Config | undefined> {
 		)
 	}
 
-	const rawConfig = yaml.safeLoad(file)
+	const rawConfig: Record<string, unknown> = yaml.safeLoad(file) as Record<string, unknown>
 
 	return validateConfig(rawConfig)
 }

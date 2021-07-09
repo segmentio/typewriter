@@ -161,7 +161,7 @@ function toYargsHandler<P = unknown>(
 				!cliOptions ||
 				!cliOptions.validateDefault ||
 				args._.length === 0 ||
-				['update', 'u'].includes(args._[0])
+				['update', 'u'].includes(String(args._[0]))
 
 			// We'll measure how long it takes to render this command.
 			const startTime = process.hrtime()

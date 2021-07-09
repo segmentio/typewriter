@@ -32,6 +32,7 @@
     "@types/json-schema": "^7.0.3",
     "@types/json-stable-stringify": "^1.0.32",
     "@types/lodash": "^4.14.123",
+    "@types/lodash.flow": "^3.5.6",
     "@types/node": "^11.13.6",
     "@types/prettier": "^1.16.3",
     "@types/prompts": "2.0.0",
@@ -54,6 +55,7 @@
     "typewriter": "^7.4.1"
   },
   "dependencies": {
+    "@types/react": "16.14.0",
     "analytics-node": "4.0.1",
     "figures": "^3.0.0",
     "fuse.js": "^3.4.5",
@@ -99,7 +101,7 @@
     },
     "settings": {
       "react": {
-        "version": "17.0.1"
+        "version": "16.14.0"
       }
     },
     "rules": {
