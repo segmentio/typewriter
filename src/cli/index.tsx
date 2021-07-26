@@ -149,6 +149,7 @@ function toYargsHandler<P = unknown>(
 			anonymousId = await getAnonymousId()
 		} catch (error) {
 			typewriter.errorFired({
+				anonymousId: 'unknown',
 				error_string: 'Failed to generate an anonymous id',
 				error,
 			})
