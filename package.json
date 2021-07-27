@@ -17,12 +17,14 @@
     "update": "make update",
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "release": "yarn run build && np --any-branch",
-    "release:pre": "yarn run build && np prerelease --any-branch --tag next --no-release-draft"
+    "release:pre": "yarn run build && np prerelease --any-branch --tag next --no-release-draft",
+    "prepare": "husky install"
   },
   "engines": {
     "node": ">=0.10.18"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.14.8",
     "@types/analytics-node": "^3.1.5",
     "@types/got": "^9.6.7",
     "@types/hapi__joi": "^15.0.2",
@@ -43,7 +45,7 @@
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.5",
-    "husky": "^7.0.1",
+    "husky": "^7.0.0",
     "jest": "^27.0.6",
     "jest-expect-message": "^1.0.2",
     "lint-staged": "^11.0.0",
@@ -165,11 +167,6 @@
         "prettier --write",
         "git add"
       ]
-    }
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "make precommit"
     }
   }
 }
