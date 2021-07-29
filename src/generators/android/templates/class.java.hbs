@@ -62,13 +62,17 @@ public final class {{name}} extends SerializableProperties {
         {{/each}}
 
         /**
-         * Build an instance of {@link {{name ~}} }
-         */
+        * Build an instance of {@link {{name ~}} }
+        */
         public {{name}} build() {
             {{#each properties}}
-            {{#if shouldThrowRuntimeError}}
+            {{#if isVariableNullable}}
+            if(!properties.containsKey("{{rawName}}")){
+                throw new IllegalArgumentException("{{../name}} missing required (nullable) property: {{rawName}}");
+            }
+            {{else if shouldThrowRuntimeError}}
             if(properties.get("{{rawName}}") == null){
-                throw new IllegalArgumentException("{{../name}} missing required property: {{rawName}}");
+                throw new IllegalArgumentException("{{../name}} missing required property: {{rawName}} is null");
             }
             {{/if}}
             {{/each}}
