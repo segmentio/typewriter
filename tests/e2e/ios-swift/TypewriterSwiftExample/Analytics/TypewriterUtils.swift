@@ -7,7 +7,7 @@ import Foundation
 extension Array {
     func serializableArray() -> [Any] {
         var result = [Any]()
-        
+
         for item in self {
             if let arr = item as? [Any] {
                 result.append(arr.serializableArray())
@@ -25,21 +25,21 @@ class TypewriterUtils {
     static func addContextFields(_ options: [String: Any]?) -> [String: Any] {
         var newOptions = (options ?? [String: Any]()) as [String: Any]
         let originalContext = newOptions["context"] as? [String: Any]
-        
+
         let typewriterContext = [
             "typewriter": [
                 "language": "swift",
-                "version": "7.4.0"
+                "version": "7.4.2"
             ]
         ]
-        
+
         var newContext = [String: Any]()
         if let originalContext = originalContext {
             newContext.merge(originalContext) { _,_ in }
         }
         newContext.merge(typewriterContext) { _,_ in }
         newOptions["context"] = newContext
-        
+
         return newOptions
     }
 }

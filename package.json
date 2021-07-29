@@ -54,9 +54,10 @@
     "ts-jest": "^27.0.3",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "^3.10.0",
-    "typewriter": "^7.4.1"
+    "typewriter": "^7.4.2"
   },
   "dependencies": {
+    "@babel/core": "^7.14.8",
     "@types/react": "16.14.0",
     "analytics-node": "4.0.1",
     "figures": "^3.0.0",
