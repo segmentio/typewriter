@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Box, useApp } from 'ink'
-import Color from 'ink/build/components/Color'
+import { Box, Text, useApp } from 'ink'
 import { version as typewriterVersion } from '../../../package.json'
 import latest from 'latest-version'
 import { StandardProps } from '../index'
@@ -47,13 +46,9 @@ export const Version: React.FC<StandardProps> = () => {
 
 	return (
 		<Box>
-			<Color grey>Version: </Color>
-			<Color green={isLatest} yellow={!isLatest}>
-				{typewriterVersion}{' '}
-			</Color>
-			<Color grey={isLatest} green={!isLatest}>
-				{newVersionText}
-			</Color>
+			<Text color="grey">Version: </Text>
+			<Text>{typewriterVersion} </Text>
+			<Text>{newVersionText}</Text>
 		</Box>
 	)
 }

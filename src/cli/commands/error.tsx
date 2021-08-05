@@ -4,7 +4,6 @@
  */
 import React, { createContext, useEffect } from 'react'
 import { Box, useApp } from 'ink'
-import Color from 'ink/build/components/Color'
 import Link from 'ink-link'
 import figures from 'figures'
 import { version } from '../../../package.json'
@@ -167,30 +166,24 @@ const ErrorComponent: React.FC<ErrorComponentProps> = ({ error }) => {
 
 	return (
 		<Box flexDirection="column" marginLeft={2} marginRight={2} marginTop={1} marginBottom={1}>
-			<Box width={80}>
-				<Color red>
-					{figures.cross} Error: {error.description}
-				</Color>
+			<Box width={80} borderColor="red">
+				{figures.cross} Error: {error.description}
 			</Box>
 			{error.notes &&
-				error.notes.map(n => (
+				error.notes.map((n) => (
 					<Box key={n}>
 						<Box marginLeft={1} marginRight={1}>
-							<Color grey>{figures.arrowRight}</Color>
+							{figures.arrowRight}
 						</Box>
-						<Box width={80}>
-							<Color grey>{n}</Color>
-						</Box>
+						<Box width={80}>{n}</Box>
 					</Box>
 				))}
-			<Box height={2} width={80} marginTop={1}>
-				<Color grey>
-					If you are unable to resolve this issue,{' '}
-					<Link url="https://github.com/segmentio/typewriter/issues/new">
-						open an issue on GitHub
-					</Link>
-					. Please include that you are using version <Color yellow>{version}</Color> of Typewriter.
-				</Color>
+			<Box height={2} width={80} marginTop={1} borderColor="grey">
+				If you are unable to resolve this issue,{' '}
+				<Link url="https://github.com/segmentio/typewriter/issues/new">
+					open an issue on GitHub
+				</Link>
+				. Please include that you are using version {version} of Typewriter.
 			</Box>
 		</Box>
 	)
