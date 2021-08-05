@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Box, Text, useApp } from 'ink'
-import Color from 'ink/build/components/Color'
 import Link from 'ink-link'
 import Spinner from 'ink-spinner'
 import { listTokens, ListTokensOutput, getTokenMethod, TokenMetadata } from '../config'
 import { StandardProps } from '../index'
 import { ErrorContext } from './error'
 
-export const Token: React.FC<StandardProps> = props => {
+export const Token: React.FC<StandardProps> = (props) => {
 	const [isLoading, setIsLoading] = useState(true)
 	const [method, setMethod] = useState<string | undefined>()
 	const [tokens, setTokens] = useState<ListTokensOutput | undefined>()
@@ -28,7 +27,7 @@ export const Token: React.FC<StandardProps> = props => {
 	if (isLoading) {
 		return (
 			<Box marginLeft={2} marginTop={1} marginBottom={1}>
-				<Spinner type="dots" /> <Color grey>Loading...</Color>
+				<Spinner type="dots" /> <Text color="grey">Loading...</Text>
 			</Box>
 		)
 	}
@@ -39,14 +38,12 @@ export const Token: React.FC<StandardProps> = props => {
 				<TokenRow name="scripts.token" tokenMetadata={tokens && tokens.script} method={method} />
 				<TokenRow name="~/.typewriter" tokenMetadata={tokens && tokens.file} method={method} />
 			</Box>
-			<Box marginTop={1} width={80}>
-				<Color grey>
-					<Text bold>Tip:</Text> For more information on configuring an API token, see the{' '}
-					<Link url="https://segment.com/docs/protocols/typewriter/#api-token-configuration">
-						online docs
-					</Link>
-					.
-				</Color>
+			<Box marginTop={1} width={80} borderColor="grey">
+				<Text bold>Tip:</Text> For more information on configuring an API token, see the{' '}
+				<Link url="https://segment.com/docs/protocols/typewriter/#api-token-configuration">
+					online docs
+				</Link>
+				.
 			</Box>
 		</Box>
 	)
@@ -63,23 +60,19 @@ const TokenRow: React.FC<TokenRowProps> = ({ tokenMetadata, method, name }) => {
 
 	return (
 		<Box flexDirection="row">
-			<Color green={isSelected} grey={!isSelected}>
-				<Box width={20}>{name}:</Box>
-				<Box width={15}>
-					{tokenMetadata && tokenMetadata.token
-						? `${tokenMetadata.token.slice(0, 10)}...`
-						: '(None)'}
+			<Box width={20}>{name}:</Box>
+			<Box width={15}>
+				{tokenMetadata && tokenMetadata.token ? `${tokenMetadata.token.slice(0, 10)}...` : '(None)'}
+			</Box>
+			{tokenMetadata && !!tokenMetadata.token && !tokenMetadata.isValidToken ? (
+				<Box width={10}>
+					<Text color="red">(invalid token)</Text>
 				</Box>
-				{tokenMetadata && !!tokenMetadata.token && !tokenMetadata.isValidToken ? (
-					<Box width={10}>
-						<Color red={true}>(invalid token)</Color>
-					</Box>
-				) : (
-					<Box width={10}>
-						{tokenMetadata && tokenMetadata.workspace ? tokenMetadata.workspace.name : ''}
-					</Box>
-				)}
-			</Color>
+			) : (
+				<Box width={10}>
+					{tokenMetadata && tokenMetadata.workspace ? tokenMetadata.workspace.name : ''}
+				</Box>
+			)}
 		</Box>
 	)
 }

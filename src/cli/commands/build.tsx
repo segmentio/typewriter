@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Box, Text, useApp } from 'ink'
-import Color from 'ink/build/components/Color'
 import Link from 'ink-link'
 import Spinner from 'ink-spinner'
 import {
@@ -201,8 +200,8 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
 				path: trackingPlanConfig.path,
 				trackCalls: events
 					// Typewriter doesn't yet support event versioning. For now, we just choose the most recent version.
-					.filter(e => events.every(e2 => e.name !== e2.name || e.version >= e2.version))
-					.map<JSONSchema7>(e => ({
+					.filter((e) => events.every((e2) => e.name !== e2.name || e.version >= e2.version))
+					.map<JSONSchema7>((e) => ({
 						...e.rules,
 						title: e.name,
 						description: e.description,
@@ -241,19 +240,9 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
 						Loaded <Link url={trackingPlan.url}>{trackingPlan.name}</Link>{' '}
 						{(deltas.added !== 0 || deltas.modified !== 0 || deltas.removed !== 0) && (
 							<>
-								(
-								<Color grey={deltas.added === 0} green={deltas.added > 0}>
-									{deltas.added} added
-								</Color>
-								,{' '}
-								<Color grey={deltas.modified === 0} yellow={deltas.modified > 0}>
-									{deltas.modified} modified
-								</Color>
-								,{' '}
-								<Color grey={deltas.removed === 0} red={deltas.removed > 0}>
-									{deltas.removed} removed
-								</Color>
-								)
+								(<Text color="green">{deltas.added} added</Text>,{' '}
+								<Text color="yellow">{deltas.modified} modified</Text>,{' '}
+								<Text color="red">{deltas.removed} removed</Text>)
 							</>
 						)}
 					</Note>
@@ -276,7 +265,7 @@ export const ClearFilesStep: React.FC<ClearFilesProps> = ({ config, configPath, 
 
 	async function clearGeneratedFiles() {
 		const errors = await Promise.all(
-			config.trackingPlans.map(async trackingPlanConfig => {
+			config.trackingPlans.map(async (trackingPlanConfig) => {
 				const path = resolveRelativePath(configPath, trackingPlanConfig.path)
 				await verifyDirectoryExists(path)
 				try {
@@ -292,7 +281,7 @@ export const ClearFilesStep: React.FC<ClearFilesProps> = ({ config, configPath, 
 			})
 		)
 
-		const error = errors.find(error => isWrappedError(error))
+		const error = errors.find((error) => isWrappedError(error))
 		if (error) {
 			handleFatalError(error)
 			return null
@@ -373,7 +362,7 @@ export const GenerationStep: React.FC<GenerationProps> = ({
 	return (
 		<Step name={stepName} isRunning={isRunning} isDone={isDone}>
 			<Note>Building for {production ? 'production' : 'development'}</Note>
-			{trackingPlans.map(trackingPlan => (
+			{trackingPlans.map((trackingPlan) => (
 				<Note key={trackingPlan.url}>
 					<Link url={trackingPlan.url}>{trackingPlan.name}</Link>
 				</Note>
@@ -419,8 +408,8 @@ export const AfterStep: React.FC<AfterStepProps> = ({ config, configPath, step, 
 				<>
 					<Note isWarning>{error.description}</Note>
 					{error.notes
-						.filter(n => !!n)
-						.map(n => (
+						.filter((n) => !!n)
+						.map((n) => (
 							<Note isWarning key={n}>
 								{n}
 							</Note>
@@ -479,26 +468,24 @@ const Step: React.FC<StepProps> = ({ name, isSkipped, isRunning, isDone, childre
 	}
 
 	return (
-		<Box flexDirection="column">
-			<Color white>
-				<Box width={3} justifyContent="flex-end">
-					{/* In debug mode, skip the Spinner to reduce noise */}
-					{isDone ? (
-						<Color green> ✔</Color>
-					) : isRunning ? (
-						debug ? (
-							figures.ellipsis
-						) : (
-							<Spinner type="dots" />
-						)
+		<Box flexDirection="column" borderColor="white">
+			<Box width={3} justifyContent="flex-end">
+				{/* In debug mode, skip the Spinner to reduce noise */}
+				{isDone ? (
+					<Text color="green"> ✔</Text>
+				) : isRunning ? (
+					debug ? (
+						figures.ellipsis
 					) : (
-						''
-					)}
-				</Box>
-				<Box marginLeft={1} width={70}>
-					{name}
-				</Box>
-			</Color>
+						<Spinner type="dots" />
+					)
+				) : (
+					''
+				)}
+			</Box>
+			<Box marginLeft={1} width={70}>
+				{name}
+			</Box>
 			{(isRunning || isDone) && children}
 		</Box>
 	)
@@ -510,13 +497,11 @@ type NoteProps = {
 
 const Note: React.FC<NoteProps> = ({ isWarning, children }) => {
 	return (
-		<Text italic>
-			<Color grey={!isWarning} yellow={!!isWarning}>
-				<Box marginLeft={4}>{isWarning ? '⚠' : '↪'}</Box>
-				<Box marginLeft={2} width={80}>
-					{children}
-				</Box>
-			</Color>
+		<Text italic color="gray">
+			<Box marginLeft={4}>{isWarning ? '⚠' : '↪'}</Box>
+			<Box marginLeft={2} width={80}>
+				{children}
+			</Box>
 		</Text>
 	)
 }

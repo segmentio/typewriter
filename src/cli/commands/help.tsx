@@ -4,7 +4,6 @@
  */
 import React, { useEffect } from 'react'
 import { Box, Text, useApp } from 'ink'
-import Color from 'ink/build/components/Color'
 import Link from 'ink-link'
 import { StandardProps } from '../index'
 
@@ -16,8 +15,7 @@ export const Help: React.FC<StandardProps> = () => {
 
 	return (
 		<Box marginLeft={2} flexDirection="column">
-			<Box marginBottom={2}>
-				<Color grey>
+			<Box marginBottom={2} borderColor="grey">
 					Typewriter is a tool for generating strongly-typed{' '}
 					<Link url="https://segment.com">Segment</Link> analytics libraries based on your
 					pre-defined{' '}
@@ -28,18 +26,17 @@ export const Help: React.FC<StandardProps> = () => {
 						{"Typewriter's documentation here"}
 					</Link>
 					.
-				</Color>
 			</Box>
 			<Box flexDirection="column">
 				<Box marginBottom={1}>
-					<Color grey>$</Color> <Color>typewriter</Color> <Color grey>[command, options]</Color>
+					<Text color="grey">$</Text> <Text>typewriter</Text> <Text color="grey">[command, options]</Text>
 				</Box>
 				<HelpSection name="Commands">
 					<HelpRow
 						name="init"
 						description={
 							<Text>
-								Quickstart wizard to create a <Color yellow>typewriter.yml</Color>
+								Quickstart wizard to create a <Text color="yellow">typewriter.yml</Text>
 							</Text>
 						}
 					/>
@@ -49,8 +46,8 @@ export const Help: React.FC<StandardProps> = () => {
 						linesNeeded={2}
 						description={
 							<Text>
-								Syncs <Color yellow>plan.json</Color> with Segment, then generates a{' '}
-								<Color yellow>development</Color> client.
+								Syncs <Text color="yellow">plan.json</Text> with Segment, then generates a{' '}
+								<Text color="yellow">development</Text> client.
 							</Text>
 						}
 					/>
@@ -58,8 +55,8 @@ export const Help: React.FC<StandardProps> = () => {
 						name="dev"
 						description={
 							<Text>
-								Generates a <Color yellow>development</Color> client from{' '}
-								<Color yellow>plan.json</Color>
+								Generates a <Text color="yellow">development</Text> client from{' '}
+								<Text color="yellow">plan.json</Text>
 							</Text>
 						}
 					/>
@@ -67,8 +64,8 @@ export const Help: React.FC<StandardProps> = () => {
 						name="prod"
 						description={
 							<Text>
-								Generates a <Color yellow>production</Color> client from{' '}
-								<Color yellow>plan.json</Color>
+								Generates a <Text color="yellow">production</Text> client from{' '}
+								<Text color="yellow">plan.json</Text>
 							</Text>
 						}
 					/>
@@ -81,7 +78,7 @@ export const Help: React.FC<StandardProps> = () => {
 						name="-c, --config"
 						description={
 							<Text>
-								Path to a <Color yellow>typewriter.yml</Color> file
+								Path to a <Text color="yellow">typewriter.yml</Text> file
 							</Text>
 						}
 					/>
@@ -116,7 +113,7 @@ type HelpSectionProps = {
 const HelpSection: React.FC<HelpSectionProps> = ({ name, children }) => {
 	return (
 		<Box flexDirection="column" marginBottom={1}>
-			<Color grey>{name}:</Color>
+			<Text>{name}:</Text>
 			<Box flexDirection="column" marginLeft={2}>
 				{children}
 			</Box>
@@ -149,7 +146,7 @@ const HelpRow: React.FC<HelpRowProps> = ({
 			<Box width="65%">
 				{description}
 			</Box>
-			<Box width="15%">{!!isDefault ? <Color blue>(default)</Color> : ''}</Box>
+			<Box width="15%">{!!isDefault ? <Text color="blue">(default)</Text> : ''}</Box>
 		</Box>
 	)
 }
@@ -164,7 +161,7 @@ const ExampleRow: React.FC<ExampleRowProps> = ({ description, command }) => {
 		<Box flexDirection="column">
 			{description}
 			<Box marginLeft={2}>
-				<Color redBright>$ {command}</Color>
+				<Text color="redBright">$ {command}</Text>
 			</Box>
 		</Box>
 	)
