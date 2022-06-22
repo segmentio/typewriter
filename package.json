@@ -66,7 +66,7 @@
     "analytics-node": "4.0.1",
     "figures": "^3.0.0",
     "fuse.js": "^3.4.5",
-    "got": "^9.6.0",
+    "got": "^11.8.5",
     "handlebars": "4.7.7",
     "ink": "^3.2.0",
     "ink-link": "^2.0.0",
