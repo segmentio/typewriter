@@ -1,0 +1,9 @@
+import Segment
+
+extension Analytics {
+    {{#type}}
+    func {{functionName}}(_ properties: {{typeName}}) {
+        self.track(name: "{{eventName}}", properties: properties)
+    }
+    {{/type}}
+}

@@ -47,3 +47,16 @@ For more instructions on setting up your `typewriter` client, such as adding it 
 
 - To submit a bug report or feature request, [file an issue here](issues).
 - To develop on `typewriter` or propose support for a new language, see [our contributors documentation](./.github/CONTRIBUTING.md).
+
+
+## Migrating from v7
+
+Check the instructions on our [documentation](https://segment.com/docs/protocols/typewriter)
+
+- You'll need to change your Segment Config API Token for a Public API Token
+- v8 doesn't support **Analytics-iOS** nor **Analytics-Android**. We recommend using [Analytics-Swift]() and [Analytics-Kotlin]() instead which are supported.
+If you need to use these libraries you can run v7 specifying the version with your commands:
+
+```sh
+$ npx typewriter@7 build
+```

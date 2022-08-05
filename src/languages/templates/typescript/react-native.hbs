@@ -1,0 +1,60 @@
+import React, { createContext, useContext } from 'react';
+import {
+  createClient as createSegmentClient,
+  Config as SegmentConfig,
+  JsonMap,
+} from '@segment/analytics-react-native';
+import type { SegmentClient } from '@segment/analytics-react-native/lib/typescript/src/analytics';
+
+export type TypewriterSegmentClient = SegmentClient & {
+  {{#type}}
+  {{functionName}}: (message: {{typeName}}) => void,
+  {{/type}}
+}
+
+function extendSegmentClient(client: SegmentClient): TypewriterSegmentClient {
+  const extendedClient = client as TypewriterSegmentClient;
+  {{#type}}
+  extendedClient.{{functionName}} = (message: {{typeName}}) => {
+    client.track('{{eventName}}', message as unknown as JsonMap);
+  };
+  {{/type}}
+  return extendedClient;
+}
+
+export const createClient = (config: SegmentConfig) => {
+  const client = createSegmentClient(config);
+  return extendSegmentClient(client);
+};
+
+const Context = createContext<ReturnType<typeof createClient> | null>(null);
+
+export const AnalyticsProvider = ({
+  client,
+  children,
+}: {
+  client?: ReturnType<typeof createClient>;
+  children?: any;
+}) => {
+  if (!client) {
+    return null;
+  }
+
+  return <Context.Provider value={client}>{children}</Context.Provider>;
+};
+
+export const useAnalytics = () => {
+  const client = useContext(Context);
+  if (!client) {
+    console.error(
+      'Segment client not configured!',
+      'To use the useAnalytics() hook, pass an initialized Segment client into the AnalyticsProvider',
+    );
+
+    // @ts-ignore
+    return {};
+  }
+  return {
+    ...client,
+  };
+};
