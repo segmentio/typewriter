@@ -1,177 +1,103 @@
 {
   "name": "typewriter",
-  "version": "7.4.2",
+  "version": "8.0.0",
   "description": "A compiler for generating strongly typed analytics clients via Segment Protocols",
   "repository": "ssh://git@github.com/segmentio/typewriter.git",
+  "author": "Oscar Bazaldua <oscar.bazaldua@segment.com>",
+  "bin": {
+    "typewriter": "./bin/run"
+  },
   "homepage": "https://github.com/segmentio/typewriter",
   "bugs": "https://github.com/segmentio/typewriter/issues",
-  "author": "Colin King <colin.king@segment.com>",
   "license": "MIT",
-  "main": "./dist/src/cli/index.js",
-  "bin": "./dist/src/cli/index.js",
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org",
-    "access": "public"
-  },
-  "scripts": {
-    "dev": "TS_NODE_FILES=true NODE_ENV=development ts-node ./src/cli",
-    "build": "rm -rf dist && yarn typewriter prod && tsc && copyfiles --up 1 \"src/**/*.hbs\" dist/src/",
-    "test": "jest --testPathIgnorePatterns 'tests/e2e/.*' 'example'",
-    "e2e": "make e2e",
-    "update": "make update",
-    "lint": "eslint './src/**/*.{ts,tsx}'",
-    "release": "yarn run build && np --any-branch",
-    "release:pre": "yarn run build && np prerelease --any-branch --tag next --no-release-draft",
-    "prepare": "husky install"
-  },
-  "engines": {
-    "node": ">=0.10.18"
+  "main": "dist/index.js",
+  "files": [
+    "/bin",
+    "/dist",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json"
+  ],
+  "dependencies": {
+    "@oclif/core": "^1.7",
+    "ajv": "^8.11.0",
+    "analytics-node": "segmentio/analytics-node",
+    "chalk": "^4",
+    "debug": "^4.3.4",
+    "figures": "^3",
+    "got": "^11",
+    "handlebars": "^4.7.7",
+    "inquirer": "^8.2.3",
+    "joi": "^17.6.0",
+    "json-stable-stringify": "^1.0.1",
+    "latest-version": "^5",
+    "lodash": "^4.17",
+    "node-machine-id": "^1.1.12",
+    "quicktype-core": "^6.0.71",
+    "semver": "^7.3",
+    "terminal-link": "^2",
+    "yaml": "^2.1.0"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.14.8",
-    "@types/analytics-node": "^3.1.5",
-    "@types/got": "^9.6.7",
-    "@types/hapi__joi": "^15.0.2",
-    "@types/jest": "^26.0.15",
-    "@types/jest-expect-message": "^1.0.3",
-    "@types/js-yaml": "^3.12.1",
-    "@types/json-schema": "^7.0.3",
-    "@types/json-stable-stringify": "^1.0.32",
-    "@types/lodash": "^4.14.123",
-    "@types/lodash.flow": "^3.5.6",
-    "@types/node": "^11.13.6",
-    "@types/prettier": "^1.16.3",
-    "@types/prompts": "2.0.0",
-    "@typescript-eslint/eslint-plugin": "^4.9.0",
-    "@typescript-eslint/parser": "^4.9.0",
-    "copyfiles": "^2.1.0",
-    "eslint": "^7.30.0",
-    "eslint-config-prettier": "^6.15.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.21.5",
-    "husky": "^7.0.0",
-    "jest": "^27.0.6",
-    "jest-expect-message": "^1.0.2",
-    "lint-staged": "^11.0.0",
-    "np": "^7.5.0",
-    "snyk": "1.655.0",
-    "ts-jest": "^27.0.3",
-    "ts-node": "^10.0.0",
-    "tsconfig-paths": "^3.10.0",
-    "typewriter": "^7.4.1"
+    "@oclif/test": "^2.1",
+    "@segment/analytics-react-native": "^2.2.1",
+    "@types/analytics-node": "^3.1.9",
+    "@types/chai": "^4",
+    "@types/debug": "^4.1.7",
+    "@types/got": "^9.6.12",
+    "@types/inquirer": "^8.2.1",
+    "@types/json-stable-stringify": "^1.0.34",
+    "@types/lodash": "^4.14.179",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.9.4",
+    "@types/semver": "^7.3.9",
+    "chai": "^4",
+    "copyfiles": "^2.4.1",
+    "eslint": "^8",
+    "eslint-config-oclif": "^4",
+    "eslint-config-oclif-typescript": "^1.0.2",
+    "eslint-config-twilio": "^2.0.0",
+    "eslint-config-twilio-ts": "^2.0.0",
+    "globby": "^11",
+    "jest": "^28",
+    "mocha": "^9",
+    "oclif": "^3.0",
+    "shx": "^0.3",
+    "ts-node": "^10.7",
+    "tslib": "^2.4",
+    "typescript": "^4.7.4"
   },
-  "dependencies": {
-    "@babel/core": "^7.14.8",
-    "@types/react": "16.14.0",
-    "analytics-node": "4.0.1",
-    "figures": "^3.0.0",
-    "fuse.js": "^3.4.5",
-    "got": "^9.6.0",
-    "handlebars": "4.7.7",
-    "ink": "^3.2.0",
-    "ink-link": "^2.0.0",
-    "ink-select-input": "^4.2.1",
-    "ink-spinner": "^4.0.2",
-    "ink-text-input": "^4.0.2",
-    "joi": "^17.4.0",
-    "js-yaml": "^4.1.0",
-    "json-stable-stringify": "^1.0.1",
-    "latest-version": "^5.1.0",
-    "lodash": "4.17.21",
-    "node-machine-id": "^1.1.12",
-    "prettier": "^2.3.2",
-    "react": "^17.0.2",
-    "semver": "^7.3.5",
-    "sort-keys": "^5.0.0",
-    "typescript": "^4.3.5",
-    "yargs": "^17.0.1"
-  },
-  "files": [
-    "dist",
-    "src"
-  ],
-  "eslintConfig": {
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "@typescript-eslint",
-      "prettier"
-    ],
-    "extends": [
-      "plugin:@typescript-eslint/recommended",
-      "prettier/@typescript-eslint",
-      "plugin:prettier/recommended",
-      "plugin:react/recommended"
-    ],
-    "parserOptions": {
-      "ecmaVersion": 2018,
-      "sourceType": "module"
-    },
-    "settings": {
-      "react": {
-        "version": "16.14.0"
-      }
-    },
-    "rules": {
-      "prettier/prettier": [
-        "error",
-        {
-          "useTabs": true,
-          "semi": false,
-          "singleQuote": true,
-          "trailingComma": "es5",
-          "printWidth": 100
-        }
+  "oclif": {
+    "bin": "typewriter",
+    "dirname": "typewriter",
+    "commands": "./dist/commands",
+    "default": "start",
+    "plugins": [],
+    "helpClass": "./dist/help",
+    "description": "A compiler for generating strongly typed analytics clients via Segment Protocols",
+    "hooks": {
+      "init": [
+        "./src/hooks/prerun/load-languages"
       ],
-      "@typescript-eslint/explicit-function-return-type": "off",
-      "@typescript-eslint/no-namespace": "off",
-      "@typescript-eslint/no-non-null-assertion": "off",
-      "@typescript-eslint/interface-name-prefix": "off",
-      "@typescript-eslint/no-empty-function": "off"
-    },
-    "overrides": [
-      {
-        "files": [
-          "**/*.tsx"
-        ],
-        "rules": {
-          "react/prop-types": "off"
-        }
-      }
-    ]
-  },
-  "eslintIgnore": [
-    "tests/e2e/**/analytics/*",
-    "src/analytics/**/*",
-    "example/analytics/**/*"
-  ],
-  "jest": {
-    "modulePaths": [
-      "<rootDir>/"
-    ],
-    "testPathIgnorePatterns": [
-      "<rootDir>/node_modules/"
-    ],
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "setupFilesAfterEnv": [
-      "jest-expect-message"
-    ]
-  },
-  "lint-staged": {
-    "linters": {
-      "*.(ts|tsx)": [
-        "eslint --fix",
-        "git add"
-      ],
-      "*.json": [
-        "prettier --write",
-        "git add"
-      ],
-      "*.yml": [
-        "prettier --write",
-        "git add"
-      ]
+      "postrun": "./src/hooks/postrun/telemetry"
     }
-  }
+  },
+  "scripts": {
+    "build": "shx rm -rf dist && tsc && copyfiles --up 1 \"src/**/*.hbs\" dist",
+    "lint": "eslint . --ext .ts --config .eslintrc",
+    "lint:fix": "eslint lint -- --fix",
+    "postpack": "shx rm -f oclif.manifest.json",
+    "posttest": "yarn lint",
+    "prepack": "yarn build && oclif manifest && oclif readme",
+    "test": "mocha --forbid-only \"test/**/*.test.ts\"",
+    "version": "oclif readme && git add README.md"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "keywords": [
+    "oclif",
+    "segment",
+    "analytics"
+  ],
+  "types": "dist/index.d.ts"
 }

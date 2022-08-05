@@ -1,0 +1,284 @@
+/**
+ * The analytics.js snippet should be available via window.analytics.
+ * You can install it by following instructions at: https://segment.com/docs/sources/website/analytics.js/quickstart/
+ * Make sure to also include the TypeScript declarations with: `npm install --dev @types/segment-analytics`
+ */
+ declare global {
+	interface Window {
+		analytics: SegmentAnalytics.AnalyticsJS
+	}
+}
+
+/** The callback exposed by analytics.js. */
+export type Callback = () => void
+
+/** A dictionary of options. For example, enable or disable specific destinations for the call. */
+export interface Options {
+	/**
+	 * Selectivly filter destinations. By default all destinations are enabled.
+	 * https://segment.com/docs/sources/website/analytics.js/#selecting-destinations
+	 */
+	integrations?: {
+		[key: string]: boolean | { [key: string]: any }
+	}
+	/**
+	 * A dictionary of extra context to attach to the call.
+	 * https://segment.com/docs/spec/common/#context
+	 */
+	context?: Context
+}
+
+/**
+ * Context is a dictionary of extra information that provides useful context about a datapoint.
+ * @see {@link https://segment.com/docs/spec/common/#context}
+ */
+export interface Context extends Record<string, any> {
+	active?: boolean
+	app?: {
+		name?: string
+		version?: string
+		build?: string
+	}
+	campaign?: {
+		name?: string
+		source?: string
+		medium?: string
+		term?: string
+		content?: string
+	}
+	device?: {
+		id?: string
+		manufacturer?: string
+		model?: string
+		name?: string
+		type?: string
+		version?: string
+	}
+	ip?: string
+	locale?: string
+	location?: {
+		city?: string
+		country?: string
+		latitude?: string
+		longitude?: string
+		region?: string
+		speed?: string
+	}
+	network?: {
+		bluetooth?: string
+		carrier?: string
+		cellular?: string
+		wifi?: string
+	}
+	os?: {
+		name?: string
+		version?: string
+	}
+	page?: {
+		hash?: string
+		path?: string
+		referrer?: string
+		search?: string
+		title?: string
+		url?: string
+	}
+	referrer?: {
+		type?: string
+		name?: string
+		url?: string
+		link?: string
+	}
+	screen?: {
+		density?: string
+		height?: string
+		width?: string
+	}
+	timezone?: string
+	groupId?: string
+	traits?: Record<string, any>
+	userAgent?: string
+}
+
+export type ViolationHandler = (
+	message: Record<string, any>,
+	{{!-- Swap the type definitions here so we don't want depend on ajv in production just for this type definition. --}}
+	violations: {{#if isDevelopment}}Ajv.ErrorObject{{else}}any{{/if}}[]
+) => void
+
+/**
+ * The default handler that is fired if none is supplied with setTypewriterOptions.
+ * This handler will log a warning message to the console.
+ */
+export const defaultValidationErrorHandler: ViolationHandler = (message, violations) => {
+  const msg = JSON.stringify(
+    {
+      type: 'Typewriter JSON Schema Validation Error',
+      description:
+        `You made an analytics call (${message.event}) using Typewriter that doesn't match the ` +
+        'Tracking Plan spec.',
+      errors: violations,
+    },
+    undefined,
+    2,
+  );
+
+  console.warn(msg);
+};
+
+{{#if isDevelopment}}
+let onViolation = defaultValidationErrorHandler
+{{/if}}
+
+let analytics: () => SegmentAnalytics.AnalyticsJS | undefined = () => {
+  return window.analytics;
+};
+
+/** Options to customize the runtime behavior of a Typewriter client. */
+export interface TypewriterOptions {
+  /**
+   * Underlying analytics instance where analytics calls are forwarded on to.
+   * Defaults to window.analytics.
+   */
+  analytics?: SegmentAnalytics.AnalyticsJS;
+  /**
+   * Handler fired when if an event does not match its spec. This handler
+   * does not fire in production mode, because it requires inlining the full
+   * JSON Schema spec for each event in your Tracking Plan.
+   *
+   * By default, it will throw errors if NODE_ENV = "test" so that tests will fail
+   * if a message does not match the spec. Otherwise, errors will be logged to stderr.
+   */
+  onViolation?: ViolationHandler;
+}
+
+/**
+ * Updates the run-time configuration of this Typewriter client.
+ *
+ * @param {TypewriterOptions} options - the options to upsert
+ *
+ * @typedef {Object} TypewriterOptions
+ * @property {AnalyticsJS} [analytics] - Underlying analytics instance where analytics
+ * 		calls are forwarded on to. Defaults to window.analytics.
+ * @property {Function} [onViolation] - Handler fired when if an event does not match its spec. This handler does not fire in
+ * 		production mode, because it requires inlining the full JSON Schema spec for each event in your Tracking Plan. By default,
+ * 		it will throw errors if NODE_ENV="test" so that tests will fail if a message does not match the spec. Otherwise, errors
+ * 		will be logged to stderr.
+ */
+export function setTypewriterOptions(options: TypewriterOptions) {
+  analytics = options.analytics ? () => options.analytics || window.analytics : analytics;
+	{{#if isDevelopment}}
+	onViolation = options.onViolation || onViolation
+	{{/if}}
+}
+
+{{#if isDevelopment}}
+/**
+	* Validates a message against a JSON Schema using Ajv. If the message
+	* is invalid, the `onViolation` handler will be called.
+	*/
+function validateAgainstSchema(
+	message: Record<string, any>,
+	schema: object
+) {
+	const ajv = new Ajv({ schemaId: 'auto', allErrors: true, verbose: true })
+	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
+	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
+
+	if (!ajv.validate(schema, message) && ajv.errors) {
+		onViolation(message, ajv.errors)
+	}
+}
+{{/if}}
+
+/**
+ * Helper to attach metadata on Typewriter to outbound requests.
+ * This is used for attribution and debugging by the Segment team.
+ */
+function withTypewriterContext(message: Options = {}): Options {
+  return {
+    ...message,
+    context: {
+      ...(message.context || {}),
+      typewriter: {
+        language: 'typescript',
+        version: '{{version}}',
+      },
+    },
+  };
+}
+
+{{#type}}
+/**
+ * Fires a '{{typeName}}' track call.
+ *
+ * @param {{{typeName}}} props - The analytics properties that will be sent to Segment.
+ * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 	call is fired.
+ */
+export function {{functionName}}(props: {{typeName}}, options?: Options, callback?: Callback): void {
+  const a = analytics();
+  if (a) {
+    a.track('{{eventName}}', props || {}, {...options,   context: {
+      ...(options.context || {}),
+      typewriter: {
+        language: 'typescript',
+        version: '{{version}}',
+      },
+    },}, callback);
+  }
+}
+{{/type}}
+
+const clientAPI = {
+  /**
+   * Updates the run-time configuration of this Typewriter client.
+   *
+   * @param {TypewriterOptions} options - the options to upsert
+   *
+   * @typedef {Object} TypewriterOptions
+   * @property {AnalyticsJS} [analytics] - Underlying analytics instance where analytics
+   * 		calls are forwarded on to. Defaults to window.analytics.
+   * @property {Function} [onViolation] - Handler fired when if an event does not match its spec. This handler does not fire in
+   * 		production mode, because it requires inlining the full JSON Schema spec for each event in your Tracking Plan. By default,
+   * 		it will throw errors if NODE_ENV="test" so that tests will fail if a message does not match the spec. Otherwise, errors
+   * 		will be logged to stderr.
+   */
+  setTypewriterOptions,
+
+  {{#type}}
+  /**
+   * Fires a '{{typeName}}' track call.
+   *
+   * @param {{{typeName}}} props - The analytics properties that will be sent to Segment.
+   * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+   * 	call is fired.
+   */
+  {{functionName}},
+  {{/type}}
+};
+
+export default new Proxy<typeof clientAPI>(clientAPI, {
+  get(target, method) {
+    if (typeof method === 'string' && target.hasOwnProperty(method)) {
+      return target[method as keyof typeof clientAPI];
+    }
+
+    return () => {
+      console.warn(`⚠️  You made an analytics call (${String(method)}) that can't be found. Either:
+     a) Re-generate your typewriter client: \`npx typewriter\`
+     b) Add it to your Tracking Plan: https://app.segment.com/segment-oscb/protocols/tracking-plans/rs_1zTHJU9fd5mt7cndWnd4PgJbMCE`);
+      const a = analytics();
+      if (a) {
+        a.track(
+          'Unknown Analytics Call Fired',
+          {
+            method,
+          },
+          withTypewriterContext(),
+        );
+      }
+    };
+  },
+});

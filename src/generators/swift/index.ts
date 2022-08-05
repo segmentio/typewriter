@@ -1,1 +1,0 @@
-export { swift } from './swift'

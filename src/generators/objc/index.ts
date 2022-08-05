@@ -1,1 +1,0 @@
-export { objc } from './objc'

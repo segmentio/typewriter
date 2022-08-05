@@ -1,1 +1,0 @@
-declare module 'sort-keys'
