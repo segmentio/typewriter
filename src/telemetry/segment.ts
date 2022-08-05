@@ -460,7 +460,7 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(message: T): T {
       ...(message.context || {}),
       typewriter: {
         language: "typescript",
-        version: "8.0.0",
+        version: "8.0.3",
       },
     },
   };
