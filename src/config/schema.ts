@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import Joi from "joi";
 
 /**
  * A config, stored in a typewriter.yml file.
@@ -35,6 +35,8 @@ export type TrackingPlanConfig = {
   name?: string;
   /** The id of the Tracking Plan to generate a client for. */
   id: string;
+  /** This is the old ResourceID for Tracking plans in ConfigAPI, we use this for compatibility from v7 to v8 but it is not required*/
+  legacyID?: string;
   /**
    * A directory path relative to this typewriter.yml file, specifying where
    * this Tracking Plan's client should be output.
@@ -87,11 +89,14 @@ const ConfigSchema = Joi.object()
         Joi.object().keys({
           id: Joi.string().required().min(1),
           path: Joi.string().required().min(1),
-        }),
+          workspaceSlug: Joi.string().optional(),
+        })
       ),
   });
 
-export const validateConfig = (rawConfig: Record<string, unknown>): WorkspaceConfig => {
+export const validateConfig = (
+  rawConfig: Record<string, unknown>
+): WorkspaceConfig => {
   // Validate the provided configuration file using our Joi schema.
   const result = ConfigSchema.validate(rawConfig, {
     abortEarly: false,

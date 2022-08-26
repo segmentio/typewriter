@@ -1,15 +1,20 @@
-import { SomeJSONSchema } from 'ajv/dist/types/json-schema';
-import { debug as debugRegister } from 'debug';
-import got, { HTTPError, OptionsOfJSONResponseBody, RequestError, TimeoutError } from 'got';
-import { isWrappedError, wrapError } from '../common';
-import { sanitizeTrackingPlan } from './trackingplans';
+import { SomeJSONSchema } from "ajv/dist/types/json-schema";
+import { debug as debugRegister } from "debug";
+import got, {
+  HTTPError,
+  OptionsOfJSONResponseBody,
+  RequestError,
+  TimeoutError,
+} from "got";
+import { isWrappedError, wrapError } from "../common";
+import { sanitizeTrackingPlan } from "./trackingplans";
 
-const debug = debugRegister('typewriter:api');
+const debug = debugRegister("typewriter:api");
 
 // We need to use require instead of an import because using JSON imports with TS would require nested tsconfigs which in turn do not play nicely with the bin/dev command of OCLIF
-const pjson = require('../../package.json');
+const pjson = require("../../package.json");
 
-const PAGE_SIZE = 1;
+const PAGE_SIZE = 200;
 
 export namespace SegmentAPI {
   export type Pagination = {
@@ -22,7 +27,9 @@ export namespace SegmentAPI {
   };
 
   // https://reference.segmentapis.com/#1092fe01-379b-4ca1-8b1d-9f42b33d2899
-  export type GetTrackingPlanResponse = { data: { trackingPlan: TrackingPlan } };
+  export type GetTrackingPlanResponse = {
+    data: { trackingPlan: TrackingPlan };
+  };
   export type GetTrackingPlanRulesResponse = {
     data: {
       rules: RuleMetadata[];
@@ -36,8 +43,28 @@ export namespace SegmentAPI {
     } & Pagination;
   };
 
+  export type RuleMetadataV1 = {
+    name: string;
+    description?: string;
+    rules: SomeJSONSchema;
+    version: number;
+  };
+
+  export type Events = {
+    events: RuleMetadataV1[];
+  };
+
+  export type TrackingPlanV1 = {
+    name: string;
+    display_name: string;
+    create_time: Date;
+    update_time: Date;
+    rules?: Events;
+  };
+
   export type TrackingPlan = {
     id: string;
+    resourceSchemaId?: string;
     name: string;
     slug: string;
     description: string;
@@ -47,12 +74,12 @@ export namespace SegmentAPI {
   };
 
   export enum RuleType {
-    Common = 'COMMON',
-    Group = 'GROUP',
-    Identify = 'IDENTIFY',
-    Page = 'PAGE',
-    Screen = 'SCREEN',
-    Track = 'TRACK',
+    Common = "COMMON",
+    Group = "GROUP",
+    Identify = "IDENTIFY",
+    Page = "PAGE",
+    Screen = "SCREEN",
+    Track = "TRACK",
   }
 
   export type RuleMetadata = {
@@ -84,28 +111,35 @@ export namespace SegmentAPI {
 export async function fetchTrackingPlan(
   id: string,
   token: string,
-  skipRules: boolean = false,
+  skipRules: boolean = false
 ): Promise<SegmentAPI.TrackingPlan> {
   const url = `tracking-plans/${id}`;
   const [planResponse, rulesResponse] = await Promise.all([
     apiGet<SegmentAPI.GetTrackingPlanResponse>(url, token),
     skipRules
       ? undefined
-      : apiGet<SegmentAPI.GetTrackingPlanRulesResponse>(`${url}/rules?pagination.count=${PAGE_SIZE}`, token),
+      : apiGet<SegmentAPI.GetTrackingPlanRulesResponse>(
+          `${url}/rules?pagination.count=${PAGE_SIZE}`,
+          token
+        ),
   ]);
 
   const rules = [...(rulesResponse?.data.rules ?? [])];
-  debug(`Loaded ${rules.length} rules. Next Page=${rulesResponse?.data.pagination.next}`);
+  debug(
+    `Loaded ${rules.length} rules. Next Page=${rulesResponse?.data.pagination.next}`
+  );
 
   // Handle pagination over the rules
   let rulePage = rulesResponse;
   while (rulePage?.data.pagination.next !== undefined) {
     rulePage = await apiGet<SegmentAPI.GetTrackingPlanRulesResponse>(
       `${url}/rules?pagination.count=${PAGE_SIZE}&pagination.cursor=${rulePage.data.pagination.next}`,
-      token,
+      token
     );
     if (rulePage?.data.rules !== undefined && rulePage.data.rules.length > 0) {
-      debug(`Loaded ${rulePage.data.rules.length} rules. Next Page=${rulePage.data.pagination.next}`);
+      debug(
+        `Loaded ${rulePage.data.rules.length} rules. Next Page=${rulePage.data.pagination.next}`
+      );
       rules.push(...rulePage.data.rules);
     }
   }
@@ -116,7 +150,9 @@ export async function fetchTrackingPlan(
   trackingPlan.updatedAt = new Date(trackingPlan.updatedAt);
   trackingPlan.rules = rules;
 
-  debug(`Loaded ${trackingPlan.rules.length} rules for the tracking plan ${trackingPlan.name}`);
+  debug(
+    `Loaded ${trackingPlan.rules.length} rules for the tracking plan ${trackingPlan.name}`
+  );
 
   return sanitizeTrackingPlan(trackingPlan);
 }
@@ -124,21 +160,33 @@ export async function fetchTrackingPlan(
 /**
  * Fetches all Tracking Plans accessible by a given API token
  */
-export async function fetchTrackingPlans(token: string): Promise<SegmentAPI.TrackingPlan[]> {
+export async function fetchTrackingPlans(
+  token: string
+): Promise<SegmentAPI.TrackingPlan[]> {
   const url = `tracking-plans?pagination.count=${PAGE_SIZE}`;
-  const response = await apiGet<SegmentAPI.ListTrackingPlansResponse>(url, token);
+  const response = await apiGet<SegmentAPI.ListTrackingPlansResponse>(
+    url,
+    token
+  );
 
   const trackingPlans = [...(response.data.trackingPlans ?? [])];
-  debug(`Loaded ${trackingPlans.length} tracking plans. Next Page=${response.data.pagination.next}`);
+  debug(
+    `Loaded ${trackingPlans.length} tracking plans. Next Page=${response.data.pagination.next}`
+  );
 
   let page = response;
   while (page.data.pagination.next !== undefined) {
     page = await apiGet<SegmentAPI.ListTrackingPlansResponse>(
       `tracking-plans?pagination.count=${PAGE_SIZE}&pagination.cursor=${page.data.pagination.next}`,
-      token,
+      token
     );
-    if (page.data.trackingPlans !== undefined && page.data.trackingPlans.length > 0) {
-      debug(`Loaded ${page.data.trackingPlans.length} tracking plans. Next Page=${page.data.pagination.next}`);
+    if (
+      page.data.trackingPlans !== undefined &&
+      page.data.trackingPlans.length > 0
+    ) {
+      debug(
+        `Loaded ${page.data.trackingPlans.length} tracking plans. Next Page=${page.data.pagination.next}`
+      );
       trackingPlans.push(...page.data.trackingPlans);
     }
   }
@@ -153,8 +201,10 @@ export async function fetchTrackingPlans(token: string): Promise<SegmentAPI.Trac
 /**
  * Fetches the workspace data for a given API token
  */
-export async function fetchWorkspace(options: { token: string }): Promise<SegmentAPI.Workspace> {
-  const resp = await apiGet<SegmentAPI.WorkspaceResponse>('', options.token);
+export async function fetchWorkspace(options: {
+  token: string;
+}): Promise<SegmentAPI.Workspace> {
+  const resp = await apiGet<SegmentAPI.WorkspaceResponse>("", options.token);
   return resp.data.workspace;
 }
 
@@ -168,7 +218,9 @@ export type TokenValidationResult = {
  * Note: results are cached in-memory since it is commonly called multiple times
  * for the same token (f.e. in `config/`).
  */
-export async function validateToken(token: string | undefined): Promise<TokenValidationResult> {
+export async function validateToken(
+  token: string | undefined
+): Promise<TokenValidationResult> {
   if (!token) {
     return { isValid: false };
   }
@@ -192,11 +244,15 @@ export async function validateToken(token: string | undefined): Promise<TokenVal
 /**
  * apiGet is a wrapper around `got` that handles calls to Segment Public API
  */
-async function apiGet<T>(url: string, token: string, options?: OptionsOfJSONResponseBody): Promise<T> {
+async function apiGet<T>(
+  url: string,
+  token: string,
+  options?: OptionsOfJSONResponseBody
+): Promise<T> {
   const resp = got<T>(url, {
-    prefixUrl: 'https://api.segmentapis.com',
+    prefixUrl: "https://api.segmentapis.com",
     headers: {
-      'User-Agent': `Segment (typewriter/${pjson.version})`,
+      "User-Agent": `Segment (typewriter/${pjson.version})`,
       Authorization: `Bearer ${token.trim()}`,
     },
     timeout: {
@@ -213,18 +269,22 @@ async function apiGet<T>(url: string, token: string, options?: OptionsOfJSONResp
     if (error instanceof RequestError) {
       if (error instanceof HTTPError) {
         throw wrapError(
-          'Permission denied by Segment API',
+          "Permission denied by Segment API",
           error,
           `Failed while querying the ${url} endpoint`,
-          "Verify you are using the right API token by running 'npx typewriter tokens'",
+          "Verify you are using the right API token by running 'npx typewriter tokens'"
         );
       } else if (error instanceof TimeoutError) {
-        throw wrapError('Segment API request timed out', error, `Failed while querying the ${url} endpoint`);
+        throw wrapError(
+          "Segment API request timed out",
+          error,
+          `Failed while querying the ${url} endpoint`
+        );
       }
       throw wrapError(
-        'Unknown error while querying the Segment API',
+        "Unknown error while querying the Segment API",
         error,
-        `Failed while querying the ${url} endpoint`,
+        `Failed while querying the ${url} endpoint`
       );
     }
 
