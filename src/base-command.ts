@@ -6,13 +6,15 @@ import { fetchTrackingPlans, SegmentAPI } from "./api";
 import { ttys } from "./common/ttys";
 import {
   getToken,
-  getUserConfig,
+  getWorkspaceConfig,
+  saveWorkspaceConfig,
   TokenMetadata,
   WorkspaceConfig,
 } from "./config";
 import { supportedLanguages } from "./languages";
 import { getSegmentClient } from "./telemetry";
 import chalk from "chalk";
+import ciDetect from "@npmcli/ci-detect";
 
 const DEFAULT_CONFIG_PATH = "./";
 
@@ -74,6 +76,10 @@ export abstract class BaseCommand extends Command {
 
   segmentClient: ReturnType<typeof getSegmentClient>;
 
+  isCI?: ReturnType<typeof ciDetect>;
+
+  private hasConfigUpdates: boolean = false;
+
   public get apiToken(): string | undefined {
     return this.tokenMetadata?.token ?? undefined;
   }
@@ -121,6 +127,8 @@ export abstract class BaseCommand extends Command {
     this.pipedInput = await readStdin();
     this.debug("Piped Input:", this.pipedInput);
 
+    this.isCI = ciDetect();
+
     // Load common flags and arguments
     // We have to do this weird parse call cause of this bug in OCLIF when extending base commands with flags: https://github.com/oclif/oclif/issues/225
     const { flags } = await this.parse(this.constructor as typeof BaseCommand);
@@ -138,7 +146,7 @@ export abstract class BaseCommand extends Command {
     this.debug(`Config path: ${this.configPath}`);
 
     // Load user config if it exists.
-    this.workspaceConfig = await getUserConfig(this.configPath);
+    this.workspaceConfig = await getWorkspaceConfig(this.configPath);
     if (this.workspaceConfig === undefined) {
       this.debug(`No config found at ${this.configPath}`);
     } else {
@@ -200,15 +208,9 @@ export abstract class BaseCommand extends Command {
               "typewriter init"
             )}`
           );
+        } else {
+          this.hasConfigUpdates = true;
         }
-        // else {
-        //   this.prompt({
-        //     type: "confirm",
-        //     name: `Do you want to save the updates to your config file? ${chalk.yellow(
-        //       "(This is a one way operation, after this you won't be able to use Typewriter v7, you can use v8 without saving this changes)"
-        //     )}`,
-        //   });
-        // }
         this.debug(`Converted v1 config to:`, this.workspaceConfig);
       } catch (e) {
         this.debug("Unable to list the tracking plans", e);
@@ -218,8 +220,27 @@ export abstract class BaseCommand extends Command {
     this.debug(`Loaded supported languages:`, supportedLanguages);
   }
 
-  protected async finally(_: Error | undefined): Promise<any> {
-    await super.finally(_);
+  protected async finally(error: Error | undefined): Promise<any> {
+    await super.finally(error);
+    if (
+      error === undefined &&
+      !this.isCI &&
+      this.workspaceConfig !== undefined &&
+      this.hasConfigUpdates
+    ) {
+      const { updateConfig } = await this.prompt({
+        type: "confirm",
+        name: "updateConfig",
+        default: true,
+        message: `Do you want to save the updates to your config file?\n${chalk.yellow(
+          "(After this you won't be able to use Typewriter v7, but will speed up startup time of the next runs)"
+        )}`,
+      });
+      if (updateConfig) {
+        await saveWorkspaceConfig(this.workspaceConfig, this.configPath);
+      }
+    }
+
     // Close the TTY streams after the command is done else the command will hang.
     ttys.stdout?.destroy();
     ttys.stdin?.destroy();

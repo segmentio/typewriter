@@ -18,6 +18,7 @@
     "/oclif.manifest.json"
   ],
   "dependencies": {
+    "@npmcli/ci-detect": "^2.0.0",
     "@oclif/core": "^1.7",
     "ajv": "^8.11.0",
     "analytics-node": "segmentio/analytics-node",
@@ -51,6 +52,7 @@
     "@types/lodash": "^4.14.179",
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.9.4",
+    "@types/npmcli__ci-detect": "^2.0.0",
     "@types/semver": "^7.3.9",
     "chai": "^4",
     "copyfiles": "^2.4.1",
