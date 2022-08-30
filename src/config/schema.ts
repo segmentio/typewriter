@@ -90,6 +90,7 @@ const ConfigSchema = Joi.object()
           id: Joi.string().required().min(1),
           path: Joi.string().required().min(1),
           workspaceSlug: Joi.string().optional(),
+          legacyID: Joi.string().optional(),
         })
       ),
   });

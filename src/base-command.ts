@@ -223,6 +223,7 @@ export abstract class BaseCommand extends Command {
   protected async finally(error: Error | undefined): Promise<any> {
     await super.finally(error);
     if (
+      this.id !== "init" &&
       error === undefined &&
       !this.isCI &&
       this.workspaceConfig !== undefined &&

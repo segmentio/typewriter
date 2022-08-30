@@ -86,5 +86,8 @@ tests/e2e/**/cypress/plugins/**
 tests/e2e/**/cypress/support/**
 tests/e2e/**/cypress/videos/**
 
+#
+test-env/**
+
 # intelliJ
 .idea
