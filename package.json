@@ -67,11 +67,8 @@
     "mocha": "^9",
     "oclif": "^3.0",
     "shx": "^0.3",
-<<<<<<< Updated upstream
-=======
     "stdout-stderr": "^0.1.13",
     "ts-jest": "^28",
->>>>>>> Stashed changes
     "ts-node": "^10.7",
     "tslib": "^2.4"
   },
