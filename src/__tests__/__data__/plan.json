@@ -1,0 +1,1672 @@
+{
+	"createdAt": "2022-07-22T21:47:06.000Z",
+	"description": "",
+	"id": "tp_2CJh7O9XUIirKFn4pabvhz8Cn9K",
+	"name": "Typewriter E2E",
+	"resourceSchemaId": "rs_2CJh7QUSFvjOlQEvvxzpTt8x48X",
+	"rules": [
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "Validates that clients properly sanitize event names.",
+				"eventMetadata": {
+					"name": "42_--terrible==\\\"event'++name~!3",
+					"type": "TRACK"
+				},
+				"labels": {
+				},
+				"properties": {
+				},
+				"type": "object"
+			},
+			"key": "42_--terrible==\\\"event'++name~!3",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "Fired before an analytics instance has been set, which should throw an error.",
+				"eventMetadata": {
+					"name": "Analytics Instance Missing",
+					"type": "TRACK"
+				},
+				"labels": {
+				},
+				"properties": {
+				},
+				"type": "object"
+			},
+			"key": "Analytics Instance Missing",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "Fired after a client throws an \"Analytics Instance Missing\" error to mark the test as successful.",
+				"eventMetadata": {
+					"name": "Analytics Instance Missing Threw Error",
+					"type": "TRACK"
+				},
+				"labels": {
+				},
+				"properties": {
+				},
+				"type": "object"
+			},
+			"key": "Analytics Instance Missing Threw Error",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "This event is fired in order to trigger a custom violation handler. It should be called with a JSON Schema violation.",
+				"eventMetadata": {
+					"name": "Custom Violation Handler",
+					"type": "TRACK"
+				},
+				"labels": {
+				},
+				"properties": {
+					"regex property": {
+						"description": "",
+						"id": "/properties/regex%20property",
+						"pattern": "Lawyer Morty|Evil Morty",
+						"type": "string"
+					}
+				},
+				"required": [
+					"regex property"
+				],
+				"type": "object"
+			},
+			"key": "Custom Violation Handler",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "This event should be fired if a custom violation handler is correctly called due to a call to `Custom Violation Handler` with a violation.",
+				"eventMetadata": {
+					"name": "Custom Violation Handler Called",
+					"type": "TRACK"
+				},
+				"labels": {
+				},
+				"properties": {
+				},
+				"type": "object"
+			},
+			"key": "Custom Violation Handler Called",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "This event is fired in order to trigger the default violation handler. It should be called with a JSON Schema violation.",
+				"eventMetadata": {
+					"name": "Default Violation Handler",
+					"type": "TRACK"
+				},
+				"labels": {
+				},
+				"properties": {
+					"regex property": {
+						"description": "",
+						"id": "/properties/regex%20property",
+						"pattern": "Lawyer Morty|Evil Morty",
+						"type": "string"
+					}
+				},
+				"required": [
+					"regex property"
+				],
+				"type": "object"
+			},
+			"key": "Default Violation Handler",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "This event should be fired if the default violation handler is correctly called due to a call to `Default Violation Handler` with a violation.",
+				"eventMetadata": {
+					"name": "Default Violation Handler Called",
+					"type": "TRACK"
+				},
+				"labels": {
+				},
+				"properties": {
+				},
+				"type": "object"
+			},
+			"key": "Default Violation Handler Called",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "Validates that a generated client supports events with no explicit properties. It is expected that this event accepts ANY properties.",
+				"eventMetadata": {
+					"name": "Empty Event",
+					"type": "TRACK"
+				},
+				"labels": {
+				},
+				"properties": {
+				},
+				"type": "object"
+			},
+			"key": "Empty Event",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "Validates that client property sanitize enums.",
+				"eventMetadata": {
+					"name": "Enum Types",
+					"type": "TRACK"
+				},
+				"labels": {
+				},
+				"properties": {
+					"string const": {
+						"description": "A string property that only accepts a single enum value.",
+						"enum": [
+							"Rick Sanchez"
+						],
+						"id": "/properties/string%20const",
+						"type": "string"
+					},
+					"string enum": {
+						"description": "A string property that accepts multiple enum values.",
+						"enum": [
+							"Evil Morty",
+							"Lawyer Morty"
+						],
+						"id": "/properties/string%20enum",
+						"type": "string"
+					}
+				},
+				"type": "object"
+			},
+			"key": "Enum Types",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "Validates that a generated client handles even naming collisions.",
+				"eventMetadata": {
+					"name": "Event Collided",
+					"type": "TRACK"
+				},
+				"labels": {
+				},
+				"properties": {
+				},
+				"type": "object"
+			},
+			"key": "Event Collided",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "Validates that clients handle all of the supported field types, as nullable optional fields. If a field is null, it is expected to be NOT sent through.",
+				"eventMetadata": {
+					"name": "Every Nullable Optional Type",
+					"type": "TRACK"
+				},
+				"properties": {
+					"optional any": {
+						"description": "Optional any property",
+						"id": "/properties/optional%20any"
+					},
+					"optional array": {
+						"description": "Optional array property",
+						"id": "/properties/optional%20array",
+						"type": [
+							"array",
+							"null"
+						]
+					},
+					"optional array with properties": {
+						"description": "Optional array with properties",
+						"id": "/properties/optional%20array%20with%20properties",
+						"items": {
+							"id": "/properties/properties/properties/optional%20array%20with%20properties/items",
+							"properties": {
+								"optional any": {
+									"description": "Optional any property",
+									"id": "/properties/properties/properties/optional%20array%20with%20properties/items/properties/optional%20any"
+								},
+								"optional array": {
+									"description": "Optional array property",
+									"id": "/properties/properties/properties/optional%20array%20with%20properties/items/properties/optional%20array",
+									"type": [
+										"array",
+										"null"
+									]
+								},
+								"optional boolean": {
+									"description": "Optional boolean property",
+									"id": "/properties/properties/properties/optional%20array%20with%20properties/items/properties/optional%20boolean",
+									"type": [
+										"boolean",
+										"null"
+									]
+								},
+								"optional int": {
+									"description": "Optional integer property",
+									"id": "/properties/properties/properties/optional%20array%20with%20properties/items/properties/optional%20int",
+									"type": [
+										"integer",
+										"null"
+									]
+								},
+								"optional number": {
+									"description": "Optional number property",
+									"id": "/properties/properties/properties/optional%20array%20with%20properties/items/properties/optional%20number",
+									"type": [
+										"number",
+										"null"
+									]
+								},
+								"optional object": {
+									"description": "Optional object property",
+									"id": "/properties/properties/properties/optional%20array%20with%20properties/items/properties/optional%20object",
+									"properties": {
+									},
+									"required": [
+									],
+									"type": [
+										"object",
+										"null"
+									]
+								},
+								"optional string": {
+									"description": "Optional string property",
+									"id": "/properties/properties/properties/optional%20array%20with%20properties/items/properties/optional%20string",
+									"type": [
+										"string",
+										"null"
+									]
+								},
+								"optional string with regex": {
+									"description": "Optional string property with a regex conditional",
+									"id": "/properties/properties/properties/optional%20array%20with%20properties/items/properties/optional%20string%20with%20regex",
+									"pattern": "Evil Morty|Lawyer Morty",
+									"type": [
+										"string",
+										"null"
+									]
+								}
+							},
+							"type": [
+								"object",
+								"null"
+							]
+						},
+						"type": [
+							"array",
+							"null"
+						]
+					},
+					"optional boolean": {
+						"description": "Optional boolean property",
+						"id": "/properties/optional%20boolean",
+						"type": [
+							"boolean",
+							"null"
+						]
+					},
+					"optional int": {
+						"description": "Optional integer property",
+						"id": "/properties/optional%20int",
+						"type": [
+							"integer",
+							"null"
+						]
+					},
+					"optional number": {
+						"description": "Optional number property",
+						"id": "/properties/optional%20number",
+						"type": [
+							"number",
+							"null"
+						]
+					},
+					"optional object": {
+						"description": "Optional object property",
+						"id": "/properties/optional%20object",
+						"properties": {
+						},
+						"required": [
+						],
+						"type": [
+							"object",
+							"null"
+						]
+					},
+					"optional object with properties": {
+						"description": "Optional object with properties",
+						"id": "/properties/optional%20object%20with%20properties",
+						"properties": {
+							"optional any": {
+								"description": "Optional any property",
+								"id": "/properties/properties/properties/optional%20object%20with%20properties/properties/optional%20any"
+							},
+							"optional array": {
+								"description": "Optional array property",
+								"id": "/properties/properties/properties/optional%20object%20with%20properties/properties/optional%20array",
+								"type": [
+									"array",
+									"null"
+								]
+							},
+							"optional boolean": {
+								"description": "Optional boolean property",
+								"id": "/properties/properties/properties/optional%20object%20with%20properties/properties/optional%20boolean",
+								"type": [
+									"boolean",
+									"null"
+								]
+							},
+							"optional int": {
+								"description": "Optional integer property",
+								"id": "/properties/properties/properties/optional%20object%20with%20properties/properties/optional%20int",
+								"type": [
+									"integer",
+									"null"
+								]
+							},
+							"optional number": {
+								"description": "Optional number property",
+								"id": "/properties/properties/properties/optional%20object%20with%20properties/properties/optional%20number",
+								"type": [
+									"number",
+									"null"
+								]
+							},
+							"optional object": {
+								"description": "Optional object property",
+								"id": "/properties/properties/properties/optional%20object%20with%20properties/properties/optional%20object",
+								"properties": {
+								},
+								"required": [
+								],
+								"type": [
+									"object",
+									"null"
+								]
+							},
+							"optional string": {
+								"description": "Optional string property",
+								"id": "/properties/properties/properties/optional%20object%20with%20properties/properties/optional%20string",
+								"type": [
+									"string",
+									"null"
+								]
+							},
+							"optional string with regex": {
+								"description": "Optional string property with a regex conditional",
+								"id": "/properties/properties/properties/optional%20object%20with%20properties/properties/optional%20string%20with%20regex",
+								"pattern": "Evil Morty|Lawyer Morty",
+								"type": [
+									"string",
+									"null"
+								]
+							}
+						},
+						"required": [
+						],
+						"type": [
+							"object",
+							"null"
+						]
+					},
+					"optional string": {
+						"description": "Optional string property",
+						"id": "/properties/optional%20string",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"optional string with regex": {
+						"description": "Optional string property with a regex conditional",
+						"id": "/properties/optional%20string%20with%20regex",
+						"pattern": "Evil Morty|Lawyer Morty",
+						"type": [
+							"string",
+							"null"
+						]
+					}
+				},
+				"type": "object"
+			},
+			"key": "Every Nullable Optional Type",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "Validates that clients handle all of the supported field types, as nullable required fields. If a field is null, it is expected to be sent through.",
+				"eventMetadata": {
+					"name": "Every Nullable Required Type",
+					"type": "TRACK"
+				},
+				"properties": {
+					"required any": {
+						"description": "Required any property",
+						"id": "/properties/required%20any"
+					},
+					"required array": {
+						"description": "Required array property",
+						"id": "/properties/required%20array",
+						"type": [
+							"array",
+							"null"
+						]
+					},
+					"required array with properties": {
+						"description": "Required array with properties",
+						"id": "/properties/required%20array%20with%20properties",
+						"items": {
+							"id": "/properties/properties/properties/required%20array%20with%20properties/items",
+							"properties": {
+								"required any": {
+									"description": "Required any property",
+									"id": "/properties/properties/properties/required%20array%20with%20properties/items/properties/required%20any"
+								},
+								"required array": {
+									"description": "Required array property",
+									"id": "/properties/properties/properties/required%20array%20with%20properties/items/properties/required%20array",
+									"type": [
+										"array",
+										"null"
+									]
+								},
+								"required boolean": {
+									"description": "Required boolean property",
+									"id": "/properties/properties/properties/required%20array%20with%20properties/items/properties/required%20boolean",
+									"type": [
+										"boolean",
+										"null"
+									]
+								},
+								"required int": {
+									"description": "Required integer property",
+									"id": "/properties/properties/properties/required%20array%20with%20properties/items/properties/required%20int",
+									"type": [
+										"integer",
+										"null"
+									]
+								},
+								"required number": {
+									"description": "Required number property",
+									"id": "/properties/properties/properties/required%20array%20with%20properties/items/properties/required%20number",
+									"type": [
+										"number",
+										"null"
+									]
+								},
+								"required object": {
+									"description": "Required object property",
+									"id": "/properties/properties/properties/required%20array%20with%20properties/items/properties/required%20object",
+									"properties": {
+									},
+									"required": [
+									],
+									"type": [
+										"object",
+										"null"
+									]
+								},
+								"required string": {
+									"description": "Required string property",
+									"id": "/properties/properties/properties/required%20array%20with%20properties/items/properties/required%20string",
+									"type": [
+										"string",
+										"null"
+									]
+								},
+								"required string with regex": {
+									"description": "Required string property with a regex conditional",
+									"id": "/properties/properties/properties/required%20array%20with%20properties/items/properties/required%20string%20with%20regex",
+									"pattern": "Evil Morty|Lawyer Morty",
+									"type": [
+										"string",
+										"null"
+									]
+								}
+							},
+							"required": [
+								"required any",
+								"required array",
+								"required boolean",
+								"required int",
+								"required number",
+								"required object",
+								"required string",
+								"required string with regex"
+							],
+							"type": [
+								"object",
+								"null"
+							]
+						},
+						"type": [
+							"array",
+							"null"
+						]
+					},
+					"required boolean": {
+						"description": "Required boolean property",
+						"id": "/properties/required%20boolean",
+						"type": [
+							"boolean",
+							"null"
+						]
+					},
+					"required int": {
+						"description": "Required integer property",
+						"id": "/properties/required%20int",
+						"type": [
+							"integer",
+							"null"
+						]
+					},
+					"required number": {
+						"description": "Required number property",
+						"id": "/properties/required%20number",
+						"type": [
+							"number",
+							"null"
+						]
+					},
+					"required object": {
+						"description": "Required object property",
+						"id": "/properties/required%20object",
+						"properties": {
+						},
+						"required": [
+						],
+						"type": [
+							"object",
+							"null"
+						]
+					},
+					"required object with properties": {
+						"description": "Required object with properties",
+						"id": "/properties/required%20object%20with%20properties",
+						"properties": {
+							"required any": {
+								"description": "Required any property",
+								"id": "/properties/properties/properties/required%20object%20with%20properties/properties/required%20any"
+							},
+							"required array": {
+								"description": "Required array property",
+								"id": "/properties/properties/properties/required%20object%20with%20properties/properties/required%20array",
+								"type": [
+									"array",
+									"null"
+								]
+							},
+							"required boolean": {
+								"description": "Required boolean property",
+								"id": "/properties/properties/properties/required%20object%20with%20properties/properties/required%20boolean",
+								"type": [
+									"boolean",
+									"null"
+								]
+							},
+							"required int": {
+								"description": "Required integer property",
+								"id": "/properties/properties/properties/required%20object%20with%20properties/properties/required%20int",
+								"type": [
+									"integer",
+									"null"
+								]
+							},
+							"required number": {
+								"description": "Required number property",
+								"id": "/properties/properties/properties/required%20object%20with%20properties/properties/required%20number",
+								"type": [
+									"number",
+									"null"
+								]
+							},
+							"required object": {
+								"description": "Required object property",
+								"id": "/properties/properties/properties/required%20object%20with%20properties/properties/required%20object",
+								"properties": {
+								},
+								"required": [
+								],
+								"type": [
+									"object",
+									"null"
+								]
+							},
+							"required string": {
+								"description": "Required string property",
+								"id": "/properties/properties/properties/required%20object%20with%20properties/properties/required%20string",
+								"type": [
+									"string",
+									"null"
+								]
+							},
+							"required string with regex": {
+								"description": "Required string property with a regex conditional",
+								"id": "/properties/properties/properties/required%20object%20with%20properties/properties/required%20string%20with%20regex",
+								"pattern": "Evil Morty|Lawyer Morty",
+								"type": [
+									"string",
+									"null"
+								]
+							}
+						},
+						"required": [
+							"required any",
+							"required array",
+							"required boolean",
+							"required int",
+							"required number",
+							"required object",
+							"required string",
+							"required string with regex"
+						],
+						"type": [
+							"object",
+							"null"
+						]
+					},
+					"required string": {
+						"description": "Required string property",
+						"id": "/properties/required%20string",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"required string with regex": {
+						"description": "Required string property with a regex conditional",
+						"id": "/properties/required%20string%20with%20regex",
+						"pattern": "Evil Morty|Lawyer Morty",
+						"type": [
+							"string",
+							"null"
+						]
+					}
+				},
+				"required": [
+					"required any",
+					"required array",
+					"required boolean",
+					"required int",
+					"required number",
+					"required object",
+					"required string",
+					"required string with regex",
+					"required object with properties",
+					"required array with properties"
+				],
+				"type": "object"
+			},
+			"key": "Every Nullable Required Type",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "Validates that clients handle all of the supported field types, as optional fields.",
+				"eventMetadata": {
+					"name": "Every Optional Type",
+					"type": "TRACK"
+				},
+				"properties": {
+					"optional any": {
+						"description": "Optional any property",
+						"id": "/properties/optional%20any"
+					},
+					"optional array": {
+						"description": "Optional array property",
+						"id": "/properties/optional%20array",
+						"type": "array"
+					},
+					"optional array with properties": {
+						"description": "Optional array with properties",
+						"id": "/properties/optional%20array%20with%20properties",
+						"items": {
+							"id": "/properties/properties/properties/optional%20array%20with%20properties/items",
+							"properties": {
+								"optional any": {
+									"description": "Optional any property",
+									"id": "/properties/properties/properties/optional%20array%20with%20properties/items/properties/optional%20any"
+								},
+								"optional array": {
+									"description": "Optional array property",
+									"id": "/properties/properties/properties/optional%20array%20with%20properties/items/properties/optional%20array",
+									"type": "array"
+								},
+								"optional boolean": {
+									"description": "Optional boolean property",
+									"id": "/properties/properties/properties/optional%20array%20with%20properties/items/properties/optional%20boolean",
+									"type": "boolean"
+								},
+								"optional int": {
+									"description": "Optional integer property",
+									"id": "/properties/properties/properties/optional%20array%20with%20properties/items/properties/optional%20int",
+									"type": "integer"
+								},
+								"optional number": {
+									"description": "Optional number property",
+									"id": "/properties/properties/properties/optional%20array%20with%20properties/items/properties/optional%20number",
+									"type": "number"
+								},
+								"optional object": {
+									"description": "Optional object property",
+									"id": "/properties/properties/properties/optional%20array%20with%20properties/items/properties/optional%20object",
+									"key": "optional object",
+									"properties": {
+									},
+									"type": "object"
+								},
+								"optional string": {
+									"description": "Optional string property",
+									"id": "/properties/properties/properties/optional%20array%20with%20properties/items/properties/optional%20string",
+									"type": "string"
+								},
+								"optional string with regex": {
+									"description": "Optional string property with a regex conditional",
+									"id": "/properties/properties/properties/optional%20array%20with%20properties/items/properties/optional%20string%20with%20regex",
+									"pattern": "Evil Morty|Lawyer Morty",
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"optional boolean": {
+						"description": "Optional boolean property",
+						"id": "/properties/optional%20boolean",
+						"type": "boolean"
+					},
+					"optional int": {
+						"description": "Optional integer property",
+						"id": "/properties/optional%20int",
+						"type": "integer"
+					},
+					"optional number": {
+						"description": "Optional number property",
+						"id": "/properties/optional%20number",
+						"type": "number"
+					},
+					"optional object": {
+						"description": "Optional object property",
+						"id": "/properties/optional%20object",
+						"key": "optional object",
+						"properties": {
+						},
+						"type": "object"
+					},
+					"optional object with properties": {
+						"description": "Optional object with properties",
+						"id": "/properties/optional%20object%20with%20properties",
+						"properties": {
+							"optional any": {
+								"description": "Optional any property",
+								"id": "/properties/properties/properties/optional%20object%20with%20properties/properties/optional%20any"
+							},
+							"optional array": {
+								"description": "Optional array property",
+								"id": "/properties/properties/properties/optional%20object%20with%20properties/properties/optional%20array",
+								"type": "array"
+							},
+							"optional boolean": {
+								"description": "Optional boolean property",
+								"id": "/properties/properties/properties/optional%20object%20with%20properties/properties/optional%20boolean",
+								"type": "boolean"
+							},
+							"optional int": {
+								"description": "Optional integer property",
+								"id": "/properties/properties/properties/optional%20object%20with%20properties/properties/optional%20int",
+								"type": "integer"
+							},
+							"optional number": {
+								"description": "Optional number property",
+								"id": "/properties/properties/properties/optional%20object%20with%20properties/properties/optional%20number",
+								"type": "number"
+							},
+							"optional object": {
+								"description": "Optional object property",
+								"id": "/properties/properties/properties/optional%20object%20with%20properties/properties/optional%20object",
+								"key": "optional object",
+								"properties": {
+								},
+								"type": "object"
+							},
+							"optional string": {
+								"description": "Optional string property",
+								"id": "/properties/properties/properties/optional%20object%20with%20properties/properties/optional%20string",
+								"type": "string"
+							},
+							"optional string with regex": {
+								"description": "Optional string property with a regex conditional",
+								"id": "/properties/properties/properties/optional%20object%20with%20properties/properties/optional%20string%20with%20regex",
+								"pattern": "Evil Morty|Lawyer Morty",
+								"type": "string"
+							}
+						},
+						"type": "object"
+					},
+					"optional string": {
+						"description": "Optional string property",
+						"id": "/properties/optional%20string",
+						"type": "string"
+					},
+					"optional string with regex": {
+						"description": "Optional string property with a regex conditional",
+						"id": "/properties/optional%20string%20with%20regex",
+						"pattern": "Evil Morty|Lawyer Morty",
+						"type": "string"
+					}
+				},
+				"type": "object"
+			},
+			"key": "Every Optional Type",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "Validates that clients handle all of the supported field types, as required fields. ",
+				"eventMetadata": {
+					"name": "Every Required Type",
+					"type": "TRACK"
+				},
+				"properties": {
+					"required any": {
+						"description": "Required any property",
+						"id": "/properties/required%20any"
+					},
+					"required array": {
+						"description": "Required array property",
+						"id": "/properties/required%20array",
+						"type": "array"
+					},
+					"required array with properties": {
+						"description": "Required array with properties",
+						"id": "/properties/required%20array%20with%20properties",
+						"items": {
+							"id": "/properties/properties/properties/required%20array%20with%20properties/items",
+							"properties": {
+								"required any": {
+									"description": "Required any property",
+									"id": "/properties/properties/properties/required%20array%20with%20properties/items/properties/required%20any"
+								},
+								"required array": {
+									"description": "Required array property",
+									"id": "/properties/properties/properties/required%20array%20with%20properties/items/properties/required%20array",
+									"type": "array"
+								},
+								"required boolean": {
+									"description": "Required boolean property",
+									"id": "/properties/properties/properties/required%20array%20with%20properties/items/properties/required%20boolean",
+									"type": "boolean"
+								},
+								"required int": {
+									"description": "Required integer property",
+									"id": "/properties/properties/properties/required%20array%20with%20properties/items/properties/required%20int",
+									"type": "integer"
+								},
+								"required number": {
+									"description": "Required number property",
+									"id": "/properties/properties/properties/required%20array%20with%20properties/items/properties/required%20number",
+									"type": "number"
+								},
+								"required object": {
+									"description": "Required object property",
+									"id": "/properties/properties/properties/required%20array%20with%20properties/items/properties/required%20object",
+									"key": "required object",
+									"properties": {
+									},
+									"required": [
+									],
+									"type": "object"
+								},
+								"required string": {
+									"description": "Required string property",
+									"id": "/properties/properties/properties/required%20array%20with%20properties/items/properties/required%20string",
+									"type": "string"
+								},
+								"required string with regex": {
+									"description": "Required string property with a regex conditional",
+									"id": "/properties/properties/properties/required%20array%20with%20properties/items/properties/required%20string%20with%20regex",
+									"pattern": "Evil Morty|Lawyer Morty",
+									"type": "string"
+								}
+							},
+							"required": [
+								"required any",
+								"required array",
+								"required boolean",
+								"required int",
+								"required number",
+								"required object",
+								"required string",
+								"required string with regex"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"required boolean": {
+						"description": "Required boolean property",
+						"id": "/properties/required%20boolean",
+						"type": "boolean"
+					},
+					"required int": {
+						"description": "Required integer property",
+						"id": "/properties/required%20int",
+						"type": "integer"
+					},
+					"required number": {
+						"description": "Required number property",
+						"id": "/properties/required%20number",
+						"type": "number"
+					},
+					"required object": {
+						"description": "Required object property",
+						"id": "/properties/required%20object",
+						"key": "required object",
+						"properties": {
+						},
+						"required": [
+						],
+						"type": "object"
+					},
+					"required object with properties": {
+						"description": "Required object with properties",
+						"id": "/properties/required%20object%20with%20properties",
+						"properties": {
+							"required any": {
+								"description": "Required any property",
+								"id": "/properties/properties/properties/required%20object%20with%20properties/properties/required%20any"
+							},
+							"required array": {
+								"description": "Required array property",
+								"id": "/properties/properties/properties/required%20object%20with%20properties/properties/required%20array",
+								"type": "array"
+							},
+							"required boolean": {
+								"description": "Required boolean property",
+								"id": "/properties/properties/properties/required%20object%20with%20properties/properties/required%20boolean",
+								"type": "boolean"
+							},
+							"required int": {
+								"description": "Required integer property",
+								"id": "/properties/properties/properties/required%20object%20with%20properties/properties/required%20int",
+								"type": "integer"
+							},
+							"required number": {
+								"description": "Required number property",
+								"id": "/properties/properties/properties/required%20object%20with%20properties/properties/required%20number",
+								"type": "number"
+							},
+							"required object": {
+								"description": "Required object property",
+								"id": "/properties/properties/properties/required%20object%20with%20properties/properties/required%20object",
+								"key": "required object",
+								"properties": {
+								},
+								"required": [
+								],
+								"type": "object"
+							},
+							"required string": {
+								"description": "Required string property",
+								"id": "/properties/properties/properties/required%20object%20with%20properties/properties/required%20string",
+								"type": "string"
+							},
+							"required string with regex": {
+								"description": "Required string property with a regex conditional",
+								"id": "/properties/properties/properties/required%20object%20with%20properties/properties/required%20string%20with%20regex",
+								"pattern": "Evil Morty|Lawyer Morty",
+								"type": "string"
+							}
+						},
+						"required": [
+							"required any",
+							"required array",
+							"required boolean",
+							"required int",
+							"required number",
+							"required object",
+							"required string",
+							"required string with regex"
+						],
+						"type": "object"
+					},
+					"required string": {
+						"description": "Required string property",
+						"id": "/properties/required%20string",
+						"type": "string"
+					},
+					"required string with regex": {
+						"description": "Required string property with a regex conditional",
+						"id": "/properties/required%20string%20with%20regex",
+						"pattern": "Evil Morty|Lawyer Morty",
+						"type": "string"
+					}
+				},
+				"required": [
+					"required any",
+					"required array",
+					"required boolean",
+					"required int",
+					"required number",
+					"required object",
+					"required string",
+					"required string with regex",
+					"required object with properties",
+					"required array with properties"
+				],
+				"type": "object"
+			},
+			"key": "Every Required Type",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "Validates that clients correctly serialize large numbers (integers and floats).",
+				"eventMetadata": {
+					"name": "Large Numbers Event",
+					"type": "TRACK"
+				},
+				"labels": {
+				},
+				"properties": {
+					"large nullable optional integer": {
+						"description": "",
+						"id": "/properties/large%20nullable%20optional%20integer",
+						"type": [
+							"integer",
+							"null"
+						]
+					},
+					"large nullable optional number": {
+						"description": "",
+						"id": "/properties/large%20nullable%20optional%20number",
+						"type": [
+							"number",
+							"null"
+						]
+					},
+					"large nullable required integer": {
+						"description": "",
+						"id": "/properties/large%20nullable%20required%20integer",
+						"type": [
+							"integer",
+							"null"
+						]
+					},
+					"large nullable required number": {
+						"description": "",
+						"id": "/properties/large%20nullable%20required%20number",
+						"type": [
+							"number",
+							"null"
+						]
+					},
+					"large optional integer": {
+						"description": "",
+						"id": "/properties/large%20optional%20integer",
+						"type": "integer"
+					},
+					"large optional number": {
+						"description": "",
+						"id": "/properties/large%20optional%20number",
+						"type": "number"
+					},
+					"large required integer": {
+						"description": "",
+						"id": "/properties/large%20required%20integer",
+						"type": "integer"
+					},
+					"large required number": {
+						"description": "",
+						"id": "/properties/large%20required%20number",
+						"type": "number"
+					}
+				},
+				"required": [
+					"large required integer",
+					"large required number",
+					"large nullable required integer",
+					"large nullable required number"
+				],
+				"type": "object"
+			},
+			"key": "Large Numbers Event",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "Validates that clients handle arrays-within-arrays.",
+				"eventMetadata": {
+					"name": "Nested Arrays",
+					"type": "TRACK"
+				},
+				"labels": {
+				},
+				"properties": {
+					"universeCharacters": {
+						"description": "All known characters from each universe.",
+						"id": "/properties/universeCharacters",
+						"items": {
+							"description": "",
+							"id": "/properties/properties/properties/universeCharacters/items",
+							"items": {
+								"description": "",
+								"id": "/properties/properties/properties/universeCharacters/items/items",
+								"properties": {
+									"name": {
+										"description": "The character's name.",
+										"id": "/properties/properties/properties/universeCharacters/items/items/properties/name",
+										"type": "string"
+									}
+								},
+								"required": [
+									"name"
+								],
+								"type": "object"
+							},
+							"type": "array"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"universeCharacters"
+				],
+				"type": "object"
+			},
+			"key": "Nested Arrays",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "Validates that clients handle objects-within-objects.",
+				"eventMetadata": {
+					"name": "Nested Objects",
+					"type": "TRACK"
+				},
+				"labels": {
+				},
+				"properties": {
+					"garage": {
+						"description": "",
+						"id": "/properties/garage",
+						"properties": {
+							"tunnel": {
+								"description": "",
+								"id": "/properties/properties/properties/garage/properties/tunnel",
+								"properties": {
+									"subterranean lab": {
+										"description": "",
+										"id": "/properties/properties/properties/garage/properties/tunnel/properties/subterranean%20lab",
+										"properties": {
+											"jerry's memories": {
+												"description": "",
+												"id": "/properties/properties/properties/garage/properties/tunnel/properties/subterranean%20lab/properties/jerry's%20memories",
+												"type": "array"
+											},
+											"morty's memories": {
+												"description": "",
+												"id": "/properties/properties/properties/garage/properties/tunnel/properties/subterranean%20lab/properties/morty's%20memories",
+												"type": "array"
+											},
+											"summer's contingency plan": {
+												"description": "",
+												"id": "/properties/properties/properties/garage/properties/tunnel/properties/subterranean%20lab/properties/summer's%20contingency%20plan",
+												"type": "string"
+											}
+										},
+										"required": [
+										],
+										"type": "object"
+									}
+								},
+								"required": [
+									"subterranean lab"
+								],
+								"type": "object"
+							}
+						},
+						"required": [
+							"tunnel"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"garage"
+				],
+				"type": "object"
+			},
+			"key": "Nested Objects",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "Validates that clients handle collisions in property names within a single event.",
+				"eventMetadata": {
+					"name": "Properties Collided",
+					"type": "TRACK"
+				},
+				"labels": {
+				},
+				"properties": {
+					"Property Collided": {
+						"description": "",
+						"id": "/properties/Property%20Collided",
+						"type": "string"
+					},
+					"property_collided": {
+						"description": "",
+						"id": "/properties/property_collided",
+						"type": "string"
+					}
+				},
+				"required": [
+					"property_collided",
+					"Property Collided"
+				],
+				"type": "object"
+			},
+			"key": "Properties Collided",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "Validates that clients handle collisions in object names across multiple events.",
+				"eventMetadata": {
+					"name": "Property Object Name Collision #1",
+					"type": "TRACK"
+				},
+				"labels": {
+				},
+				"properties": {
+					"universe": {
+						"description": "",
+						"id": "/properties/universe",
+						"properties": {
+							"name": {
+								"description": "The common name of this universe.",
+								"id": "/properties/properties/properties/universe/properties/name",
+								"type": "string"
+							},
+							"occupants": {
+								"description": "The most important occupants in this universe.",
+								"id": "/properties/properties/properties/universe/properties/occupants",
+								"items": {
+									"description": "",
+									"id": "/properties/properties/properties/universe/properties/occupants/items",
+									"properties": {
+										"name": {
+											"description": "The name of this occupant.",
+											"id": "/properties/properties/properties/universe/properties/occupants/items/properties/name",
+											"type": "string"
+										}
+									},
+									"required": [
+										"name"
+									],
+									"type": "object"
+								},
+								"type": "array"
+							}
+						},
+						"required": [
+							"name",
+							"occupants"
+						],
+						"type": "object"
+					}
+				},
+				"type": "object"
+			},
+			"key": "Property Object Name Collision 1",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "Validates that clients handle collisions in object names across multiple events.",
+				"eventMetadata": {
+					"name": "Property Object Name Collision #2",
+					"type": "TRACK"
+				},
+				"labels": {
+				},
+				"properties": {
+					"universe": {
+						"description": "",
+						"id": "/properties/universe",
+						"properties": {
+							"name": {
+								"description": "The common name of this universe.",
+								"id": "/properties/properties/properties/universe/properties/name",
+								"type": "string"
+							},
+							"occupants": {
+								"description": "The most important occupants in this universe.",
+								"id": "/properties/properties/properties/universe/properties/occupants",
+								"items": {
+									"description": "",
+									"id": "/properties/properties/properties/universe/properties/occupants/items",
+									"properties": {
+										"name": {
+											"description": "The name of this occupant.",
+											"id": "/properties/properties/properties/universe/properties/occupants/items/properties/name",
+											"type": "string"
+										}
+									},
+									"required": [
+										"name"
+									],
+									"type": "object"
+								},
+								"type": "array"
+							}
+						},
+						"required": [
+							"name",
+							"occupants"
+						],
+						"type": "object"
+					}
+				},
+				"type": "object"
+			},
+			"key": "Property Object Name Collision 2",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "Validates that clients sanitize property names that contain invalid identifier characters.",
+				"eventMetadata": {
+					"name": "Property Sanitized",
+					"type": "TRACK"
+				},
+				"labels": {
+				},
+				"properties": {
+					"0000---terrible-property-name~!3": {
+						"description": "",
+						"id": "/properties/0000---terrible-property-name~!3",
+						"type": "string"
+					}
+				},
+				"required": [
+					"0000---terrible-property-name~!3"
+				],
+				"type": "object"
+			},
+			"key": "Property Sanitized",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "Validates that clients support fields with various types of arrays.",
+				"eventMetadata": {
+					"name": "Simple Array Types",
+					"type": "TRACK"
+				},
+				"labels": {
+				},
+				"properties": {
+					"any": {
+						"description": "",
+						"id": "/properties/any",
+						"items": {
+							"description": ""
+						},
+						"type": "array"
+					},
+					"boolean": {
+						"description": "",
+						"id": "/properties/boolean",
+						"items": {
+							"description": "",
+							"id": "/properties/properties/properties/boolean/items",
+							"type": "boolean"
+						},
+						"type": "array"
+					},
+					"integer": {
+						"description": "",
+						"id": "/properties/integer",
+						"items": {
+							"description": "",
+							"id": "/properties/properties/properties/integer/items",
+							"type": "integer"
+						},
+						"type": "array"
+					},
+					"nullable": {
+						"description": "",
+						"id": "/properties/nullable",
+						"items": {
+							"description": "",
+							"id": "/properties/properties/properties/nullable/items",
+							"type": [
+								"string",
+								"null"
+							]
+						},
+						"type": "array"
+					},
+					"number": {
+						"description": "",
+						"id": "/properties/number",
+						"items": {
+							"description": "",
+							"id": "/properties/properties/properties/number/items",
+							"type": "number"
+						},
+						"type": "array"
+					},
+					"object": {
+						"description": "",
+						"id": "/properties/object",
+						"items": {
+							"description": "",
+							"id": "/properties/properties/properties/object/items",
+							"properties": {
+								"name": {
+									"description": "",
+									"id": "/properties/properties/properties/object/items/properties/name",
+									"type": "string"
+								}
+							},
+							"required": [
+							],
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"string": {
+						"description": "",
+						"id": "/properties/string",
+						"items": {
+							"description": "",
+							"id": "/properties/properties/properties/string/items",
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"key": "Simple Array Types",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "Validates that clients support fields with multiple (union) types.",
+				"eventMetadata": {
+					"name": "Union Type",
+					"type": "TRACK"
+				},
+				"labels": {
+				},
+				"properties": {
+					"universe_name": {
+						"description": "",
+						"id": "/properties/universe_name",
+						"type": [
+							"string",
+							"null",
+							"integer"
+						]
+					}
+				},
+				"required": [
+					"universe_name"
+				],
+				"type": "object"
+			},
+			"key": "Union Type",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "Validates that a generated client handles even naming collisions.",
+				"eventMetadata": {
+					"name": "event_collided",
+					"type": "TRACK"
+				},
+				"labels": {
+				},
+				"properties": {
+				},
+				"type": "object"
+			},
+			"key": "event_collided",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
+		}
+	],
+	"slug": "",
+	"type": "LIVE",
+	"updatedAt": "2022-07-22T21:58:16.000Z"
+}

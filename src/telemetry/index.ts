@@ -1,18 +1,18 @@
-import { Config } from '@oclif/core';
-import Analytics from 'analytics-node';
-import { machineIdSync } from 'node-machine-id';
-import { TokenMethod, WorkspaceConfig } from '../config';
-import { CommandBuildConfig, CommandInitConfig } from './segment';
-import typewriterClient, { TrackMessage, TokenType, Callback } from './segment';
+import { Config } from "@oclif/core";
+import Analytics from "analytics-node";
+import { machineIdSync } from "node-machine-id";
+import { TokenMethod, WorkspaceConfig } from "../config";
+import { CommandBuildConfig, CommandInitConfig } from "./segment";
+import typewriterClient, { TrackMessage, TokenType, Callback } from "./segment";
 
 // Initialize the segment client and the typewriter client with our Write Key for telemetry
 
 const writeKey =
-  process.env.NODE_ENV === 'production'
+  process.env.NODE_ENV === "production"
     ? // Production: https://app.segment.com/segment_prod/sources/typewriter_next/overview
-      '3Q4zXqkF8lcxeMyvfaiEBLhznBrppBWi'
+      "3Q4zXqkF8lcxeMyvfaiEBLhznBrppBWi"
     : // Development: https://app.segment.com/segment_prod/sources/typewriter_next_dev/overview
-      'WoCqTlHJKOb9D8NepuSLItTGEkXxLKVV';
+      "WoCqTlHJKOb9D8NepuSLItTGEkXxLKVV";
 
 const segmentClient = new Analytics(writeKey, {
   flushAt: 1,
@@ -33,9 +33,9 @@ typewriterClient.setTypewriterOptions({
  * @returns an event with context filled in
  */
 const withContext = <P>(
-  message: Omit<TrackMessage<P>, 'anonymousId'>,
+  message: Omit<TrackMessage<P>, "anonymousId">,
   config: Config,
-  anonymousId: string,
+  anonymousId: string
 ): TrackMessage<P> => {
   return {
     ...message,
@@ -56,7 +56,10 @@ const withContext = <P>(
  * @param tokenMethod Auth Token method used in the command
  * @returns a tracking plan compatible config object
  */
-const toCommandConfig = (config: WorkspaceConfig, tokenMethod: TokenMethod): CommandBuildConfig | CommandInitConfig => {
+const toCommandConfig = (
+  config: WorkspaceConfig,
+  tokenMethod?: TokenMethod
+): CommandBuildConfig | CommandInitConfig => {
   const { language, sdk, ...opts } = config.client;
   return {
     language,
@@ -66,7 +69,8 @@ const toCommandConfig = (config: WorkspaceConfig, tokenMethod: TokenMethod): Com
       id: plan.id,
       path: plan.path,
     })),
-    tokenType: toTelemetryTokenType(tokenMethod),
+    tokenType:
+      tokenMethod !== undefined ? toTelemetryTokenType(tokenMethod) : undefined,
   };
 };
 
@@ -87,15 +91,18 @@ const toTelemetryTokenType = (token: TokenMethod): TokenType => {
 const addContextParams = <T>(
   fn: (message: TrackMessage<T>, callback?: Callback) => void,
   config: Config,
-  anonymousId: string,
+  anonymousId: string
 ) => {
-  return (message: Omit<TrackMessage<T>, 'anonymousId'>, callback?: Callback): void => {
+  return (
+    message: Omit<TrackMessage<T>, "anonymousId">,
+    callback?: Callback
+  ): void => {
     fn(withContext(message, config, anonymousId), callback);
   };
 };
 
 const getSegmentClient = (config: Config) => {
-  let anonymousId = 'unknown';
+  let anonymousId = "unknown";
   try {
     anonymousId = machineIdSync();
   } catch (error) {
@@ -105,16 +112,32 @@ const getSegmentClient = (config: Config) => {
           error: `Failed to generate an anonymous id: ${error}`,
         },
         config,
-        anonymousId,
-      ),
+        anonymousId
+      )
     );
   }
 
   return {
-    buildCommand: addContextParams(typewriterClient.commandBuild, config, anonymousId),
-    helpCommand: addContextParams(typewriterClient.commandHelp, config, anonymousId),
-    initCommand: addContextParams(typewriterClient.commandInit, config, anonymousId),
-    commandError: addContextParams(typewriterClient.commandError, config, anonymousId),
+    buildCommand: addContextParams(
+      typewriterClient.commandBuild,
+      config,
+      anonymousId
+    ),
+    helpCommand: addContextParams(
+      typewriterClient.commandHelp,
+      config,
+      anonymousId
+    ),
+    initCommand: addContextParams(
+      typewriterClient.commandInit,
+      config,
+      anonymousId
+    ),
+    commandError: addContextParams(
+      typewriterClient.commandError,
+      config,
+      anonymousId
+    ),
     flush: () => {
       segmentClient.flush();
     },

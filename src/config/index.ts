@@ -3,7 +3,7 @@ export {
   getInputToken,
   getScriptToken,
   getToken,
-  getUserConfig,
+  getWorkspaceConfig,
   resolveRelativePath,
   saveGlobalToken,
   saveWorkspaceConfig,
@@ -11,6 +11,6 @@ export {
   TokenMetadata,
   tokenMethodToUserString,
   verifyDirectoryExists,
-} from './config';
-export { TrackingPlanConfig, WorkspaceConfig } from './schema';
-export { runScript, Scripts } from './scripts';
+} from "./config";
+export { TrackingPlanConfig, WorkspaceConfig } from "./schema";
+export { runScript, Scripts } from "./scripts";

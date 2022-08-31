@@ -1,27 +1,27 @@
-import fs from 'fs';
-import { promisify } from 'util';
-import { resolve, dirname } from 'path';
-import { Document, Node, parse } from 'yaml';
-import { homedir } from 'os';
-import { WorkspaceConfig, validateConfig, TrackingPlanConfig } from './schema';
-import { validateToken, SegmentAPI } from '../api';
-import { wrapError } from '../common';
-import { runScript, Scripts } from './scripts';
-import { CLIError } from '@oclif/core/lib/errors';
-import { debug as debugRegister } from 'debug';
-import { NodeType } from 'yaml/dist/nodes/Node';
+import fs from "fs";
+import { promisify } from "util";
+import { resolve, dirname } from "path";
+import { Document, Node, parse } from "yaml";
+import { homedir } from "os";
+import { WorkspaceConfig, validateConfig, TrackingPlanConfig } from "./schema";
+import { validateToken, SegmentAPI } from "../api";
+import { wrapError } from "../common";
+import { runScript, Scripts } from "./scripts";
+import { CLIError } from "@oclif/core/lib/errors";
+import { debug as debugRegister } from "debug";
+import { NodeType } from "yaml/dist/nodes/Node";
 
-const debug = debugRegister('typewriter:config');
+const debug = debugRegister("typewriter:config");
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 const exists = promisify(fs.exists);
 const mkdir = promisify(fs.mkdir);
 
-export const CONFIG_NAME = 'typewriter.yml';
+export const CONFIG_NAME = "typewriter.yml";
 
 /**
- * getConfig looks for, and reads, a typewriter.yml configuration file.
+ * getWorkspaceConfig looks for, and reads, a typewriter.yml configuration file.
  * If it does not exist, it will return undefined. If the configuration
  * if invalid, an Error will be thrown.
  * Note: path is relative to the directory where the typewriter command
@@ -29,11 +29,13 @@ export const CONFIG_NAME = 'typewriter.yml';
  * @param path
  * @returns
  */
-export async function getUserConfig(path: string): Promise<WorkspaceConfig | undefined> {
+export async function getWorkspaceConfig(
+  path: string
+): Promise<WorkspaceConfig | undefined> {
   // Check if a typewriter.yml exists.
   const configPath = await getPath(path);
   if (!(await exists(configPath))) {
-    debug('getUserConfig', 'No config file found at', configPath);
+    debug("getWorkspaceConfig", "No config file found at", configPath);
     return undefined;
   }
 
@@ -41,21 +43,24 @@ export async function getUserConfig(path: string): Promise<WorkspaceConfig | und
   let file: string;
   try {
     file = await readFile(configPath, {
-      encoding: 'utf-8',
+      encoding: "utf-8",
     });
   } catch (error) {
     throw wrapError(
-      'Unable to open typewriter.yml',
+      "Unable to open typewriter.yml",
       error as Error,
       `Failed due to an ${(error as Record<string, unknown>).code} error (${
         (error as Record<string, unknown>).errno
       }).`,
-      configPath,
+      configPath
     );
   }
 
-  const rawConfig: Record<string, unknown> = parse(file) as Record<string, unknown>;
-  debug('Loaded raw config', rawConfig);
+  const rawConfig: Record<string, unknown> = parse(file) as Record<
+    string,
+    unknown
+  >;
+  debug("Loaded raw config", rawConfig);
 
   return validateConfig(rawConfig);
 }
@@ -67,25 +72,30 @@ export async function getUserConfig(path: string): Promise<WorkspaceConfig | und
  * @param config
  * @param path
  */
-export async function saveWorkspaceConfig(config: WorkspaceConfig, path: string): Promise<void> {
+export async function saveWorkspaceConfig(
+  config: WorkspaceConfig,
+  path: string
+): Promise<void> {
   const CONFIG_HEADER =
-    'Segment Typewriter Configuration (https://segment.com/docs/protocols/typewriter)\nJust run `npx typewriter@next` to re-generate a client with the latest versions of these events.';
+    "Segment Typewriter Configuration (https://segment.com/docs/protocols/typewriter)\nJust run `npx typewriter@next` to re-generate a client with the latest versions of these events.";
 
   const doc = new Document(config);
   doc.commentBefore = CONFIG_HEADER;
 
   // Add comment to client node
-  const clientNode = doc.get('client') as Node<typeof config.client>;
+  const clientNode = doc.get("client") as Node<typeof config.client>;
   clientNode.commentBefore =
-    'You can find more documentation on configuring this client in the Segment docs\nSee: https://segment.com/docs/protocols/typewriter';
+    "You can find more documentation on configuring this client in the Segment docs\nSee: https://segment.com/docs/protocols/typewriter";
 
   // Add comment to each tracking plan
-  const trackingPlans = doc.get('trackingPlans') as NodeType<typeof config.trackingPlans>;
+  const trackingPlans = doc.get("trackingPlans") as NodeType<
+    typeof config.trackingPlans
+  >;
   for (const plan of trackingPlans.items) {
-    const id = plan.get('id')?.toString();
+    const id = plan.get("id")?.toString();
     // We only pass in the name to fill the comment template, we don't need it in the config file anymore after retrieving the value
-    const name = plan.get('name')?.toString();
-    plan.delete('name');
+    const name = plan.get("name")?.toString();
+    plan.delete("name");
 
     plan.commentBefore = `Tracking Plan: ${name}\nhttps://api.segmentapis.com/tracking-plans/${id}`;
   }
@@ -103,17 +113,24 @@ export async function saveWorkspaceConfig(config: WorkspaceConfig, path: string)
  * @param otherPaths
  * @returns
  */
-export function resolveRelativePath(configPath: string | undefined, path: string, ...otherPaths: string[]): string {
+export function resolveRelativePath(
+  configPath: string | undefined,
+  path: string,
+  ...otherPaths: string[]
+): string {
   // Resolve the path based on the optional --config flag.
   return configPath
-    ? resolve(configPath.replace(/typewriter\.yml$/, ''), path, ...otherPaths)
+    ? resolve(configPath.replace(/typewriter\.yml$/, ""), path, ...otherPaths)
     : resolve(path, ...otherPaths);
 }
 
-export async function verifyDirectoryExists(path: string, type: 'directory' | 'file' = 'directory'): Promise<void> {
+export async function verifyDirectoryExists(
+  path: string,
+  type: "directory" | "file" = "directory"
+): Promise<void> {
   // If this is a file, we need to verify it's parent directory exists.
   // If it is a directory, then we need to verify the directory itself exists.
-  const dirPath = type === 'directory' ? path : dirname(path);
+  const dirPath = type === "directory" ? path : dirname(path);
   if (!(await exists(dirPath))) {
     await mkdir(dirPath, {
       recursive: true,
@@ -122,19 +139,22 @@ export async function verifyDirectoryExists(path: string, type: 'directory' | 'f
 }
 
 export enum TokenMethod {
-  Script = 'script',
-  File = 'file',
-  Pipe = 'pipe',
+  Script = "script",
+  File = "file",
+  Pipe = "pipe",
 }
 
-export function tokenMethodToUserString(method: TokenMethod, configPath?: string) {
+export function tokenMethodToUserString(
+  method: TokenMethod,
+  configPath?: string
+) {
   if (method === TokenMethod.Pipe) {
-    return 'input';
+    return "input";
   }
   if (method === TokenMethod.Script) {
-    return `${configPath ?? '.'}/${CONFIG_NAME}`;
+    return `${configPath ?? "."}/${CONFIG_NAME}`;
   }
-  return '~/.typewriter';
+  return "~/.typewriter";
 }
 
 export type TokenMetadata = {
@@ -156,15 +176,19 @@ export type TokenMetadata = {
 export async function getToken(
   config: Partial<WorkspaceConfig> | undefined,
   configPath: string,
-  input?: string,
+  input?: string
 ): Promise<TokenMetadata | undefined> {
-  const tokenFns = [() => getInputToken(input), () => getScriptToken(config, configPath), () => getGlobalToken()];
+  const tokenFns = [
+    () => getInputToken(input),
+    () => getScriptToken(config, configPath),
+    () => getGlobalToken(),
+  ];
 
   for (const tokenFn of tokenFns) {
     const metadata = await tokenFn();
-    debug('getToken', metadata);
+    debug("getToken", metadata);
     if (metadata.isValid === true) {
-      debug('Selecting Token', metadata);
+      debug("Selecting Token", metadata);
       return metadata;
     }
   }
@@ -177,8 +201,11 @@ export async function getToken(
  * @param input
  * @returns
  */
-export async function getInputToken(input?: string, validate: boolean = true): Promise<TokenMetadata> {
-  if (input !== undefined && input.trim() !== '') {
+export async function getInputToken(
+  input?: string,
+  validate: boolean = true
+): Promise<TokenMetadata> {
+  if (input !== undefined && input.trim() !== "") {
     const token = input.trim();
     const validationResult = validate ? await validateToken(token) : undefined;
     return {
@@ -201,7 +228,7 @@ export async function getInputToken(input?: string, validate: boolean = true): P
 export async function getScriptToken(
   config: Partial<WorkspaceConfig> | undefined,
   configPath: string,
-  validate: boolean = true,
+  validate: boolean = true
 ): Promise<TokenMetadata> {
   if (config?.scripts?.token === undefined) {
     return {
@@ -216,13 +243,16 @@ export async function getScriptToken(
   const tokenScript = config.scripts.token;
   const stdout = await runScript(tokenScript, configPath, Scripts.Token);
 
-  if (stdout === undefined || stdout.trim() === '') {
-    throw new CLIError('No token was found in the stdout of the token script.', {
-      suggestions: [
-        `Make sure the script ${tokenScript} outputs a token to stdout.`,
-        `Check your token script at ${configPath}`,
-      ],
-    });
+  if (stdout === undefined || stdout.trim() === "") {
+    throw new CLIError(
+      "No token was found in the stdout of the token script.",
+      {
+        suggestions: [
+          `Make sure the script ${tokenScript} outputs a token to stdout.`,
+          `Check your token script at ${configPath}`,
+        ],
+      }
+    );
   }
 
   const token = stdout.trim();
@@ -241,12 +271,14 @@ export async function getScriptToken(
  * @param configPath
  * @returns
  */
-export async function getGlobalToken(validate: boolean = true): Promise<TokenMetadata> {
+export async function getGlobalToken(
+  validate: boolean = true
+): Promise<TokenMetadata> {
   // Attempt to read a token from the ~/.typewriter token file.
   // Tokens are stored here during the `init` flow, if a user generates a token.
   try {
-    const path = resolve(homedir(), '.typewriter');
-    const token = (await readFile(path, 'utf-8')).trim();
+    const path = resolve(homedir(), ".typewriter");
+    const token = (await readFile(path, "utf-8")).trim();
     const validationResult = validate ? await validateToken(token) : undefined;
     return {
       method: TokenMethod.File,
@@ -267,12 +299,12 @@ export async function getGlobalToken(validate: boolean = true): Promise<TokenMet
  * @returns
  */
 export async function saveGlobalToken(token: string): Promise<void> {
-  const path = resolve(homedir(), '.typewriter');
-  return writeFile(path, token, 'utf-8');
+  const path = resolve(homedir(), ".typewriter");
+  return writeFile(path, token, "utf-8");
 }
 
 async function getPath(path: string): Promise<string> {
-  path = path.replace(/typewriter\.yml$/, '');
+  path = path.replace(/typewriter\.yml$/, "");
   // TODO: recursively move back folders until you find it, ala package.json
   return resolve(path, CONFIG_NAME);
 }

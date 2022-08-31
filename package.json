@@ -18,6 +18,7 @@
     "/oclif.manifest.json"
   ],
   "dependencies": {
+    "@npmcli/ci-detect": "^2.0.0",
     "@oclif/core": "^1.7",
     "ajv": "^8.11.0",
     "analytics-node": "segmentio/analytics-node",
@@ -47,10 +48,12 @@
     "@types/debug": "^4.1.7",
     "@types/got": "^9.6.12",
     "@types/inquirer": "^8.2.1",
+    "@types/jest": "^29.0.0",
     "@types/json-stable-stringify": "^1.0.34",
     "@types/lodash": "^4.14.179",
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.9.4",
+    "@types/npmcli__ci-detect": "^2.0.0",
     "@types/semver": "^7.3.9",
     "chai": "^4",
     "copyfiles": "^2.4.1",
@@ -64,6 +67,8 @@
     "mocha": "^9",
     "oclif": "^3.0",
     "shx": "^0.3",
+    "stdout-stderr": "^0.1.13",
+    "ts-jest": "^28",
     "ts-node": "^10.7",
     "tslib": "^2.4"
   },
@@ -89,7 +94,7 @@
     "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "yarn lint",
     "prepack": "yarn build && oclif manifest && oclif readme",
-    "test": "mocha --forbid-only \"test/**/*.test.ts\"",
+    "test": "jest --runInBand",
     "version": "oclif readme && git add README.md"
   },
   "engines": {
