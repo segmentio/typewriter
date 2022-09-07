@@ -2,8 +2,13 @@ import { Config } from "@oclif/core";
 import Analytics from "analytics-node";
 import { machineIdSync } from "node-machine-id";
 import { TokenMethod, WorkspaceConfig } from "../config";
-import { CommandBuildConfig, CommandInitConfig } from "./segment";
-import typewriterClient, { TrackMessage, TokenType, Callback } from "./segment";
+import typewriterClient, {
+  Callback,
+  CommandBuildConfig,
+  CommandInitConfig,
+  TokenType,
+  TrackMessage,
+} from "./segment";
 
 // Initialize the segment client and the typewriter client with our Write Key for telemetry
 
@@ -145,3 +150,4 @@ const getSegmentClient = (config: Config) => {
 };
 
 export { segmentClient, getSegmentClient, withContext, toCommandConfig };
+export * from "./segment";

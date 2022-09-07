@@ -1,22 +1,23 @@
-import { Flags, loadHelpClass } from '@oclif/core';
-import { BaseCommand } from '../base-command';
+import { Flags, loadHelpClass } from "@oclif/core";
+import { BaseCommand } from "../base-command";
+import { CommandHelp } from "../telemetry";
 
 export default class HelpCommand extends BaseCommand {
-  static description = 'Display help for <%= config.bin %>.';
+  static description = "Display help for <%= config.bin %>.";
 
   static flags = {
     ...BaseCommand.flags,
-    'nested-commands': Flags.boolean({
-      description: 'Include all nested commands in the output.',
-      char: 'n',
+    "nested-commands": Flags.boolean({
+      description: "Include all nested commands in the output.",
+      char: "n",
     }),
   };
 
   static args = [
     {
-      name: 'command',
+      name: "command",
       required: false,
-      description: 'Command to show help for.',
+      description: "Command to show help for.",
     },
   ];
 
@@ -27,7 +28,7 @@ export default class HelpCommand extends BaseCommand {
     await help.showHelp(argv);
 
     this.segmentClient.helpCommand({
-      command: argv[0],
-    });
+      rawCommand: this.rawCommand,
+    } as CommandHelp);
   }
 }

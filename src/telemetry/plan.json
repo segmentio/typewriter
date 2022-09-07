@@ -1,476 +1,432 @@
 {
-	"createdAt": "2021-10-13T22:44:45.000Z",
-	"description": "",
-	"id": "tp_1zTHJW9aw5QHKgwrjY5lDb40Y7A",
-	"name": "Typewriter Tracking Plan",
-	"resourceSchemaId": "rs_1zTHJU9fd5mt7cndWnd4PgJbMCE",
-	"rules": [
-		{
-			"createdAt": "2022-07-22T21:47:01.000Z",
-			"deprecatedAt": "0001-01-01T00:00:00.000Z",
-			"jsonSchema": {
-				"$schema": "http://json-schema.org/draft-07/schema#",
-				"description": "Fired when the user generates code with Typewriter",
-				"eventMetadata": {
-					"name": "Command Build",
-					"type": "TRACK"
-				},
-				"properties": {
-					"config": {
-						"description": "Local Workspace configuration",
-						"id": "/properties/config",
-						"properties": {
-							"language": {
-								"description": "Language to Generate",
-								"id": "/properties/properties/properties/config/properties/language",
-								"type": "string"
-							},
-							"languageOptions": {
-								"description": "Advanced Language Options",
-								"id": "/properties/properties/properties/config/properties/languageOptions",
-								"type": "object"
-							},
-							"sdk": {
-								"description": "SDK to generate",
-								"id": "/properties/properties/properties/config/properties/sdk",
-								"type": "string"
-							},
-							"tokenType": {
-								"description": "Type of token retrieval",
-								"enum": [
-									"global",
-									"input",
-									"script"
-								],
-								"id": "/properties/properties/properties/config/properties/tokenType",
-								"type": "string"
-							},
-							"trackingPlans": {
-								"description": "Tracking Plans to generate code for",
-								"id": "/properties/properties/properties/config/properties/trackingPlans",
-								"items": {
-									"description": "",
-									"id": "/properties/properties/properties/config/properties/trackingPlans/items",
-									"properties": {
-										"id": {
-											"description": "Tracking Plan ID",
-											"id": "/properties/properties/properties/config/properties/trackingPlans/items/properties/id",
-											"type": "string"
-										},
-										"path": {
-											"description": "Path to output code",
-											"id": "/properties/properties/properties/config/properties/trackingPlans/items/properties/path",
-											"type": "string"
-										}
-									},
-									"required": [
-									],
-									"type": "object"
-								},
-								"type": "array"
-							}
-						},
-						"required": [
-							"trackingPlans",
-							"language",
-							"sdk"
-						],
-						"type": "object"
-					},
-					"duration": {
-						"description": "Duration of the command in ms",
-						"id": "/properties/duration",
-						"type": "number"
-					},
-					"isCI": {
-						"description": "Runs in a CI environment",
-						"id": "/properties/isCI",
-						"type": "boolean"
-					},
-					"mode": {
-						"description": "Build Output mode",
-						"enum": [
-							"dev",
-							"prod"
-						],
-						"id": "/properties/mode",
-						"type": "string"
-					},
-					"rawCommand": {
-						"description": "Raw command string input",
-						"id": "/properties/rawCommand",
-						"type": "string"
-					},
-					"workspace": {
-						"description": "User Segment Workspace",
-						"id": "/properties/workspace",
-						"type": "string"
-					}
-				},
-				"required": [
-					"workspace",
-					"config",
-					"mode",
-					"duration",
-					"isCI",
-					"rawCommand"
-				],
-				"type": "object"
-			},
-			"key": "Command Build",
-			"type": "TRACK",
-			"updatedAt": "2022-07-22T21:47:01.000Z",
-			"version": 1
-		},
-		{
-			"createdAt": "2022-07-22T21:47:01.000Z",
-			"deprecatedAt": "0001-01-01T00:00:00.000Z",
-			"jsonSchema": {
-				"$schema": "http://json-schema.org/draft-07/schema#",
-				"eventMetadata": {
-					"name": "Command Error",
-					"type": "TRACK"
-				},
-				"properties": {
-					"config": {
-						"description": "Local Workspace configuration",
-						"id": "/properties/config",
-						"properties": {
-							"language": {
-								"description": "Language to generate",
-								"id": "/properties/properties/properties/config/properties/language",
-								"type": "string"
-							},
-							"languageOptions": {
-								"description": "Advanced Language Options",
-								"id": "/properties/properties/properties/config/properties/languageOptions",
-								"type": "object"
-							},
-							"sdk": {
-								"description": "SDK to generate",
-								"id": "/properties/properties/properties/config/properties/sdk",
-								"type": "string"
-							},
-							"tokenType": {
-								"description": "Type of token retrieval",
-								"enum": [
-									"global",
-									"input",
-									"script"
-								],
-								"id": "/properties/properties/properties/config/properties/tokenType",
-								"type": "string"
-							},
-							"trackingPlans": {
-								"description": "Tracking Plans to generate code for",
-								"id": "/properties/properties/properties/config/properties/trackingPlans",
-								"items": {
-									"description": "",
-									"id": "/properties/properties/properties/config/properties/trackingPlans/items",
-									"properties": {
-										"id": {
-											"description": "Tracking Plan ID",
-											"id": "/properties/properties/properties/config/properties/trackingPlans/items/properties/id",
-											"type": "string"
-										},
-										"path": {
-											"description": "Path to output code",
-											"id": "/properties/properties/properties/config/properties/trackingPlans/items/properties/path",
-											"type": "string"
-										}
-									},
-									"required": [
-									],
-									"type": "object"
-								},
-								"type": "array"
-							}
-						},
-						"required": [
-							"trackingPlans",
-							"language",
-							"sdk"
-						],
-						"type": "object"
-					},
-					"error": {
-						"description": "Error Object",
-						"id": "/properties/error",
-						"type": "object"
-					},
-					"errorCode": {
-						"description": "Exit code for the error",
-						"id": "/properties/errorCode",
-						"type": "number"
-					},
-					"errorMessage": {
-						"description": "User friendly error message",
-						"id": "/properties/errorMessage",
-						"type": "string"
-					},
-					"isCI": {
-						"description": "Runs in a CI environment",
-						"id": "/properties/isCI",
-						"type": "boolean"
-					},
-					"rawCommand": {
-						"description": "Raw command string input",
-						"id": "/properties/rawCommand",
-						"type": "string"
-					},
-					"workspace": {
-						"description": "User Segment Workspace",
-						"id": "/properties/workspace",
-						"type": "string"
-					}
-				},
-				"required": [
-					"isCI",
-					"rawCommand",
-					"errorMessage",
-					"error"
-				],
-				"type": "object"
-			},
-			"key": "Command Error",
-			"type": "TRACK",
-			"updatedAt": "2022-07-22T21:47:01.000Z",
-			"version": 1
-		},
-		{
-			"createdAt": "2022-07-22T21:47:01.000Z",
-			"deprecatedAt": "0001-01-01T00:00:00.000Z",
-			"jsonSchema": {
-				"$schema": "http://json-schema.org/draft-07/schema#",
-				"eventMetadata": {
-					"name": "Command Help",
-					"type": "TRACK"
-				},
-				"properties": {
-					"rawCommand": {
-						"description": "Raw command string input",
-						"id": "/properties/rawCommand",
-						"type": "string"
-					}
-				},
-				"required": [
-					"rawCommand"
-				],
-				"type": "object"
-			},
-			"key": "Command Help",
-			"type": "TRACK",
-			"updatedAt": "2022-07-22T21:47:01.000Z",
-			"version": 1
-		},
-		{
-			"createdAt": "2022-07-22T21:47:01.000Z",
-			"deprecatedAt": "0001-01-01T00:00:00.000Z",
-			"jsonSchema": {
-				"$schema": "http://json-schema.org/draft-07/schema#",
-				"description": "Init Events that initialize the settings for typewriter",
-				"eventMetadata": {
-					"name": "Command Init",
-					"type": "TRACK"
-				},
-				"labels": {
-					"init": "initialize"
-				},
-				"properties": {
-					"config": {
-						"description": "Local Workspace configuration",
-						"id": "/properties/config",
-						"properties": {
-							"language": {
-								"description": "Language to generate",
-								"id": "/properties/properties/properties/config/properties/language",
-								"type": "string"
-							},
-							"languageOptions": {
-								"description": "Advanced Language Options",
-								"id": "/properties/properties/properties/config/properties/languageOptions",
-								"type": "object"
-							},
-							"sdk": {
-								"description": "SDK to generate",
-								"id": "/properties/properties/properties/config/properties/sdk",
-								"type": "string"
-							},
-							"tokenType": {
-								"description": "Type of token retrieval",
-								"enum": [
-									"global",
-									"input",
-									"script"
-								],
-								"id": "/properties/properties/properties/config/properties/tokenType",
-								"type": "string"
-							},
-							"trackingPlans": {
-								"description": "Tracking Plans to generate code for",
-								"id": "/properties/properties/properties/config/properties/trackingPlans",
-								"items": {
-									"description": "",
-									"id": "/properties/properties/properties/config/properties/trackingPlans/items",
-									"properties": {
-										"id": {
-											"description": "Tracking Plan ID",
-											"id": "/properties/properties/properties/config/properties/trackingPlans/items/properties/id",
-											"type": "string"
-										},
-										"path": {
-											"description": "Path to output code",
-											"id": "/properties/properties/properties/config/properties/trackingPlans/items/properties/path",
-											"type": "string"
-										}
-									},
-									"required": [
-										"id",
-										"path"
-									],
-									"type": "object"
-								},
-								"type": "array"
-							},
-							"workspace": {
-								"description": "User Segment Workspace",
-								"id": "/properties/properties/properties/config/properties/workspace",
-								"type": "string"
-							}
-						},
-						"required": [
-							"language",
-							"sdk",
-							"tokenType",
-							"workspace",
-							"trackingPlans"
-						],
-						"type": "object"
-					},
-					"duration": {
-						"description": "Duration of the command in ms",
-						"id": "/properties/duration",
-						"type": "number"
-					},
-					"hasConfig": {
-						"description": "Wether there is a workspace config already present",
-						"id": "/properties/hasConfig",
-						"type": "boolean"
-					},
-					"rawCommand": {
-						"description": "Raw command string input",
-						"id": "/properties/rawCommand",
-						"type": "string"
-					}
-				},
-				"required": [
-					"config",
-					"rawCommand",
-					"duration"
-				],
-				"type": "object"
-			},
-			"key": "Command Init",
-			"type": "TRACK",
-			"updatedAt": "2022-07-22T21:47:01.000Z",
-			"version": 1
-		},
-		{
-			"createdAt": "2022-07-08T15:44:53.000Z",
-			"deprecatedAt": "0001-01-01T00:00:00.000Z",
-			"jsonSchema": {
-				"$schema": "http://json-schema.org/draft-07/schema#",
-				"description": "KitchenSink Event for testing all possible data types",
-				"eventMetadata": {
-					"name": "KitchenSink",
-					"type": "TRACK"
-				},
-				"properties": {
-					"aBoolean": {
-						"description": "",
-						"id": "/properties/aBoolean",
-						"type": "boolean"
-					},
-					"aDate": {
-						"description": "",
-						"format": "date-time",
-						"id": "/properties/aDate",
-						"type": "string"
-					},
-					"aNumber": {
-						"description": "",
-						"id": "/properties/aNumber",
-						"type": "number"
-					},
-					"aString": {
-						"description": "",
-						"id": "/properties/aString",
-						"type": "string"
-					},
-					"anArray": {
-						"description": "",
-						"id": "/properties/anArray",
-						"type": "array"
-					},
-					"anEnum": {
-						"description": "",
-						"enum": [
-							"another",
-							"value"
-						],
-						"id": "/properties/anEnum",
-						"type": "string"
-					},
-					"anInteger": {
-						"description": "",
-						"id": "/properties/anInteger",
-						"type": "integer"
-					},
-					"anObject": {
-						"description": "",
-						"id": "/properties/anObject",
-						"type": "object"
-					},
-					"anything": {
-						"description": "",
-						"id": "/properties/anything"
-					}
-				},
-				"type": "object"
-			},
-			"key": "KitchenSink",
-			"type": "TRACK",
-			"updatedAt": "2022-07-08T15:44:53.000Z",
-			"version": 1
-		},
-		{
-			"createdAt": "2022-07-08T15:41:28.000Z",
-			"deprecatedAt": "0001-01-01T00:00:00.000Z",
-			"jsonSchema": {
-				"$schema": "http://json-schema.org/draft-07/schema#",
-				"eventMetadata": {
-					"name": "VersionCommand",
-					"type": "TRACK"
-				},
-				"properties": {
-					"version": {
-						"description": "",
-						"id": "/properties/version",
-						"type": "string"
-					}
-				},
-				"required": [
-					"version"
-				],
-				"type": "object"
-			},
-			"key": "VersionCommand",
-			"type": "TRACK",
-			"updatedAt": "2022-07-08T15:41:28.000Z",
-			"version": 1
-		}
-	],
-	"slug": "",
-	"type": "LIVE",
-	"updatedAt": "2022-07-22T21:47:01.000Z"
+  "createdAt": "2021-10-13T22:44:45.000Z",
+  "description": "",
+  "id": "tp_1zTHJW9aw5QHKgwrjY5lDb40Y7A",
+  "name": "Typewriter Tracking Plan",
+  "resourceSchemaId": "rs_1zTHJU9fd5mt7cndWnd4PgJbMCE",
+  "rules": [
+    {
+      "createdAt": "2022-07-22T21:47:01.000Z",
+      "deprecatedAt": "0001-01-01T00:00:00.000Z",
+      "jsonSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "description": "Fired when the user generates code with Typewriter",
+        "eventMetadata": {
+          "name": "Command Build",
+          "type": "TRACK"
+        },
+        "properties": {
+          "config": {
+            "description": "Local Workspace configuration",
+            "id": "/properties/config",
+            "properties": {
+              "language": {
+                "description": "Language to Generate",
+                "id": "/properties/properties/properties/config/properties/language",
+                "type": "string"
+              },
+              "languageOptions": {
+                "description": "Advanced Language Options",
+                "id": "/properties/properties/properties/config/properties/languageOptions",
+                "type": "object"
+              },
+              "sdk": {
+                "description": "SDK to generate",
+                "id": "/properties/properties/properties/config/properties/sdk",
+                "type": "string"
+              },
+              "tokenType": {
+                "description": "Type of token retrieval",
+                "enum": ["global", "input", "script"],
+                "id": "/properties/properties/properties/config/properties/tokenType",
+                "type": "string"
+              },
+              "trackingPlans": {
+                "description": "Tracking Plans to generate code for",
+                "id": "/properties/properties/properties/config/properties/trackingPlans",
+                "items": {
+                  "description": "",
+                  "id": "/properties/properties/properties/config/properties/trackingPlans/items",
+                  "properties": {
+                    "id": {
+                      "description": "Tracking Plan ID",
+                      "id": "/properties/properties/properties/config/properties/trackingPlans/items/properties/id",
+                      "type": "string"
+                    },
+                    "path": {
+                      "description": "Path to output code",
+                      "id": "/properties/properties/properties/config/properties/trackingPlans/items/properties/path",
+                      "type": "string"
+                    }
+                  },
+                  "required": [],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": ["trackingPlans", "language", "sdk"],
+            "type": "object"
+          },
+          "duration": {
+            "description": "Duration of the command in ms",
+            "id": "/properties/duration",
+            "type": "number"
+          },
+          "isCI": {
+            "description": "Runs in a CI environment",
+            "id": "/properties/isCI",
+            "type": "string"
+          },
+          "mode": {
+            "description": "Build Output mode",
+            "enum": ["dev", "prod"],
+            "id": "/properties/mode",
+            "type": "string"
+          },
+          "rawCommand": {
+            "description": "Raw command string input",
+            "id": "/properties/rawCommand",
+            "type": "string"
+          },
+          "workspace": {
+            "description": "User Segment Workspace",
+            "id": "/properties/workspace",
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace",
+          "config",
+          "mode",
+          "duration",
+          "isCI",
+          "rawCommand"
+        ],
+        "type": "object"
+      },
+      "key": "Command Build",
+      "type": "TRACK",
+      "updatedAt": "2022-07-22T21:47:01.000Z",
+      "version": 1
+    },
+    {
+      "createdAt": "2022-07-22T21:47:01.000Z",
+      "deprecatedAt": "0001-01-01T00:00:00.000Z",
+      "jsonSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "eventMetadata": {
+          "name": "Command Error",
+          "type": "TRACK"
+        },
+        "properties": {
+          "config": {
+            "description": "Local Workspace configuration",
+            "id": "/properties/config",
+            "properties": {
+              "language": {
+                "description": "Language to generate",
+                "id": "/properties/properties/properties/config/properties/language",
+                "type": "string"
+              },
+              "languageOptions": {
+                "description": "Advanced Language Options",
+                "id": "/properties/properties/properties/config/properties/languageOptions",
+                "type": "object"
+              },
+              "sdk": {
+                "description": "SDK to generate",
+                "id": "/properties/properties/properties/config/properties/sdk",
+                "type": "string"
+              },
+              "tokenType": {
+                "description": "Type of token retrieval",
+                "enum": ["global", "input", "script"],
+                "id": "/properties/properties/properties/config/properties/tokenType",
+                "type": "string"
+              },
+              "trackingPlans": {
+                "description": "Tracking Plans to generate code for",
+                "id": "/properties/properties/properties/config/properties/trackingPlans",
+                "items": {
+                  "description": "",
+                  "id": "/properties/properties/properties/config/properties/trackingPlans/items",
+                  "properties": {
+                    "id": {
+                      "description": "Tracking Plan ID",
+                      "id": "/properties/properties/properties/config/properties/trackingPlans/items/properties/id",
+                      "type": "string"
+                    },
+                    "path": {
+                      "description": "Path to output code",
+                      "id": "/properties/properties/properties/config/properties/trackingPlans/items/properties/path",
+                      "type": "string"
+                    }
+                  },
+                  "required": [],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": ["trackingPlans", "language", "sdk"],
+            "type": "object"
+          },
+          "error": {
+            "description": "Error Object",
+            "id": "/properties/error",
+            "type": "object"
+          },
+          "errorCode": {
+            "description": "Exit code for the error",
+            "id": "/properties/errorCode",
+            "type": "number"
+          },
+          "errorMessage": {
+            "description": "User friendly error message",
+            "id": "/properties/errorMessage",
+            "type": "string"
+          },
+          "isCI": {
+            "description": "Runs in a CI environment",
+            "id": "/properties/isCI",
+            "type": "string"
+          },
+          "rawCommand": {
+            "description": "Raw command string input",
+            "id": "/properties/rawCommand",
+            "type": "string"
+          },
+          "workspace": {
+            "description": "User Segment Workspace",
+            "id": "/properties/workspace",
+            "type": "string"
+          }
+        },
+        "required": ["isCI", "rawCommand", "errorMessage", "error"],
+        "type": "object"
+      },
+      "key": "Command Error",
+      "type": "TRACK",
+      "updatedAt": "2022-07-22T21:47:01.000Z",
+      "version": 1
+    },
+    {
+      "createdAt": "2022-07-22T21:47:01.000Z",
+      "deprecatedAt": "0001-01-01T00:00:00.000Z",
+      "jsonSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "eventMetadata": {
+          "name": "Command Help",
+          "type": "TRACK"
+        },
+        "properties": {
+          "rawCommand": {
+            "description": "Raw command string input",
+            "id": "/properties/rawCommand",
+            "type": "string"
+          }
+        },
+        "required": ["rawCommand"],
+        "type": "object"
+      },
+      "key": "Command Help",
+      "type": "TRACK",
+      "updatedAt": "2022-07-22T21:47:01.000Z",
+      "version": 1
+    },
+    {
+      "createdAt": "2022-07-22T21:47:01.000Z",
+      "deprecatedAt": "0001-01-01T00:00:00.000Z",
+      "jsonSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "description": "Init Events that initialize the settings for typewriter",
+        "eventMetadata": {
+          "name": "Command Init",
+          "type": "TRACK"
+        },
+        "labels": {
+          "init": "initialize"
+        },
+        "properties": {
+          "config": {
+            "description": "Local Workspace configuration",
+            "id": "/properties/config",
+            "properties": {
+              "language": {
+                "description": "Language to generate",
+                "id": "/properties/properties/properties/config/properties/language",
+                "type": "string"
+              },
+              "languageOptions": {
+                "description": "Advanced Language Options",
+                "id": "/properties/properties/properties/config/properties/languageOptions",
+                "type": "object"
+              },
+              "sdk": {
+                "description": "SDK to generate",
+                "id": "/properties/properties/properties/config/properties/sdk",
+                "type": "string"
+              },
+              "tokenType": {
+                "description": "Type of token retrieval",
+                "enum": ["global", "input", "script"],
+                "id": "/properties/properties/properties/config/properties/tokenType",
+                "type": "string"
+              },
+              "trackingPlans": {
+                "description": "Tracking Plans to generate code for",
+                "id": "/properties/properties/properties/config/properties/trackingPlans",
+                "items": {
+                  "description": "",
+                  "id": "/properties/properties/properties/config/properties/trackingPlans/items",
+                  "properties": {
+                    "id": {
+                      "description": "Tracking Plan ID",
+                      "id": "/properties/properties/properties/config/properties/trackingPlans/items/properties/id",
+                      "type": "string"
+                    },
+                    "path": {
+                      "description": "Path to output code",
+                      "id": "/properties/properties/properties/config/properties/trackingPlans/items/properties/path",
+                      "type": "string"
+                    }
+                  },
+                  "required": ["id", "path"],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "workspace": {
+                "description": "User Segment Workspace",
+                "id": "/properties/properties/properties/config/properties/workspace",
+                "type": "string"
+              }
+            },
+            "required": [
+              "language",
+              "sdk",
+              "tokenType",
+              "workspace",
+              "trackingPlans"
+            ],
+            "type": "object"
+          },
+          "duration": {
+            "description": "Duration of the command in ms",
+            "id": "/properties/duration",
+            "type": "number"
+          },
+          "hasConfig": {
+            "description": "Wether there is a workspace config already present",
+            "id": "/properties/hasConfig",
+            "type": "boolean"
+          },
+          "rawCommand": {
+            "description": "Raw command string input",
+            "id": "/properties/rawCommand",
+            "type": "string"
+          }
+        },
+        "required": ["config", "rawCommand", "duration"],
+        "type": "object"
+      },
+      "key": "Command Init",
+      "type": "TRACK",
+      "updatedAt": "2022-07-22T21:47:01.000Z",
+      "version": 1
+    },
+    {
+      "createdAt": "2022-07-08T15:44:53.000Z",
+      "deprecatedAt": "0001-01-01T00:00:00.000Z",
+      "jsonSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "description": "KitchenSink Event for testing all possible data types",
+        "eventMetadata": {
+          "name": "KitchenSink",
+          "type": "TRACK"
+        },
+        "properties": {
+          "aBoolean": {
+            "description": "",
+            "id": "/properties/aBoolean",
+            "type": "boolean"
+          },
+          "aDate": {
+            "description": "",
+            "format": "date-time",
+            "id": "/properties/aDate",
+            "type": "string"
+          },
+          "aNumber": {
+            "description": "",
+            "id": "/properties/aNumber",
+            "type": "number"
+          },
+          "aString": {
+            "description": "",
+            "id": "/properties/aString",
+            "type": "string"
+          },
+          "anArray": {
+            "description": "",
+            "id": "/properties/anArray",
+            "type": "array"
+          },
+          "anEnum": {
+            "description": "",
+            "enum": ["another", "value"],
+            "id": "/properties/anEnum",
+            "type": "string"
+          },
+          "anInteger": {
+            "description": "",
+            "id": "/properties/anInteger",
+            "type": "integer"
+          },
+          "anObject": {
+            "description": "",
+            "id": "/properties/anObject",
+            "type": "object"
+          },
+          "anything": {
+            "description": "",
+            "id": "/properties/anything"
+          }
+        },
+        "type": "object"
+      },
+      "key": "KitchenSink",
+      "type": "TRACK",
+      "updatedAt": "2022-07-08T15:44:53.000Z",
+      "version": 1
+    },
+    {
+      "createdAt": "2022-07-08T15:41:28.000Z",
+      "deprecatedAt": "0001-01-01T00:00:00.000Z",
+      "jsonSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "eventMetadata": {
+          "name": "VersionCommand",
+          "type": "TRACK"
+        },
+        "properties": {
+          "version": {
+            "description": "",
+            "id": "/properties/version",
+            "type": "string"
+          }
+        },
+        "required": ["version"],
+        "type": "object"
+      },
+      "key": "VersionCommand",
+      "type": "TRACK",
+      "updatedAt": "2022-07-08T15:41:28.000Z",
+      "version": 1
+    }
+  ],
+  "slug": "",
+  "type": "LIVE",
+  "updatedAt": "2022-07-22T21:47:01.000Z"
 }

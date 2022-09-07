@@ -15,6 +15,7 @@ import { supportedLanguages } from "./languages";
 import { getSegmentClient } from "./telemetry";
 import chalk from "chalk";
 import ciDetect from "@npmcli/ci-detect";
+import { CommandError } from "./telemetry/segment";
 
 const DEFAULT_CONFIG_PATH = "./";
 
@@ -88,6 +89,10 @@ export abstract class BaseCommand extends Command {
     return this.tokenMetadata?.workspace;
   }
 
+  public get rawCommand(): string {
+    return `${this.id} ${this.argv.join(" ")}`;
+  }
+
   static flags = {
     config: Flags.string({
       char: "c",
@@ -112,9 +117,12 @@ export abstract class BaseCommand extends Command {
   ): Promise<any> {
     this.segmentClient.commandError({
       command: this.id,
-      error: `Error: ${err.message}\n${err.stack}`,
+      errorMessage: `Error: ${err.message}\n${err.stack}`,
+      error: err,
+      rawCommand: this.argv.join(" "),
       errorCode: err.exitCode,
-    });
+      isCI: this.isCI,
+    } as CommandError);
     // We do a flush here manually cause oclif doesn't run the postrun hook for errors
     try {
       await this.segmentClient.flush();
