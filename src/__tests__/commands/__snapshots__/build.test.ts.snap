@@ -95,7 +95,7 @@ function validateAgainstSchema(message, schema) {
 function withTypewriterContext(message) {
     return __assign(__assign({}, message), { context: __assign(__assign({}, (message.context || {})), { typewriter: {
                 language: 'typescript',
-                version: '8.0.3',
+                version: '8.0.4',
             } }) });
 }
 /**
@@ -5187,7 +5187,7 @@ function withTypewriterContext(message: Options = {}): Options {
             ...(message.context || {}),
             typewriter: {
                 language: 'typescript',
-                version: '8.0.3',
+                version: '8.0.4',
             },
         },
     };
@@ -6597,7 +6597,7 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
             ...(message.context || {}),
             typewriter: {
                 language: 'typescript',
-                version: '8.0.3',
+                version: '8.0.4',
             },
         },
     }
@@ -8104,7 +8104,7 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
             ...(message.context || {}),
             typewriter: {
                 language: 'typescript',
-                version: '8.0.3',
+                version: '8.0.4',
             },
         },
     }
@@ -9611,7 +9611,7 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
             ...(message.context || {}),
             typewriter: {
                 language: 'typescript',
-                version: '8.0.3',
+                version: '8.0.4',
             },
         },
     }

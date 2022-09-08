@@ -141,6 +141,7 @@ export async function loadTrackingPlans(
     // or use it to identify what changed with the latest copy of this Tracking Plan.
     const previousTrackingPlan = await loadTrackingPlan(
       configPath,
+
       trackingPlanConfig
     );
 
@@ -161,6 +162,7 @@ export async function loadTrackingPlans(
       try {
         newTrackingPlan = await fetchTrackingPlan(
           trackingPlanConfig.id,
+
           apiToken
         );
       } catch (error) {
@@ -176,7 +178,9 @@ export async function loadTrackingPlans(
         // Update plan.json with the latest Tracking Plan.
         await writeTrackingPlan(
           configPath,
+
           newTrackingPlan,
+
           trackingPlanConfig
         );
       }

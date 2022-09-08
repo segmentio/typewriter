@@ -1,0 +1,31 @@
+name: CI
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+jobs:
+  cancel_previous:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: styfle/cancel-workflow-action@0.9.1
+      with:
+        workflow_id: ${{ github.event.workflow.id }}
+  build-and-test:
+    needs: cancel_previous
+    runs-on: 'ubuntu-latest'
+    steps: 
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: 'yarn'
+      - name: Install
+        run: yarn install --frozen-lockfile
+      - name: Lint
+        run: yarn lint
+      - name: Build
+        run: yarn build
+      - name: Test
+        run: yarn test --coverage
