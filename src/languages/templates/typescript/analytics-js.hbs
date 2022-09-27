@@ -220,7 +220,7 @@ export function {{functionName}}(props: {{typeName}}, options?: Options, callbac
   const a = analytics();
   if (a) {
     a.track('{{eventName}}', props || {}, {...options,   context: {
-      ...(options.context || {}),
+      ...(options?.context || {}),
       typewriter: {
         language: 'typescript',
         version: '{{version}}',
