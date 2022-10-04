@@ -1664,6 +1664,34 @@
 			"type": "TRACK",
 			"updatedAt": "2022-07-22T21:58:03.000Z",
 			"version": 1
+		},
+		{
+			"createdAt": "2022-07-22T21:58:03.000Z",
+			"deprecatedAt": "0001-01-01T00:00:00.000Z",
+			"jsonSchema": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"description": "Properties without IDs",
+				"eventMetadata": {
+					"name": "NoID type",
+					"type": "TRACK"
+				},
+				"labels": {
+				},
+				"properties": {
+					"no_id_prop": {
+						"description": "a property without an ID",
+						"type": "string"
+					}
+				},
+				"required": [
+					"no_id_prop"
+				],
+				"type": "object"
+			},
+			"key": "NoID Type",
+			"type": "TRACK",
+			"updatedAt": "2022-07-22T21:58:03.000Z",
+			"version": 1
 		}
 	],
 	"slug": "",
