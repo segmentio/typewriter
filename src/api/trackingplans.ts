@@ -239,10 +239,11 @@ export function sanitizeTrackingPlan(
           plan.jsonSchema.properties?.properties?.properties ?? {};
 
         Object.keys(innerProperties).map((key) => {
-          innerProperties[key].id = (innerProperties[key].id as string).replace(
-            "/properties/properties/properties/",
-            "/properties/"
-          );
+          if (innerProperties[key].id !== undefined) {
+            innerProperties[key].id = (
+              innerProperties[key].id as string
+            ).replace("/properties/properties/properties/", "/properties/");
+          }
         });
 
         return {
