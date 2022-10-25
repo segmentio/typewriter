@@ -1,3 +1,15 @@
+{{#if isDevelopment}}
+/**
+ * Ajv is a peer dependency for development builds. It's used to apply run-time validation
+ * to message payloads before passing them on to the underlying analytics instance.
+ *
+ * Note that the production bundle does not depend on Ajv.
+ * 
+ * You can install it with: `npm install --save-dev ajv` or `yarn add -D ajv`.
+ */
+import Ajv from 'ajv'
+{{/if}}
+
 /**
  * The analytics.js snippet should be available via window.analytics.
  * You can install it by following instructions at: https://segment.com/docs/sources/website/analytics.js/quickstart/
