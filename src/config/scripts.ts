@@ -16,7 +16,7 @@ export async function runScript(
   configPath: string,
   type: Scripts
 ): Promise<string> {
-  const scriptWithCD = `cd ${configPath}; ${script}`;
+  const scriptWithCD = `cd ${configPath} && ${script}`;
   const { stdout } = await exec(scriptWithCD, { timeout: EXEC_TIMEOUT }).catch(
     (err) => {
       const { stderr = "" } = err;
