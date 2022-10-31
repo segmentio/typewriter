@@ -1,3 +1,14 @@
+{{#if isDevelopment}}
+/**
+ * Ajv is a peer dependency for development builds. It's used to apply run-time validation
+ * to message payloads before passing them on to the underlying analytics instance.
+ *
+ * Note that the production bundle does not depend on Ajv.
+ * 
+ * You can install it with: `npm install --save-dev ajv`.
+ */
+import Ajv from 'ajv'
+{{/if}}
 import AnalyticsNode from 'analytics-node'
 
 /**

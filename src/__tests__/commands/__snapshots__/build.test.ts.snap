@@ -16,6 +16,9 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { \\"default\\": mod };
+};
 Object.defineProperty(exports, \\"__esModule\\", { value: true });
 exports.noIDType = exports.unionType = exports.simpleArrayTypes = exports.propertySanitized = exports.propertyObjectNameCollision2 = exports.propertyObjectNameCollision1 = exports.propertiesCollided = exports.nestedObjects = exports.nestedArrays = exports.largeNumbersEvent = exports.everyRequiredType = exports.everyOptionalType = exports.everyNullableRequiredType = exports.everyNullableOptionalType = exports.enumTypes = exports.defaultViolationHandler = exports.customViolationHandler = exports.setTypewriterOptions = exports.defaultValidationErrorHandler = exports.StringEnum = exports.StringConst = void 0;
 /**
@@ -33,6 +36,15 @@ var StringEnum;
     StringEnum[\\"EvilMorty\\"] = \\"Evil Morty\\";
     StringEnum[\\"LawyerMorty\\"] = \\"Lawyer Morty\\";
 })(StringEnum = exports.StringEnum || (exports.StringEnum = {}));
+/**
+ * Ajv is a peer dependency for development builds. It's used to apply run-time validation
+ * to message payloads before passing them on to the underlying analytics instance.
+ *
+ * Note that the production bundle does not depend on Ajv.
+ *
+ * You can install it with: \`npm install --save-dev ajv\`.
+ */
+var ajv_1 = __importDefault(require(\\"ajv\\"));
 /**
  * The default handler that is fired if none is supplied with setTypewriterOptions.
  * If NODE_ENV=\\"test\\", this handler will throw an error. Otherwise, it will log
@@ -81,7 +93,7 @@ exports.setTypewriterOptions = setTypewriterOptions;
     * is invalid, the \`onViolation\` handler will be called.
     */
 function validateAgainstSchema(message, schema) {
-    var ajv = new Ajv({ schemaId: 'auto', allErrors: true, verbose: true });
+    var ajv = new ajv_1.default({ schemaId: 'auto', allErrors: true, verbose: true });
     ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
     ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'));
     if (!ajv.validate(schema, message) && ajv.errors) {
@@ -95,7 +107,7 @@ function validateAgainstSchema(message, schema) {
 function withTypewriterContext(message) {
     return __assign(__assign({}, message), { context: __assign(__assign({}, (message.context || {})), { typewriter: {
                 language: 'typescript',
-                version: '8.0.5',
+                version: '8.0.6',
             } }) });
 }
 /**
@@ -5099,6 +5111,16 @@ export interface NoIDType {
 }
 
 /**
+ * Ajv is a peer dependency for development builds. It's used to apply run-time validation
+ * to message payloads before passing them on to the underlying analytics instance.
+ *
+ * Note that the production bundle does not depend on Ajv.
+ * 
+ * You can install it with: \`npm install --save-dev ajv\`.
+ */
+import Ajv from 'ajv'
+
+/**
  * The analytics.js snippet should be available via window.analytics.
  * You can install it by following instructions at: https://segment.com/docs/sources/website/analytics.js/quickstart/
  * Make sure to also include the TypeScript declarations with: \`npm install --dev @types/segment-analytics\`
@@ -5294,7 +5316,7 @@ function withTypewriterContext(message: Options = {}): Options {
             ...(message.context || {}),
             typewriter: {
                 language: 'typescript',
-                version: '8.0.5',
+                version: '8.0.6',
             },
         },
     };
@@ -6512,6 +6534,15 @@ export interface NoIDType {
     no_id_prop: string;
 }
 
+/**
+ * Ajv is a peer dependency for development builds. It's used to apply run-time validation
+ * to message payloads before passing them on to the underlying analytics instance.
+ *
+ * Note that the production bundle does not depend on Ajv.
+ * 
+ * You can install it with: \`npm install --save-dev ajv\`.
+ */
+import Ajv from 'ajv'
 import AnalyticsNode from 'analytics-node'
 
 /**
@@ -6743,7 +6774,7 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
             ...(message.context || {}),
             typewriter: {
                 language: 'typescript',
-                version: '8.0.5',
+                version: '8.0.6',
             },
         },
     }
@@ -8057,6 +8088,15 @@ export interface UnionType {
     universe_name: number | null | string;
 }
 
+/**
+ * Ajv is a peer dependency for development builds. It's used to apply run-time validation
+ * to message payloads before passing them on to the underlying analytics instance.
+ *
+ * Note that the production bundle does not depend on Ajv.
+ * 
+ * You can install it with: \`npm install --save-dev ajv\`.
+ */
+import Ajv from 'ajv'
 import AnalyticsNode from 'analytics-node'
 
 /**
@@ -8288,7 +8328,7 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
             ...(message.context || {}),
             typewriter: {
                 language: 'typescript',
-                version: '8.0.5',
+                version: '8.0.6',
             },
         },
     }
@@ -9564,6 +9604,15 @@ export interface UnionType {
     universe_name: number | null | string;
 }
 
+/**
+ * Ajv is a peer dependency for development builds. It's used to apply run-time validation
+ * to message payloads before passing them on to the underlying analytics instance.
+ *
+ * Note that the production bundle does not depend on Ajv.
+ * 
+ * You can install it with: \`npm install --save-dev ajv\`.
+ */
+import Ajv from 'ajv'
 import AnalyticsNode from 'analytics-node'
 
 /**
@@ -9795,7 +9844,7 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
             ...(message.context || {}),
             typewriter: {
                 language: 'typescript',
-                version: '8.0.5',
+                version: '8.0.6',
             },
         },
     }
