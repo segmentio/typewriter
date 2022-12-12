@@ -267,18 +267,21 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
 	message: TrackMessage<{{typeName}}>,
 	callback?: Callback
 ): void {
+	{{#if ../isDevelopment}}
+	const schema = {{{rawJSONSchema}}}
+	const event = withTypewriterContext({
+    ...message,
+    event: '{{eventName}}',
+    properties: {
+      ...message.properties,
+    },
+  });
+	validateAgainstSchema(event, schema)
+	{{/if}}
+
 	const a = analytics()
 	if (a) {
-		a.track(
-      withTypewriterContext({
-        ...message,
-        event: '{{eventName}}',
-        properties: {
-          ...message.properties,
-        },
-      }),
-      callback,
-    );
+		a.track(event,callback);
 	} else {
 		throw missingAnalyticsNodeError
 	}
