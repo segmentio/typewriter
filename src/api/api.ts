@@ -83,6 +83,7 @@ export namespace SegmentAPI {
   }
 
   export type RuleMetadata = {
+    $id?: string;
     key: string;
     type: RuleType;
     description?: string;

@@ -852,7 +852,7 @@ function withTypewriterContext(message: Options = {}): Options {
             ...(message.context || {}),
             typewriter: {
                 language: 'typescript',
-                version: '8.0.6',
+                version: '8.0.8',
             },
         },
     };
@@ -867,6 +867,8 @@ function withTypewriterContext(message: Options = {}): Options {
  * 	call is fired.
  */
 export function customViolationHandler(props: CustomViolationHandler, options?: Options, callback?: Callback): void {
+
+
     const a = analytics();
     if (a) {
         a.track('Custom Violation Handler', props || {}, {...options,   context: {
@@ -887,6 +889,8 @@ export function customViolationHandler(props: CustomViolationHandler, options?: 
  * 	call is fired.
  */
 export function defaultViolationHandler(props: DefaultViolationHandler, options?: Options, callback?: Callback): void {
+
+
     const a = analytics();
     if (a) {
         a.track('Default Violation Handler', props || {}, {...options,   context: {
@@ -907,6 +911,8 @@ export function defaultViolationHandler(props: DefaultViolationHandler, options?
  * 	call is fired.
  */
 export function enumTypes(props: EnumTypes, options?: Options, callback?: Callback): void {
+
+
     const a = analytics();
     if (a) {
         a.track('Enum Types', props || {}, {...options,   context: {
@@ -927,6 +933,8 @@ export function enumTypes(props: EnumTypes, options?: Options, callback?: Callba
  * 	call is fired.
  */
 export function everyNullableOptionalType(props: EveryNullableOptionalType, options?: Options, callback?: Callback): void {
+
+
     const a = analytics();
     if (a) {
         a.track('Every Nullable Optional Type', props || {}, {...options,   context: {
@@ -947,6 +955,8 @@ export function everyNullableOptionalType(props: EveryNullableOptionalType, opti
  * 	call is fired.
  */
 export function everyNullableRequiredType(props: EveryNullableRequiredType, options?: Options, callback?: Callback): void {
+
+
     const a = analytics();
     if (a) {
         a.track('Every Nullable Required Type', props || {}, {...options,   context: {
@@ -967,6 +977,8 @@ export function everyNullableRequiredType(props: EveryNullableRequiredType, opti
  * 	call is fired.
  */
 export function everyOptionalType(props: EveryOptionalType, options?: Options, callback?: Callback): void {
+
+
     const a = analytics();
     if (a) {
         a.track('Every Optional Type', props || {}, {...options,   context: {
@@ -987,6 +999,8 @@ export function everyOptionalType(props: EveryOptionalType, options?: Options, c
  * 	call is fired.
  */
 export function everyRequiredType(props: EveryRequiredType, options?: Options, callback?: Callback): void {
+
+
     const a = analytics();
     if (a) {
         a.track('Every Required Type', props || {}, {...options,   context: {
@@ -1007,6 +1021,8 @@ export function everyRequiredType(props: EveryRequiredType, options?: Options, c
  * 	call is fired.
  */
 export function largeNumbersEvent(props: LargeNumbersEvent, options?: Options, callback?: Callback): void {
+
+
     const a = analytics();
     if (a) {
         a.track('Large Numbers Event', props || {}, {...options,   context: {
@@ -1027,6 +1043,8 @@ export function largeNumbersEvent(props: LargeNumbersEvent, options?: Options, c
  * 	call is fired.
  */
 export function nestedArrays(props: NestedArrays, options?: Options, callback?: Callback): void {
+
+
     const a = analytics();
     if (a) {
         a.track('Nested Arrays', props || {}, {...options,   context: {
@@ -1047,6 +1065,8 @@ export function nestedArrays(props: NestedArrays, options?: Options, callback?: 
  * 	call is fired.
  */
 export function nestedObjects(props: NestedObjects, options?: Options, callback?: Callback): void {
+
+
     const a = analytics();
     if (a) {
         a.track('Nested Objects', props || {}, {...options,   context: {
@@ -1067,6 +1087,8 @@ export function nestedObjects(props: NestedObjects, options?: Options, callback?
  * 	call is fired.
  */
 export function propertiesCollided(props: PropertiesCollided, options?: Options, callback?: Callback): void {
+
+
     const a = analytics();
     if (a) {
         a.track('Properties Collided', props || {}, {...options,   context: {
@@ -1087,6 +1109,8 @@ export function propertiesCollided(props: PropertiesCollided, options?: Options,
  * 	call is fired.
  */
 export function propertyObjectNameCollision1(props: PropertyObjectNameCollision1, options?: Options, callback?: Callback): void {
+
+
     const a = analytics();
     if (a) {
         a.track('Property Object Name Collision #1', props || {}, {...options,   context: {
@@ -1107,6 +1131,8 @@ export function propertyObjectNameCollision1(props: PropertyObjectNameCollision1
  * 	call is fired.
  */
 export function propertyObjectNameCollision2(props: PropertyObjectNameCollision2, options?: Options, callback?: Callback): void {
+
+
     const a = analytics();
     if (a) {
         a.track('Property Object Name Collision #2', props || {}, {...options,   context: {
@@ -1127,6 +1153,8 @@ export function propertyObjectNameCollision2(props: PropertyObjectNameCollision2
  * 	call is fired.
  */
 export function propertySanitized(props: PropertySanitized, options?: Options, callback?: Callback): void {
+
+
     const a = analytics();
     if (a) {
         a.track('Property Sanitized', props || {}, {...options,   context: {
@@ -1147,6 +1175,8 @@ export function propertySanitized(props: PropertySanitized, options?: Options, c
  * 	call is fired.
  */
 export function simpleArrayTypes(props: SimpleArrayTypes, options?: Options, callback?: Callback): void {
+
+
     const a = analytics();
     if (a) {
         a.track('Simple Array Types', props || {}, {...options,   context: {
@@ -1167,6 +1197,8 @@ export function simpleArrayTypes(props: SimpleArrayTypes, options?: Options, cal
  * 	call is fired.
  */
 export function unionType(props: UnionType, options?: Options, callback?: Callback): void {
+
+
     const a = analytics();
     if (a) {
         a.track('Union Type', props || {}, {...options,   context: {
@@ -1187,6 +1219,8 @@ export function unionType(props: UnionType, options?: Options, callback?: Callba
  * 	call is fired.
  */
 export function noIDType(props: NoIDType, options?: Options, callback?: Callback): void {
+
+
     const a = analytics();
     if (a) {
         a.track('NoID type', props || {}, {...options,   context: {
@@ -2283,7 +2317,7 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
             ...(message.context || {}),
             typewriter: {
                 language: 'typescript',
-                version: '8.0.6',
+                version: '8.0.8',
             },
         },
     }
@@ -2302,18 +2336,17 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<CustomViolationHandler>,
     callback?: Callback
 ): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'Custom Violation Handler',
+        properties: {
+            ...message.properties,
+        },
+    });
+
     const a = analytics()
     if (a) {
-        a.track(
-            withTypewriterContext({
-                ...message,
-                event: 'Custom Violation Handler',
-                properties: {
-                    ...message.properties,
-                },
-            }),
-            callback,
-        );
+        a.track(event,callback);
     } else {
         throw missingAnalyticsNodeError
     }
@@ -2330,18 +2363,17 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<DefaultViolationHandler>,
     callback?: Callback
 ): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'Default Violation Handler',
+        properties: {
+            ...message.properties,
+        },
+    });
+
     const a = analytics()
     if (a) {
-        a.track(
-            withTypewriterContext({
-                ...message,
-                event: 'Default Violation Handler',
-                properties: {
-                    ...message.properties,
-                },
-            }),
-            callback,
-        );
+        a.track(event,callback);
     } else {
         throw missingAnalyticsNodeError
     }
@@ -2358,18 +2390,17 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<EnumTypes>,
     callback?: Callback
 ): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'Enum Types',
+        properties: {
+            ...message.properties,
+        },
+    });
+
     const a = analytics()
     if (a) {
-        a.track(
-            withTypewriterContext({
-                ...message,
-                event: 'Enum Types',
-                properties: {
-                    ...message.properties,
-                },
-            }),
-            callback,
-        );
+        a.track(event,callback);
     } else {
         throw missingAnalyticsNodeError
     }
@@ -2386,18 +2417,17 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<EveryNullableOptionalType>,
     callback?: Callback
 ): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'Every Nullable Optional Type',
+        properties: {
+            ...message.properties,
+        },
+    });
+
     const a = analytics()
     if (a) {
-        a.track(
-            withTypewriterContext({
-                ...message,
-                event: 'Every Nullable Optional Type',
-                properties: {
-                    ...message.properties,
-                },
-            }),
-            callback,
-        );
+        a.track(event,callback);
     } else {
         throw missingAnalyticsNodeError
     }
@@ -2414,18 +2444,17 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<EveryNullableRequiredType>,
     callback?: Callback
 ): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'Every Nullable Required Type',
+        properties: {
+            ...message.properties,
+        },
+    });
+
     const a = analytics()
     if (a) {
-        a.track(
-            withTypewriterContext({
-                ...message,
-                event: 'Every Nullable Required Type',
-                properties: {
-                    ...message.properties,
-                },
-            }),
-            callback,
-        );
+        a.track(event,callback);
     } else {
         throw missingAnalyticsNodeError
     }
@@ -2442,18 +2471,17 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<EveryOptionalType>,
     callback?: Callback
 ): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'Every Optional Type',
+        properties: {
+            ...message.properties,
+        },
+    });
+
     const a = analytics()
     if (a) {
-        a.track(
-            withTypewriterContext({
-                ...message,
-                event: 'Every Optional Type',
-                properties: {
-                    ...message.properties,
-                },
-            }),
-            callback,
-        );
+        a.track(event,callback);
     } else {
         throw missingAnalyticsNodeError
     }
@@ -2470,18 +2498,17 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<EveryRequiredType>,
     callback?: Callback
 ): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'Every Required Type',
+        properties: {
+            ...message.properties,
+        },
+    });
+
     const a = analytics()
     if (a) {
-        a.track(
-            withTypewriterContext({
-                ...message,
-                event: 'Every Required Type',
-                properties: {
-                    ...message.properties,
-                },
-            }),
-            callback,
-        );
+        a.track(event,callback);
     } else {
         throw missingAnalyticsNodeError
     }
@@ -2498,18 +2525,17 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<LargeNumbersEvent>,
     callback?: Callback
 ): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'Large Numbers Event',
+        properties: {
+            ...message.properties,
+        },
+    });
+
     const a = analytics()
     if (a) {
-        a.track(
-            withTypewriterContext({
-                ...message,
-                event: 'Large Numbers Event',
-                properties: {
-                    ...message.properties,
-                },
-            }),
-            callback,
-        );
+        a.track(event,callback);
     } else {
         throw missingAnalyticsNodeError
     }
@@ -2526,18 +2552,17 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<NestedArrays>,
     callback?: Callback
 ): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'Nested Arrays',
+        properties: {
+            ...message.properties,
+        },
+    });
+
     const a = analytics()
     if (a) {
-        a.track(
-            withTypewriterContext({
-                ...message,
-                event: 'Nested Arrays',
-                properties: {
-                    ...message.properties,
-                },
-            }),
-            callback,
-        );
+        a.track(event,callback);
     } else {
         throw missingAnalyticsNodeError
     }
@@ -2554,18 +2579,17 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<NestedObjects>,
     callback?: Callback
 ): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'Nested Objects',
+        properties: {
+            ...message.properties,
+        },
+    });
+
     const a = analytics()
     if (a) {
-        a.track(
-            withTypewriterContext({
-                ...message,
-                event: 'Nested Objects',
-                properties: {
-                    ...message.properties,
-                },
-            }),
-            callback,
-        );
+        a.track(event,callback);
     } else {
         throw missingAnalyticsNodeError
     }
@@ -2582,18 +2606,17 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<PropertiesCollided>,
     callback?: Callback
 ): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'Properties Collided',
+        properties: {
+            ...message.properties,
+        },
+    });
+
     const a = analytics()
     if (a) {
-        a.track(
-            withTypewriterContext({
-                ...message,
-                event: 'Properties Collided',
-                properties: {
-                    ...message.properties,
-                },
-            }),
-            callback,
-        );
+        a.track(event,callback);
     } else {
         throw missingAnalyticsNodeError
     }
@@ -2610,18 +2633,17 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<PropertyObjectNameCollision1>,
     callback?: Callback
 ): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'Property Object Name Collision #1',
+        properties: {
+            ...message.properties,
+        },
+    });
+
     const a = analytics()
     if (a) {
-        a.track(
-            withTypewriterContext({
-                ...message,
-                event: 'Property Object Name Collision #1',
-                properties: {
-                    ...message.properties,
-                },
-            }),
-            callback,
-        );
+        a.track(event,callback);
     } else {
         throw missingAnalyticsNodeError
     }
@@ -2638,18 +2660,17 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<PropertyObjectNameCollision2>,
     callback?: Callback
 ): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'Property Object Name Collision #2',
+        properties: {
+            ...message.properties,
+        },
+    });
+
     const a = analytics()
     if (a) {
-        a.track(
-            withTypewriterContext({
-                ...message,
-                event: 'Property Object Name Collision #2',
-                properties: {
-                    ...message.properties,
-                },
-            }),
-            callback,
-        );
+        a.track(event,callback);
     } else {
         throw missingAnalyticsNodeError
     }
@@ -2666,18 +2687,17 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<PropertySanitized>,
     callback?: Callback
 ): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'Property Sanitized',
+        properties: {
+            ...message.properties,
+        },
+    });
+
     const a = analytics()
     if (a) {
-        a.track(
-            withTypewriterContext({
-                ...message,
-                event: 'Property Sanitized',
-                properties: {
-                    ...message.properties,
-                },
-            }),
-            callback,
-        );
+        a.track(event,callback);
     } else {
         throw missingAnalyticsNodeError
     }
@@ -2694,18 +2714,17 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<SimpleArrayTypes>,
     callback?: Callback
 ): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'Simple Array Types',
+        properties: {
+            ...message.properties,
+        },
+    });
+
     const a = analytics()
     if (a) {
-        a.track(
-            withTypewriterContext({
-                ...message,
-                event: 'Simple Array Types',
-                properties: {
-                    ...message.properties,
-                },
-            }),
-            callback,
-        );
+        a.track(event,callback);
     } else {
         throw missingAnalyticsNodeError
     }
@@ -2722,18 +2741,17 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<UnionType>,
     callback?: Callback
 ): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'Union Type',
+        properties: {
+            ...message.properties,
+        },
+    });
+
     const a = analytics()
     if (a) {
-        a.track(
-            withTypewriterContext({
-                ...message,
-                event: 'Union Type',
-                properties: {
-                    ...message.properties,
-                },
-            }),
-            callback,
-        );
+        a.track(event,callback);
     } else {
         throw missingAnalyticsNodeError
     }
@@ -2750,18 +2768,17 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<NoIDType>,
     callback?: Callback
 ): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'NoID type',
+        properties: {
+            ...message.properties,
+        },
+    });
+
     const a = analytics()
     if (a) {
-        a.track(
-            withTypewriterContext({
-                ...message,
-                event: 'NoID type',
-                properties: {
-                    ...message.properties,
-                },
-            }),
-            callback,
-        );
+        a.track(event,callback);
     } else {
         throw missingAnalyticsNodeError
     }

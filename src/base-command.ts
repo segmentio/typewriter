@@ -121,7 +121,7 @@ export abstract class BaseCommand extends Command {
       error: err,
       rawCommand: this.argv.join(" "),
       errorCode: err.exitCode,
-      isCI: this.isCI,
+      isCI: `${this.isCI}`,
     } as CommandError);
     // We do a flush here manually cause oclif doesn't run the postrun hook for errors
     try {

@@ -227,7 +227,7 @@ function createCodeGeneratorFromTemplate(
           const metadata: EventMetadata = type
             .getAttributes()
             .get(eventMetadataAttributeKind);
-          console.log(metadata);
+
           tags.type.push({
             eventName: metadata.name,
             eventType: metadata.type,
@@ -369,9 +369,11 @@ function eventAttributesProducer(
   if (typeof schema !== "object" || schema.eventMetadata === undefined)
     return undefined;
 
+  // Remove the eventMetadata from the raw schema
+  const { eventMetadata, ...rawSchema } = schema;
   const metadata = eventMetadataAttributeKind.makeAttributes({
     ...schema.eventMetadata,
-    raw: schema,
+    raw: rawSchema,
   });
 
   return { forType: metadata };
