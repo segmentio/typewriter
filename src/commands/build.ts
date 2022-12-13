@@ -115,6 +115,22 @@ export default class Build extends BaseCommand {
       );
     }
 
+    if (flags.update === false) {
+      this.log(
+        chalk.gray(
+          `Running build without ${chalk.yellow(
+            `--update`
+          )} flag. Build will not pull down tracking plan changes from Segment. \nRun ${chalk.yellow(
+            this.rawCommand
+          )} ${chalk.yellow(
+            `--update`
+          )} to fetch and build or manually update without building by running ${chalk.yellow(
+            `typewriter update`
+          )}.\n`
+        )
+      );
+    }
+
     CliUx.ux.action.start("Loading tracking plans");
 
     const trackingPlans = await loadTrackingPlans(
