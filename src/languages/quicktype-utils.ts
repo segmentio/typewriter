@@ -1,9 +1,9 @@
-import { debug as debugRegister } from 'debug';
-import * as fs from 'fs';
-import Handlebars from 'handlebars';
-import { DistinctQuestion } from 'inquirer';
-import { EOL } from 'os';
-import { resolve } from 'path';
+import { debug as debugRegister } from "debug";
+import * as fs from "fs";
+import Handlebars from "handlebars";
+import { DistinctQuestion } from "inquirer";
+import { EOL } from "os";
+import { resolve } from "path";
 import {
   ConvenienceRenderer,
   getTargetLanguage,
@@ -21,10 +21,10 @@ import {
   TargetLanguage,
   Type,
   TypeAttributeKind,
-} from 'quicktype-core';
-import { originalWord } from 'quicktype-core/dist/support/Strings';
-import { isNamedType } from 'quicktype-core/dist/TypeUtils';
-import { SegmentAPI } from '../api';
+} from "quicktype-core";
+import { originalWord } from "quicktype-core/dist/support/Strings";
+import { isNamedType } from "quicktype-core/dist/TypeUtils";
+import { SegmentAPI } from "../api";
 import {
   CodeGenerator,
   FileGenerateResult,
@@ -32,14 +32,14 @@ import {
   LanguageGenerator,
   QuicktypeTypewriterSettings,
   TemplateContext,
-} from './types';
+} from "./types";
 
-const debug = debugRegister('typewriter:quicktype-utils');
+const debug = debugRegister("typewriter:quicktype-utils");
 
 const INDENT_SIZE = 4;
 
 function addPrefixAndSuffix(name: string, prefix?: string, suffix?: string) {
-  return `${prefix ?? ''} ${name} ${suffix ?? ''}`;
+  return `${prefix ?? ""} ${name} ${suffix ?? ""}`;
 }
 
 /**
@@ -48,7 +48,7 @@ function addPrefixAndSuffix(name: string, prefix?: string, suffix?: string) {
 const modWithPrefixAndSuffix = (
   prefix?: string,
   suffix?: string,
-  modifier?: (name: string) => string,
+  modifier?: (name: string) => string
 ): ((name: string) => string) => {
   return (name: string) => {
     const modName = addPrefixAndSuffix(name, prefix, suffix);
@@ -67,7 +67,7 @@ export function makeNameForTopLevelWithPrefixAndSuffix(
   typewriterSettings: QuicktypeTypewriterSettings,
   t: Type,
   givenName: string,
-  maybeNamedType?: Type,
+  maybeNamedType?: Type
 ): Name {
   const { prefix, suffix } = typewriterSettings.typeNameModifiers ?? {};
   const modName = addPrefixAndSuffix(givenName, prefix, suffix);
@@ -86,7 +86,7 @@ function toInquirerQuestion(option: OptionDefinition): DistinctQuestion {
   // Option setting
   if (option.legalValues !== undefined && option.legalValues.length > 0) {
     return {
-      type: option.multiple ? 'checkbox' : 'list',
+      type: option.multiple ? "checkbox" : "list",
       name: option.name,
       message: option.description,
       choices: option.legalValues,
@@ -97,7 +97,7 @@ function toInquirerQuestion(option: OptionDefinition): DistinctQuestion {
   // String setting
   if (option.type === String) {
     return {
-      type: 'input',
+      type: "input",
       name: option.name,
       message: option.description,
       default: option.defaultValue,
@@ -106,7 +106,7 @@ function toInquirerQuestion(option: OptionDefinition): DistinctQuestion {
 
   // Boolean Option
   return {
-    type: 'confirm',
+    type: "confirm",
     name: option.name,
     message: option.description,
     default: option.defaultValue,
@@ -122,7 +122,7 @@ function toInquirerQuestion(option: OptionDefinition): DistinctQuestion {
 export function getLanguageMetadata(
   language: string,
   unsupportedOptions: string[] = [],
-  requiredOptions: string[] = [],
+  requiredOptions: string[] = []
 ): LanguageMetadata {
   const lang = getTargetLanguage(language);
 
@@ -159,15 +159,15 @@ export function getLanguageMetadata(
  */
 export function calculateLineIndentationLevel(
   line: string,
-  indentSize: number = INDENT_SIZE,
+  indentSize: number = INDENT_SIZE
 ): { indent: number; text: string | null } {
   const len = line.length;
   let indent = 0;
   for (let i = 0; i < len; i++) {
     const c = line.charAt(i);
-    if (c === ' ') {
+    if (c === " ") {
       indent += 1;
-    } else if (c === '\t') {
+    } else if (c === "\t") {
       indent = (indent / indentSize + 1) * indentSize;
     } else {
       return { indent, text: line.substring(i) };
@@ -191,7 +191,9 @@ export function createCodeGeneratorsFromTemplates(
   nameModifiers?: NameModifiers,
   ...paths: string[]
 ): CodeGenerator[] {
-  return paths.map((path) => createCodeGeneratorFromTemplate(path, context, nameModifiers));
+  return paths.map((path) =>
+    createCodeGeneratorFromTemplate(path, context, nameModifiers)
+  );
 }
 
 /**
@@ -203,12 +205,12 @@ export function createCodeGeneratorsFromTemplates(
 function createCodeGeneratorFromTemplate(
   path: string,
   context: TemplateContext,
-  nameModifiers?: NameModifiers,
+  nameModifiers?: NameModifiers
 ): CodeGenerator {
   const absolutePath = resolve(__dirname, path);
   try {
     const template = fs.readFileSync(absolutePath);
-    Handlebars.registerHelper('eq', (a, b) => a === b);
+    Handlebars.registerHelper("eq", (a, b) => a === b);
     const generator = Handlebars.compile(template.toString());
 
     return (renderer) => {
@@ -220,27 +222,37 @@ function createCodeGeneratorFromTemplate(
 
       // @ts-ignore this is a protected method but we need it to access the particulars of each type
       renderer.forEachTopLevel(
-        'none',
+        "none",
         (type, name) => {
-          const metadata: EventMetadata = type.getAttributes().get(eventMetadataAttributeKind);
+          const metadata: EventMetadata = type
+            .getAttributes()
+            .get(eventMetadataAttributeKind);
+
           tags.type.push({
             eventName: metadata.name,
             eventType: metadata.type,
             // @ts-ignore
-            description: renderer.descriptionForType(type)?.join(' '),
+            description: renderer.descriptionForType(type)?.join(" "),
             // @ts-ignore
-            functionName: renderer.sourcelikeToString(modifySource(nameModifiers?.functionName ?? originalWord, name)),
+            functionName: renderer.sourcelikeToString(
+              modifySource(nameModifiers?.functionName ?? originalWord, name)
+            ),
             // @ts-ignore
             typeName: renderer.sourcelikeToString(name),
+            rawJSONSchema: JSON.stringify(metadata.raw),
           });
         },
-        isNamedType,
+        isNamedType
       );
 
       return renderer.emitMultiline(generator(tags));
     };
   } catch (error) {
-    throw new Error(`Error while reading template at ${absolutePath}: ${JSON.stringify(error)}`);
+    throw new Error(
+      `Error while reading template at ${absolutePath}: ${JSON.stringify(
+        error
+      )}`
+    );
   }
 }
 
@@ -251,8 +263,12 @@ function createCodeGeneratorFromTemplate(
  * @param indentSize indent size in spaces number
  * @returns
  */
-export function emitMultiline(renderer: ConvenienceRenderer, linesString: string, indentSize: number = 4): void {
-  const lines = linesString.split('\n');
+export function emitMultiline(
+  renderer: ConvenienceRenderer,
+  linesString: string,
+  indentSize: number = 4
+): void {
+  const lines = linesString.split("\n");
   const numLines = lines.length;
   if (numLines === 0) return;
   renderer.emitLine(lines[0]);
@@ -265,7 +281,7 @@ export function emitMultiline(renderer: ConvenienceRenderer, linesString: string
       const leadSpaces = indent % indentSize;
       renderer.changeIndent(newIndent - currentIndent);
       currentIndent = newIndent;
-      renderer.emitLine(' '.repeat(leadSpaces), text);
+      renderer.emitLine(" ".repeat(leadSpaces), text);
     } else {
       renderer.emitLine();
     }
@@ -281,7 +297,10 @@ export function emitMultiline(renderer: ConvenienceRenderer, linesString: string
  * @param templatePlan an array of CodeGenerator functions to execute
  * @param nameModifiers Name Modifiers to apply for functions and types
  */
-export function executeRenderPlan(renderer: ConvenienceRenderer, templatePlan: CodeGenerator[]): void {
+export function executeRenderPlan(
+  renderer: ConvenienceRenderer,
+  templatePlan: CodeGenerator[]
+): void {
   if (templatePlan.length === 0) {
     return;
   }
@@ -303,10 +322,12 @@ export function executeRenderPlan(renderer: ConvenienceRenderer, templatePlan: C
 export function cleanOptions(
   options: GeneratorOptions,
   defaultValues: { [key: string]: any } = {},
-  unsupportedOptions: string[] = [],
+  unsupportedOptions: string[] = []
 ): GeneratorOptions {
   const filteredOptions = Object.fromEntries(
-    Object.entries(options).filter(([key, _]) => !unsupportedOptions.includes(key as string)),
+    Object.entries(options).filter(
+      ([key, _]) => !unsupportedOptions.includes(key as string)
+    )
   );
   return {
     ...defaultValues,
@@ -317,11 +338,12 @@ export function cleanOptions(
 interface EventMetadata {
   name: string;
   type: SegmentAPI.RuleType;
+  raw: JSONSchema;
 }
 
 class EventMetadataAttributeKind extends TypeAttributeKind<EventMetadata> {
   constructor() {
-    super('eventMetadata');
+    super("eventMetadata");
   }
 
   combine(attrs: EventMetadata[]): EventMetadata | undefined {
@@ -333,7 +355,8 @@ class EventMetadataAttributeKind extends TypeAttributeKind<EventMetadata> {
   }
 }
 
-const eventMetadataAttributeKind: TypeAttributeKind<EventMetadata> = new EventMetadataAttributeKind();
+const eventMetadataAttributeKind: TypeAttributeKind<EventMetadata> =
+  new EventMetadataAttributeKind();
 
 /**
  * Extracts and injects the event metadata into the attributes for the quicktype types
@@ -341,11 +364,17 @@ const eventMetadataAttributeKind: TypeAttributeKind<EventMetadata> = new EventMe
 function eventAttributesProducer(
   schema: JSONSchema,
   _canonicalRef: Ref | undefined,
-  _types: Set<JSONSchemaType>,
+  _types: Set<JSONSchemaType>
 ): JSONSchemaAttributes | undefined {
-  if (typeof schema !== 'object' || schema.eventMetadata === undefined) return undefined;
+  if (typeof schema !== "object" || schema.eventMetadata === undefined)
+    return undefined;
 
-  const metadata = eventMetadataAttributeKind.makeAttributes(schema.eventMetadata);
+  // Remove the eventMetadata from the raw schema
+  const { eventMetadata, ...rawSchema } = schema;
+  const metadata = eventMetadataAttributeKind.makeAttributes({
+    ...schema.eventMetadata,
+    raw: rawSchema,
+  });
 
   return { forType: metadata };
 }
@@ -355,10 +384,15 @@ function eventAttributesProducer(
  * @param rules Segment PublicAPI Rules object
  * @returns InputData object for Quicktype to read as a JSON Schema
  */
-async function getSchemaInputData(rules: SegmentAPI.RuleMetadata[]): Promise<InputData> {
+async function getSchemaInputData(
+  rules: SegmentAPI.RuleMetadata[]
+): Promise<InputData> {
   const schemaInput = new JSONSchemaInput(undefined, [eventAttributesProducer]);
   for (const rule of rules ?? []) {
-    await schemaInput.addSource({ name: rule.key, schema: JSON.stringify(rule.jsonSchema) });
+    await schemaInput.addSource({
+      name: rule.key,
+      schema: JSON.stringify(rule.jsonSchema),
+    });
   }
   const inputData = new InputData();
   inputData.addInput(schemaInput);
@@ -375,7 +409,7 @@ async function getSchemaInputData(rules: SegmentAPI.RuleMetadata[]): Promise<Inp
 export async function generateWithQuicktype(
   language: string | TargetLanguage,
   rules: SegmentAPI.RuleMetadata[],
-  options: GeneratorOptions,
+  options: GeneratorOptions
 ): Promise<FileGenerateResult> {
   const { header, sdk, outputFilename, ...rendererOptions } = options;
   const inputData = await getSchemaInputData(rules);
@@ -454,11 +488,22 @@ interface FactoryConfig<T extends TargetLanguage> {
  * @returns a LanguageGenerator object for Typewriter
  */
 export function createQuicktypeLanguageGenerator<T extends TargetLanguage>(
-  config: FactoryConfig<T>,
+  config: FactoryConfig<T>
 ): LanguageGenerator {
-  const { name, quicktypeLanguage, supportedSDKs, defaultOptions, unsupportedOptions, nameModifiers, requiredOptions } =
-    config;
-  const metadata = getLanguageMetadata(name, unsupportedOptions, requiredOptions);
+  const {
+    name,
+    quicktypeLanguage,
+    supportedSDKs,
+    defaultOptions,
+    unsupportedOptions,
+    nameModifiers,
+    requiredOptions,
+  } = config;
+  const metadata = getLanguageMetadata(
+    name,
+    unsupportedOptions,
+    requiredOptions
+  );
 
   const sdks: { [key: string]: string } = {};
   const templates: { [key: string]: string | undefined } = {};
@@ -479,20 +524,20 @@ export function createQuicktypeLanguageGenerator<T extends TargetLanguage>(
     generate: async (
       rules: SegmentAPI.RuleMetadata[],
       context: TemplateContext,
-      options: GeneratorOptions,
+      options: GeneratorOptions
     ): Promise<FileGenerateResult> => {
       const { sdk, prefixes, suffixes } = options;
       let codeGenerators: CodeGenerator[];
       const templatePath = templates[sdk.toLocaleLowerCase()];
       debug(
-        'Starting Quicktype Generator for SDK:',
+        "Starting Quicktype Generator for SDK:",
         sdk,
-        'Language:',
+        "Language:",
         metadata.name,
-        'Template Path:',
+        "Template Path:",
         templatePath,
-        'Options',
-        options,
+        "Options",
+        options
       );
       if (templatePath === undefined) {
         codeGenerators = [];
@@ -502,10 +547,14 @@ export function createQuicktypeLanguageGenerator<T extends TargetLanguage>(
           functionName: modWithPrefixAndSuffix(
             prefixes?.functionName,
             suffixes?.functionName,
-            nameModifiers?.functionName,
+            nameModifiers?.functionName
           ),
         };
-        codeGenerators = createCodeGeneratorsFromTemplates(context, mods, templatePath);
+        codeGenerators = createCodeGeneratorsFromTemplates(
+          context,
+          mods,
+          templatePath
+        );
         debug(`Generate ${metadata.name} using template: ${templatePath}`);
       }
 
@@ -518,7 +567,7 @@ export function createQuicktypeLanguageGenerator<T extends TargetLanguage>(
           },
         }),
         rules,
-        cleanOptions(options, defaultOptions, unsupportedOptions),
+        cleanOptions(options, defaultOptions, unsupportedOptions)
       );
     },
   };

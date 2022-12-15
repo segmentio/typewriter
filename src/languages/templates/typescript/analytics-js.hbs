@@ -7,7 +7,7 @@
  * 
  * You can install it with: `npm install --save-dev ajv`.
  */
-import Ajv from 'ajv'
+import Ajv, { ErrorObject } from 'ajv'
 {{/if}}
 
 /**
@@ -114,7 +114,7 @@ export interface Context extends Record<string, any> {
 export type ViolationHandler = (
 	message: Record<string, any>,
 	{{!-- Swap the type definitions here so we don't want depend on ajv in production just for this type definition. --}}
-	violations: {{#if isDevelopment}}Ajv.ErrorObject{{else}}any{{/if}}[]
+	violations: {{#if isDevelopment}}ErrorObject{{else}}any{{/if}}[]
 ) => void
 
 /**
@@ -192,9 +192,7 @@ function validateAgainstSchema(
 	message: Record<string, any>,
 	schema: object
 ) {
-	const ajv = new Ajv({ schemaId: 'auto', allErrors: true, verbose: true })
-	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
-	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
+	const ajv = new Ajv({ allErrors: true, verbose: true })
 
 	if (!ajv.validate(schema, message) && ajv.errors) {
 		onViolation(message, ajv.errors)
@@ -229,6 +227,12 @@ function withTypewriterContext(message: Options = {}): Options {
  * 	call is fired.
  */
 export function {{functionName}}(props: {{typeName}}, options?: Options, callback?: Callback): void {
+
+	{{#if ../isDevelopment}}
+	const schema = {{{rawJSONSchema}}};
+	validateAgainstSchema(props, schema);
+	{{/if}}
+
   const a = analytics();
   if (a) {
     a.track('{{eventName}}', props || {}, {...options,   context: {

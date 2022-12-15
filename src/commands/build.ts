@@ -220,7 +220,7 @@ export default class Build extends BaseCommand {
           this.workspaceConfig,
           this.tokenMetadata?.method
         ),
-        isCI: this.isCI,
+        isCI: `${this.isCI}`,
         mode: flags.mode === "dev" ? Mode.Dev : Mode.Prod,
         workspace: this.workspace?.id,
         duration: process.hrtime(startTime)[1],
