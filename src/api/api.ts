@@ -6,6 +6,7 @@ import got, {
   RequestError,
   TimeoutError,
 } from "got";
+import { hostname } from "os";
 import { isWrappedError, wrapError } from "../common";
 import { sanitizeTrackingPlan } from "./trackingplans";
 
@@ -250,17 +251,33 @@ async function apiGet<T>(
   token: string,
   options?: OptionsOfJSONResponseBody
 ): Promise<T> {
+  const baseHostname = "api.segmentapis.com";
+  const authHeaders = { authorization: `Bearer ${token.trim()}` };
   const resp = got<T>(url, {
-    prefixUrl: "https://api.segmentapis.com",
+    prefixUrl: `https://${baseHostname}`,
     headers: {
       "User-Agent": `Segment (typewriter/${pjson.version})`,
-      Authorization: `Bearer ${token.trim()}`,
+      ...authHeaders,
     },
+    followRedirect: true,
+    methodRewriting: true,
     timeout: {
       request: 10_000, // ms
     },
     ...options,
-  }).json<T>();
+  })
+    // Got tries to hide the auth headers if the hostname doesn't match 1:1.
+    // This is a problem since Segment API uses subdomains for EU.
+    // For security we prevent leaking the Auth headers if the URL is not a subdomain of our main API URL
+    .on("redirect", (_response, nextOptions) => {
+      if (nextOptions.url.hostname.endsWith(baseHostname)) {
+        nextOptions.headers = {
+          ...nextOptions.headers,
+          ...authHeaders,
+        };
+      }
+    })
+    .json<T>();
 
   let body: T;
   try {
