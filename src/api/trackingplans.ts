@@ -12,6 +12,7 @@ import {
 } from "../config";
 import { fetchTrackingPlan, SegmentAPI } from "./api";
 import chalk from "chalk";
+import { SomeJSONSchema } from "ajv/dist/types/json-schema";
 
 const debug = debugRegister("typewriter:trackingplans");
 
@@ -162,7 +163,6 @@ export async function loadTrackingPlans(
       try {
         newTrackingPlan = await fetchTrackingPlan(
           trackingPlanConfig.id,
-
           apiToken
         );
       } catch (error) {
@@ -212,6 +212,103 @@ function sanitizeKey(key: string): string {
   return key.replace("#", "");
 }
 
+/**
+ * Unwraps the properties so that they are not double nested inside .properties.properties
+ * Also fixes the key property (non-breaking)
+ */
+const fixProperties = (
+  plan: SegmentAPI.RuleMetadata
+): SegmentAPI.RuleMetadata => {
+  // If we added the eventMetadata we have already done this unwrapping, no need to do it again
+  if (plan.jsonSchema.eventMetadata !== undefined) {
+    return plan;
+  }
+
+  const innerProperties =
+    plan.jsonSchema.properties?.properties?.properties ?? {};
+
+  Object.keys(innerProperties).map((key) => {
+    if (innerProperties[key].id !== undefined) {
+      innerProperties[key].id = (innerProperties[key].id as string).replace(
+        "/properties/properties/properties/",
+        "/properties/"
+      );
+    }
+  });
+
+  return {
+    ...plan,
+    key: sanitizeKey(plan.key),
+    jsonSchema: {
+      ...plan.jsonSchema,
+      ...plan.jsonSchema.properties?.properties,
+      properties: innerProperties,
+
+      // We add some additional properties:
+      eventMetadata: {
+        name: plan.key,
+        type: plan.type, // Event Type (Track, Identify, etc)
+      },
+    },
+  } as SegmentAPI.RuleMetadata;
+};
+
+const getChildrenOfProp = (
+  obj: SomeJSONSchema,
+  prop: string
+): SomeJSONSchema[] => {
+  const dictionary = obj[prop];
+  if (dictionary !== undefined && dictionary !== null) {
+    return Object.keys(dictionary).map((k) => dictionary[k]);
+  }
+  return [];
+};
+
+/**
+ * Fixes the id -> $id issue of the API JSONSchema objects as AJV will mark them as non-compliant to the Schema Draft7+
+ */
+const fixJSONSchemaIds = (
+  plan: SegmentAPI.RuleMetadata
+): SegmentAPI.RuleMetadata => {
+  if (plan.jsonSchema.$id !== undefined) {
+    return plan;
+  }
+
+  // The first level is missing the .id, uses .key instead so we set it here so that the rest can be executed as normal
+  plan.jsonSchema.$id = plan.key;
+  plan.jsonSchema.id = plan.key;
+
+  const toFix = [plan.jsonSchema];
+
+  while (toFix.length > 0) {
+    const schema = toFix.pop();
+
+    if (schema === undefined) {
+      continue;
+    }
+
+    if (schema.id !== undefined) {
+      schema.$id = schema.id;
+      delete schema.id;
+    }
+
+    toFix.push(...getChildrenOfProp(schema, "properties"));
+
+    if (schema?.items !== undefined && schema?.items !== null) {
+      schema.items.$id = schema.items.id;
+      delete schema.items.id;
+      toFix.push(...getChildrenOfProp(schema.items, "properties"));
+    }
+  }
+
+  return plan;
+};
+
+/**
+ * Fixes several problems with the JSONSchema returned by the API to play nice with our generator tools: quicktype and AJV
+ * - Fixes the properties being nested several levels deep (to mimic the whole event structure)
+ * - Fixes the IDs of the properties not being properly named for the JSONSchema draft 7 spec: removes .id, replaces with .$id
+ */
 export function sanitizeTrackingPlan(
   plan: SegmentAPI.TrackingPlan
 ): SegmentAPI.TrackingPlan {
@@ -229,38 +326,9 @@ export function sanitizeTrackingPlan(
         )
       )
       // The Tracking Plan returned by PAPI wraps the event in a context and other properties object, we unwrap it here as we only care about the inner type
-      .map((plan) => {
-        // If we added the eventMetadata we have already done this unwrapping, no need to do it again
-        if (plan.jsonSchema.eventMetadata !== undefined) {
-          return plan;
-        }
-
-        const innerProperties =
-          plan.jsonSchema.properties?.properties?.properties ?? {};
-
-        Object.keys(innerProperties).map((key) => {
-          if (innerProperties[key].id !== undefined) {
-            innerProperties[key].id = (
-              innerProperties[key].id as string
-            ).replace("/properties/properties/properties/", "/properties/");
-          }
-        });
-
-        return {
-          ...plan,
-          key: sanitizeKey(plan.key),
-          jsonSchema: {
-            ...plan.jsonSchema,
-            ...plan.jsonSchema.properties?.properties, // This is needed to unwrap required, type and other additional info
-            properties: innerProperties, // We need our own transformed object of the properties
-            // We add some additional properties:
-            eventMetadata: {
-              name: plan.key, // The unsanitized original evne name
-              type: plan.type, // Event Type (Track, Identify, etc)
-            },
-          },
-        };
-      }),
+      .map(fixProperties)
+      // Fix the id -> $id problem with the JSON Schema returned by the API
+      .map(fixJSONSchemaIds),
   };
 
   return sortKeys(trackingPlan, { deep: true });
