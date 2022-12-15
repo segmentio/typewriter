@@ -12,6 +12,7 @@ import {
 } from "../config";
 import { fetchTrackingPlan, SegmentAPI } from "./api";
 import chalk from "chalk";
+import { CliUx } from "@oclif/core";
 import { SomeJSONSchema } from "ajv/dist/types/json-schema";
 
 const debug = debugRegister("typewriter:trackingplans");
@@ -142,17 +143,20 @@ export async function loadTrackingPlans(
     // or use it to identify what changed with the latest copy of this Tracking Plan.
     const previousTrackingPlan = await loadTrackingPlan(
       configPath,
-
       trackingPlanConfig
     );
 
+    const planName = trackingPlanConfig.name ?? trackingPlanConfig.id;
+
     if (previousTrackingPlan !== undefined) {
+      CliUx.ux.action.status = `Loaded tracking plan from file: ${previousTrackingPlan.name}`;
       debug(`Loaded previous tracking plan: ${previousTrackingPlan.name}`);
     }
 
     // If we don't have a copy of the Tracking Plan, then we would fatal error. Instead,
     // fallback to pulling down a new copy of the Tracking Plan.
     if (!forceUpdate && previousTrackingPlan === undefined) {
+      CliUx.ux.action.status = `No local copy found for ${planName}, fetching from API.`;
       debug("No local copy of this Tracking Plan, fetching from API.");
     }
 
@@ -161,6 +165,7 @@ export async function loadTrackingPlans(
     let newTrackingPlan: SegmentAPI.TrackingPlan | undefined;
     if (forceUpdate || previousTrackingPlan === undefined) {
       try {
+        CliUx.ux.action.status = `Fetching tracking plan ${planName}.`;
         newTrackingPlan = await fetchTrackingPlan(
           trackingPlanConfig.id,
           apiToken
@@ -169,20 +174,19 @@ export async function loadTrackingPlans(
         const errorMessage = isWrappedError(error)
           ? error.description
           : "API request failed";
-        debug(
-          `${errorMessage}. Using local copy of ${trackingPlanConfig.name} instead.`
-        );
+        debug(`${errorMessage}. Using local copy of ${planName} instead.`);
+        CliUx.ux.action.status = `Error fetching tracking plan ${planName}, using local copy instead.`;
       }
 
       if (newTrackingPlan !== undefined) {
+        CliUx.ux.action.status = `Updating local copy of tracking plan ${planName}.`;
         // Update plan.json with the latest Tracking Plan.
         await writeTrackingPlan(
           configPath,
-
           newTrackingPlan,
-
           trackingPlanConfig
         );
+        CliUx.ux.action.status = `Plan ${planName} updated.`;
       }
     }
 
