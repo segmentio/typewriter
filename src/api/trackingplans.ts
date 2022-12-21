@@ -1,8 +1,8 @@
 import { debug as debugRegister } from "debug";
 import stringify from "json-stable-stringify";
 import { flow } from "lodash";
-import fs from "node:fs";
-import { promisify } from "node:util";
+import fs from "fs";
+import { promisify } from "util";
 import sortKeys from "sort-keys";
 import { isWrappedError } from "../common";
 import {
