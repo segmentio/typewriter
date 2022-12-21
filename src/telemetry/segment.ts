@@ -248,15 +248,6 @@ export interface VersionCommand {
     version: string;
 }
 
-/**
- * Ajv is a peer dependency for development builds. It's used to apply run-time validation
- * to message payloads before passing them on to the underlying analytics instance.
- *
- * Note that the production bundle does not depend on Ajv.
- * 
- * You can install it with: `npm install --save-dev ajv`.
- */
-import Ajv, { ErrorObject } from 'ajv'
 import AnalyticsNode from 'analytics-node'
 
 /**
@@ -372,7 +363,7 @@ export interface Context extends Record<string, any> {
 
 export type ViolationHandler = (
     message: TrackMessage<Record<string, any>>,
-    violations: ErrorObject[]
+    violations: any[]
 ) => void
 
 /**
@@ -402,7 +393,6 @@ export type ViolationHandler = (
     console.warn(msg)
 }
 
-let onViolation = defaultValidationErrorHandler
 
 const missingAnalyticsNodeError = new Error(`You must set an analytics-node instance:
 
@@ -455,23 +445,8 @@ export interface TypewriterOptions {
  */
 export function setTypewriterOptions(options: TypewriterOptions) {
     analytics = options.analytics ? () => options.analytics : analytics
-    onViolation = options.onViolation || onViolation
 }
 
-/**
-    * Validates a message against a JSON Schema using Ajv. If the message
-    * is invalid, the `onViolation` handler will be called.
-    */
-function validateAgainstSchema(
-    message: TrackMessage<Record<string, any>>,
-    schema: object
-) {
-    const ajv = new Ajv({ allErrors: true, verbose: true })
-
-    if (!ajv.validate(schema, message.properties) && ajv.errors) {
-        onViolation(message, ajv.errors)
-    }
-}
 
 /**
  * Helper to attach metadata on Typewriter to outbound requests.
@@ -486,7 +461,7 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
             ...(message.context || {}),
             typewriter: {
                 language: 'typescript',
-                version: '8.0.8',
+                version: '8.0.9',
             },
         },
     }
@@ -505,7 +480,6 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<CommandBuild>,
     callback?: Callback
 ): void {
-    const schema = {"$id":"Command Build","$schema":"http://json-schema.org/draft-07/schema#","description":"Fired when the user generates code with Typewriter","properties":{"config":{"$id":"/properties/config","description":"Local Workspace configuration","properties":{"language":{"$id":"/properties/properties/properties/config/properties/language","description":"Language to Generate","type":"string"},"languageOptions":{"$id":"/properties/properties/properties/config/properties/languageOptions","description":"Advanced Language Options","type":"object"},"sdk":{"$id":"/properties/properties/properties/config/properties/sdk","description":"SDK to generate","type":"string"},"tokenType":{"$id":"/properties/properties/properties/config/properties/tokenType","description":"Type of token retrieval","enum":["global","input","script"],"type":"string"},"trackingPlans":{"$id":"/properties/properties/properties/config/properties/trackingPlans","description":"Tracking Plans to generate code for","items":{"$id":"/properties/properties/properties/config/properties/trackingPlans/items","description":"","properties":{"id":{"$id":"/properties/properties/properties/config/properties/trackingPlans/items/properties/id","description":"Tracking Plan ID","type":"string"},"path":{"$id":"/properties/properties/properties/config/properties/trackingPlans/items/properties/path","description":"Path to output code","type":"string"}},"required":[],"type":"object"},"type":"array"}},"required":["trackingPlans","language","sdk"],"type":"object"},"duration":{"$id":"/properties/duration","description":"Duration of the command in ms","type":"number"},"isCI":{"$id":"/properties/isCI","description":"Runs in a CI environment","type":"string"},"mode":{"$id":"/properties/mode","description":"Build Output mode","enum":["dev","prod"],"type":"string"},"rawCommand":{"$id":"/properties/rawCommand","description":"Raw command string input","type":"string"},"workspace":{"$id":"/properties/workspace","description":"User Segment Workspace","type":"string"}},"required":["workspace","config","mode","duration","isCI","rawCommand"],"type":"object"}
     const event = withTypewriterContext({
         ...message,
         event: 'Command Build',
@@ -513,7 +487,6 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
             ...message.properties,
         },
     });
-    validateAgainstSchema(event, schema)
 
     const a = analytics()
     if (a) {
@@ -534,7 +507,6 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<CommandError>,
     callback?: Callback
 ): void {
-    const schema = {"$id":"Command Error","$schema":"http://json-schema.org/draft-07/schema#","properties":{"config":{"$id":"/properties/config","description":"Local Workspace configuration","properties":{"language":{"$id":"/properties/properties/properties/config/properties/language","description":"Language to generate","type":"string"},"languageOptions":{"$id":"/properties/properties/properties/config/properties/languageOptions","description":"Advanced Language Options","type":"object"},"sdk":{"$id":"/properties/properties/properties/config/properties/sdk","description":"SDK to generate","type":"string"},"tokenType":{"$id":"/properties/properties/properties/config/properties/tokenType","description":"Type of token retrieval","enum":["global","input","script"],"type":"string"},"trackingPlans":{"$id":"/properties/properties/properties/config/properties/trackingPlans","description":"Tracking Plans to generate code for","items":{"$id":"/properties/properties/properties/config/properties/trackingPlans/items","description":"","properties":{"id":{"$id":"/properties/properties/properties/config/properties/trackingPlans/items/properties/id","description":"Tracking Plan ID","type":"string"},"path":{"$id":"/properties/properties/properties/config/properties/trackingPlans/items/properties/path","description":"Path to output code","type":"string"}},"required":[],"type":"object"},"type":"array"}},"required":["trackingPlans","language","sdk"],"type":"object"},"error":{"$id":"/properties/error","description":"Error Object","type":"object"},"errorCode":{"$id":"/properties/errorCode","description":"Exit code for the error","type":"number"},"errorMessage":{"$id":"/properties/errorMessage","description":"User friendly error message","type":"string"},"isCI":{"$id":"/properties/isCI","description":"Runs in a CI environment","type":"string"},"rawCommand":{"$id":"/properties/rawCommand","description":"Raw command string input","type":"string"},"workspace":{"$id":"/properties/workspace","description":"User Segment Workspace","type":"string"}},"required":["isCI","rawCommand","errorMessage","error"],"type":"object"}
     const event = withTypewriterContext({
         ...message,
         event: 'Command Error',
@@ -542,7 +514,6 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
             ...message.properties,
         },
     });
-    validateAgainstSchema(event, schema)
 
     const a = analytics()
     if (a) {
@@ -563,7 +534,6 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<CommandHelp>,
     callback?: Callback
 ): void {
-    const schema = {"$id":"Command Help","$schema":"http://json-schema.org/draft-07/schema#","properties":{"rawCommand":{"$id":"/properties/rawCommand","description":"Raw command string input","type":"string"}},"required":["rawCommand"],"type":"object"}
     const event = withTypewriterContext({
         ...message,
         event: 'Command Help',
@@ -571,7 +541,6 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
             ...message.properties,
         },
     });
-    validateAgainstSchema(event, schema)
 
     const a = analytics()
     if (a) {
@@ -592,7 +561,6 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<CommandInit>,
     callback?: Callback
 ): void {
-    const schema = {"$id":"Command Init","$schema":"http://json-schema.org/draft-07/schema#","description":"Init Events that initialize the settings for typewriter","labels":{"init":"initialize"},"properties":{"config":{"$id":"/properties/config","description":"Local Workspace configuration","properties":{"language":{"$id":"/properties/properties/properties/config/properties/language","description":"Language to generate","type":"string"},"languageOptions":{"$id":"/properties/properties/properties/config/properties/languageOptions","description":"Advanced Language Options","type":"object"},"sdk":{"$id":"/properties/properties/properties/config/properties/sdk","description":"SDK to generate","type":"string"},"tokenType":{"$id":"/properties/properties/properties/config/properties/tokenType","description":"Type of token retrieval","enum":["global","input","script"],"type":"string"},"trackingPlans":{"$id":"/properties/properties/properties/config/properties/trackingPlans","description":"Tracking Plans to generate code for","items":{"$id":"/properties/properties/properties/config/properties/trackingPlans/items","description":"","properties":{"id":{"$id":"/properties/properties/properties/config/properties/trackingPlans/items/properties/id","description":"Tracking Plan ID","type":"string"},"path":{"$id":"/properties/properties/properties/config/properties/trackingPlans/items/properties/path","description":"Path to output code","type":"string"}},"required":["id","path"],"type":"object"},"type":"array"},"workspace":{"$id":"/properties/properties/properties/config/properties/workspace","description":"User Segment Workspace","type":"string"}},"required":["language","sdk","tokenType","workspace","trackingPlans"],"type":"object"},"duration":{"$id":"/properties/duration","description":"Duration of the command in ms","type":"number"},"hasConfig":{"$id":"/properties/hasConfig","description":"Wether there is a workspace config already present","type":"boolean"},"rawCommand":{"$id":"/properties/rawCommand","description":"Raw command string input","type":"string"}},"required":["config","rawCommand","duration"],"type":"object"}
     const event = withTypewriterContext({
         ...message,
         event: 'Command Init',
@@ -600,7 +568,6 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
             ...message.properties,
         },
     });
-    validateAgainstSchema(event, schema)
 
     const a = analytics()
     if (a) {
@@ -621,7 +588,6 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<KitchenSink>,
     callback?: Callback
 ): void {
-    const schema = {"$id":"KitchenSink","$schema":"http://json-schema.org/draft-07/schema#","description":"KitchenSink Event for testing all possible data types","properties":{"aBoolean":{"$id":"/properties/aBoolean","description":"","type":"boolean"},"aDate":{"$id":"/properties/aDate","description":"","format":"date-time","type":"string"},"aNumber":{"$id":"/properties/aNumber","description":"","type":"number"},"aString":{"$id":"/properties/aString","description":"","type":"string"},"anArray":{"$id":"/properties/anArray","description":"","type":"array"},"anEnum":{"$id":"/properties/anEnum","description":"","enum":["another","value"],"type":"string"},"anInteger":{"$id":"/properties/anInteger","description":"","type":"integer"},"anObject":{"$id":"/properties/anObject","description":"","type":"object"},"anything":{"$id":"/properties/anything","description":""}},"type":"object"}
     const event = withTypewriterContext({
         ...message,
         event: 'KitchenSink',
@@ -629,7 +595,6 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
             ...message.properties,
         },
     });
-    validateAgainstSchema(event, schema)
 
     const a = analytics()
     if (a) {
@@ -650,7 +615,6 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
     message: TrackMessage<VersionCommand>,
     callback?: Callback
 ): void {
-    const schema = {"$id":"VersionCommand","$schema":"http://json-schema.org/draft-07/schema#","properties":{"version":{"$id":"/properties/version","description":"","type":"string"}},"required":["version"],"type":"object"}
     const event = withTypewriterContext({
         ...message,
         event: 'VersionCommand',
@@ -658,7 +622,6 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
             ...message.properties,
         },
     });
-    validateAgainstSchema(event, schema)
 
     const a = analytics()
     if (a) {
