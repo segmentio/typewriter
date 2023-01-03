@@ -268,6 +268,10 @@ const getChildrenOfProp = (
   return [];
 };
 
+const formatSchemaId = (id: string): string => {
+  return encodeURIComponent(id.replace(/ /g, "_"));
+};
+
 /**
  * Fixes the id -> $id issue of the API JSONSchema objects as AJV will mark them as non-compliant to the Schema Draft7+
  */
@@ -279,8 +283,9 @@ const fixJSONSchemaIds = (
   }
 
   // The first level is missing the .id, uses .key instead so we set it here so that the rest can be executed as normal
-  plan.jsonSchema.$id = plan.key;
-  plan.jsonSchema.id = plan.key;
+  const validKey = formatSchemaId(plan.key);
+  plan.jsonSchema.$id = validKey;
+  plan.jsonSchema.id = validKey;
 
   const toFix = [plan.jsonSchema];
 

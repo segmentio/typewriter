@@ -852,7 +852,7 @@ function withTypewriterContext(message: Options = {}): Options {
             ...(message.context || {}),
             typewriter: {
                 language: 'typescript',
-                version: '8.0.8',
+                version: '8.0.10',
             },
         },
     };
@@ -2317,7 +2317,7 @@ function withTypewriterContext<P, T extends TrackMessage<P>>(
             ...(message.context || {}),
             typewriter: {
                 language: 'typescript',
-                version: '8.0.8',
+                version: '8.0.10',
             },
         },
     }

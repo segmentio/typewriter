@@ -116,13 +116,15 @@ export abstract class BaseCommand extends Command {
     err: Error & { exitCode?: number | undefined }
   ): Promise<any> {
     this.segmentClient.commandError({
-      command: this.id,
-      errorMessage: `Error: ${err.message}\n${err.stack}`,
-      error: err,
-      rawCommand: this.argv.join(" "),
-      errorCode: err.exitCode,
-      isCI: `${this.isCI}`,
-    } as CommandError);
+      properties: {
+        command: this.id,
+        errorMessage: `Error: ${err.message}\n${err.stack}`,
+        error: err,
+        rawCommand: this.argv.join(" "),
+        errorCode: err.exitCode,
+        isCI: `${this.isCI}`,
+      } as CommandError,
+    });
     // We do a flush here manually cause oclif doesn't run the postrun hook for errors
     try {
       await this.segmentClient.flush();
