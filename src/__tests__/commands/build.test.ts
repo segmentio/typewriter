@@ -47,7 +47,7 @@ describe("build", () => {
         outputPath,
         legacyId
       );
-      await run(["build", "-c", testPath]);
+      const { stdout } = await run(["build", "-c", testPath]);
       expect(
         fs.readFileSync(path.join(testPath, filename), {
           encoding: "utf-8",

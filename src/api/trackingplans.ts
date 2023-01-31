@@ -268,8 +268,16 @@ const getChildrenOfProp = (
   return [];
 };
 
+const fixRemoveLabels = (
+  plan: SegmentAPI.RuleMetadata
+): SegmentAPI.RuleMetadata => {
+  delete plan.labels;
+  delete plan.jsonSchema.labels;
+  return plan;
+};
+
 const formatSchemaId = (id: string): string => {
-  return encodeURIComponent(id.replace(/ /g, "_"));
+  return encodeURIComponent(id.replace(/\s/g, "_"));
 };
 
 /**
@@ -286,6 +294,7 @@ const fixJSONSchemaIds = (
   const validKey = formatSchemaId(plan.key);
   plan.jsonSchema.$id = validKey;
   plan.jsonSchema.id = validKey;
+  debug(`Setting Plan: ${plan.key} to ID: ${plan.jsonSchema.id}`);
 
   const toFix = [plan.jsonSchema];
 
@@ -337,7 +346,9 @@ export function sanitizeTrackingPlan(
       // The Tracking Plan returned by PAPI wraps the event in a context and other properties object, we unwrap it here as we only care about the inner type
       .map(fixProperties)
       // Fix the id -> $id problem with the JSON Schema returned by the API
-      .map(fixJSONSchemaIds),
+      .map(fixJSONSchemaIds)
+      // Remove the labels dictionary
+      .map(fixRemoveLabels),
   };
 
   return sortKeys(trackingPlan, { deep: true });
