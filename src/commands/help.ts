@@ -28,7 +28,9 @@ export default class HelpCommand extends BaseCommand {
     await help.showHelp(argv);
 
     this.segmentClient.helpCommand({
-      rawCommand: this.rawCommand,
-    } as CommandHelp);
+      properties: {
+        rawCommand: this.rawCommand,
+      } as CommandHelp,
+    });
   }
 }

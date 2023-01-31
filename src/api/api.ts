@@ -88,6 +88,7 @@ export namespace SegmentAPI {
     key: string;
     type: RuleType;
     description?: string;
+    labels?: Record<string, string>;
     jsonSchema: SomeJSONSchema;
     version: number;
   };

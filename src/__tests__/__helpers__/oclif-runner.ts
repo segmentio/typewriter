@@ -4,6 +4,7 @@ import { stdout, stderr } from "stdout-stderr";
 export const run = async (argv: string[]) => {
   oclif.settings.debug = true;
   oclif.settings.tsnodeEnabled = true;
+  process.env.CI = "true";
   stdout.start();
   stderr.start();
   const onError = (reason: any) => {
