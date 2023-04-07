@@ -37,7 +37,7 @@
     "semver": "^7.3",
     "sort-keys": "^4.2.0",
     "terminal-link": "^2",
-    "typescript": "*",
+    "typescript": "4.9.5",
     "yaml": "^2.1.0"
   },
   "devDependencies": {
