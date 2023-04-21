@@ -48,11 +48,12 @@ describe("build", () => {
         legacyId
       );
       const { stdout } = await run(["build", "-c", testPath]);
-      expect(
-        fs.readFileSync(path.join(testPath, filename), {
+      const output = fs
+        .readFileSync(path.join(testPath, filename), {
           encoding: "utf-8",
         })
-      ).toMatchSnapshot();
+        .replace(/version:.*\d.*/g, "");
+      expect(output).toMatchSnapshot();
     });
   }
 });

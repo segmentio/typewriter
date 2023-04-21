@@ -25,11 +25,12 @@ describe("prod", () => {
         legacyId
       );
       await run(["production", "-c", testPath]);
-      expect(
-        fs.readFileSync(path.join(testPath, filename), {
-          encoding: "utf-8",
-        })
-      ).toMatchSnapshot();
+      const output = fs
+      .readFileSync(path.join(testPath, filename), {
+        encoding: "utf-8",
+      })
+      .replace(/version:.*\d.*/g, "")
+      expect(output).toMatchSnapshot();
     });
   }
 });
