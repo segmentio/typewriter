@@ -13,6 +13,7 @@ jobs:
       with:
         workflow_id: ${{ github.event.workflow.id }}
   build-and-test:
+    name: "Test (Node.js v${{ matrix.node-version }})"
     needs: cancel_previous
     runs-on: 'ubuntu-latest'
     strategy:
