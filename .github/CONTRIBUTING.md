@@ -17,6 +17,8 @@ Have an idea for improving Typewriter? [Submit an issue first](https://github.co
 ### Build and run locally
 
 ```sh
+# Use node version defined in .nvmrc
+$ nvm use
 # Install dependencies
 $ yarn
 # Test your Typewriter installation by regenerating Typewriter's typewriter client.

@@ -15,12 +15,15 @@ jobs:
   build-and-test:
     needs: cancel_previous
     runs-on: 'ubuntu-latest'
+    strategy:
+      matrix:
+        node-version: [ 14, 16, 18 ]
     steps: 
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: '16'
-          cache: 'yarn'
+          node-version: ${{ matrix.node-version }}
+          cache: yarn
       - name: Install
         run: yarn install --frozen-lockfile
       - name: Lint
