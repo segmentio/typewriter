@@ -63,7 +63,7 @@ const main = (async () => {
     ];
     await typeCheckFiles(allFilesToCheck);
   } catch (errors) {
-    console.error(JSON.stringify(errors));
+    console.error(errors);
     process.exit(1);
   }
 })();
