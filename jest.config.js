@@ -1,10 +1,8 @@
 module.exports = {
   preset: 'ts-jest',
-  testPathIgnorePatterns: [
-    './src/__tests__/__helpers__/',
-    './src/__tests__/__data__/'
-  ],
+  testMatch: ['**/?(*.)+(test).[jt]s?(x)'],
   modulePathIgnorePatterns: ['/dist/'],
+  setupFilesAfterEnv: ['./jest.setup.js'],
   globals: {
     'ts-jest': {
       tsconfig: 'tsconfig.json'
