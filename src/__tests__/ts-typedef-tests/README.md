@@ -1,6 +1,7 @@
+# Type definition "integration" tests for the typescript SDKs
+
 ```
 npx ts-node src/__tests__/ts-typedef-tests/run-tests.ts
-
 ```
 These tests confirm:
 - That the typescript clients have no type errors
