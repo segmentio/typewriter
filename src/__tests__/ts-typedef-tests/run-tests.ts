@@ -53,10 +53,6 @@ const typeCheckFiles = async (files: string[]) => {
   }
 };
 
-/**
- * Build typescript fixtures using cli
- * Typecheck  and tests
- */
 const main = (async () => {
   try {
     await buildFixtures();

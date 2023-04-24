@@ -100,7 +100,7 @@
     "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "yarn lint",
     "prepack": "yarn build && oclif manifest && oclif readme",
-    "test": "jest --runInBand",
+    "test": "yarn test:typedef && jest --runInBand",
     "test:typedef": "npx ts-node src/__tests__/ts-typedef-tests/run-tests.ts",
     "version": "oclif readme && git add README.md"
   },
