@@ -1,4 +1,5 @@
 import { AnalyticsBrowser, AnalyticsSnippet } from "@segment/analytics-next";
+// @ts-ignore
 import typewriter from "../build/typescript-analytics-js";
 
 () => {
