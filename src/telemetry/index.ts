@@ -1,5 +1,5 @@
 import { Config } from "@oclif/core";
-import Analytics from "analytics-node";
+import { Analytics } from "@segment/analytics-node";
 import { machineIdSync } from "node-machine-id";
 import { TokenMethod, WorkspaceConfig } from "../config";
 import typewriterClient, {
@@ -19,9 +19,9 @@ const writeKey =
     : // Development: https://app.segment.com/segment_prod/sources/typewriter_next_dev/overview
       "WoCqTlHJKOb9D8NepuSLItTGEkXxLKVV";
 
-const segmentClient = new Analytics(writeKey, {
-  flushAt: 1,
-  flushInterval: -1,
+const segmentClient = new Analytics({
+  writeKey,
+  maxEventsInBatch: 1,
   // We won't do anything if the analytics client is unable to contact Segment, just prevent a crash
   // @ts-ignore errorHandler is not showing up in the analytics-node types but it is publicly supported
   errorHandler: () => {},
@@ -143,8 +143,8 @@ const getSegmentClient = (config: Config) => {
       config,
       anonymousId
     ),
-    flush: () => {
-      segmentClient.flush();
+    closeAndFlush: () => {
+      return segmentClient.closeAndFlush();
     },
   };
 };
