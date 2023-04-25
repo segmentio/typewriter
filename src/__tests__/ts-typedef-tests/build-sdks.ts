@@ -23,16 +23,18 @@ export const buildSDKs = async () => {
       legacyId
     );
     await run(["production", "-c", testPath]);
+    // basically, we write the test files to a new build path relative to this script.
+    // typechecking ./test-env directly is a little complicated because of .tsconfig configuration + hashed directory name
     const output = fs
       .readFileSync(path.join(testPath, filename), {
         encoding: "utf-8",
       })
       .replace(/version:.*\d.*/g, "");
-    
-    const BUILD_PATH = path.resolve(__dirname, "build")
-    if (!fs.existsSync(BUILD_PATH)){
+
+    const BUILD_PATH = path.resolve(__dirname, "build");
+    if (!fs.existsSync(BUILD_PATH)) {
       fs.mkdirSync(BUILD_PATH);
-  }
+    }
     fs.writeFileSync(
       path.resolve(BUILD_PATH, `${language}-${sdk}.ts`),
       output,
@@ -40,5 +42,3 @@ export const buildSDKs = async () => {
     );
   }
 };
-
-
