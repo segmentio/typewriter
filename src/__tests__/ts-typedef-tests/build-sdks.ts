@@ -10,7 +10,7 @@ const configurations = [
   ["typescript", "analytics-js", "segment.ts"],
 ];
 
-export const buildFixtures = async () => {
+export const buildSDKs = async () => {
   for (const config of configurations) {
     const [language, sdk, filename, plan, id, outputPath, legacyId] = config;
     const testPath = await setupEnv(
@@ -28,8 +28,13 @@ export const buildFixtures = async () => {
         encoding: "utf-8",
       })
       .replace(/version:.*\d.*/g, "");
+    
+    const BUILD_PATH = path.resolve(__dirname, "build")
+    if (!fs.existsSync(BUILD_PATH)){
+      fs.mkdirSync(BUILD_PATH);
+  }
     fs.writeFileSync(
-      path.join(__dirname, "fixtures", `${language}-${sdk}.ts`),
+      path.resolve(BUILD_PATH, `${language}-${sdk}.ts`),
       output,
       { encoding: "utf-8" }
     );

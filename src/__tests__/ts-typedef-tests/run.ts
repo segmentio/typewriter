@@ -2,7 +2,7 @@ import { exec } from "node:child_process";
 import { promisify } from "node:util";
 import path from "node:path";
 import fs from "node:fs";
-import { buildFixtures } from "./build-fixtures";
+import { buildSDKs } from "./build-sdks";
 
 /**
  * Typecheck current project
@@ -66,9 +66,9 @@ const typecheckFiles = async (files: string[]) => {
    */
   const _main = (async () => {
     try {
-      await buildFixtures();
+      await buildSDKs();
       const PATHS_TO_TYPECHECK = [
-        path.resolve(__dirname, "fixtures"),
+        path.resolve(__dirname, "build"),
         path.resolve(__dirname, "tests"),
       ]
       const paths = PATHS_TO_TYPECHECK.flatMap(listFiles);
