@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     // https://www.npmjs.com/package/@tsconfig/node14
-    "lib": ["es2020"],
+    "lib": ["es2020", "DOM"],
     "module": "commonjs",
     "target": "es2020",
     "strict": true,

@@ -91,3 +91,7 @@ test-env/**
 
 # intelliJ
 .idea
+
+
+# all build artifacts
+**/build/**
