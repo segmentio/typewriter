@@ -101,7 +101,7 @@
     "posttest": "yarn lint",
     "prepack": "yarn build && oclif manifest && oclif readme",
     "test": "yarn test:typedef && jest --runInBand",
-    "test:typedef": "npx ts-node src/__tests__/ts-typedef-tests/run-tests.ts",
+    "test:typedef": "npx ts-node src/__tests__/ts-typedef-tests/run.ts",
     "version": "oclif readme && git add README.md"
   },
   "engines": {
