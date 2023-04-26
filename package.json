@@ -19,7 +19,7 @@
   ],
   "dependencies": {
     "@npmcli/ci-detect": "^2.0.0",
-    "@oclif/core": "^1.7",
+    "@oclif/core": "^1.26.2",
     "ajv": "^8.11.0",
     "analytics-node": "segmentio/analytics-node",
     "chalk": "^4",
