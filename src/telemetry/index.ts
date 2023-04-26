@@ -1,3 +1,4 @@
+import ciDetect from "@npmcli/ci-detect";
 import { Config } from "@oclif/core";
 import { Analytics } from "@segment/analytics-node";
 import { machineIdSync } from "node-machine-id";
@@ -110,11 +111,16 @@ const getSegmentClient = (config: Config) => {
   let anonymousId = "unknown";
   try {
     anonymousId = machineIdSync();
-  } catch (error) {
+  } catch (error: any) {
     typewriterClient.commandError(
       withContext(
         {
-          error: `Failed to generate an anonymous id: ${error}`,
+          properties: {
+            error: error,
+            isCI: `${ciDetect()}`,
+            rawCommand: '',
+            errorMessage: `Failed to generate an anonymous id: ${error}`,
+          },
         },
         config,
         anonymousId

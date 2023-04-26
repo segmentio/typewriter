@@ -94,6 +94,7 @@
   },
   "scripts": {
     "build": "shx rm -rf dist && tsc && copyfiles --up 1 \"src/**/*.hbs\" dist",
+    "build:telementry": "npm run build && ./bin/run -m=prod",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "postpack": "shx rm -f oclif.manifest.json",
