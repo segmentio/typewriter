@@ -248,6 +248,11 @@ export interface VersionCommand {
     version: string;
 }
 
+
+/**
+ * You can install `@segment/analytics-node` by following instructions at: 
+ * https://segment.com/docs/connections/sources/catalog/libraries/server/node
+ */
 import { Analytics, TrackParams } from '@segment/analytics-node'
 
 /**
