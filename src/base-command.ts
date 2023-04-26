@@ -127,7 +127,7 @@ export abstract class BaseCommand extends Command {
     });
     // We do a flush here manually cause oclif doesn't run the postrun hook for errors
     try {
-      await this.segmentClient.flush();
+      await this.segmentClient.closeAndFlush();
     } catch {}
     return super.catch(err);
   }

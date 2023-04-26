@@ -12,11 +12,20 @@ import Ajv, { ErrorObject } from 'ajv'
 
 /**
  * The analytics.js snippet should be available via window.analytics.
- * You can install it by following instructions at: https://segment.com/docs/sources/website/analytics.js/quickstart/
- * Make sure to also include the TypeScript declarations with: `npm install --dev @types/segment-analytics`
+ * You can install it by following instructions at: https://segment.com/docs/connections/sources/catalog/libraries/website/javascript/
+ * Make sure to also include the TypeScript declarations with: `npm install @segment/analytics-next` (install with --save-dev for type definitions only).
+ *
+ * If you don't want to use the snippet, you can also install the `@segment/analytics-next` library as a *production* dependency and use it like this: 
+ * ```ts
+ * import { Analytics } from '@segment/analytics-next' 
+ * import { setTypewriterOptions } from './analytics'
+ *
+ * const analytics = new Analytics({ writeKey: 'SEGMENT_WRITE_KEY' })
+ * 
+ * setTypewriterOptions({ analytics: analytics })
  */
 import type { AnalyticsSnippet, Analytics, AnalyticsBrowser, Options } from '@segment/analytics-next'
-
+ 
 declare global {
   interface Window {
     analytics: AnalyticsSnippet;

@@ -64,7 +64,7 @@ var defaultValidationErrorHandler = function (message, violations) {
 };
 exports.defaultValidationErrorHandler = defaultValidationErrorHandler;
 var onViolation = exports.defaultValidationErrorHandler;
-var missingAnalyticsNodeError = new Error(\\"You must set an analytics-node instance:\\\\n\\\\n>\\\\tconst SegmentAnalytics = require('analytics-node')\\\\n>\\\\tconst { setTypewriterOptions } = require('./analytics')\\\\n>\\\\n>\\\\tconst analytics = new SegmentAnalytics('SEGMENT_WRITE_KEY')\\\\n>\\\\tsetTypewriterOptions({\\\\n>\\\\t\\\\tanalytics: analytics,\\\\n>\\\\t})\\\\n\\\\nFor more information on analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/\\\\n\\");
+var missingAnalyticsNodeError = new Error(\\"You must set an analytics-node instance:\\\\n\\\\n>\\\\timport { Analytics } from '@segment/analytics-node'\\\\n>\\\\timport { setTypewriterOptions } from './analytics'\\\\n>\\\\n> const analytics = new Analytics({ writeKey: 'SEGMENT_WRITE_KEY' })\\\\n>\\\\tsetTypewriterOptions({ analytics: analytics\\\\t})\\\\n\\\\nFor more information on @segment/analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/\\\\n\\");
 var analytics = function () {
     throw missingAnalyticsNodeError;
 };
@@ -76,7 +76,7 @@ var analytics = function () {
  * @param {TypewriterOptions} options - the options to upsert
  *
  * @typedef {Object} TypewriterOptions
- * @property {AnalyticsNode} analytics - Underlying analytics instance where analytics
+ * @property {Analytics} analytics - Underlying analytics instance where analytics
  * 		calls are forwarded on to.
  * @property {Function} [onViolation] - Handler fired when if an event does not match its spec. This handler does not fire in
  * 		production mode, because it requires inlining the full JSON Schema spec for each event in your Tracking Plan. By default,
@@ -474,7 +474,7 @@ var clientAPI = {
      * @param {TypewriterOptions} options - the options to upsert
      *
      * @typedef {Object} TypewriterOptions
-     * @property {AnalyticsNode} analytics - Underlying analytics instance where analytics
+     * @property {Analytics} analytics - Underlying analytics instance where analytics
      * 		calls are forwarded on to.
      * @property {Function} [onViolation] - Handler fired when if an event does not match its spec. This handler does not fire in
      * 		production mode, because it requires inlining the full JSON Schema spec for each event in your Tracking Plan. By default,
@@ -5171,8 +5171,17 @@ import Ajv, { ErrorObject } from 'ajv'
 
 /**
  * The analytics.js snippet should be available via window.analytics.
- * You can install it by following instructions at: https://segment.com/docs/sources/website/analytics.js/quickstart/
- * Make sure to also include the TypeScript declarations with: \`npm install --dev @types/segment-analytics\`
+ * You can install it by following instructions at: https://segment.com/docs/connections/sources/catalog/libraries/website/javascript/
+ * Make sure to also include the TypeScript declarations with: \`npm install @segment/analytics-next\` (install with --save-dev for type definitions only).
+ *
+ * If you don't want to use the snippet, you can also install the \`@segment/analytics-next\` library as a *production* dependency and use it like this: 
+ * \`\`\`ts
+ * import { Analytics } from '@segment/analytics-next' 
+ * import { setTypewriterOptions } from './analytics'
+ *
+ * const analytics = new Analytics({ writeKey: 'SEGMENT_WRITE_KEY' })
+ * 
+ * setTypewriterOptions({ analytics: analytics })
  */
 import type { AnalyticsSnippet, Analytics, AnalyticsBrowser, Options } from '@segment/analytics-next'
 
@@ -6575,123 +6584,31 @@ export interface NoIDType {
  * You can install it with: \`npm install --save-dev ajv\`.
  */
 import Ajv, { ErrorObject } from 'ajv'
-import AnalyticsNode from 'analytics-node'
 
 /**
-* At least one of userId or anonymousId must be included in any identify call.
-*/
-type Identity = { userId: string | number } | { anonymousId: string | number };
+ * You can install \`@segment/analytics-node\` by following instructions at: 
+ * https://segment.com/docs/connections/sources/catalog/libraries/server/node
+ */
+import { Analytics, TrackParams } from '@segment/analytics-node'
+
+/**
+ * An ID associated with the user. Note: at least one of userId or anonymousId must be included!
+ **/
+type Identity =
+    | { userId: string; anonymousId?: string }
+    | { userId?: string; anonymousId: string }
 
 /**
  * TrackMessage represents a message payload for an analytics \`.track()\` call.
  * See: https://segment.com/docs/spec/track/
  */
-export type TrackMessage<PropertiesType> = Options & Record<string, any> & Identity & {
-    /** A dictionary of properties for the event. */
-    properties?: PropertiesType
-    /**
-    * A Javascript date object representing when the track took place.
-    * If the track just happened, leave it out and we’ll use the server’s
-    * time. If you’re importing data from the past make sure you to send
-    * a timestamp.
-    */
-    timestamp?: Date
-    /** 
-    * MessageId which can be optionally set to override the default one generated by the library.
-    * This is useful when you want to deduplicate messages.
-    */
-    messageId?: string
-}
+export type TrackMessage<PropertiesType> = Omit<
+    TrackParams,
+    'event' | 'properties'
+> & { event?: string, properties: PropertiesType } & Identity
 
 /** The callback exposed by analytics-node. */
-export type Callback = (err: Error) => void
-
-/** A dictionary of options. For example, enable or disable specific destinations for the call. */
-export interface Options {
-    /**
-     * Selectivly filter destinations. By default all destinations are enabled.
-     * https://segment.com/docs/sources/website/analytics.js/#selecting-destinations
-     */
-    integrations?: {
-        [key: string]: boolean | { [key: string]: any };
-    };
-    /**
-     * A dictionary of extra context to attach to the call.
-     * https://segment.com/docs/spec/common/#context
-     */
-    context?: Context;
-}
-
-/**
- * Context is a dictionary of extra information that provides useful context about a datapoint.
- * @see {@link https://segment.com/docs/spec/common/#context}
- */
-export interface Context extends Record<string, any> {
-    active?: boolean;
-    app?: {
-        name?: string;
-        version?: string;
-        build?: string;
-    };
-    campaign?: {
-        name?: string;
-        source?: string;
-        medium?: string;
-        term?: string;
-        content?: string;
-    };
-    device?: {
-        id?: string;
-        manufacturer?: string;
-        model?: string;
-        name?: string;
-        type?: string;
-        version?: string;
-    };
-    ip?: string;
-    locale?: string;
-    location?: {
-        city?: string;
-        country?: string;
-        latitude?: string;
-        longitude?: string;
-        region?: string;
-        speed?: string;
-    };
-    network?: {
-        bluetooth?: string;
-        carrier?: string;
-        cellular?: string;
-        wifi?: string;
-    };
-    os?: {
-        name?: string;
-        version?: string;
-    };
-    page?: {
-        hash?: string;
-        path?: string;
-        referrer?: string;
-        search?: string;
-        title?: string;
-        url?: string;
-    };
-    referrer?: {
-        type?: string;
-        name?: string;
-        url?: string;
-        link?: string;
-    };
-    screen?: {
-        density?: string;
-        height?: string;
-        width?: string;
-    };
-    timezone?: string;
-    groupId?: string;
-    traits?: Record<string, any>;
-    userAgent?: string;
-}
+export type Callback = Parameters<Analytics['track']>[1]
 
 export type ViolationHandler = (
     message: TrackMessage<Record<string, any>>,
@@ -6729,18 +6646,16 @@ let onViolation = defaultValidationErrorHandler
 
 const missingAnalyticsNodeError = new Error(\`You must set an analytics-node instance:
 
->	const SegmentAnalytics = require('analytics-node')
->	const { setTypewriterOptions } = require('./analytics')
+>	import { Analytics } from '@segment/analytics-node'
+>	import { setTypewriterOptions } from './analytics'
 >
->	const analytics = new SegmentAnalytics('SEGMENT_WRITE_KEY')
->	setTypewriterOptions({
->		analytics: analytics,
->	})
+> const analytics = new Analytics({ writeKey: 'SEGMENT_WRITE_KEY' })
+>	setTypewriterOptions({ analytics: analytics	})
 
-For more information on analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/
+For more information on @segment/analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/
 \`)
 
-let analytics: () => AnalyticsNode | undefined = () => {
+let analytics: () => Analytics | undefined = () => {
     throw missingAnalyticsNodeError
 }
 
@@ -6749,7 +6664,7 @@ export interface TypewriterOptions {
     /**
      * Underlying analytics instance where analytics calls are forwarded on to.
      */
-    analytics: AnalyticsNode
+    analytics: Analytics
     /**
      * Handler fired when if an event does not match its spec. This handler
      * does not fire in production mode, because it requires inlining the full
@@ -6769,7 +6684,7 @@ export interface TypewriterOptions {
  * @param {TypewriterOptions} options - the options to upsert
  *
  * @typedef {Object} TypewriterOptions
- * @property {AnalyticsNode} analytics - Underlying analytics instance where analytics
+ * @property {Analytics} analytics - Underlying analytics instance where analytics
  * 		calls are forwarded on to.
  * @property {Function} [onViolation] - Handler fired when if an event does not match its spec. This handler does not fire in
  * 		production mode, because it requires inlining the full JSON Schema spec for each event in your Tracking Plan. By default,
@@ -6800,9 +6715,9 @@ function validateAgainstSchema(
  * Helper to attach metadata on Typewriter to outbound requests.
  * This is used for attribution and debugging by the Segment team.
  */
-function withTypewriterContext<P, T extends TrackMessage<P>>(
+function withTypewriterContext<P extends Record<string, any>, T extends TrackMessage<P>>(
     message: T
-): T {
+) {
     return {
         ...message,
         context: {
@@ -7319,7 +7234,7 @@ const clientAPI = {
      * @param {TypewriterOptions} options - the options to upsert
      *
      * @typedef {Object} TypewriterOptions
-     * @property {AnalyticsNode} analytics - Underlying analytics instance where analytics
+     * @property {Analytics} analytics - Underlying analytics instance where analytics
      * 		calls are forwarded on to.
      * @property {Function} [onViolation] - Handler fired when if an event does not match its spec. This handler does not fire in
      * 		production mode, because it requires inlining the full JSON Schema spec for each event in your Tracking Plan. By default,
@@ -8149,123 +8064,31 @@ export interface UnionType {
  * You can install it with: \`npm install --save-dev ajv\`.
  */
 import Ajv, { ErrorObject } from 'ajv'
-import AnalyticsNode from 'analytics-node'
 
 /**
-* At least one of userId or anonymousId must be included in any identify call.
-*/
-type Identity = { userId: string | number } | { anonymousId: string | number };
+ * You can install \`@segment/analytics-node\` by following instructions at: 
+ * https://segment.com/docs/connections/sources/catalog/libraries/server/node
+ */
+import { Analytics, TrackParams } from '@segment/analytics-node'
+
+/**
+ * An ID associated with the user. Note: at least one of userId or anonymousId must be included!
+ **/
+type Identity =
+    | { userId: string; anonymousId?: string }
+    | { userId?: string; anonymousId: string }
 
 /**
  * TrackMessage represents a message payload for an analytics \`.track()\` call.
  * See: https://segment.com/docs/spec/track/
  */
-export type TrackMessage<PropertiesType> = Options & Record<string, any> & Identity & {
-    /** A dictionary of properties for the event. */
-    properties?: PropertiesType
-    /**
-    * A Javascript date object representing when the track took place.
-    * If the track just happened, leave it out and we’ll use the server’s
-    * time. If you’re importing data from the past make sure you to send
-    * a timestamp.
-    */
-    timestamp?: Date
-    /** 
-    * MessageId which can be optionally set to override the default one generated by the library.
-    * This is useful when you want to deduplicate messages.
-    */
-    messageId?: string
-}
+export type TrackMessage<PropertiesType> = Omit<
+    TrackParams,
+    'event' | 'properties'
+> & { event?: string, properties: PropertiesType } & Identity
 
 /** The callback exposed by analytics-node. */
-export type Callback = (err: Error) => void
-
-/** A dictionary of options. For example, enable or disable specific destinations for the call. */
-export interface Options {
-    /**
-     * Selectivly filter destinations. By default all destinations are enabled.
-     * https://segment.com/docs/sources/website/analytics.js/#selecting-destinations
-     */
-    integrations?: {
-        [key: string]: boolean | { [key: string]: any };
-    };
-    /**
-     * A dictionary of extra context to attach to the call.
-     * https://segment.com/docs/spec/common/#context
-     */
-    context?: Context;
-}
-
-/**
- * Context is a dictionary of extra information that provides useful context about a datapoint.
- * @see {@link https://segment.com/docs/spec/common/#context}
- */
-export interface Context extends Record<string, any> {
-    active?: boolean;
-    app?: {
-        name?: string;
-        version?: string;
-        build?: string;
-    };
-    campaign?: {
-        name?: string;
-        source?: string;
-        medium?: string;
-        term?: string;
-        content?: string;
-    };
-    device?: {
-        id?: string;
-        manufacturer?: string;
-        model?: string;
-        name?: string;
-        type?: string;
-        version?: string;
-    };
-    ip?: string;
-    locale?: string;
-    location?: {
-        city?: string;
-        country?: string;
-        latitude?: string;
-        longitude?: string;
-        region?: string;
-        speed?: string;
-    };
-    network?: {
-        bluetooth?: string;
-        carrier?: string;
-        cellular?: string;
-        wifi?: string;
-    };
-    os?: {
-        name?: string;
-        version?: string;
-    };
-    page?: {
-        hash?: string;
-        path?: string;
-        referrer?: string;
-        search?: string;
-        title?: string;
-        url?: string;
-    };
-    referrer?: {
-        type?: string;
-        name?: string;
-        url?: string;
-        link?: string;
-    };
-    screen?: {
-        density?: string;
-        height?: string;
-        width?: string;
-    };
-    timezone?: string;
-    groupId?: string;
-    traits?: Record<string, any>;
-    userAgent?: string;
-}
+export type Callback = Parameters<Analytics['track']>[1]
 
 export type ViolationHandler = (
     message: TrackMessage<Record<string, any>>,
@@ -8303,18 +8126,16 @@ let onViolation = defaultValidationErrorHandler
 
 const missingAnalyticsNodeError = new Error(\`You must set an analytics-node instance:
 
->	const SegmentAnalytics = require('analytics-node')
->	const { setTypewriterOptions } = require('./analytics')
+>	import { Analytics } from '@segment/analytics-node'
+>	import { setTypewriterOptions } from './analytics'
 >
->	const analytics = new SegmentAnalytics('SEGMENT_WRITE_KEY')
->	setTypewriterOptions({
->		analytics: analytics,
->	})
+> const analytics = new Analytics({ writeKey: 'SEGMENT_WRITE_KEY' })
+>	setTypewriterOptions({ analytics: analytics	})
 
-For more information on analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/
+For more information on @segment/analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/
 \`)
 
-let analytics: () => AnalyticsNode | undefined = () => {
+let analytics: () => Analytics | undefined = () => {
     throw missingAnalyticsNodeError
 }
 
@@ -8323,7 +8144,7 @@ export interface TypewriterOptions {
     /**
      * Underlying analytics instance where analytics calls are forwarded on to.
      */
-    analytics: AnalyticsNode
+    analytics: Analytics
     /**
      * Handler fired when if an event does not match its spec. This handler
      * does not fire in production mode, because it requires inlining the full
@@ -8343,7 +8164,7 @@ export interface TypewriterOptions {
  * @param {TypewriterOptions} options - the options to upsert
  *
  * @typedef {Object} TypewriterOptions
- * @property {AnalyticsNode} analytics - Underlying analytics instance where analytics
+ * @property {Analytics} analytics - Underlying analytics instance where analytics
  * 		calls are forwarded on to.
  * @property {Function} [onViolation] - Handler fired when if an event does not match its spec. This handler does not fire in
  * 		production mode, because it requires inlining the full JSON Schema spec for each event in your Tracking Plan. By default,
@@ -8374,9 +8195,9 @@ function validateAgainstSchema(
  * Helper to attach metadata on Typewriter to outbound requests.
  * This is used for attribution and debugging by the Segment team.
  */
-function withTypewriterContext<P, T extends TrackMessage<P>>(
+function withTypewriterContext<P extends Record<string, any>, T extends TrackMessage<P>>(
     message: T
-): T {
+) {
     return {
         ...message,
         context: {
@@ -8864,7 +8685,7 @@ const clientAPI = {
      * @param {TypewriterOptions} options - the options to upsert
      *
      * @typedef {Object} TypewriterOptions
-     * @property {AnalyticsNode} analytics - Underlying analytics instance where analytics
+     * @property {Analytics} analytics - Underlying analytics instance where analytics
      * 		calls are forwarded on to.
      * @property {Function} [onViolation] - Handler fired when if an event does not match its spec. This handler does not fire in
      * 		production mode, because it requires inlining the full JSON Schema spec for each event in your Tracking Plan. By default,
@@ -9684,123 +9505,31 @@ export interface UnionType {
  * You can install it with: \`npm install --save-dev ajv\`.
  */
 import Ajv, { ErrorObject } from 'ajv'
-import AnalyticsNode from 'analytics-node'
 
 /**
-* At least one of userId or anonymousId must be included in any identify call.
-*/
-type Identity = { userId: string | number } | { anonymousId: string | number };
+ * You can install \`@segment/analytics-node\` by following instructions at: 
+ * https://segment.com/docs/connections/sources/catalog/libraries/server/node
+ */
+import { Analytics, TrackParams } from '@segment/analytics-node'
+
+/**
+ * An ID associated with the user. Note: at least one of userId or anonymousId must be included!
+ **/
+type Identity =
+    | { userId: string; anonymousId?: string }
+    | { userId?: string; anonymousId: string }
 
 /**
  * TrackMessage represents a message payload for an analytics \`.track()\` call.
  * See: https://segment.com/docs/spec/track/
  */
-export type TrackMessage<PropertiesType> = Options & Record<string, any> & Identity & {
-    /** A dictionary of properties for the event. */
-    properties?: PropertiesType
-    /**
-    * A Javascript date object representing when the track took place.
-    * If the track just happened, leave it out and we’ll use the server’s
-    * time. If you’re importing data from the past make sure you to send
-    * a timestamp.
-    */
-    timestamp?: Date
-    /** 
-    * MessageId which can be optionally set to override the default one generated by the library.
-    * This is useful when you want to deduplicate messages.
-    */
-    messageId?: string
-}
+export type TrackMessage<PropertiesType> = Omit<
+    TrackParams,
+    'event' | 'properties'
+> & { event?: string, properties: PropertiesType } & Identity
 
 /** The callback exposed by analytics-node. */
-export type Callback = (err: Error) => void
-
-/** A dictionary of options. For example, enable or disable specific destinations for the call. */
-export interface Options {
-    /**
-     * Selectivly filter destinations. By default all destinations are enabled.
-     * https://segment.com/docs/sources/website/analytics.js/#selecting-destinations
-     */
-    integrations?: {
-        [key: string]: boolean | { [key: string]: any };
-    };
-    /**
-     * A dictionary of extra context to attach to the call.
-     * https://segment.com/docs/spec/common/#context
-     */
-    context?: Context;
-}
-
-/**
- * Context is a dictionary of extra information that provides useful context about a datapoint.
- * @see {@link https://segment.com/docs/spec/common/#context}
- */
-export interface Context extends Record<string, any> {
-    active?: boolean;
-    app?: {
-        name?: string;
-        version?: string;
-        build?: string;
-    };
-    campaign?: {
-        name?: string;
-        source?: string;
-        medium?: string;
-        term?: string;
-        content?: string;
-    };
-    device?: {
-        id?: string;
-        manufacturer?: string;
-        model?: string;
-        name?: string;
-        type?: string;
-        version?: string;
-    };
-    ip?: string;
-    locale?: string;
-    location?: {
-        city?: string;
-        country?: string;
-        latitude?: string;
-        longitude?: string;
-        region?: string;
-        speed?: string;
-    };
-    network?: {
-        bluetooth?: string;
-        carrier?: string;
-        cellular?: string;
-        wifi?: string;
-    };
-    os?: {
-        name?: string;
-        version?: string;
-    };
-    page?: {
-        hash?: string;
-        path?: string;
-        referrer?: string;
-        search?: string;
-        title?: string;
-        url?: string;
-    };
-    referrer?: {
-        type?: string;
-        name?: string;
-        url?: string;
-        link?: string;
-    };
-    screen?: {
-        density?: string;
-        height?: string;
-        width?: string;
-    };
-    timezone?: string;
-    groupId?: string;
-    traits?: Record<string, any>;
-    userAgent?: string;
-}
+export type Callback = Parameters<Analytics['track']>[1]
 
 export type ViolationHandler = (
     message: TrackMessage<Record<string, any>>,
@@ -9838,18 +9567,16 @@ let onViolation = defaultValidationErrorHandler
 
 const missingAnalyticsNodeError = new Error(\`You must set an analytics-node instance:
 
->	const SegmentAnalytics = require('analytics-node')
->	const { setTypewriterOptions } = require('./analytics')
+>	import { Analytics } from '@segment/analytics-node'
+>	import { setTypewriterOptions } from './analytics'
 >
->	const analytics = new SegmentAnalytics('SEGMENT_WRITE_KEY')
->	setTypewriterOptions({
->		analytics: analytics,
->	})
+> const analytics = new Analytics({ writeKey: 'SEGMENT_WRITE_KEY' })
+>	setTypewriterOptions({ analytics: analytics	})
 
-For more information on analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/
+For more information on @segment/analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/
 \`)
 
-let analytics: () => AnalyticsNode | undefined = () => {
+let analytics: () => Analytics | undefined = () => {
     throw missingAnalyticsNodeError
 }
 
@@ -9858,7 +9585,7 @@ export interface TypewriterOptions {
     /**
      * Underlying analytics instance where analytics calls are forwarded on to.
      */
-    analytics: AnalyticsNode
+    analytics: Analytics
     /**
      * Handler fired when if an event does not match its spec. This handler
      * does not fire in production mode, because it requires inlining the full
@@ -9878,7 +9605,7 @@ export interface TypewriterOptions {
  * @param {TypewriterOptions} options - the options to upsert
  *
  * @typedef {Object} TypewriterOptions
- * @property {AnalyticsNode} analytics - Underlying analytics instance where analytics
+ * @property {Analytics} analytics - Underlying analytics instance where analytics
  * 		calls are forwarded on to.
  * @property {Function} [onViolation] - Handler fired when if an event does not match its spec. This handler does not fire in
  * 		production mode, because it requires inlining the full JSON Schema spec for each event in your Tracking Plan. By default,
@@ -9909,9 +9636,9 @@ function validateAgainstSchema(
  * Helper to attach metadata on Typewriter to outbound requests.
  * This is used for attribution and debugging by the Segment team.
  */
-function withTypewriterContext<P, T extends TrackMessage<P>>(
+function withTypewriterContext<P extends Record<string, any>, T extends TrackMessage<P>>(
     message: T
-): T {
+) {
     return {
         ...message,
         context: {
@@ -10399,7 +10126,7 @@ const clientAPI = {
      * @param {TypewriterOptions} options - the options to upsert
      *
      * @typedef {Object} TypewriterOptions
-     * @property {AnalyticsNode} analytics - Underlying analytics instance where analytics
+     * @property {Analytics} analytics - Underlying analytics instance where analytics
      * 		calls are forwarded on to.
      * @property {Function} [onViolation] - Handler fired when if an event does not match its spec. This handler does not fire in
      * 		production mode, because it requires inlining the full JSON Schema spec for each event in your Tracking Plan. By default,

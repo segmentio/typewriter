@@ -20,8 +20,8 @@
   "dependencies": {
     "@npmcli/ci-detect": "^2.0.0",
     "@oclif/core": "^1.7",
+    "@segment/analytics-node": "^1.0.0-beta.26",
     "ajv": "^8.11.0",
-    "analytics-node": "segmentio/analytics-node",
     "chalk": "^4",
     "debug": "^4.3.4",
     "figures": "^3",
@@ -44,7 +44,6 @@
     "@oclif/test": "^2.1",
     "@segment/analytics-next": "^1.51.6",
     "@segment/analytics-react-native": "^2.2.1",
-    "@types/analytics-node": "^3.1.9",
     "@types/chai": "^4",
     "@types/debug": "^4.1.7",
     "@types/got": "^9.6.12",
@@ -94,14 +93,16 @@
     }
   },
   "scripts": {
-    "build": "shx rm -rf dist && tsc && copyfiles --up 1 \"src/**/*.hbs\" dist",
+    "build": "shx rm -rf dist && npm run build:typedef-test-artifacts && tsc && copyfiles --up 1 \"src/**/*.hbs\" dist && npm run build:telemetry",
+    "build:telemetry": "./bin/run -m=prod",
+    "build:typedef-test-artifacts": "ts-node src/__tests__/ts-typedef-tests/run-build.ts",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "yarn lint",
     "prepack": "yarn build && oclif manifest && oclif readme",
     "test": "yarn test:typedef && jest --runInBand",
-    "test:typedef": "npx ts-node src/__tests__/ts-typedef-tests/run.ts",
+    "test:typedef": "npm run build:typedef-test-artifacts && ts-node src/__tests__/ts-typedef-tests/run-test.ts",
     "version": "oclif readme && git add README.md"
   },
   "engines": {
