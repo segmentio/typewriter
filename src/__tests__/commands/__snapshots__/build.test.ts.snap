@@ -64,7 +64,7 @@ var defaultValidationErrorHandler = function (message, violations) {
 };
 exports.defaultValidationErrorHandler = defaultValidationErrorHandler;
 var onViolation = exports.defaultValidationErrorHandler;
-var missingAnalyticsNodeError = new Error(\\"You must set an analytics-node instance:\\\\n\\\\n>\\\\timport { Analytics } = from '@segment/analytics-node'\\\\n>\\\\timport { setTypewriterOptions } from './analytics'\\\\n>\\\\n> const analytics = new Analytics({ writeKey: 'SEGMENT_WRITE_KEY' })\\\\n>\\\\tsetTypewriterOptions({ analytics: analytics\\\\t})\\\\n\\\\nFor more information on @segment/analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/\\\\n\\");
+var missingAnalyticsNodeError = new Error(\\"You must set an analytics-node instance:\\\\n\\\\n>\\\\timport { Analytics } from '@segment/analytics-node'\\\\n>\\\\timport { setTypewriterOptions } from './analytics'\\\\n>\\\\n> const analytics = new Analytics({ writeKey: 'SEGMENT_WRITE_KEY' })\\\\n>\\\\tsetTypewriterOptions({ analytics: analytics\\\\t})\\\\n\\\\nFor more information on @segment/analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/\\\\n\\");
 var analytics = function () {
     throw missingAnalyticsNodeError;
 };
@@ -6578,7 +6578,7 @@ import Ajv, { ErrorObject } from 'ajv'
 import { Analytics, TrackParams } from '@segment/analytics-node'
 
 /**
- * An ID associated with the user. Note: at least one of userId or anonymousId must be included.
+ * An ID associated with the user. Note: at least one of userId or anonymousId must be included!
  **/
 type Identity =
     | { userId: string; anonymousId?: string }
@@ -6632,7 +6632,7 @@ let onViolation = defaultValidationErrorHandler
 
 const missingAnalyticsNodeError = new Error(\`You must set an analytics-node instance:
 
->	import { Analytics } = from '@segment/analytics-node'
+>	import { Analytics } from '@segment/analytics-node'
 >	import { setTypewriterOptions } from './analytics'
 >
 > const analytics = new Analytics({ writeKey: 'SEGMENT_WRITE_KEY' })
@@ -8053,7 +8053,7 @@ import Ajv, { ErrorObject } from 'ajv'
 import { Analytics, TrackParams } from '@segment/analytics-node'
 
 /**
- * An ID associated with the user. Note: at least one of userId or anonymousId must be included.
+ * An ID associated with the user. Note: at least one of userId or anonymousId must be included!
  **/
 type Identity =
     | { userId: string; anonymousId?: string }
@@ -8107,7 +8107,7 @@ let onViolation = defaultValidationErrorHandler
 
 const missingAnalyticsNodeError = new Error(\`You must set an analytics-node instance:
 
->	import { Analytics } = from '@segment/analytics-node'
+>	import { Analytics } from '@segment/analytics-node'
 >	import { setTypewriterOptions } from './analytics'
 >
 > const analytics = new Analytics({ writeKey: 'SEGMENT_WRITE_KEY' })
@@ -9489,7 +9489,7 @@ import Ajv, { ErrorObject } from 'ajv'
 import { Analytics, TrackParams } from '@segment/analytics-node'
 
 /**
- * An ID associated with the user. Note: at least one of userId or anonymousId must be included.
+ * An ID associated with the user. Note: at least one of userId or anonymousId must be included!
  **/
 type Identity =
     | { userId: string; anonymousId?: string }
@@ -9543,7 +9543,7 @@ let onViolation = defaultValidationErrorHandler
 
 const missingAnalyticsNodeError = new Error(\`You must set an analytics-node instance:
 
->	import { Analytics } = from '@segment/analytics-node'
+>	import { Analytics } from '@segment/analytics-node'
 >	import { setTypewriterOptions } from './analytics'
 >
 > const analytics = new Analytics({ writeKey: 'SEGMENT_WRITE_KEY' })

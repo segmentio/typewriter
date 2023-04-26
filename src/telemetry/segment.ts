@@ -251,7 +251,7 @@ export interface VersionCommand {
 import { Analytics, TrackParams } from '@segment/analytics-node'
 
 /**
- * An ID associated with the user. Note: at least one of userId or anonymousId must be included.
+ * An ID associated with the user. Note: at least one of userId or anonymousId must be included!
  **/
 type Identity =
     | { userId: string; anonymousId?: string }
@@ -304,7 +304,7 @@ export type ViolationHandler = (
 
 const missingAnalyticsNodeError = new Error(`You must set an analytics-node instance:
 
->	import { Analytics } = from '@segment/analytics-node'
+>	import { Analytics } from '@segment/analytics-node'
 >	import { setTypewriterOptions } from './analytics'
 >
 > const analytics = new Analytics({ writeKey: 'SEGMENT_WRITE_KEY' })
