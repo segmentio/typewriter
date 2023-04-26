@@ -2,7 +2,6 @@ import { exec } from "node:child_process";
 import { promisify } from "node:util";
 import path from "node:path";
 import fs from "node:fs";
-import { buildSDKs } from "./build-sdks";
 
 /**
  * Typecheck current project
@@ -61,21 +60,21 @@ const typecheckFiles = async (files: string[]) => {
   }
 };
 
-  /**
-   * Run
-   */
-  const _main = (async () => {
-    try {
-      await buildSDKs();
-      const PATHS_TO_TYPECHECK = [
-        path.resolve(__dirname, "build"),
-        path.resolve(__dirname, "tests"),
-      ]
-      const paths = PATHS_TO_TYPECHECK.flatMap(listFiles);
-      await typecheckFiles(paths);
-    } catch (err: any) {
-      console.error(err);
-      process.exit(1);
+/**
+ * Run
+ */
+const _main = (async () => {
+  try {
+    const buildPath = path.resolve(__dirname, "build");
+    const testPath = path.resolve(__dirname, "tests");
+    if (!fs.existsSync(buildPath)) {
+      throw new Error('please run "yarn build"');
     }
+    const paths = [buildPath, testPath].flatMap(listFiles);
+    await typecheckFiles(paths);
+    console.log("Type-checking complete.");
+  } catch (err: any) {
+    console.error(err);
+    process.exit(1);
   }
-)();
+})();

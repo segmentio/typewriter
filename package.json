@@ -93,15 +93,16 @@
     }
   },
   "scripts": {
-    "build": "shx rm -rf dist && tsc && copyfiles --up 1 \"src/**/*.hbs\" dist && npm run build:telemetry",
+    "build": "shx rm -rf dist && npm run build:typedef-test-artifacts && tsc && copyfiles --up 1 \"src/**/*.hbs\" dist && npm run build:telemetry",
     "build:telemetry": "./bin/run -m=prod",
+    "build:typedef-test-artifacts": "ts-node src/__tests__/ts-typedef-tests/run-build.ts",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "yarn lint",
     "prepack": "yarn build && oclif manifest && oclif readme",
     "test": "yarn test:typedef && jest --runInBand",
-    "test:typedef": "npx ts-node src/__tests__/ts-typedef-tests/run.ts",
+    "test:typedef": "npm run build:typedef-test-artifacts && ts-node src/__tests__/ts-typedef-tests/run-test.ts",
     "version": "oclif readme && git add README.md"
   },
   "engines": {
