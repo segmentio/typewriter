@@ -681,10 +681,10 @@ export interface NoIDType {
  *
  * If you don't want to use the snippet, you can also install the \`@segment/analytics-next\` library as a *production* dependency and use it like this: 
  * \`\`\`ts
- * import { Analytics } from '@segment/analytics-next' 
+ * import { AnalyticsBrowser } from '@segment/analytics-next' 
  * import { setTypewriterOptions } from './analytics'
  *
- * const analytics = new Analytics({ writeKey: 'SEGMENT_WRITE_KEY' })
+ * const analytics = AnalyticsBrowser.load({ writeKey: 'SEGMENT_WRITE_KEY' })
  * 
  * setTypewriterOptions({ analytics: analytics })
  */
