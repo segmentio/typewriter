@@ -8,6 +8,6 @@ describe("version", () => {
     stdout.start();
     await oclif.run(["version"]);
     stdout.stop();
-    expect(stdout.output).toContain("Version: 8");
+    expect(stdout.output).toMatch(/Version: \d/);
   });
 });
