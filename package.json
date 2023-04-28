@@ -1,6 +1,6 @@
 {
   "name": "typewriter",
-  "version": "8.1.0",
+  "version": "9.0.0",
   "description": "A compiler for generating strongly typed analytics clients via Segment Protocols",
   "repository": "ssh://git@github.com/segmentio/typewriter.git",
   "author": "Oscar Bazaldua <oscar.bazaldua@segment.com>",
