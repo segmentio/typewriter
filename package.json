@@ -38,7 +38,7 @@
     "sort-keys": "^4.2.0",
     "terminal-link": "^2",
     "typescript": "*",
-    "yaml": "^2.1.0"
+    "yaml": "^2.2.1"
   },
   "devDependencies": {
     "@oclif/test": "^2.1",
