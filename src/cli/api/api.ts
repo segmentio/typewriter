@@ -139,15 +139,15 @@ export async function validateToken(token: string | undefined): Promise<TokenVal
 	return tokenValidationCache[token]
 }
 
-async function apiGet<Response>(url: string, token: string): Promise<Response> {
-	const resp = got(url, {
-		baseUrl: 'https://platform.segmentapis.com/v1beta',
+async function apiGet<Response>(url: string, token: string) {
+	const resp = got<Response>(url, {
+		prefixUrl: 'https://platform.segmentapis.com/v1beta',
 		headers: {
 			'User-Agent': `Segment (typewriter/${version})`,
 			Authorization: `Bearer ${token.trim()}`,
 		},
-		json: true,
 		timeout: 10000, // ms
+		responseType: 'json',
 	})
 
 	try {
