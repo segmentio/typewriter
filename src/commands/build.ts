@@ -65,11 +65,25 @@ export default class Build extends BaseCommand {
       required: false,
       description: "Pass API token for fetching the tracking plan from Segment",
     }),
-    path: Flags.boolean({
+    id: Flags.string({
+      char: "i",
+      required: false,
+      description: "Tracking plan id",
+    }),
+    path: Flags.string({
       char: "p",
       required: false,
-      default: false,
       description: "Update path for tracking plan files",
+    }),
+    language: Flags.string({
+      char: "l",
+      required: false,
+      description: "Set language for tracking plan file",
+    }),
+    sdk: Flags.string({
+      char: "s",
+      required: false,
+      description: "Set SDK for tracking plan file",
     }),
   };
 
@@ -124,10 +138,6 @@ export default class Build extends BaseCommand {
     return [question, tipsText, chalk.white(figures.pointer)].join("\n");
   }
 
-  private deleteFolder(path: string) {
-    fs.rmSync(path, { recursive: true, force: true })
-  }
-
   public async run(): Promise<void> {
     const startTime = process.hrtime();
     const { flags } = await this.parse(this.constructor as typeof Build);
@@ -168,62 +178,16 @@ export default class Build extends BaseCommand {
       );
     }
 
-    if (flags.path) {
-      let trackingPlans = [] 
-      for (const plan of configPlans) {
-        const oldPath = './' + plan.path
-        const configPlan = await loadTrackingPlan(this.configPath, plan)
-        const { path } = await this.prompt({
-          type: "input",
-          name: "path",
-          message: this.formatQuestion(
-            `Enter a directory for the Tracking Plan ${chalk.green(
-              configPlan?.name
-            )} output:`,
-            [
-              "The generated client will be stored in this directory.",
-              "Directories will be automatically created, if needed.",
-            ]
-          ),
-          filter: normalize,
-          default: plan?.path
-        });
-
-        plan!.path = path;
-
-        // fetch tracking plan and store in new path
-        let newTrackingPlan: SegmentAPI.TrackingPlan | undefined;
-        try {
-          CliUx.ux.action.status = `Fetching tracking plan ${plan.name}.`;
-          newTrackingPlan = await fetchTrackingPlan(
-            plan.id,
-            flags.token ?? this.apiToken!
-          );
-        } catch (error) {
-          const errorMessage = isWrappedError(error)
-            ? error.description
-            : "API request failed";
-          debug(`${errorMessage}. Using local copy of ${plan.name} instead.`);
-          CliUx.ux.action.status = `Error fetching tracking plan ${plan.name}, using local copy instead.`;
-        }
-        if (newTrackingPlan !== undefined) {
-          CliUx.ux.action.status = `Updating local copy of tracking plan ${plan.name}.`;
-          // Update plan.json with the latest Tracking Plan.
-          await writeTrackingPlan(this.configPath, newTrackingPlan, plan);
-          CliUx.ux.action.status = `Plan ${plan.name} updated.`;
-        }
-        trackingPlans.push({name: configPlan?.name, path: plan.path, id: plan.id})
-        this.deleteFolder(oldPath)
-      }
-      await saveWorkspaceConfig({...this.workspaceConfig, trackingPlans}, this.configPath);
-    }
-
     CliUx.ux.action.start("Loading tracking plans");
 
     const trackingPlans = await loadTrackingPlans(
       flags.token ?? this.apiToken!,
       this.configPath,
-      this.workspaceConfig.trackingPlans,
+      flags.id
+        ? this.workspaceConfig.trackingPlans.filter(
+            (plan) => plan.id === flags.id
+          )
+        : this.workspaceConfig.trackingPlans,
       flags.update
     );
 
@@ -231,7 +195,9 @@ export default class Build extends BaseCommand {
 
     CliUx.ux.action.stop(chalk.green(`Loaded`));
 
-    const { language, sdk, languageOptions } = this.workspaceConfig.client;
+    let { language, sdk, languageOptions } = this.workspaceConfig.client;
+    language = flags.language || language;
+    sdk = flags.sdk || sdk;
     const languageGenerator = supportedLanguages.find(
       (lang) => lang.id === language
     );
@@ -283,7 +249,7 @@ export default class Build extends BaseCommand {
 
           const filepath = resolveRelativePath(
             this.configPath,
-            workspacePlan!.path,
+            flags.path || workspacePlan!.path,
             fileWithExtension
           );
           this.debug(`Writing to ${filepath}`);
