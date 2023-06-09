@@ -171,7 +171,7 @@ export default class Build extends BaseCommand {
         if (isEmpty(rule.jsonSchema.properties)) {
           rule.jsonSchema.properties = {
             _: {
-              type: "string",
+              type: "null",
               $id: "/properties/_",
               description:
                 "This property is added as a workaround to generate type for events without properties",
