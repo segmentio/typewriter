@@ -6,6 +6,37 @@ exports[`prod builds production client Language: typescript, SDK:analytics-js 1`
 //   npx typewriter
 
 /**
+ * Validates that clients properly sanitize event names.
+ */
+export interface The42_TerribleEventName3 {
+    /**
+     * This property is added as a workaround to generate type for events without properties
+     */
+    _?: null;
+}
+
+/**
+ * Fired before an analytics instance has been set, which should throw an error.
+ */
+export interface AnalyticsInstanceMissing {
+    /**
+     * This property is added as a workaround to generate type for events without properties
+     */
+    _?: null;
+}
+
+/**
+ * Fired after a client throws an \\"Analytics Instance Missing\\" error to mark the test as
+ * successful.
+ */
+export interface AnalyticsInstanceMissingThrewError {
+    /**
+     * This property is added as a workaround to generate type for events without properties
+     */
+    _?: null;
+}
+
+/**
  * This event is fired in order to trigger a custom violation handler. It should be called
  * with a JSON Schema violation.
  */
@@ -14,11 +45,44 @@ export interface CustomViolationHandler {
 }
 
 /**
+ * This event should be fired if a custom violation handler is correctly called due to a
+ * call to \`Custom Violation Handler\` with a violation.
+ */
+export interface CustomViolationHandlerCalled {
+    /**
+     * This property is added as a workaround to generate type for events without properties
+     */
+    _?: null;
+}
+
+/**
  * This event is fired in order to trigger the default violation handler. It should be
  * called with a JSON Schema violation.
  */
 export interface DefaultViolationHandler {
     \\"regex property\\": string;
+}
+
+/**
+ * This event should be fired if the default violation handler is correctly called due to a
+ * call to \`Default Violation Handler\` with a violation.
+ */
+export interface DefaultViolationHandlerCalled {
+    /**
+     * This property is added as a workaround to generate type for events without properties
+     */
+    _?: null;
+}
+
+/**
+ * Validates that a generated client supports events with no explicit properties. It is
+ * expected that this event accepts ANY properties.
+ */
+export interface EmptyEvent {
+    /**
+     * This property is added as a workaround to generate type for events without properties
+     */
+    _?: null;
 }
 
 /**
@@ -48,6 +112,16 @@ export enum StringConst {
 export enum StringEnum {
     EvilMorty = \\"Evil Morty\\",
     LawyerMorty = \\"Lawyer Morty\\",
+}
+
+/**
+ * Validates that a generated client handles even naming collisions.
+ */
+export interface EventCollided {
+    /**
+     * This property is added as a workaround to generate type for events without properties
+     */
+    _?: null;
 }
 
 /**
@@ -664,6 +738,16 @@ export interface UnionType {
 }
 
 /**
+ * Validates that a generated client handles even naming collisions.
+ */
+export interface PurpleEventCollided {
+    /**
+     * This property is added as a workaround to generate type for events without properties
+     */
+    _?: null;
+}
+
+/**
  * Properties without IDs
  */
 export interface NoIDType {
@@ -785,6 +869,72 @@ function withTypewriterContext(message: Options = {}): Options {
 }
 
 /**
+ * Fires a 'The42_TerribleEventName3' track call.
+ *
+ * @param The42_TerribleEventName3 props - The analytics properties that will be sent to Segment.
+ * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 	call is fired.
+ */
+export function the42TerribleEventName3(props: The42_TerribleEventName3, options?: Options, callback?: Callback): void {
+
+
+    const a = analytics();
+    if (a) {
+        a.track('42_--terrible&#x3D;&#x3D;\\\\&quot;event&#x27;++name~!3', props || {}, {...options,   context: {
+            ...(options?.context || {}),
+            typewriter: {
+                language: 'typescript',
+                version: '',
+            },
+        },}, callback);
+    }
+}
+/**
+ * Fires a 'AnalyticsInstanceMissing' track call.
+ *
+ * @param AnalyticsInstanceMissing props - The analytics properties that will be sent to Segment.
+ * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 	call is fired.
+ */
+export function analyticsInstanceMissing(props: AnalyticsInstanceMissing, options?: Options, callback?: Callback): void {
+
+
+    const a = analytics();
+    if (a) {
+        a.track('Analytics Instance Missing', props || {}, {...options,   context: {
+            ...(options?.context || {}),
+            typewriter: {
+                language: 'typescript',
+                version: '',
+            },
+        },}, callback);
+    }
+}
+/**
+ * Fires a 'AnalyticsInstanceMissingThrewError' track call.
+ *
+ * @param AnalyticsInstanceMissingThrewError props - The analytics properties that will be sent to Segment.
+ * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 	call is fired.
+ */
+export function analyticsInstanceMissingThrewError(props: AnalyticsInstanceMissingThrewError, options?: Options, callback?: Callback): void {
+
+
+    const a = analytics();
+    if (a) {
+        a.track('Analytics Instance Missing Threw Error', props || {}, {...options,   context: {
+            ...(options?.context || {}),
+            typewriter: {
+                language: 'typescript',
+                version: '',
+            },
+        },}, callback);
+    }
+}
+/**
  * Fires a 'CustomViolationHandler' track call.
  *
  * @param CustomViolationHandler props - The analytics properties that will be sent to Segment.
@@ -798,6 +948,28 @@ export function customViolationHandler(props: CustomViolationHandler, options?: 
     const a = analytics();
     if (a) {
         a.track('Custom Violation Handler', props || {}, {...options,   context: {
+            ...(options?.context || {}),
+            typewriter: {
+                language: 'typescript',
+                version: '',
+            },
+        },}, callback);
+    }
+}
+/**
+ * Fires a 'CustomViolationHandlerCalled' track call.
+ *
+ * @param CustomViolationHandlerCalled props - The analytics properties that will be sent to Segment.
+ * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 	call is fired.
+ */
+export function customViolationHandlerCalled(props: CustomViolationHandlerCalled, options?: Options, callback?: Callback): void {
+
+
+    const a = analytics();
+    if (a) {
+        a.track('Custom Violation Handler Called', props || {}, {...options,   context: {
             ...(options?.context || {}),
             typewriter: {
                 language: 'typescript',
@@ -829,6 +1001,50 @@ export function defaultViolationHandler(props: DefaultViolationHandler, options?
     }
 }
 /**
+ * Fires a 'DefaultViolationHandlerCalled' track call.
+ *
+ * @param DefaultViolationHandlerCalled props - The analytics properties that will be sent to Segment.
+ * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 	call is fired.
+ */
+export function defaultViolationHandlerCalled(props: DefaultViolationHandlerCalled, options?: Options, callback?: Callback): void {
+
+
+    const a = analytics();
+    if (a) {
+        a.track('Default Violation Handler Called', props || {}, {...options,   context: {
+            ...(options?.context || {}),
+            typewriter: {
+                language: 'typescript',
+                version: '',
+            },
+        },}, callback);
+    }
+}
+/**
+ * Fires a 'EmptyEvent' track call.
+ *
+ * @param EmptyEvent props - The analytics properties that will be sent to Segment.
+ * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 	call is fired.
+ */
+export function emptyEvent(props: EmptyEvent, options?: Options, callback?: Callback): void {
+
+
+    const a = analytics();
+    if (a) {
+        a.track('Empty Event', props || {}, {...options,   context: {
+            ...(options?.context || {}),
+            typewriter: {
+                language: 'typescript',
+                version: '',
+            },
+        },}, callback);
+    }
+}
+/**
  * Fires a 'EnumTypes' track call.
  *
  * @param EnumTypes props - The analytics properties that will be sent to Segment.
@@ -842,6 +1058,28 @@ export function enumTypes(props: EnumTypes, options?: Options, callback?: Callba
     const a = analytics();
     if (a) {
         a.track('Enum Types', props || {}, {...options,   context: {
+            ...(options?.context || {}),
+            typewriter: {
+                language: 'typescript',
+                version: '',
+            },
+        },}, callback);
+    }
+}
+/**
+ * Fires a 'EventCollided' track call.
+ *
+ * @param EventCollided props - The analytics properties that will be sent to Segment.
+ * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 	call is fired.
+ */
+export function eventCollided(props: EventCollided, options?: Options, callback?: Callback): void {
+
+
+    const a = analytics();
+    if (a) {
+        a.track('Event Collided', props || {}, {...options,   context: {
             ...(options?.context || {}),
             typewriter: {
                 language: 'typescript',
@@ -1137,6 +1375,28 @@ export function unionType(props: UnionType, options?: Options, callback?: Callba
     }
 }
 /**
+ * Fires a 'PurpleEventCollided' track call.
+ *
+ * @param PurpleEventCollided props - The analytics properties that will be sent to Segment.
+ * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 	call is fired.
+ */
+export function purpleEventCollided(props: PurpleEventCollided, options?: Options, callback?: Callback): void {
+
+
+    const a = analytics();
+    if (a) {
+        a.track('event_collided', props || {}, {...options,   context: {
+            ...(options?.context || {}),
+            typewriter: {
+                language: 'typescript',
+                version: '',
+            },
+        },}, callback);
+    }
+}
+/**
  * Fires a 'NoIDType' track call.
  *
  * @param NoIDType props - The analytics properties that will be sent to Segment.
@@ -1176,6 +1436,33 @@ const clientAPI = {
     setTypewriterOptions,
 
     /**
+     * Fires a 'The42_TerribleEventName3' track call.
+     *
+     * @param The42_TerribleEventName3 props - The analytics properties that will be sent to Segment.
+     * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+     * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+     * 	call is fired.
+     */
+    the42TerribleEventName3,
+    /**
+     * Fires a 'AnalyticsInstanceMissing' track call.
+     *
+     * @param AnalyticsInstanceMissing props - The analytics properties that will be sent to Segment.
+     * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+     * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+     * 	call is fired.
+     */
+    analyticsInstanceMissing,
+    /**
+     * Fires a 'AnalyticsInstanceMissingThrewError' track call.
+     *
+     * @param AnalyticsInstanceMissingThrewError props - The analytics properties that will be sent to Segment.
+     * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+     * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+     * 	call is fired.
+     */
+    analyticsInstanceMissingThrewError,
+    /**
      * Fires a 'CustomViolationHandler' track call.
      *
      * @param CustomViolationHandler props - The analytics properties that will be sent to Segment.
@@ -1184,6 +1471,15 @@ const clientAPI = {
      * 	call is fired.
      */
     customViolationHandler,
+    /**
+     * Fires a 'CustomViolationHandlerCalled' track call.
+     *
+     * @param CustomViolationHandlerCalled props - The analytics properties that will be sent to Segment.
+     * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+     * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+     * 	call is fired.
+     */
+    customViolationHandlerCalled,
     /**
      * Fires a 'DefaultViolationHandler' track call.
      *
@@ -1194,6 +1490,24 @@ const clientAPI = {
      */
     defaultViolationHandler,
     /**
+     * Fires a 'DefaultViolationHandlerCalled' track call.
+     *
+     * @param DefaultViolationHandlerCalled props - The analytics properties that will be sent to Segment.
+     * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+     * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+     * 	call is fired.
+     */
+    defaultViolationHandlerCalled,
+    /**
+     * Fires a 'EmptyEvent' track call.
+     *
+     * @param EmptyEvent props - The analytics properties that will be sent to Segment.
+     * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+     * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+     * 	call is fired.
+     */
+    emptyEvent,
+    /**
      * Fires a 'EnumTypes' track call.
      *
      * @param EnumTypes props - The analytics properties that will be sent to Segment.
@@ -1202,6 +1516,15 @@ const clientAPI = {
      * 	call is fired.
      */
     enumTypes,
+    /**
+     * Fires a 'EventCollided' track call.
+     *
+     * @param EventCollided props - The analytics properties that will be sent to Segment.
+     * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+     * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+     * 	call is fired.
+     */
+    eventCollided,
     /**
      * Fires a 'EveryNullableOptionalType' track call.
      *
@@ -1320,6 +1643,15 @@ const clientAPI = {
      */
     unionType,
     /**
+     * Fires a 'PurpleEventCollided' track call.
+     *
+     * @param PurpleEventCollided props - The analytics properties that will be sent to Segment.
+     * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+     * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+     * 	call is fired.
+     */
+    purpleEventCollided,
+    /**
      * Fires a 'NoIDType' track call.
      *
      * @param NoIDType props - The analytics properties that will be sent to Segment.
@@ -1363,6 +1695,37 @@ exports[`prod builds production client Language: typescript, SDK:analytics-node 
 //   npx typewriter
 
 /**
+ * Validates that clients properly sanitize event names.
+ */
+export interface The42_TerribleEventName3 {
+    /**
+     * This property is added as a workaround to generate type for events without properties
+     */
+    _?: null;
+}
+
+/**
+ * Fired before an analytics instance has been set, which should throw an error.
+ */
+export interface AnalyticsInstanceMissing {
+    /**
+     * This property is added as a workaround to generate type for events without properties
+     */
+    _?: null;
+}
+
+/**
+ * Fired after a client throws an \\"Analytics Instance Missing\\" error to mark the test as
+ * successful.
+ */
+export interface AnalyticsInstanceMissingThrewError {
+    /**
+     * This property is added as a workaround to generate type for events without properties
+     */
+    _?: null;
+}
+
+/**
  * This event is fired in order to trigger a custom violation handler. It should be called
  * with a JSON Schema violation.
  */
@@ -1371,11 +1734,44 @@ export interface CustomViolationHandler {
 }
 
 /**
+ * This event should be fired if a custom violation handler is correctly called due to a
+ * call to \`Custom Violation Handler\` with a violation.
+ */
+export interface CustomViolationHandlerCalled {
+    /**
+     * This property is added as a workaround to generate type for events without properties
+     */
+    _?: null;
+}
+
+/**
  * This event is fired in order to trigger the default violation handler. It should be
  * called with a JSON Schema violation.
  */
 export interface DefaultViolationHandler {
     \\"regex property\\": string;
+}
+
+/**
+ * This event should be fired if the default violation handler is correctly called due to a
+ * call to \`Default Violation Handler\` with a violation.
+ */
+export interface DefaultViolationHandlerCalled {
+    /**
+     * This property is added as a workaround to generate type for events without properties
+     */
+    _?: null;
+}
+
+/**
+ * Validates that a generated client supports events with no explicit properties. It is
+ * expected that this event accepts ANY properties.
+ */
+export interface EmptyEvent {
+    /**
+     * This property is added as a workaround to generate type for events without properties
+     */
+    _?: null;
 }
 
 /**
@@ -1405,6 +1801,16 @@ export enum StringConst {
 export enum StringEnum {
     EvilMorty = \\"Evil Morty\\",
     LawyerMorty = \\"Lawyer Morty\\",
+}
+
+/**
+ * Validates that a generated client handles even naming collisions.
+ */
+export interface EventCollided {
+    /**
+     * This property is added as a workaround to generate type for events without properties
+     */
+    _?: null;
 }
 
 /**
@@ -2021,6 +2427,16 @@ export interface UnionType {
 }
 
 /**
+ * Validates that a generated client handles even naming collisions.
+ */
+export interface PurpleEventCollided {
+    /**
+     * This property is added as a workaround to generate type for events without properties
+     */
+    _?: null;
+}
+
+/**
  * Properties without IDs
  */
 export interface NoIDType {
@@ -2162,6 +2578,87 @@ function withTypewriterContext<P extends Record<string, any>, T extends TrackMes
 
 
 /**
+ * Fires a '42_--terrible&#x3D;&#x3D;\\\\&quot;event&#x27;++name~!3' track call.
+ * Validates that clients properly sanitize event names.
+ *
+ * @param {TrackMessage<The42_TerribleEventName3>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
+ */
+ export function the42TerribleEventName3(
+    message: TrackMessage<The42_TerribleEventName3>,
+    callback?: Callback
+): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: '42_--terrible&#x3D;&#x3D;\\\\&quot;event&#x27;++name~!3',
+        properties: {
+            ...message.properties,
+        },
+    });
+
+    const a = analytics()
+    if (a) {
+        a.track(event,callback);
+    } else {
+        throw missingAnalyticsNodeError
+    }
+}
+/**
+ * Fires a 'Analytics Instance Missing' track call.
+ * Fired before an analytics instance has been set, which should throw an error.
+ *
+ * @param {TrackMessage<AnalyticsInstanceMissing>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
+ */
+ export function analyticsInstanceMissing(
+    message: TrackMessage<AnalyticsInstanceMissing>,
+    callback?: Callback
+): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'Analytics Instance Missing',
+        properties: {
+            ...message.properties,
+        },
+    });
+
+    const a = analytics()
+    if (a) {
+        a.track(event,callback);
+    } else {
+        throw missingAnalyticsNodeError
+    }
+}
+/**
+ * Fires a 'Analytics Instance Missing Threw Error' track call.
+ * Fired after a client throws an &quot;Analytics Instance Missing&quot; error to mark the test as successful.
+ *
+ * @param {TrackMessage<AnalyticsInstanceMissingThrewError>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
+ */
+ export function analyticsInstanceMissingThrewError(
+    message: TrackMessage<AnalyticsInstanceMissingThrewError>,
+    callback?: Callback
+): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'Analytics Instance Missing Threw Error',
+        properties: {
+            ...message.properties,
+        },
+    });
+
+    const a = analytics()
+    if (a) {
+        a.track(event,callback);
+    } else {
+        throw missingAnalyticsNodeError
+    }
+}
+/**
  * Fires a 'Custom Violation Handler' track call.
  * This event is fired in order to trigger a custom violation handler. It should be called with a JSON Schema violation.
  *
@@ -2176,6 +2673,33 @@ function withTypewriterContext<P extends Record<string, any>, T extends TrackMes
     const event = withTypewriterContext({
         ...message,
         event: 'Custom Violation Handler',
+        properties: {
+            ...message.properties,
+        },
+    });
+
+    const a = analytics()
+    if (a) {
+        a.track(event,callback);
+    } else {
+        throw missingAnalyticsNodeError
+    }
+}
+/**
+ * Fires a 'Custom Violation Handler Called' track call.
+ * This event should be fired if a custom violation handler is correctly called due to a call to &#x60;Custom Violation Handler&#x60; with a violation.
+ *
+ * @param {TrackMessage<CustomViolationHandlerCalled>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
+ */
+ export function customViolationHandlerCalled(
+    message: TrackMessage<CustomViolationHandlerCalled>,
+    callback?: Callback
+): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'Custom Violation Handler Called',
         properties: {
             ...message.properties,
         },
@@ -2216,6 +2740,60 @@ function withTypewriterContext<P extends Record<string, any>, T extends TrackMes
     }
 }
 /**
+ * Fires a 'Default Violation Handler Called' track call.
+ * This event should be fired if the default violation handler is correctly called due to a call to &#x60;Default Violation Handler&#x60; with a violation.
+ *
+ * @param {TrackMessage<DefaultViolationHandlerCalled>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
+ */
+ export function defaultViolationHandlerCalled(
+    message: TrackMessage<DefaultViolationHandlerCalled>,
+    callback?: Callback
+): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'Default Violation Handler Called',
+        properties: {
+            ...message.properties,
+        },
+    });
+
+    const a = analytics()
+    if (a) {
+        a.track(event,callback);
+    } else {
+        throw missingAnalyticsNodeError
+    }
+}
+/**
+ * Fires a 'Empty Event' track call.
+ * Validates that a generated client supports events with no explicit properties. It is expected that this event accepts ANY properties.
+ *
+ * @param {TrackMessage<EmptyEvent>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
+ */
+ export function emptyEvent(
+    message: TrackMessage<EmptyEvent>,
+    callback?: Callback
+): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'Empty Event',
+        properties: {
+            ...message.properties,
+        },
+    });
+
+    const a = analytics()
+    if (a) {
+        a.track(event,callback);
+    } else {
+        throw missingAnalyticsNodeError
+    }
+}
+/**
  * Fires a 'Enum Types' track call.
  * Validates that client property sanitize enums.
  *
@@ -2230,6 +2808,33 @@ function withTypewriterContext<P extends Record<string, any>, T extends TrackMes
     const event = withTypewriterContext({
         ...message,
         event: 'Enum Types',
+        properties: {
+            ...message.properties,
+        },
+    });
+
+    const a = analytics()
+    if (a) {
+        a.track(event,callback);
+    } else {
+        throw missingAnalyticsNodeError
+    }
+}
+/**
+ * Fires a 'Event Collided' track call.
+ * Validates that a generated client handles even naming collisions.
+ *
+ * @param {TrackMessage<EventCollided>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
+ */
+ export function eventCollided(
+    message: TrackMessage<EventCollided>,
+    callback?: Callback
+): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'Event Collided',
         properties: {
             ...message.properties,
         },
@@ -2594,6 +3199,33 @@ function withTypewriterContext<P extends Record<string, any>, T extends TrackMes
     }
 }
 /**
+ * Fires a 'event_collided' track call.
+ * Validates that a generated client handles even naming collisions.
+ *
+ * @param {TrackMessage<PurpleEventCollided>} message - The analytics properties that will be sent to Segment.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+ * 		call is fired.
+ */
+ export function purpleEventCollided(
+    message: TrackMessage<PurpleEventCollided>,
+    callback?: Callback
+): void {
+    const event = withTypewriterContext({
+        ...message,
+        event: 'event_collided',
+        properties: {
+            ...message.properties,
+        },
+    });
+
+    const a = analytics()
+    if (a) {
+        a.track(event,callback);
+    } else {
+        throw missingAnalyticsNodeError
+    }
+}
+/**
  * Fires a 'NoID type' track call.
  * Properties without IDs
  *
@@ -2640,6 +3272,36 @@ const clientAPI = {
     setTypewriterOptions,
 
     /**
+     * Fires a '42_--terrible&#x3D;&#x3D;\\\\&quot;event&#x27;++name~!3' track call.
+     * Validates that clients properly sanitize event names.
+     * 
+     * @param The42_TerribleEventName3 props - The analytics properties that will be sent to Segment.
+     * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+     * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+     * 	call is fired.
+     */
+    the42TerribleEventName3,
+    /**
+     * Fires a 'Analytics Instance Missing' track call.
+     * Fired before an analytics instance has been set, which should throw an error.
+     * 
+     * @param AnalyticsInstanceMissing props - The analytics properties that will be sent to Segment.
+     * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+     * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+     * 	call is fired.
+     */
+    analyticsInstanceMissing,
+    /**
+     * Fires a 'Analytics Instance Missing Threw Error' track call.
+     * Fired after a client throws an &quot;Analytics Instance Missing&quot; error to mark the test as successful.
+     * 
+     * @param AnalyticsInstanceMissingThrewError props - The analytics properties that will be sent to Segment.
+     * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+     * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+     * 	call is fired.
+     */
+    analyticsInstanceMissingThrewError,
+    /**
      * Fires a 'Custom Violation Handler' track call.
      * This event is fired in order to trigger a custom violation handler. It should be called with a JSON Schema violation.
      * 
@@ -2649,6 +3311,16 @@ const clientAPI = {
      * 	call is fired.
      */
     customViolationHandler,
+    /**
+     * Fires a 'Custom Violation Handler Called' track call.
+     * This event should be fired if a custom violation handler is correctly called due to a call to &#x60;Custom Violation Handler&#x60; with a violation.
+     * 
+     * @param CustomViolationHandlerCalled props - The analytics properties that will be sent to Segment.
+     * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+     * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+     * 	call is fired.
+     */
+    customViolationHandlerCalled,
     /**
      * Fires a 'Default Violation Handler' track call.
      * This event is fired in order to trigger the default violation handler. It should be called with a JSON Schema violation.
@@ -2660,6 +3332,26 @@ const clientAPI = {
      */
     defaultViolationHandler,
     /**
+     * Fires a 'Default Violation Handler Called' track call.
+     * This event should be fired if the default violation handler is correctly called due to a call to &#x60;Default Violation Handler&#x60; with a violation.
+     * 
+     * @param DefaultViolationHandlerCalled props - The analytics properties that will be sent to Segment.
+     * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+     * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+     * 	call is fired.
+     */
+    defaultViolationHandlerCalled,
+    /**
+     * Fires a 'Empty Event' track call.
+     * Validates that a generated client supports events with no explicit properties. It is expected that this event accepts ANY properties.
+     * 
+     * @param EmptyEvent props - The analytics properties that will be sent to Segment.
+     * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+     * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+     * 	call is fired.
+     */
+    emptyEvent,
+    /**
      * Fires a 'Enum Types' track call.
      * Validates that client property sanitize enums.
      * 
@@ -2669,6 +3361,16 @@ const clientAPI = {
      * 	call is fired.
      */
     enumTypes,
+    /**
+     * Fires a 'Event Collided' track call.
+     * Validates that a generated client handles even naming collisions.
+     * 
+     * @param EventCollided props - The analytics properties that will be sent to Segment.
+     * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+     * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+     * 	call is fired.
+     */
+    eventCollided,
     /**
      * Fires a 'Every Nullable Optional Type' track call.
      * Validates that clients handle all of the supported field types, as nullable optional fields. If a field is null, it is expected to be NOT sent through.
@@ -2799,6 +3501,16 @@ const clientAPI = {
      * 	call is fired.
      */
     unionType,
+    /**
+     * Fires a 'event_collided' track call.
+     * Validates that a generated client handles even naming collisions.
+     * 
+     * @param PurpleEventCollided props - The analytics properties that will be sent to Segment.
+     * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+     * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+     * 	call is fired.
+     */
+    purpleEventCollided,
     /**
      * Fires a 'NoID type' track call.
      * Properties without IDs

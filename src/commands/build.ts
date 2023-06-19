@@ -25,6 +25,7 @@ import {
 } from "../config";
 import { supportedLanguages } from "../languages";
 import { CommandBuild, Mode, toCommandConfig } from "../telemetry";
+import { isEmpty } from "lodash";
 import { isWrappedError } from "../common";
 import debug from "debug";
 
@@ -217,6 +218,19 @@ export default class Build extends BaseCommand {
           `No rules found for ${plan.name}. Skipping...`
         );
         continue;
+      }
+
+      for (const rule of plan.rules) {
+        if (isEmpty(rule.jsonSchema.properties)) {
+          rule.jsonSchema.properties = {
+            _: {
+              type: "null",
+              $id: "/properties/_",
+              description:
+                "This property is added as a workaround to generate type for events without properties",
+            },
+          };
+        }
       }
 
       try {
