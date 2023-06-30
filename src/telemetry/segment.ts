@@ -372,7 +372,7 @@ function withTypewriterContext<P extends Record<string, any>, T extends TrackMes
             ...(message.context || {}),
             typewriter: {
                 language: 'typescript',
-                version: '9.0.0',
+                version: '9.1.0',
             },
         },
     }
