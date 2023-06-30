@@ -1,6 +1,6 @@
 {
   "name": "typewriter",
-  "version": "9.0.0",
+  "version": "9.1.0",
   "description": "A compiler for generating strongly typed analytics clients via Segment Protocols",
   "repository": "ssh://git@github.com/segmentio/typewriter.git",
   "author": "Oscar Bazaldua <oscar.bazaldua@segment.com>",
@@ -38,7 +38,7 @@
     "sort-keys": "^4.2.0",
     "terminal-link": "^2",
     "typescript": "*",
-    "yaml": "^2.1.0"
+    "yaml": "^2.3.1"
   },
   "devDependencies": {
     "@oclif/test": "^2.1",
