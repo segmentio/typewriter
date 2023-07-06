@@ -33,7 +33,7 @@
     "latest-version": "^5",
     "lodash": "^4.17",
     "node-machine-id": "^1.1.12",
-    "quicktype-core": "^6.0.71",
+    "quicktype-core": "^6.1.12",
     "semver": "^7.3",
     "sort-keys": "^4.2.0",
     "terminal-link": "^2",
