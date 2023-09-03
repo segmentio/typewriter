@@ -28,7 +28,7 @@
     "got": "^11",
     "handlebars": "^4.7.7",
     "inquirer": "^8.2.3",
-    "joi": "^17.6.0",
+    "joi": "^17.8.4",
     "json-stable-stringify": "^1.0.1",
     "latest-version": "^5",
     "lodash": "^4.17",
