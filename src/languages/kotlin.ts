@@ -35,8 +35,8 @@ class TypewriterKotlinRenderer extends KotlinXRenderer {
 
   // We add our import for Analytics here, Kotlin is more strict about import order so we have to do it outside the templates
   override emitHeader(): void {
-    this.emitLine('com.segment.analytics.kotlin.core.Analytics');
     super.emitHeader();
+    this.emitLine('import com.segment.analytics.kotlin.core.Analytics');
   }
 
   override emitSource(givenOutputFilename: string): void {
