@@ -6,10 +6,6 @@
   <br>
   <br>
   <br>
-
-  <a href="https://circleci.com/gh/segmentio/typewriter">
-    <img src="https://circleci.com/gh/segmentio/typewriter.svg?style=svg&circle-token=8c1e734c99bdc08170e12d85af7a371900e33e96" alt="CircleCI Status">
-  </a>
   <a href="http://www.npmjs.com/package/typewriter">
     <img src="https://img.shields.io/npm/v/typewriter.svg" alt="NPM Version">
   </a>
@@ -48,14 +44,13 @@ For more instructions on setting up your `typewriter` client, such as adding it 
 - To submit a bug report or feature request, [file an issue here](issues).
 - To develop on `typewriter` or propose support for a new language, see [our contributors documentation](./.github/CONTRIBUTING.md).
 
-
 ## Migrating from v7
 
 Check the instructions on our [documentation](https://segment.com/docs/protocols/typewriter)
 
 - You'll need to change your Segment Config API Token for a Public API Token
 - v8 doesn't support **Analytics-iOS** nor **Analytics-Android**. We recommend using [Analytics-Swift]() and [Analytics-Kotlin]() instead which are supported.
-If you need to use these libraries you can run v7 specifying the version with your commands:
+  If you need to use these libraries you can run v7 specifying the version with your commands:
 
 ```sh
 $ npx typewriter@7 build
