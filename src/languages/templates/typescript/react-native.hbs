@@ -43,7 +43,7 @@ export const AnalyticsProvider = ({
   return <Context.Provider value={client}>{children}</Context.Provider>;
 };
 
-export const useAnalytics = () => {
+export const useAnalytics = (): TypewriterSegmentClient | {} => {
   const client = useContext(Context);
   if (!client) {
     console.error(
@@ -54,7 +54,6 @@ export const useAnalytics = () => {
     // @ts-ignore
     return {};
   }
-  return {
-    ...client,
-  };
+
+  return client;
 };
