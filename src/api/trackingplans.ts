@@ -223,38 +223,48 @@ function sanitizeKey(key: string): string {
 const fixProperties = (
   plan: SegmentAPI.RuleMetadata
 ): SegmentAPI.RuleMetadata => {
-  // If we added the eventMetadata we have already done this unwrapping, no need to do it again
-  if (plan.jsonSchema.eventMetadata !== undefined) {
-    return plan;
-  }
+  const transformDatetimeType = (schema: SomeJSONSchema): SomeJSONSchema => {
+    if (!schema || typeof schema !== 'object') return schema;
 
-  const innerProperties =
-    plan.jsonSchema.properties?.properties?.properties ?? {};
+    const result = { ...schema };
 
-  Object.keys(innerProperties).map((key) => {
-    if (innerProperties[key].id !== undefined) {
-      innerProperties[key].id = (innerProperties[key].id as string).replace(
-        "/properties/properties/properties/",
-        "/properties/"
+    // Handle array of types case
+    if (Array.isArray(result.type) && result.type.includes('datetime')) {
+      result.type = 'string';
+      result.format = 'date-time';
+      return result;
+    }
+    
+    // Handle direct datetime type
+    if (result.type === 'datetime') {
+      result.type = 'string';
+      result.format = 'date-time';
+      return result;
+    }
+
+    // Recursively transform properties
+    if (result.properties) {
+      result.properties = Object.entries(result.properties).reduce(
+        (acc, [key, value]) => ({
+          ...acc,
+          [key]: transformDatetimeType(value as SomeJSONSchema)
+        }),
+        {}
       );
     }
-  });
+
+    // Transform array items if they exist
+    if (result.items) {
+      result.items = transformDatetimeType(result.items as SomeJSONSchema);
+    }
+
+    return result;
+  };
 
   return {
     ...plan,
-    key: sanitizeKey(plan.key),
-    jsonSchema: {
-      ...plan.jsonSchema,
-      ...plan.jsonSchema.properties?.properties,
-      properties: innerProperties,
-
-      // We add some additional properties:
-      eventMetadata: {
-        name: plan.key,
-        type: plan.type, // Event Type (Track, Identify, etc)
-      },
-    },
-  } as SegmentAPI.RuleMetadata;
+    jsonSchema: transformDatetimeType(plan.jsonSchema)
+  };
 };
 
 const getChildrenOfProp = (

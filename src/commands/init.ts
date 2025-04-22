@@ -10,6 +10,7 @@ import { BaseCommand } from "../base-command";
 import {
   saveGlobalToken,
   saveWorkspaceConfig,
+  TokenMethod,
   tokenMethodToUserString,
   TrackingPlanConfig,
 } from "../config";
@@ -447,7 +448,7 @@ export default class Init extends BaseCommand {
 
     this.segmentClient.initCommand({
       properties: {
-        config: toCommandConfig(mergedConfig, this.tokenMetadata!.method),
+        config: toCommandConfig(mergedConfig, this.tokenMetadata?.method || TokenMethod.File),
         hasConfig: this.workspaceConfig !== undefined,
         rawCommand: this.rawCommand,
         duration: process.hrtime(startTime)[1],

@@ -245,7 +245,7 @@ function createCodeGeneratorFromTemplate(
         isNamedType
       );
 
-      return renderer.emitMultiline(generator(tags));
+      return emitMultiline(renderer, generator(tags));
     };
   } catch (error) {
     throw new Error(
@@ -279,7 +279,7 @@ export function emitMultiline(
     if (text !== null) {
       const newIndent = Math.floor(indent / indentSize);
       const leadSpaces = indent % indentSize;
-      renderer.changeIndent(newIndent - currentIndent);
+      (renderer as any).changeIndent(newIndent - currentIndent);
       currentIndent = newIndent;
       renderer.emitLine(" ".repeat(leadSpaces), text);
     } else {
@@ -287,7 +287,7 @@ export function emitMultiline(
     }
   }
   if (currentIndent !== 0) {
-    renderer.changeIndent(-currentIndent);
+    (renderer as any).changeIndent(-currentIndent);
   }
 }
 
@@ -366,14 +366,18 @@ function eventAttributesProducer(
   _canonicalRef: Ref | undefined,
   _types: Set<JSONSchemaType>
 ): JSONSchemaAttributes | undefined {
-  if (typeof schema !== "object" || schema.eventMetadata === undefined)
-    return undefined;
+  if (typeof schema !== "object" || !schema) return undefined;
 
-  // Remove the eventMetadata from the raw schema
-  const { eventMetadata, ...rawSchema } = schema;
+  // Handle both string and parsed object cases
+  const parsedSchema = typeof schema === "string" ? JSON.parse(schema) : schema;
+  
+  if (!parsedSchema.eventMetadata) return undefined;
+
+  const { eventMetadata, ...rawSchema } = parsedSchema;
   const metadata = eventMetadataAttributeKind.makeAttributes({
-    ...schema.eventMetadata,
-    raw: rawSchema,
+    name: eventMetadata.name,
+    type: eventMetadata.type,
+    raw: rawSchema
   });
 
   return { forType: metadata };
@@ -389,9 +393,16 @@ async function getSchemaInputData(
 ): Promise<InputData> {
   const schemaInput = new JSONSchemaInput(undefined, [eventAttributesProducer]);
   for (const rule of rules ?? []) {
+    const schemaWithMetadata = {
+      eventMetadata: {
+        name: rule.key,
+        type: rule.type
+      },
+      ...rule.jsonSchema
+    };
     await schemaInput.addSource({
       name: rule.key,
-      schema: JSON.stringify(rule.jsonSchema),
+      schema: JSON.stringify(schemaWithMetadata)
     });
   }
   const inputData = new InputData();

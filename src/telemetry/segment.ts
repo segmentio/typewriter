@@ -30,6 +30,7 @@ export interface CommandBuild {
      * User Segment Workspace
      */
     workspace: string;
+    [property: string]: any;
 }
 
 /**
@@ -56,6 +57,7 @@ export interface CommandBuildConfig {
      * Tracking Plans to generate code for
      */
     trackingPlans: PurpleTrackingPlan[];
+    [property: string]: any;
 }
 
 /**
@@ -76,6 +78,7 @@ export interface PurpleTrackingPlan {
      * Path to output code
      */
     path?: string;
+    [property: string]: any;
 }
 
 /**
@@ -115,6 +118,7 @@ export interface CommandError {
      * User Segment Workspace
      */
     workspace?: string;
+    [property: string]: any;
 }
 
 /**
@@ -141,6 +145,7 @@ export interface CommandErrorConfig {
      * Tracking Plans to generate code for
      */
     trackingPlans: FluffyTrackingPlan[];
+    [property: string]: any;
 }
 
 export interface FluffyTrackingPlan {
@@ -152,6 +157,7 @@ export interface FluffyTrackingPlan {
      * Path to output code
      */
     path?: string;
+    [property: string]: any;
 }
 
 export interface CommandHelp {
@@ -159,6 +165,7 @@ export interface CommandHelp {
      * Raw command string input
      */
     rawCommand: string;
+    [property: string]: any;
 }
 
 /**
@@ -181,6 +188,7 @@ export interface CommandInit {
      * Raw command string input
      */
     rawCommand: string;
+    [property: string]: any;
 }
 
 /**
@@ -211,6 +219,7 @@ export interface CommandInitConfig {
      * User Segment Workspace
      */
     workspace: string;
+    [property: string]: any;
 }
 
 export interface TentacledTrackingPlan {
@@ -222,6 +231,7 @@ export interface TentacledTrackingPlan {
      * Path to output code
      */
     path: string;
+    [property: string]: any;
 }
 
 /**
@@ -237,6 +247,7 @@ export interface KitchenSink {
     aNumber?:   number;
     anything?:  any;
     aString?:   string;
+    [property: string]: any;
 }
 
 export enum AnEnum {
@@ -246,6 +257,7 @@ export enum AnEnum {
 
 export interface VersionCommand {
     version: string;
+    [property: string]: any;
 }
 
 
@@ -259,16 +271,16 @@ import { Analytics, TrackParams } from '@segment/analytics-node'
  * An ID associated with the user. Note: at least one of userId or anonymousId must be included!
  **/
 type Identity =
-    | { userId: string; anonymousId?: string }
-    | { userId?: string; anonymousId: string }
+  | { userId: string; anonymousId?: string }
+  | { userId?: string; anonymousId: string }
 
 /**
  * TrackMessage represents a message payload for an analytics `.track()` call.
  * See: https://segment.com/docs/spec/track/
  */
 export type TrackMessage<PropertiesType> = Omit<
-    TrackParams,
-    'event' | 'properties'
+  TrackParams,
+  'event' | 'properties'
 > & { event?: string, properties: PropertiesType } & Identity
 
 /** The callback exposed by analytics-node. */
@@ -391,13 +403,13 @@ function withTypewriterContext<P extends Record<string, any>, T extends TrackMes
     message: TrackMessage<CommandBuild>,
     callback?: Callback
 ): void {
-    const event = withTypewriterContext({
-        ...message,
-        event: 'Command Build',
-        properties: {
-            ...message.properties,
-        },
-    });
+  const event = withTypewriterContext({
+    ...message,
+    event: 'Command Build',
+    properties: {
+      ...message.properties,
+    },
+  });
 
     const a = analytics()
     if (a) {
@@ -418,13 +430,13 @@ function withTypewriterContext<P extends Record<string, any>, T extends TrackMes
     message: TrackMessage<CommandError>,
     callback?: Callback
 ): void {
-    const event = withTypewriterContext({
-        ...message,
-        event: 'Command Error',
-        properties: {
-            ...message.properties,
-        },
-    });
+  const event = withTypewriterContext({
+    ...message,
+    event: 'Command Error',
+    properties: {
+      ...message.properties,
+    },
+  });
 
     const a = analytics()
     if (a) {
@@ -445,13 +457,13 @@ function withTypewriterContext<P extends Record<string, any>, T extends TrackMes
     message: TrackMessage<CommandHelp>,
     callback?: Callback
 ): void {
-    const event = withTypewriterContext({
-        ...message,
-        event: 'Command Help',
-        properties: {
-            ...message.properties,
-        },
-    });
+  const event = withTypewriterContext({
+    ...message,
+    event: 'Command Help',
+    properties: {
+      ...message.properties,
+    },
+  });
 
     const a = analytics()
     if (a) {
@@ -472,13 +484,13 @@ function withTypewriterContext<P extends Record<string, any>, T extends TrackMes
     message: TrackMessage<CommandInit>,
     callback?: Callback
 ): void {
-    const event = withTypewriterContext({
-        ...message,
-        event: 'Command Init',
-        properties: {
-            ...message.properties,
-        },
-    });
+  const event = withTypewriterContext({
+    ...message,
+    event: 'Command Init',
+    properties: {
+      ...message.properties,
+    },
+  });
 
     const a = analytics()
     if (a) {
@@ -499,13 +511,13 @@ function withTypewriterContext<P extends Record<string, any>, T extends TrackMes
     message: TrackMessage<KitchenSink>,
     callback?: Callback
 ): void {
-    const event = withTypewriterContext({
-        ...message,
-        event: 'KitchenSink',
-        properties: {
-            ...message.properties,
-        },
-    });
+  const event = withTypewriterContext({
+    ...message,
+    event: 'KitchenSink',
+    properties: {
+      ...message.properties,
+    },
+  });
 
     const a = analytics()
     if (a) {
@@ -526,13 +538,13 @@ function withTypewriterContext<P extends Record<string, any>, T extends TrackMes
     message: TrackMessage<VersionCommand>,
     callback?: Callback
 ): void {
-    const event = withTypewriterContext({
-        ...message,
-        event: 'VersionCommand',
-        properties: {
-            ...message.properties,
-        },
-    });
+  const event = withTypewriterContext({
+    ...message,
+    event: 'VersionCommand',
+    properties: {
+      ...message.properties,
+    },
+  });
 
     const a = analytics()
     if (a) {
@@ -543,7 +555,7 @@ function withTypewriterContext<P extends Record<string, any>, T extends TrackMes
 }
 
 const clientAPI = {
-    /**
+  /**
      * Updates the run-time configuration of this Typewriter client.
      * This function must be called with a configured analytics-node instance before firing
      * any analytics calls, or else a `missingAnalyticsNodeError` error will be thrown.
@@ -560,91 +572,91 @@ const clientAPI = {
      */
     setTypewriterOptions,
 
-    /**
-     * Fires a 'Command Build' track call.
-     * Fired when the user generates code with Typewriter
-     * 
-     * @param CommandBuild props - The analytics properties that will be sent to Segment.
-     * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
-     * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
-     * 	call is fired.
-     */
-    commandBuild,
-    /**
-     * Fires a 'Command Error' track call.
-     * 
-     * 
-     * @param CommandError props - The analytics properties that will be sent to Segment.
-     * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
-     * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
-     * 	call is fired.
-     */
-    commandError,
-    /**
-     * Fires a 'Command Help' track call.
-     * 
-     * 
-     * @param CommandHelp props - The analytics properties that will be sent to Segment.
-     * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
-     * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
-     * 	call is fired.
-     */
-    commandHelp,
-    /**
-     * Fires a 'Command Init' track call.
-     * Init Events that initialize the settings for typewriter
-     * 
-     * @param CommandInit props - The analytics properties that will be sent to Segment.
-     * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
-     * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
-     * 	call is fired.
-     */
-    commandInit,
-    /**
-     * Fires a 'KitchenSink' track call.
-     * KitchenSink Event for testing all possible data types
-     * 
-     * @param KitchenSink props - The analytics properties that will be sent to Segment.
-     * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
-     * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
-     * 	call is fired.
-     */
-    kitchenSink,
-    /**
-     * Fires a 'VersionCommand' track call.
-     * 
-     * 
-     * @param VersionCommand props - The analytics properties that will be sent to Segment.
-     * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
-     * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
-     * 	call is fired.
-     */
-    versionCommand,
+  /**
+   * Fires a 'Command Build' track call.
+   * Fired when the user generates code with Typewriter
+   * 
+   * @param CommandBuild props - The analytics properties that will be sent to Segment.
+   * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+   * 	call is fired.
+   */
+  commandBuild,
+  /**
+   * Fires a 'Command Error' track call.
+   * 
+   * 
+   * @param CommandError props - The analytics properties that will be sent to Segment.
+   * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+   * 	call is fired.
+   */
+  commandError,
+  /**
+   * Fires a 'Command Help' track call.
+   * 
+   * 
+   * @param CommandHelp props - The analytics properties that will be sent to Segment.
+   * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+   * 	call is fired.
+   */
+  commandHelp,
+  /**
+   * Fires a 'Command Init' track call.
+   * Init Events that initialize the settings for typewriter
+   * 
+   * @param CommandInit props - The analytics properties that will be sent to Segment.
+   * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+   * 	call is fired.
+   */
+  commandInit,
+  /**
+   * Fires a 'KitchenSink' track call.
+   * KitchenSink Event for testing all possible data types
+   * 
+   * @param KitchenSink props - The analytics properties that will be sent to Segment.
+   * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+   * 	call is fired.
+   */
+  kitchenSink,
+  /**
+   * Fires a 'VersionCommand' track call.
+   * 
+   * 
+   * @param VersionCommand props - The analytics properties that will be sent to Segment.
+   * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
+   * 	call is fired.
+   */
+  versionCommand,
 };
 
 export default new Proxy<typeof clientAPI>(clientAPI, {
-    get(target, method) {
-        if (typeof method === 'string' && target.hasOwnProperty(method)) {
-            return target[method as keyof typeof clientAPI];
-        }
+  get(target, method) {
+    if (typeof method === 'string' && target.hasOwnProperty(method)) {
+      return target[method as keyof typeof clientAPI];
+    }
 
-        return () => {
-            console.warn(`⚠️  You made an analytics call (${String(method)}) that can't be found. Either:
-         a) Re-generate your typewriter client: \`npx typewriter\`
-         b) Add it to your Tracking Plan: https://app.segment.com/segment-oscb/protocols/tracking-plans/rs_1zTHJU9fd5mt7cndWnd4PgJbMCE`);
-         const a = analytics()
-         if (a) {
-             a.track(
-                 withTypewriterContext({
-                     event: 'Unknown Analytics Call Fired',
-                     properties: {
-                         method,
-                     },
-                     userId: 'typewriter',
-                 })
-             )
-         }
-        };
-    },
+    return () => {
+      console.warn(`⚠️  You made an analytics call (${String(method)}) that can't be found. Either:
+     a) Re-generate your typewriter client: \`npx typewriter\`
+     b) Add it to your Tracking Plan: https://app.segment.com/segment-oscb/protocols/tracking-plans/rs_1zTHJU9fd5mt7cndWnd4PgJbMCE`);
+     const a = analytics()
+     if (a) {
+       a.track(
+         withTypewriterContext({
+           event: 'Unknown Analytics Call Fired',
+           properties: {
+             method,
+           },
+           userId: 'typewriter',
+         })
+       )
+     }
+    };
+  },
 });
 

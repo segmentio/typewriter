@@ -16,7 +16,7 @@ function extendSegmentClient(client: SegmentClient): TypewriterSegmentClient {
   const extendedClient = client as TypewriterSegmentClient;
   {{#type}}
   extendedClient.{{functionName}} = (message: {{typeName}}) => {
-    client.track('{{eventName}}', message as unknown as JsonMap);
+    client.track('{{eventName}}', message as {{typeName}});
   };
   {{/type}}
   return extendedClient;

@@ -22,6 +22,7 @@
     "@oclif/core": "^1.7",
     "@segment/analytics-node": "^1.0.0-beta.26",
     "ajv": "^8.11.0",
+    "ajv-formats": "^3.0.1",
     "chalk": "^4",
     "debug": "^4.3.4",
     "figures": "^3",
@@ -33,7 +34,7 @@
     "latest-version": "^5",
     "lodash": "^4.17",
     "node-machine-id": "^1.1.12",
-    "quicktype-core": "^6.0.71",
+    "quicktype-core": "6.1.12",
     "semver": "^7.3",
     "sort-keys": "^4.2.0",
     "terminal-link": "^2",
@@ -113,5 +114,6 @@
     "segment",
     "analytics"
   ],
-  "types": "dist/index.d.ts"
+  "types": "dist/index.d.ts",
+  "packageManager": "yarn@1.22.22+sha256.c17d3797fb9a9115bf375e31bfd30058cac6bc9c3b8807a3d8cb2094794b51ca"
 }
