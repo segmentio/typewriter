@@ -7,7 +7,7 @@
  * 
  * You can install it with: `npm install --save-dev ajv`.
  */
-import Ajv, { ErrorObject } from 'ajv'
+import Ajv, { ErrorObject, ValidateFunction } from 'ajv'
 {{/if}}
 
 /**
@@ -110,6 +110,9 @@ export function setTypewriterOptions(options: TypewriterOptions) {
 }
 
 {{#if isDevelopment}}
+const ajv = new Ajv({ allErrors: true, verbose: true })
+const validatorCache = new Map<string, ValidateFunction>()
+
 /**
 	* Validates a message against a JSON Schema using Ajv. If the message
 	* is invalid, the `onViolation` handler will be called.
@@ -118,10 +121,18 @@ function validateAgainstSchema(
 	message: Record<string, any>,
 	schema: object
 ) {
-	const ajv = new Ajv({ allErrors: true, verbose: true })
+	const schemaId = (schema as { $id?: string }).$id
+	let validate = schemaId ? validatorCache.get(schemaId) : undefined
 
-	if (!ajv.validate(schema, message) && ajv.errors) {
-		onViolation(message, ajv.errors)
+	if (!validate) {
+		validate = ajv.compile(schema)
+		if (schemaId) {
+			validatorCache.set(schemaId, validate)
+		}
+	}
+
+	if (!validate(message) && validate.errors) {
+		onViolation(message, validate.errors as ErrorObject[])
 	}
 }
 {{/if}}

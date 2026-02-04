@@ -1,3 +1,12 @@
+## Contentful Fork
+
+This repository is fork of Segment Typewriter.
+
+Summary of changes:
+- Reuse cached Ajv validators during runtime schema validation to avoid recompilation overhead.
+
+Use this package with `npx @contentful/typewriter`.
+
 <p align="center">
 	<br>
 	<br>

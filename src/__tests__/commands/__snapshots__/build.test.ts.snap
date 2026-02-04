@@ -88,14 +88,23 @@ function setTypewriterOptions(options) {
     onViolation = options.onViolation || onViolation;
 }
 exports.setTypewriterOptions = setTypewriterOptions;
+var ajv = new ajv_1.default({ allErrors: true, verbose: true });
+var validatorCache = new Map();
 /**
     * Validates a message against a JSON Schema using Ajv. If the message
     * is invalid, the \`onViolation\` handler will be called.
     */
 function validateAgainstSchema(message, schema) {
-    var ajv = new ajv_1.default({ allErrors: true, verbose: true });
-    if (!ajv.validate(schema, message.properties) && ajv.errors) {
-        onViolation(message, ajv.errors);
+    var schemaId = schema.$id;
+    var validate = schemaId ? validatorCache.get(schemaId) : undefined;
+    if (!validate) {
+        validate = ajv.compile(schema);
+        if (schemaId) {
+            validatorCache.set(schemaId, validate);
+        }
+    }
+    if (!validate(message.properties) && validate.errors) {
+        onViolation(message, validate.errors);
     }
 }
 /**
@@ -5833,7 +5842,7 @@ export interface NoIDType {
  * 
  * You can install it with: \`npm install --save-dev ajv\`.
  */
-import Ajv, { ErrorObject } from 'ajv'
+import Ajv, { ErrorObject, ValidateFunction } from 'ajv'
 
 /**
  * The analytics.js snippet should be available via window.analytics.
@@ -5929,6 +5938,9 @@ export function setTypewriterOptions(options: TypewriterOptions) {
     onViolation = options.onViolation || onViolation
 }
 
+const ajv = new Ajv({ allErrors: true, verbose: true })
+const validatorCache = new Map<string, ValidateFunction>()
+
 /**
     * Validates a message against a JSON Schema using Ajv. If the message
     * is invalid, the \`onViolation\` handler will be called.
@@ -5937,10 +5949,18 @@ function validateAgainstSchema(
     message: Record<string, any>,
     schema: object
 ) {
-    const ajv = new Ajv({ allErrors: true, verbose: true })
+    const schemaId = (schema as { $id?: string }).$id
+    let validate = schemaId ? validatorCache.get(schemaId) : undefined
 
-    if (!ajv.validate(schema, message) && ajv.errors) {
-        onViolation(message, ajv.errors)
+    if (!validate) {
+        validate = ajv.compile(schema)
+        if (schemaId) {
+            validatorCache.set(schemaId, validate)
+        }
+    }
+
+    if (!validate(message) && validate.errors) {
+        onViolation(message, validate.errors as ErrorObject[])
     }
 }
 
@@ -7597,7 +7617,7 @@ export interface NoIDType {
  * 
  * You can install it with: \`npm install --save-dev ajv\`.
  */
-import Ajv, { ErrorObject } from 'ajv'
+import Ajv, { ErrorObject, ValidateFunction } from 'ajv'
 
 /**
  * You can install \`@segment/analytics-node\` by following instructions at: 
@@ -7710,6 +7730,9 @@ export function setTypewriterOptions(options: TypewriterOptions) {
     onViolation = options.onViolation || onViolation
 }
 
+const ajv = new Ajv({ allErrors: true, verbose: true })
+const validatorCache = new Map<string, ValidateFunction>()
+
 /**
     * Validates a message against a JSON Schema using Ajv. If the message
     * is invalid, the \`onViolation\` handler will be called.
@@ -7718,10 +7741,18 @@ function validateAgainstSchema(
     message: TrackMessage<Record<string, any>>,
     schema: object
 ) {
-    const ajv = new Ajv({ allErrors: true, verbose: true })
+    const schemaId = (schema as { $id?: string }).$id
+    let validate = schemaId ? validatorCache.get(schemaId) : undefined
 
-    if (!ajv.validate(schema, message.properties) && ajv.errors) {
-        onViolation(message, ajv.errors)
+    if (!validate) {
+        validate = ajv.compile(schema)
+        if (schemaId) {
+            validatorCache.set(schemaId, validate)
+        }
+    }
+
+    if (!validate(message.properties) && validate.errors) {
+        onViolation(message, validate.errors as ErrorObject[])
     }
 }
 
@@ -9445,7 +9476,7 @@ export interface PurpleEventCollided {
  * 
  * You can install it with: \`npm install --save-dev ajv\`.
  */
-import Ajv, { ErrorObject } from 'ajv'
+import Ajv, { ErrorObject, ValidateFunction } from 'ajv'
 
 /**
  * You can install \`@segment/analytics-node\` by following instructions at: 
@@ -9558,6 +9589,9 @@ export function setTypewriterOptions(options: TypewriterOptions) {
     onViolation = options.onViolation || onViolation
 }
 
+const ajv = new Ajv({ allErrors: true, verbose: true })
+const validatorCache = new Map<string, ValidateFunction>()
+
 /**
     * Validates a message against a JSON Schema using Ajv. If the message
     * is invalid, the \`onViolation\` handler will be called.
@@ -9566,10 +9600,18 @@ function validateAgainstSchema(
     message: TrackMessage<Record<string, any>>,
     schema: object
 ) {
-    const ajv = new Ajv({ allErrors: true, verbose: true })
+    const schemaId = (schema as { $id?: string }).$id
+    let validate = schemaId ? validatorCache.get(schemaId) : undefined
 
-    if (!ajv.validate(schema, message.properties) && ajv.errors) {
-        onViolation(message, ajv.errors)
+    if (!validate) {
+        validate = ajv.compile(schema)
+        if (schemaId) {
+            validatorCache.set(schemaId, validate)
+        }
+    }
+
+    if (!validate(message.properties) && validate.errors) {
+        onViolation(message, validate.errors as ErrorObject[])
     }
 }
 
@@ -11254,7 +11296,7 @@ export interface PurpleEventCollided {
  * 
  * You can install it with: \`npm install --save-dev ajv\`.
  */
-import Ajv, { ErrorObject } from 'ajv'
+import Ajv, { ErrorObject, ValidateFunction } from 'ajv'
 
 /**
  * You can install \`@segment/analytics-node\` by following instructions at: 
@@ -11367,6 +11409,9 @@ export function setTypewriterOptions(options: TypewriterOptions) {
     onViolation = options.onViolation || onViolation
 }
 
+const ajv = new Ajv({ allErrors: true, verbose: true })
+const validatorCache = new Map<string, ValidateFunction>()
+
 /**
     * Validates a message against a JSON Schema using Ajv. If the message
     * is invalid, the \`onViolation\` handler will be called.
@@ -11375,10 +11420,18 @@ function validateAgainstSchema(
     message: TrackMessage<Record<string, any>>,
     schema: object
 ) {
-    const ajv = new Ajv({ allErrors: true, verbose: true })
+    const schemaId = (schema as { $id?: string }).$id
+    let validate = schemaId ? validatorCache.get(schemaId) : undefined
 
-    if (!ajv.validate(schema, message.properties) && ajv.errors) {
-        onViolation(message, ajv.errors)
+    if (!validate) {
+        validate = ajv.compile(schema)
+        if (schemaId) {
+            validatorCache.set(schemaId, validate)
+        }
+    }
+
+    if (!validate(message.properties) && validate.errors) {
+        onViolation(message, validate.errors as ErrorObject[])
     }
 }
 
