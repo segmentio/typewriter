@@ -1,4 +1,4 @@
-## Contentful Fork
+## Fork
 
 This repository is fork of Segment Typewriter.
 
