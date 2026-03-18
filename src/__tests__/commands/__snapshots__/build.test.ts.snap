@@ -7619,7 +7619,7 @@ type Identity =
 export type TrackMessage<PropertiesType> = Omit<
     TrackParams,
     'event' | 'properties'
-> & { event?: string, properties: PropertiesType } & Identity
+> & { messageId?: string, event?: string, properties: PropertiesType } & Identity
 
 /** The callback exposed by analytics-node. */
 export type Callback = Parameters<Analytics['track']>[1]
@@ -9467,7 +9467,7 @@ type Identity =
 export type TrackMessage<PropertiesType> = Omit<
     TrackParams,
     'event' | 'properties'
-> & { event?: string, properties: PropertiesType } & Identity
+> & { messageId?: string, event?: string, properties: PropertiesType } & Identity
 
 /** The callback exposed by analytics-node. */
 export type Callback = Parameters<Analytics['track']>[1]
@@ -11276,7 +11276,7 @@ type Identity =
 export type TrackMessage<PropertiesType> = Omit<
     TrackParams,
     'event' | 'properties'
-> & { event?: string, properties: PropertiesType } & Identity
+> & { messageId?: string, event?: string, properties: PropertiesType } & Identity
 
 /** The callback exposed by analytics-node. */
 export type Callback = Parameters<Analytics['track']>[1]
