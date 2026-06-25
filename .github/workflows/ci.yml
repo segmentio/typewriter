@@ -7,21 +7,21 @@ on:
   workflow_dispatch:
 jobs:
   cancel_previous:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-large
     steps:
-    - uses: styfle/cancel-workflow-action@0.9.1
+    - uses: styfle/cancel-workflow-action@a40b8845c0683271d9f53dfcb887a7e181d3918b  # 0.9.1
       with:
         workflow_id: ${{ github.event.workflow.id }}
   build-and-test:
     name: "Test (Node.js v${{ matrix.node-version }})"
     needs: cancel_previous
-    runs-on: 'ubuntu-latest'
+    runs-on: ubuntu-latest-large
     strategy:
       matrix:
         node-version: [ 18, 20, 21 ]
     steps: 
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744  # v3
+      - uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610  # v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: yarn
